@@ -12,7 +12,7 @@ from yaml import safe_load
 class Schema_Set:
     """A group of Schemas and the tools to collectively apply them.
     
-    Loads the included citation-schemas.yml by default, unless
+    Loads the included default-schemas.yaml by default, unless
     initialized with defaults=False. Also loads whatever filepaths
     are included as arguments in its constructor.
     
@@ -22,10 +22,13 @@ class Schema_Set:
         self.schemas = []
         if defaults:
             parent_dir = Path(__file__).parent.absolute()
-            yaml_path = parent_dir / 'default-schemas.yml'
+            yaml_path = parent_dir / 'default-schemas.yaml'
             self.load_schemas(str(yaml_path))
         for path in args:
             self.load_schemas(path)
+    
+    def __repr__(self):
+        return str(self.schemas)
     
     def load_schemas(self, path):
         """Import schemas from the specified YAML file."""
@@ -103,6 +106,9 @@ class Schema:
             self.substitutions = sub_objs
         else:
             self.substitutions = []
+    
+    def __repr__(self):
+        return self.name
 
     def url_from_query(self, query):
         """Apply schema to the given query to generate a URL.
