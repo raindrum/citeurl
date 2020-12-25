@@ -12,7 +12,7 @@ setuptools.setup(
     license='MIT',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://raindrum.github.io",
+    url="https://github.com/raindrum/citeurl",
     packages=setuptools.find_packages(),
     entry_points={
         'console_scripts': ['citeurl=citeurl.__main__:main'],
