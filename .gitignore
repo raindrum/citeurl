@@ -1,0 +1,6 @@
+*.sh
+*.egg-info/
+custom.yml
+build/
+demo/
+reporters/
