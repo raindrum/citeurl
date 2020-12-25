@@ -24,7 +24,7 @@ setuptools.setup(
         'Development Status :: 4 - Beta',
         'Intended Audience :: Legal Industry',
         'Programming Language :: Python :: 3.9',
-        'License :: OSI Approved :: MIT'
+        'License :: OSI Approved :: MIT',
         'Operating System :: OS Independent',
         'Topic :: Text Processing :: Filters',
         'Topic :: Text Processing :: Markup :: HTML',
