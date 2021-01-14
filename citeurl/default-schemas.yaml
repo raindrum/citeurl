@@ -236,7 +236,8 @@
 # URL scheme.
 
 - name: California Codes
-  regex: ((CAL|Cal)\.?|California) (?P<code>(BPC|CIV|CCP|COM|EDC|ELEC|EVID|FAM|FIN|FGC|FAC|GOV|HNC|HSC|INS|LAB|MVC|PEN|PROB|PCC|PRC|PUC|RTC|SHC|UIC|VEH|WAT|WIC|Business and Professions|Civil|Code of Civil Procedure|Commercial|Education|Elections|Evidence|Family|Financial|Fish and Game|Food and Agricultural|Government|Harbors and Navigation|Health and Safety|Insurance|Labor|Military and Veterans|Penal|Probate|Public Contract|Public Resources|Public Utilities|Revenue and Taxation|Streets and Highways|Unemployment Insurance|Vehicle|Water|Welfare and Institutions))\.?( Code)?
+  regex:
+    - ((CAL|Cal)\.?|California) (?P<code>(BPC|CIV|CCP|COM|EDC|ELEC|EVID|FAM|FIN|FGC|FAC|GOV|HNC|HSC|INS|LAB|MVC|PEN|PROB|PCC|PRC|PUC|RTC|SHC|UIC|VEH|WAT|WIC|Business and Professions|Civil|Code of Civil Procedure|Commercial|Education|Elections|Evidence|Family|Financial|Fish and Game|Food and Agricultural|Government|Harbors and Navigation|Health and Safety|Insurance|Labor|Military and Veterans|Penal|Probate|Public Contract|Public Resources|Public Utilities|Revenue and Taxation|Streets and Highways|Unemployment Insurance|Vehicle|Water|Welfare and Institutions))\.?( Code)?
     - *section
   mutations:
     - key: code
