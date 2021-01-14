@@ -16,21 +16,22 @@ class Schema_Set:
     initialized with defaults=False. Also loads whatever filepaths
     are included as arguments in its constructor.
     
-    See https://github.com/raindrum/citeurl#schema-format for more info."""
+    For more info, see
+    https://github.com/raindrum/citeurl#schema-format."""
     
     def __init__(self, *args, defaults: bool=True):
         self.schemas = []
         if defaults:
             parent_dir = Path(__file__).parent.absolute()
             yaml_path = parent_dir / 'default-schemas.yaml'
-            self.load_schemas(str(yaml_path))
+            self.load_yaml(str(yaml_path))
         for path in args:
-            self.load_schemas(path)
+            self.load_yaml(path)
     
     def __repr__(self):
         return str(self.schemas)
     
-    def load_schemas(self, path):
+    def load_yaml(self, path):
         """Import schemas from the specified YAML file."""
         yaml_text = Path(path).read_text()
         yaml_nodes = safe_load(yaml_text)
@@ -73,25 +74,38 @@ class Schema:
     """
     The information needed to turn a citation into a URL.
     
-    Each schema represents a body of law. At minimum it needs a
-    regex to recognize, and a set of URLParts to construct a URL
-    out of capture groups from the regex. A schema may also have
-    default values, mutations, and substitutions, which will be
-    applied, in that order, to the specified capture groups before
-    constructing the URL.
+    For most purposes, it is more convenient to use methods in the
+    Schema_Set class rather than use this Schema class directly.
     
-    For most purposes, it is more convenient to use the Schemas class
-    rather than use this one directly."""
+    Each schema represents a body of law. At minimum it needs a name,
+    regex, and URL. The latter two can be passed either as single
+    strings or as lists of strings to concatenate without a separator. 
     
-    def __init__(self, ydict: dict):
-        self.__dict__ = ydict
-        self.regex = re.compile(''.join(self.regexParts), flags=re.I)
+    For regexes, lists are only useful as a way to reuse common strings
+    via YAML anchors.
+    
+    Specifying URLs as lists let you break up the URL into optional
+    sections. If a list item references a variable that isn't set,
+    that whole list item is omitted from the URL without error."""
+    
+    def __init__(self, schema_data: dict):
+        self.__dict__ = schema_data
+        
+        def compile_regex(input):
+            if type(input) is list:
+                input = ''.join(input)
+            return re.compile(input, flags=re.I)
+
+        self.regex = compile_regex(self.regex)
+        
+        if hasattr(self, 'broadRegex'):
+            self.broadRegex = compile_regex(self.broadRegex)
+        
+        if type(self.URL) is str:
+            self.URL = [self.URL]
+        
         if not hasattr(self, 'defaults'):
             self.defaults = {}
-        if hasattr(self, 'broadRegexParts'):
-            self.broadRegex = re.compile(
-                ''.join(self.broadRegexParts), flags=re.I
-            )
         if hasattr(self, 'mutations'):
             mutation_objs = []
             for mut in self.mutations:
@@ -115,12 +129,10 @@ class Schema:
         
         Returns the URL, or None if the query does not match
         the schema.""" 
-        if hasattr(self, "broadRegexParts"):
-            regex_source = self.broadRegexParts
+        if hasattr(self, "broadRegex"):
+            match = re.search(self.broadRegex, query)
         else:
-            regex_source = self.regexParts
-        regex_str = "".join(regex_source)
-        match = re.search(re.compile(regex_str, flags=re.I), query)
+            match = re.search(self.regex, query)
         if match:
             try:
                 return self._url_from_match(match)
@@ -139,13 +151,14 @@ class Schema:
         :param text: a string to insert links into
         :param css_class: the CSS class that each link will have
         :return: a string with links inserted"""
-        regex_str = r'(?<!class="%s"\>)%s(?!\</a\>)' % (
-            css_class,
-            "".join(self.regexParts),
-        )
+        
         self.css_class = css_class # this is an ugly workaround
-        regex = re.compile(regex_str)
-        return re.sub(regex, self._get_link_element, text)
+        anti_link_regex = r'(?<!class="%s"\>)%s(?!\</a\>)' % (
+            css_class,
+            self.regex.pattern,
+        )
+        compiled_regex = re.compile(anti_link_regex)
+        return re.sub(compiled_regex, self._get_link_element, text)
 
     def _url_from_match(self, match):
         keys = match.groupdict()
@@ -160,7 +173,7 @@ class Schema:
         for sub in self.substitutions:
             keys = sub._substitute(keys)
         url = """"""
-        for part in self.URLParts:
+        for part in self.URL:
             for key in keys:
                 if not keys[key]:
                     continue
