@@ -31,7 +31,7 @@ class Citator:
         for node in yaml_nodes:
             self.schemas.append(Schema(**node))
     
-    def list_citations(self, text: str, broad=False, span: tuple=(0,)):
+    def list_citations(self, text: str, id_forms: True, span: tuple=(0,)):
         """Match text against all schemas and return results.
         
         Returns a list of all citatioh objects found, in order of 
@@ -39,13 +39,14 @@ class Citator:
         one that starts first will be included.
         
         Span is a tuple representing the start and end index (if any)
-        that the citator should scan between."""
-        # Get list of all longform citations
-        citations = self._get_citations(text, broad=broad, span=span)
+        that the citator should scan between.
         
+        id_forms determines whether the list should include each
+        schema's "id."-type shortform citations."""
+        # Get list of all longform citations
+        citations = self._get_citations(text, span=span)
         # Filter list to remove overlapping ciations
         citations = self._sort_citations(citations)
-        
         # Add shortform citations to list.
         for c in citations:
             if not c.schema.shortForms: continue
@@ -54,18 +55,18 @@ class Citator:
                 citator._get_citations(text, span=(c.match.span()[0],))
             )
         citations = self._sort_citations(citations)
-        
         # Add "id" citations to list.
-        for i, c in enumerate(citations):
-            if not c.schema.idForms: continue
-            citator = c._shortform_citator(c.schema.idForms, True)
-            span = (c.match.span()[1],)
-            if i + 1 < len(citations):
-                span = (span[0], citations[i + 1].match.span()[0])
-            citations += list(citator._get_citations(text, span=span))
-        
-        # Finally, sort and filter list once more.
-        return self._sort_citations(citations)
+        if id_forms:
+            for i, c in enumerate(citations):
+                if not c.schema.idForms: continue
+                citator = c._shortform_citator(c.schema.idForms, True)
+                span = (c.match.span()[1],)
+                if i + 1 < len(citations):
+                    span = (span[0], citations[i + 1].match.span()[0])
+                citations += list(citator._get_citations(text, span=span))
+            # Finally, sort and filter list once more.
+            citations = self._sort_citations(citations)
+        return citations
         
     def _get_citations(self, text: str, broad=False, span: tuple=(0,)):
         """Find all top-level citations, schema by schema."""
@@ -103,9 +104,9 @@ class Citator:
         except:
             return None
     
-    def insert_links(self, text, css_class: str='citation'):
+    def insert_links(self, text, css_class: str='citation', id_forms=True):
         """Process text and insert a link for each citation found."""
-        citations = self.list_citations(text)
+        citations = self.list_citations(text, id_forms=id_forms)
         spans = []
         offset = 0
         for c in citations:

@@ -65,6 +65,12 @@ def main():
             + 'Defaults to "citation"'
         )
     )
+    p.add_argument(
+        "-I",
+        "--no-id-forms",
+        action="store_true",
+        help="don't look for 'id.' citations"
+    )
     args = p.parse_args()
         
     # parse text or file input
@@ -100,7 +106,10 @@ def main():
         else:
             print("Couldn't recognize citation.")
     else:
-        out_text = citator.insert_links(query, css_class=args.css_class)
+        out_text = citator.insert_links(
+            query,
+            css_class = args.css_class,
+            id_forms = not args.no_id_forms)
         if args.output:
             with open(args.output, 'w') as f:
                 f.write(out_text)

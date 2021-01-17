@@ -9,12 +9,16 @@ from markdown.postprocessors import Postprocessor
 from . import Citator
 
 class CitationPostprocessor(Postprocessor):
-    def __init__(self, citator, css_class):
+    def __init__(self, citator, css_class='citation', use_id_forms=False):
         super().__init__()
         self.citator = citator
         self.css_class = css_class
+        self.use_id_forms = use_id_forms
     def run(self, text):
-        return self.citator.insert_links(text, css_class=self.css_class)
+        return self.citator.insert_links(
+            text,
+            css_class=self.css_class,
+            id_forms=self.use_id_forms)
 
 class CiteURLExtension(Extension):
     """Detects legal citations and inserts relevant hyperlinks."""
@@ -29,13 +33,16 @@ class CiteURLExtension(Extension):
                 True,
                 "Load CiteURL's default citation schemas? - Default: True"
             ],
+            'use_id_forms': [
+                True,
+                "Recognize 'id.' shortform citations. - Default: True"
+            ],
             'css_class': [
                 'citation',
                 'The class of <a> element to insert. - Default: citation'
             ]
         }
         super(CiteURLExtension, self).__init__(**kwargs)
-        self.css_class = self.config['css_class'][0]
     
     def extendMarkdown(self, md):
         custom_schemas = self.config['custom_schemas'][0] or []
@@ -44,7 +51,11 @@ class CiteURLExtension(Extension):
             defaults=self.config['use_defaults'][0]
         )
         md.postprocessors.register(
-            CitationPostprocessor(citator, self.css_class),
+            CitationPostprocessor(
+                citator,
+                self.config['css_class'][0],
+                self.config['use_id_forms'][0]
+            ),
             "CiteURL",
             1
         )
