@@ -1,47 +1,54 @@
+| Sample Input                                                 | Output                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, see 42 USC § 1988(b), and, by discretion, expert fees, see *id.* at (c). This is because the importance of civil rights litigation cannot be measured by a damages judgment. *See* *Riverside v. Rivera*, 477 U.S. 561 (1986). But *Evans v. Jeff D.*, upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys fees. 475 U.S. 717 (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in *Riverside*, 477 U.S. at 574-78. | Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, see [42 USC § 1988(b)](https://www.law.cornell.edu/uscode/text/42/1988#b), and, by discretion, expert fees, see [*id.* at (c)](https://www.law.cornell.edu/uscode/text/42/1988#c). This is because the importance of civil rights litigation cannot be measured by a damages judgment. *See* *Riverside v. Rivera*, [477 U.S. 561](https://cite.case.law/us/477/561) (1986). But *Evans v. Jeff D.*, upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys fees. [475 U.S. 717](https://cite.case.law/us/475/717) (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in *Riverside*, [477 U.S. at 574-78](https://cite.case.law/us/477/561#p574). |
+
 # CiteURL
 
-CiteURL is a tool to detect legal citations in text, and generate relevant hyperlinks. It can be used as a command-line tool, a library, or as an extension to [Python-Markdown](https://python-markdown.github.io/).
+CiteURL is a tool to recognize legal citations in text and generate hyperlinks to the cited sources. It supports short-form citations as well as direct citations to specific subsections of statutes, or individual pages of court opinions.
 
-By default, CiteURL generates links to federal laws, rules, and regulations on [the Cornell website](https://www.law.cornell.edu), and citations to court opinions are linked to Harvard's [Caselaw Access Project](https://lil.law.harvard.edu/projects/caselaw-access-project/), though this will likely switch to [CourtListener](https://www.courtlistener.com/) in the future. The full list of bodies of law that CiteURL recognizes is available [here](https://github.com/raindrum/citeurl/blob/master/citeurl/default-schemas.yml).
+By default, CiteURL supports citations to U.S. court decisions, the U.S. Code and various other federal materials, plus California statutes. You can find the full list [here](https://github.com/raindrum/citeurl/blob/master/citeurl/default-schemas.yml). But you can also customize it to add support for more bodies of law by writing your own [custom YAML files](#writing-your-own-schemas).
 
-However, the program is also designed to be easily extended through [custom YAML files](#writing-your-own-schemas).
+For federal rules, regulations, and statutes, CiteURL's default set of schemas generates links to Cornell's [Legal Information Institute](https://www.law.cornell.edu/). For court cases, it uses Harvard's [Caselaw Access Project](https://cite.case.law/), though the latter will likely switch to [CourtListener](https://www.courtlistener.com/) in a future version.
 
 ## Installation
 
 CiteURL has been tested with Python version 3.9, but earlier versions probably work. Install Python if you don't have it, then run this command:
 
 ```bash
-pip install citeurl
+python -m pip install citeurl
 ```
 
 ## Usage
 
+CiteURL can be used as a command-line tool, a Python library, or an extension to [Python-Markdown](https://python-markdown.github.io/).
+
 ### Command Line
 
-You can use CiteURL via the `citeurl` command.
+The simplest way to use CiteURL is via the `citeurl` command.
 
-- To create a hyperlink for each citation in input.html, and save the result as output.html, use a command like this:
-	```bash
-	citeurl -i input.html -o output.html
-	```
+To create a hyperlink for each citation in input.html, and save the result as output.html, use a command like this:
 
-	Alternatively, on many operating systems you can pipe the output of another command into CiteURL. For instance:
-	```bash
-	cat input.html | citeurl -o output.html
-	```
+```bash
+citeurl -i input.html -o output.html
+```
 
-- To return the URL for a single citation instead of processing a block of text, use the `-l` option. For instance, the following command will print [this URL](https://www.law.cornell.edu/uscode/text/42/1983) in your terminal:
-	```bash
-	citeurl -l "42 USC 1983"
-	```
+Alternatively, on many operating systems you can pipe the output of another command into CiteURL. For instance:
+```bash
+cat input.html | citeurl -o output.html
+```
 
-- To provide a [custom set of citation schemas](#writing-your-own-schemas), use the `-s` option, followed by the path to a YAML file containing one or more schemas. You can specify the `-s` option multiple times to load multiple files.
+To return the URL for a single citation instead of processing a block of text, use the `-l` option. For instance, the following command will print [this URL](https://www.law.cornell.edu/uscode/text/42/1983) in your terminal:
+```bash
+citeurl -l "42 USC 1983"
+```
 
-	CiteURL will use [its default schemas](https://github.com/raindrum/citeurl/blob/master/citeurl/citation-schemas.yaml) in addition to your custom ones, unless you disable defaults with the `-n` option.
+To provide a [custom set of citation schemas](#writing-your-own-schemas), use the `-s` option, followed by the path to a YAML file containing one or more schemas. You can specify the `-s` option multiple times to load multiple files.
+
+CiteURL will use [its default schemas](https://github.com/raindrum/citeurl/blob/master/citeurl/citation-schemas.yaml) in addition to your custom ones, unless you disable defaults with the `-n` option.
 
 ### Markdown Extension
 
-In addition to a command-line tool, CiteURL is also an extension to [Python-Markdown](https://python-markdown.github.io/). The extension can simply be loaded as `citeurl`, and it supports the following options:
+In addition to a command-line tool, CiteURL can be used as an [Python-Markdown](https://python-markdown.github.io/) extension. The extension can simply be loaded as `citeurl`, and it supports the following options:
 
 - `custom_schemas`: A list of paths to YAML files containing custom citation schemas. Defaults to none.
 
@@ -53,62 +60,73 @@ Note that this extension will slow down Python-Markdown quite a bit, since it re
 
 ### Python Library
 
-First, you'll need to load the library:
+The Citator object contains all of CiteURL's main functionality. It contains all of the schemas for supported bodies of law, as well as tools to match them against text. You'll need to create one before doing much else.
 
 ```python
-from citeurl import Schema_Set
+from citeurl import Citator
+citator = Citator()
 ```
 
-Next, create the set of citation schemas that will be used:
+If you want to load your own custom YAML files full of schemas, you can pass them as arguments when creating the citator, or you can load them after-the fact. If you don't want to use CiteURL's default schemas, set `defaults=False`.
 
 ```python
-# To simply load the built-in set of schemas, use this:
-Schema_Set = Schema_Set()
+citator = Citator('path/to/your/schemas.YAML', defaults=False)
 
-# Or, to load a custom YAML in addition to the built-in schemas:
-Schema_Set = Schema_Set('path/to/your/schemas.YAML')
-
-# Or, to load three YAML files *instead* of the built-in schemas:
-Schema_Set = Schema_Set('1.YAML', '2.YAML', '3.YAML', defaults=False)
-
-# You can also load additional YAML files after-the-fact:
-Schema_Set.load_yaml('path/to/more/schemas.YAML')
+citator.load_yaml('even/more/schemas.YAML')
 ```
 
-Now you can apply the schemas to text!
+#### Insert links into text
+
+To process a block of text with the citator and insert legal citations, you can use its `insert_links()` function:
 
 ```python
-# to look up a single citation (case-insensitively and using broader regex if available):
-url = Schema_Set.lookup_query('Kinsman Transit Company, 338 F.2d 708, 715 (1964)')
-# https://cite.case.law/f2d/338/708#p715
-
-# or, to process a longer text with multiple citations, inserting a link or each:
 input_text = "42 USC 1983 and NLRA § 8(b)(4) are both available on the Cornell website."
-output_text = Schema_Set.insert_links(input_text, css_class='statute')
+output_text = citator.insert_links(input_text, css_class='statute')
+print(output_text)
 # <a href="https://www.law.cornell.edu/uscode/text/42/1983" class="statute">42 USC 1983</a> and <a href="https://www.law.cornell.edu/uscode/text/29/158#b_4" class="statute">NLRA § 8(b)(4)</a> are both available on the Cornell website.
 ```
 
-The above examples should cover most use-cases. However, if your application need information about individual schemas, you can also match text schema-by-schema:
+#### List all citations in a block of text
 
 ```python
-for schema in self.Schema_Set.schemas:
-    # to look up an indiviudal URL
-    url = schema.url_from_query()
-    if url:
-        print('Matched schema: ' + schema.name)
-    
-    # or to insert links into a text:
-    schema.insert_links(text, css_class: schema.name)
-    
+cites = citator.list_citations(text_of_court_opinion):
+# or, to only scan between indices 56 and 123 in the text:
+cites = citator.list_citations(text, span=(56, 123))
 ```
 
+#### Look up a single citation
 
+The citator and each schema within it each have a lookup() class designed to efficiently look up a single citation. It will return the first citation it finds, or None if it can't find any.
+
+```python
+cite = citator.lookup('42 USC 1983')
+print(cite.schema)
+# United States Code
+```
+
+By default, this uses more permissive regex matching than is used when processing text. Namely, it uses case-insensitive matching, and if a schema has a `broadRegex` key defined, it will be used instead of the default regex. You can disable this feature by using `lookup(query, broad=False)`
+
+#### Get detailed info about a citation
+
+```python
+# to look up a single citation (case-insensitively and using broader regex if available):
+citation = citator.lookup('Kinsman Transit Company, 338 F.2d 708, 715 (1964)')
+print(citation) # 338 F.2d 708, 715
+print(citation.tokens) # {'volume': '338', 'reporter': 'f2d', 'page': '708', 'pincite': '715'}
+print(citation.URL) # https://cite.case.law/f2d/338/708#p715
+print(citation.schema) # Caselaw Access Project
+print(citation.match) # <re.Match object; span=(25, 42), match='338 F.2d 708, 715'>
+```
+
+### GNOME Shell Search
+
+If you use the [GNOME](https://www.gnome.org/) desktop, you can also install a [CiteURL search provider](https://github.com/raindrum/gnome-citeurl-search-provider)!
 
 ## Writing Your Own Schemas
 
 CiteURL works based on a list of "citation schemas" that define how it should recognize each body of law, and how to generate URLs from the text.
 
-The program comes with a number of schemas built in, which can recognize U.S. court cases and federal statutes, as well as some other bodies of law. However, it's also designed to be easily extended. You can create your own YAML file full of schemas, and use it to supplement (or replace) the default list.
+The program comes with a number of schemas built in, which can recognize U.S. court cases and federal statutes, as well as some other bodies of law. However, it's also designed to be easily extended. With a little regex knowledge, you can create your own YAML file full of schemas, and use it to supplement (or replace) the default list.
 
 Here's an example of a simple schema:
 
@@ -121,18 +139,16 @@ Here's an example of a simple schema:
 As the name suggests, this schema lets the program recognize citations to the Federal Register, and generate a link to view the relevant document online. It works like this:
 
 1. First, it constructs a [regular expression](https://www.w3schools.com/python/python_regex.asp) from the text in the `regex` key, and checks whether a given piece of text matches that regular expression.
-2. If the text matches the regex, the values in the named capture groups (here, the parts named `volume` and `page`) are pulled out for processing.
+2. If the text matches the regex, the tokens in the named capture groups (here, the parts named `volume` and `page`).
 3. Finally, the program creates a URL from the schema's URL template by replacing every part in {curly braces} with the contents of the capture group of the same name.
 
 Every schema must contain a `name`, `regex`, and a `URL` key, but they can also contain other keys, such as those that manipulate the values of regex capture groups before they are inserted into the URL.
 
-You can find examples of more complicated schemas by looking through [CiteURL's built-in schemas file](https://github.com/raindrum/citeurl/blob/master/citeurl/default-schemas.yaml). Custom YAMLs can follow this format. For more information on the specific pieces of a schema, see below.
-
-## Schema Components
+You can find examples of more complicated schemas by looking through [CiteURL's built-in schemas file](https://github.com/raindrum/citeurl/blob/master/citeurl/default-schemas.yaml). Custom YAMLs follow the same format. For more information on the specific pieces of a schema, see below.
 
 ### regex
 
-A string representing the [Python Regular Expression](https://www.w3schools.com/python/python_regex.asp) to match a given body of law. The regex detects whether a given piece of text is a citation, and it simultaneously identifies the parts of the citation that the program needs in order to construct a URL.
+A string representing the [Python Regular Expression](https://www.w3schools.com/python/python_regex.asp) to match a given body of law. The regex detects whether a given piece of text is a citation, and it simultaneously identifies the parts of the citation ("tokens") that the program needs in order to construct a URL.
 
 A schema's regex can be specified either as a single string, or as a list of strings. In the latter case, the strings will be concatenated into a single string, without any separator.
 
@@ -170,17 +186,9 @@ This lets the program construct a URL that may or may not include an anchor link
 
 Note that the second line of the URL is in quotes. The YAML parser can usually infer that text is text, even without quotes. Quotes are only necessary when the text begins with a special character like "#", as here, or where it begins or ends with whitespace.
 
-### broadRegex
-
-`broadRegex` is an optional alternative `regex` key. It is meant to let you define a more permissive regex that's useful for individual citation lookups, but which would create false-positives when processing longer text.
-
-If present, `broadRegex` will be used instead of `regex` when the program tries to look up a single citation.
-
-Its syntax is identical to the `regex` key.
-
 ### defaults
 
-This is a dictionary representing placeholders that should be set to default values when the corresponding capture group is not set by the regex. The format looks like this:
+This is a dictionary of tokens that should be set to default values, when the corresponding capture group is not set by the regex. The format looks like this:
 
 ```yaml
 # When setting only one default value, it's convenient to use a one-liner:
@@ -198,7 +206,7 @@ Default values are set before mutations and substitutions, and so can be process
 
 This optional key contains a list of 'mutations' to manipulate the value of a capture group before inserting it into the URL.
 
-Each mutation must specify a `key` that it operates on. This should be the name of the capture group.
+Each mutation must specify a `token` that it operates on. This should be identical to the name of the relevant regex capture group.
 
 In addition, a mutation can have any combination of the following 
 
@@ -207,15 +215,13 @@ In addition, a mutation can have any combination of the following
 - `splitter`: a string (parsed as regex), all instances of which will split the output. Must be paired with `joiner`.
 - `joiner`: a string that will be inserted between parts split with `splitter`
 
-Also note that mutations are applied before substitutions, so they can be used to normalize input.
-
 Here's an example of a simple mutation and a more complex one:
 
 ```yaml
 mutations:
-  - key: quote
+  - token: quote
     case: upper
-  - key: reporter
+  - token: reporter
     case: lower
     omit: "[.()&,']"
     splitter: ' '
@@ -234,10 +240,44 @@ This is useful for redirecting from sections of a statute to the corresponding U
 
 ```yaml
 substitutions:
-  - inputKey: section
+  - inputToken: section
     index: {'1':'151', '2':'152', '3':'153', '4':'154', '5':'155', '6':'156', '7':'157', '8':'158', '9':'159', '10':'160', '11':'161', '12':'162', '13':'163', '14':'164', '15':'165', '16':'166', '17':'167', '18':'168', '19':'169'}
 ```
 
-This substitution takes the value of the `section` group from the regex as its input. If that value is '1', '2', or any of the other values in the `index` dictionary, the `section` group will be set to the corresponding from `index`. Alternatively, if you specify an `outputKey`, it will be modified instead of the `inputKey`.
+This substitution takes the value of the `section` group from the regex as its input. If that value is '1', '2', or any of the other values in the `index` dictionary, the `section` token will be set to the corresponding from `index`. Alternatively, if you specify an `outputToken`, it will be modified instead, leaving the input `token` unchanged.
 
 If the value of `section` is outside the index, the schema match will fail as if the initial regex was never matched. You can prevent this behavior by adding `allowUnmatched: true` to the substitution, in which case failed substitutions will simply have no effect.
+
+To look up values using regex citation matching instead of a normal dictionary lookup, add `useRegex: true` to the substitution.
+
+### broadRegex
+
+`broadRegex` is an optional alternative `regex` key. It is meant to let you define a more permissive regex that's  useful for individual citation lookups, but which would create  false-positives when processing longer text.
+
+If present, `broadRegex` will be used instead of `regex` when the program tries to look up a single citation.
+
+Its syntax is identical to the `regex` key.
+
+### shortForms and idForms
+
+When a schema finds a citation in the text, it will generate child schemas to recognize short forms of that same citation. These short citation forms come in two kinds:
+
+- `idForms`  represent citations like "*id.*" or "*id. at 403*", which are only intelligible until the next (different) citation in the text.
+- `shortForms` are citations like "372 U.S. at 361", which can be recognized anywhere in the text following their parent citation.
+
+The `idForms` and `shortForms` keys should contain *lists of regular expression templates*. Each template works like the `regex` key (i.e. it can be specified as a string or a list of strings).
+
+However, short citation forms have an additional feature that base regexes do not: They may contain placeholders in {curly braces}, and these placeholders will be replaced by the values from the original schema match.
+
+```yaml
+regex: (?P<volume>\d+) (?P<reporter>.{2,15}?) (?P<page>\d+)
+shortForms:
+  - {volume} {reporter} at (?P<pincite>\d+)
+idForms:
+  - [Ii]d\. at (?P<pincite>\d+)
+  - [Ii]d\.
+```
+
+In the example above, when the base schema recognizes the citation "372 U.S. 335", it will generate a short form that matches *only* "372 U.S. at (?P<pincite\d+)", while remembering the `page` token from the parent citation.
+
+`idForms` work the same way, except that they are only active until the next different citation.

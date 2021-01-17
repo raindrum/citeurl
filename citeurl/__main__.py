@@ -7,7 +7,7 @@ from sys import stdin
 from argparse import ArgumentParser, SUPPRESS
 
 # internal imports
-from . import Schema_Set
+from . import Citator
 
 def main():
     p = ArgumentParser(description=__doc__)
@@ -69,10 +69,10 @@ def main():
         
     # parse text or file input
     if args.input:
-        with open(args.input, "r") as f:
+        with open(args.input, 'r') as f:
             query = f.read()[0:-1]
     elif args.text:
-        query = " ".join(args.text)
+        query = ' '.join(args.text)
     else:
         p.print_help()
         return
@@ -80,9 +80,9 @@ def main():
     # load schemas
     defaults = not args.no_default_schemas
     if 'schema_file' in args:
-        schemas = Schema_Set(args.schema_file, defaults)
+        citator = Citator(args.schema_file, defaults)
     elif defaults:
-        schemas = Schema_Set()
+        citator = Citator()
     else:
         raise SystemExit(
             "Can't use '-n' without specifying a custom schema file."
@@ -90,9 +90,17 @@ def main():
 
     # print output to file or stdout
     if args.lookup:
-        print(schemas.lookup_query(query))
+        citation = citator.lookup(query)
+        if citation:
+            print('Source: %s' % citation.schema)
+            for key, value in citation.tokens.items():
+                if not value: continue
+                print('%s: %s' % (key.title(), value))
+            print('URL: %s' % citation.URL)
+        else:
+            print("Couldn't recognize citation.")
     else:
-        out_text = schemas.insert_links(query, css_class=args.css_class)
+        out_text = citator.insert_links(query, css_class=args.css_class)
         if args.output:
             with open(args.output, 'w') as f:
                 f.write(out_text)
