@@ -283,13 +283,14 @@ class Schema:
             if not input_val:
                 return tokens
             # perform dict or regex lookup
+            output_val = None
             if not self.useRegex:
                 output_val = self.index.get(input_val)
             else:
                 for regex, value in self.index.items():
                     if re.fullmatch(regex, input_val, flags=re.I):
                         output_val = value
-                        break    
+                        break
             # modify token dict, throw error, or return unmodified
             if output_val:
                 tokens[self.outputToken] = output_val
