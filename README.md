@@ -8,7 +8,7 @@ CiteURL is a tool to recognize legal citations in text and generate hyperlinks t
 
 By default, CiteURL supports citations to U.S. court decisions, the U.S. Code and various other federal materials, plus California statutes. You can find the full list [here](https://github.com/raindrum/citeurl/blob/master/citeurl/default-schemas.yml). But you can also customize it to add support for more bodies of law by writing your own [custom YAML files](#writing-your-own-schemas).
 
-For federal rules, regulations, and statutes, CiteURL's default set of schemas generates links to Cornell's [Legal Information Institute](https://www.law.cornell.edu/). For court cases, it uses Harvard's [Caselaw Access Project](https://cite.case.law/), though the latter will likely switch to [CourtListener](https://www.courtlistener.com/) in a future version.
+For federal rules, regulations, and statutes, CiteURL's default set of schemas generates links to Cornell's [Legal Information Institute](https://www.law.cornell.edu/). For court cases, it uses Harvard's [Caselaw Access Project](https://cite.case.law/), though this will likely switch to [CourtListener](https://www.courtlistener.com/) in a future version.
 
 ## Installation
 
@@ -142,9 +142,9 @@ As the name suggests, this schema lets the program recognize citations to the Fe
 2. If the text matches the regex, the tokens in the named capture groups (here, the parts named `volume` and `page`).
 3. Finally, the program creates a URL from the schema's URL template by replacing every part in {curly braces} with the contents of the capture group of the same name.
 
-Every schema must contain a `name`, `regex`, and a `URL` key, but they can also contain other keys, such as those that manipulate the values of regex capture groups before they are inserted into the URL.
+Every schema must contain a `name` and `regex` key. If you want a schema to generate links to the law, the schema must also have a `URL` template field. Schemas may also have other fields, such as those that manipulate the values of regex capture groups before they are inserted into the URL. These are described in the sections below.
 
-You can find examples of more complicated schemas by looking through [CiteURL's built-in schemas file](https://github.com/raindrum/citeurl/blob/master/citeurl/default-schemas.yaml). Custom YAMLs follow the same format. For more information on the specific pieces of a schema, see below.
+Custom YAMLs follow the same format as [CiteURL's built-in schemas file](https://github.com/raindrum/citeurl/blob/master/citeurl/default-schemas.yaml), so you can use it as a reference.
 
 ### regex
 
@@ -185,6 +185,8 @@ URL:
 This lets the program construct a URL that may or may not include an anchor link to a specific subsection. If a `subsection` value is set, it will be used. Otherwise, the whole line, including the "#", will be omitted.
 
 Note that the second line of the URL is in quotes. The YAML parser can usually infer that text is text, even without quotes. Quotes are only necessary when the text begins with a special character like "#", as here, or where it begins or ends with whitespace.
+
+If a schema does not have a URL field, it will only be used to break chains of *id.* citations; no link will be inserted.
 
 ### defaults
 

@@ -31,66 +31,77 @@ class Citator:
         for node in yaml_nodes:
             self.schemas.append(Schema(**node))
     
-    def list_citations(self, text: str, id_forms: True, span: tuple=(0,)):
-        """Match text against all schemas and return results.
+    def list_citations(
+        self,
+        text: str,
+        id_forms: bool=True,
+        id_break_regex: str=None,
+        id_break_indices: list=[]):
+        """
+        Scan text and returns ordered list of all citations in it.
         
-        Returns a list of all citatioh objects found, in order of 
-        appearance. If two potential citations overlap, only the
-        one that starts first will be included.
+        If there's a predictable place that "id" chains should break
+        where they don't already, you can use the id_break_regex
+        argument to specify a string, parsed as regex, which will break
+        any chain of "id" citations wherever it appears.
         
-        Span is a tuple representing the start and end index (if any)
-        that the citator should scan between.
+        You can also specify a list of index positions in the text where
+        "id." chains should break.
         
-        id_forms determines whether the list should include each
-        schema's "id."-type shortform citations."""
-        # Get list of all longform citations
-        citations = self._get_citations(text, span=span)
-        # Filter list to remove overlapping ciations
-        citations = self._sort_citations(citations)
-        # Add shortform citations to list.
-        for c in citations:
-            if not c.schema.shortForms: continue
-            citator = c._shortform_citator(c.schema.shortForms, False)
-            citations += list(
-                citator._get_citations(text, span=(c.match.span()[0],))
-            )
-        citations = self._sort_citations(citations)
-        # Add "id" citations to list.
-        if id_forms:
-            for i, c in enumerate(citations):
-                if not c.schema.idForms: continue
-                citator = c._shortform_citator(c.schema.idForms, True)
-                span = (c.match.span()[1],)
-                if i + 1 < len(citations):
-                    span = (span[0], citations[i + 1].match.span()[0])
-                citations += list(citator._get_citations(text, span=span))
-            # Finally, sort and filter list once more.
-            citations = self._sort_citations(citations)
-        return citations
-        
-    def _get_citations(self, text: str, broad=False, span: tuple=(0,)):
-        """Find all top-level citations, schema by schema."""
-        for s in self.schemas:
-            for m in s.get_citations(text, broad=broad, span=span):
-                yield m
-        
-    def _sort_citations(self, citations: list):
-        """Sorts citations by order of appearance; deletes overlaps."""
-        def sort_key(citation):
-            return citation.match.span()[0]
-        sorted_citations = sorted(citations, key=sort_key)
-        # Delete the latter of any two overlapping citations.
-        deletions = []
-        for i, this_cite in enumerate(sorted_citations):
-            if i == 0: continue
-            last_cite_end = sorted_citations[i - 1].match.span()[1]
-            this_cite_start = this_cite.match.span()[0]
-            if last_cite_end > this_cite_start:
-                deletions.append(this_cite)
-        for d in deletions:
-            sorted_citations.remove(d)
-        
-        return sorted_citations
+        Or, you can use id_forms=False to disable "id"-type citations
+        altogether if they are unreliable."""
+        # First, get full citations:
+        citations = []
+        for schema in self.schemas:
+            citations += schema.get_citations(text)
+        # Then, generate shortform (not id.) schemas from each citation:
+        shortform_schemas = []
+        for citation in citations:
+            shortform_schemas += citation._child_schemas(False)
+        # Add shortform citations to the list:
+        for schema in shortform_schemas:
+            citations += list(schema.get_citations(
+                text,
+                span=(schema.parent_citation.match.span()[1],)
+            ))
+        citations = _sort_and_remove_overlaps(citations)
+        if not id_forms:
+            return citations
+        # break id. chains wherever there's a full or shortform citation
+        for citation in citations:
+            id_break_indices.append(citation.match.span()[0])
+        # also break at specified regexes
+        if id_break_regex:
+            matches = re.compile(id_break_regex).finditer(text)
+            for match in matches:
+                id_break_indices.append(match.span()[0])
+        id_break_indices = sorted(set(id_break_indices))
+        # generate initial set of id. schemas
+        id_schemas = []
+        for citation in citations:
+            id_schemas += citation._child_schemas(True)
+        # Match citations from id. schemas, while generating and
+        # matching new id. schemas at the same time.
+        while len(id_schemas) > 0:
+            schema = id_schemas[0]
+            start_point = schema.parent_citation.match.span()[1]
+            i = -1
+            for index in id_break_indices:
+                i += 1
+                if index > start_point:
+                    span = (start_point, index)
+                    break
+            else:
+                span = (start_point,)
+            id_break_indices = id_break_indices[i:]
+            new_citations = list(schema.get_citations(text, span=span))
+            id_schemas.pop(0)
+            citations += new_citations
+            for citation in new_citations:
+                new_schemas = citation._child_schemas(True)
+                for s in new_schemas:
+                    id_schemas.insert(0, s)
+        return _sort_and_remove_overlaps(citations)
         
     def lookup(self, query, broad=True):
         """
@@ -99,18 +110,45 @@ class Citator:
         Uses broadRegex and case-insensitive matching by default.
         Returns the first citation from the first schema matched, or
         None if no schemas are matched."""
-        try:
-            return next(self._get_citations(query, broad=broad))
-        except:
-            return None
+        for schema in self.schemas:
+            citation = next(schema.get_citations(query, broad=broad), None)
+            if citation:
+                return citation
+        return None
     
-    def insert_links(self, text, css_class: str='citation', id_forms=True):
-        """Process text and insert a link for each citation found."""
-        citations = self.list_citations(text, id_forms=id_forms)
-        spans = []
+    def insert_links(
+        self,
+        text,
+        css_class: str='citation',
+        link_rel: str=None,
+        id_forms: bool=True,
+        id_break_regex: str=None,
+        id_break_indices: list=[]):
+        """
+        Process text and insert a link for each citation found.
+        
+        css_class and link_rel allow you to specify attributes
+        of the inserted links.
+        
+        If there's a predictable place that "id" chains should break
+        where they don't already, you can use the id_break_regex
+        argument to specify a string, parsed as regex, which will break
+        any chain of "id" citations wherever it appears.
+        
+        You can also specify a list of index positions in the text where
+        "id." chains should break.
+        
+        Or, you can use id_forms=False to disable "id"-type citations
+        altogether if they are unreliable."""
+        citations = self.list_citations(
+            text,
+            id_forms=id_forms,
+            id_break_regex=id_break_regex,
+            id_break_indices=id_break_indices
+        )
         offset = 0
         for c in citations:
-            link = c.get_link(css_class=css_class)
+            link = c.get_link(css_class=css_class, link_rel=link_rel)
             span = (
                 c.match.span()[0] + offset,
                 c.match.span()[1] + offset
@@ -127,7 +165,7 @@ class Schema:
     def __init__(self,
         name: str,
         regex: str or list,
-        URL: str or list,
+        URL: str or list=None,
         broadRegex: str or list=None,
         idForms: list=[],
         shortForms: list=[],
@@ -135,7 +173,6 @@ class Schema:
         mutations: list=[],
         substitutions: list=[],
         parent_citation=None,
-        fleeting: bool=False
     ):
         """
         Tool to recognize and process citations to a body of law.
@@ -146,7 +183,8 @@ class Schema:
         # Mandatory values
         self.name = name
         self.regex = _join_if_list(regex)
-        self.URL = URL if type(URL) is list else [URL]
+        if URL:
+            self.URL = URL if type(URL) is list else [URL]
         # Supplemental regexes
         self.broadRegex = _join_if_list(broadRegex) if broadRegex else None
         self.idForms = [_join_if_list(r) for r in idForms]
@@ -164,13 +202,12 @@ class Schema:
         
         # Extra data for shortform citations
         self.parent_citation = parent_citation
-        self.fleeting = fleeting
         
     def __repr__(self):
         return self.name
     
     def lookup(self, text, broad=True):
-        """Returns the first citation it finds, or None."""
+        """Returns the first citation it finds, or None"""
         try:
             citation = next(self.get_citations(text, broad=broad))
         except:
@@ -178,6 +215,7 @@ class Schema:
         return citation
     
     def get_citations(self, text, broad=False, span: tuple=(0,)):
+        """Generator to return all citations the schema finds in text"""
         matches = self._compiled_re(broad).finditer(text, *span)
         for match in matches:
             try:
@@ -185,6 +223,7 @@ class Schema:
             # skip citations where substitution failed:
             except KeyError:
                 pass
+        return None
     
     def _compiled_re(self, broad: bool):
         if broad:
@@ -305,6 +344,15 @@ class Citation:
     def __init__(self, match: re.Match, schema: Schema):
         # Process matched tokens (i.e. named regex capture groups)
         tokens = match.groupdict()
+        
+        # idForm and shortForm citations get values from parent citation
+        # except where their regexes include space for those values
+        if schema.parent_citation:
+            for key, val in schema.parent_citation.match.groupdict().items():
+                if key not in tokens:
+                    tokens[key] = val
+        
+        # other string mutations
         for key, val in schema.defaults.items():
             if key not in tokens or tokens[key] is None:
                 tokens[key] = val
@@ -314,52 +362,98 @@ class Citation:
                 tokens[mut.token] = mut._mutate(input_value)
         for sub in schema.substitutions:
             tokens = sub._substitute(tokens)
-        # Generate URL from tokens
-        URL = """"""
-        for part in schema.URL:
-            for key, value in tokens.items():
-                if not value: continue
-                part = part.replace('{%s}' % key, value)
-            missing_value = re.search('\{.+\}', part)
-            if not missing_value:
-                URL += part
         self.match = match
         self.schema = schema
         self.tokens = tokens
-        self.URL = URL
+        
+        # Generate if applicable
+        if hasattr(schema, 'URL'):
+            URL = """"""
+            for part in schema.URL:
+                for key, value in tokens.items():
+                    if not value: continue
+                    part = part.replace('{%s}' % key, value)
+                missing_value = re.search('\{.+\}', part)
+                if not missing_value:
+                    URL += part
+            self.URL = URL
+        else:
+            self.URL = None
     
     def __repr__(self):
         return self.match.group(0)
     
-    def get_link(self, css_class='citation'):
+    def get_link(self, css_class='citation', link_rel=None):
+        if not self.URL: # don't process linkless citations
+            return self.match.group(0)
         return (
-            '<a href="%s" class="%s">%s</a>'
-            % (self.URL, css_class, self.match.group(0))
+            '<a href="%s" class="%s"%s>%s</a>'
+            % (
+                self.URL,
+                css_class,
+                ' rel="%s"' % link_rel if link_rel else '',
+                self.match.group(0)
+            )
         )
     
-    def _shortform_citator(self, regex_templates, fleeting: bool):
-        citator = Citator(defaults=False)
+    def _child_schemas(self, id_not_shortform: bool, end_point: int=None):
         if self.schema.parent_citation:
-            captures = self.schema.parent_citation.match.groupdict()
+            captured_context = self.schema.parent_citation.match.groupdict()
+            for key, value in self.match.groupdict().items():
+                captured_context[key] = value
         else:
-            captures = self.match.groupdict()
+            captured_context = self.match.groupdict()
+        schemas = []
+        regex_templates = (
+            self.schema.idForms if id_not_shortform
+            else self.schema.shortForms
+        )
         for template in regex_templates:
-            template = _join_if_list(template)
-            for key, value in captures.items():
+            # Insert context values into template to make new regex
+            regex = template
+            for key, value in captured_context.items():
                 if not value: continue
-                template = template.replace('{%s}' % key, value)
-            citator.schemas.append(Schema(
-                name=self.match.group(0),
-                regex=template,
-                idForms=self.schema.idForms if not fleeting else [],
+                regex = regex.replace('{%s}' % key, value)
+            schemas.append(Schema(
+                name=self.schema.name + (
+                    ' ("id." form)' if id_not_shortform
+                    else ' (shortForm)'
+                ),
+                regex=regex,
+                idForms=self.schema.idForms,
                 URL=self.schema.URL,
-                defaults=captures,
                 mutations=self.schema.mutations,
                 substitutions=self.schema.substitutions,
                 parent_citation=self,
-                fleeting=fleeting
             ))
-        return citator
+        return schemas
 
 def _join_if_list(source: list or str):
     return source if type(source) is str else ''.join(source)
+
+def _sort_and_remove_overlaps(citations: list):
+    """Sorts citations by order of appearance; deletes overlaps."""
+    def sort_key(citation):
+        return citation.match.span()[0]
+    sorted_citations = sorted(citations, key=sort_key)
+    index = 1
+    while index < len(sorted_citations):
+        first = sorted_citations[index - 1]
+        first_span = first.match.span()
+        second = sorted_citations[index]
+        second_span = second.match.span()
+        if first_span[1] >= second_span[0]:
+            # delete whichever citation starts later in the text, or in
+            # case of a tie, the one from the schema processed first
+            if first_span[0] < second_span[0]:
+                sorted_citations.pop(index)
+            elif first_span[0] < second_span[0]:
+                sorted_citations.pop(index - 1)
+            else:
+                if citations.index(first) > citations.index(second):
+                    sorted_citations.pop(index)
+                else:
+                    sorted_citations.pop(index - 1)
+        else: # no overlap, continue to next comparison
+            index += 1
+    return sorted_citations

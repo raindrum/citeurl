@@ -1,12 +1,12 @@
 ####################################################
 # GENERAL FEDERAL LAW & REGULATIONS
-####################################################
+####################################################  
 
 - name: United States Code
   regex:
     - &title '(Title )?(?P<title>\d+) '
     - &usc (U\.?|United) ?(S\.?|States) ?(C\.?|Code)
-    - &section ' ((&sect;|&#167|§){1,2}|Sect?(ions?|s?\.))? ?(?P<section>\d[\d.-]*\w)'
+    - &section ' ((&sect;|&#167|§){1,2}|Sect?(ions?|s?\.))? ?(?P<section>(\d[\d.-]*\w|\d))'
     - &subsec ( ?(?P<subsec>(\(\w+\))+))?
   broadRegex:
     - *title
@@ -14,12 +14,12 @@
     - *section
     - &broadsub ((\(| )(?P<subsec>.+))?
   idForms: &id_sec_sub
-    - - &id_at '(<(i|em|u)>)?[Ii]d\.(<\/(i|em|u)>)?( at ?)?'
+    - - &id_at '(<(i|em|u)>)?[Ii]d\.(<\/(i|em|u)>)?(,? at ?)?'
       - *section
       - *subsec
     - - *id_at
       - &mandatory_subsec (?P<subsec>(\(\w+\))+)
-    - - (?<=([,.;] ))(&sect;|&#167|§){1,2} ?(?P<section>[\d.-]*\w)
+    - - (&sect;|&#167|§){1,2} ?(?P<section>[\d.-]*\w)
       - *subsec
   mutations: &usc_sub
     - token: subsec
@@ -28,6 +28,36 @@
   URL: &usc_url
     - https://www.law.cornell.edu/uscode/text/{title}/{section}
     - '#{subsec}'
+
+- name: United States Constitution
+  regex:
+    - '(U\.? ?S\.? ?|United States) Const(itution|\.),? '
+    - &us_const_art '[Aa]rt(icle|\.) (?P<article>[IViv]{1,3})'
+    - (
+    - &us_const_sec '(,? ((&sect;|&#167|§){1,2}|Sect?(ions?|s?\.))? ?(?P<section>\d+))'
+    - (
+    - &us_const_clause '(,? (cl(ause|\.) ?(?P<clause>[0-9]+)))'
+    - )?)?
+  idForms:
+    - - *id_at
+      - *us_const_sec
+      - (
+      - *us_const_clause
+      - )?
+    - - *id_at
+      - *us_const_clause
+  shortForms:
+    - - *us_const_art
+      - *us_const_sec
+      - (
+      - *us_const_clause
+      - )?
+  mutations:
+    - token: article
+      case: lower
+  URL:
+    - https://www.law.cornell.edu/constitution/article{article}
+    - '#section{section}'
 
 - name: U.S. Public Laws
   regex: Pub(\.?|lic) ?L(\.?|aw) ?(No\.?)? ?(?P<congress>\d+)-(?P<law>\d+)
@@ -298,6 +328,7 @@
         Vehicle|Vehic\.|VEH: VEH
         Water|WAT: WAT
         Welfare (and|&) Institutions|WIC: WIC
+  idForms: *id_sec_sub
   URL: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode={code}&sectionNum={section}
 
 ####################################################
