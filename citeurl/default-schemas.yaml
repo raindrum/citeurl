@@ -38,6 +38,13 @@
     - (
     - &us_const_clause '(,? (cl(ause|\.) ?(?P<clause>[0-9]+)))'
     - )?)?
+  broadRegex:
+    - *us_const_art_am
+    - (
+    - *us_const_sec
+    - (
+    - *us_const_clause
+    - )?)?
   idForms:
     - - *id_at
       - *us_const_sec

@@ -54,24 +54,25 @@ class Citator:
         for schema in self.schemas:
             citations += schema.get_citations(text)
         shortform_cites = []
+        # Then, add shortforms
         for citation in citations:
             shortform_cites += citation._get_shortform_citations(text)
         citations += shortform_cites
         citations = _sort_and_remove_overlaps(citations)
-        if not id_forms:
+        if not id_forms: # no need to proceed
             return citations
-        # break id. chains wherever there's a full or shortform citation
-        for citation in citations:
+        # determine where to break chains of id. citations
+        for citation in citations: # break at full or short citations
             id_break_indices.append(citation.span[0])
-        # also break at specified regexes
-        if id_break_regex:
+        if id_break_regex: #also break at specified regexes
             matches = re.compile(id_break_regex).finditer(text)
             for match in matches:
                 id_break_indices.append(match.span()[0])
         id_break_indices = sorted(set(id_break_indices))
-        
+        # loop through all citations to find their id citations
         id_citations = []
         for citation in citations:
+            # find the next id break point
             i = -1
             for index in id_break_indices:
                 i += 1
@@ -81,90 +82,20 @@ class Citator:
             else:
                 end_point = None
             id_break_indices = id_break_indices[i:]
+            # get each citation's id citations until the break point
             id_citations += citation._get_id_citations(
                 text, end_point=end_point
             )
         return _sort_and_remove_overlaps(citations + id_citations)
     
-    def old_list_citations(
-        self,
-        text: str,
-        id_forms: bool=True,
-        id_break_regex: str=None,
-        id_break_indices: list=[]):
-        """
-        Scan text and returns ordered list of all citations in it.
-        
-        If there's a predictable place that "id" chains should break
-        where they don't already, you can use the id_break_regex
-        argument to specify a string, parsed as regex, which will break
-        any chain of "id" citations wherever it appears.
-        
-        You can also specify a list of index positions in the text where
-        "id." chains should break.
-        
-        Or, you can use id_forms=False to disable "id"-type citations
-        altogether if they are unreliable."""
-        # First, get full citations:
-        citations = []
-        for schema in self.schemas:
-            citations += schema.get_citations(text)
-        # Then, generate shortform (not id.) schemas from each citation:
-        shortform_schemas = []
-        for citation in citations:
-            shortform_schemas += citation._child_schemas(False)
-        # Add shortform citations to the list:
-        for schema in shortform_schemas:
-            citations += schema.get_citations(
-                text,
-                span=(schema.parent_citation.span[1],)
-            )
-        citations = _sort_and_remove_overlaps(citations)
-        if not id_forms:
-            return citations
-        # break id. chains wherever there's a full or shortform citation
-        for citation in citations:
-            id_break_indices.append(citation.span[0])
-        # also break at specified regexes
-        if id_break_regex:
-            matches = re.compile(id_break_regex).finditer(text)
-            for match in matches:
-                id_break_indices.append(match.span()[0])
-        id_break_indices = sorted(set(id_break_indices))
-        # generate initial set of id. schemas
-        id_schemas = []
-        for citation in citations:
-            id_schemas += citation._child_schemas(True)
-        # Match citations from id. schemas, while generating and
-        # matching new id. schemas at the same time.
-        while len(id_schemas) > 0:
-            schema = id_schemas[0]
-            start_point = schema.parent_citation.span[1]
-            i = -1
-            for index in id_break_indices:
-                i += 1
-                if index > start_point:
-                    span = (start_point, index)
-                    break
-            else:
-                span = (start_point,)
-            id_break_indices = id_break_indices[i:]
-            new_citations = schema.get_citations(text, span=span)
-            id_schemas.pop(0)
-            citations += new_citations
-            for citation in new_citations:
-                new_schemas = citation._child_schemas(True)
-                for s in new_schemas:
-                    id_schemas.insert(0, s)
-        return _sort_and_remove_overlaps(citations)
-        
     def lookup(self, query, broad=True):
         """
         Check a single query against all schemas in order.
         
-        Uses broadRegex and case-insensitive matching by default.
         Returns the first citation from the first schema matched, or
-        None if no schemas are matched."""
+        None if no schemas are matched.
+        
+        Uses broadRegex and case-insensitive unless broad=False."""
         for schema in self.schemas:
             citation = next(schema.get_citations(query, broad=broad), None)
             if citation:
