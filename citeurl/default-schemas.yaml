@@ -5,7 +5,7 @@
 - name: United States Code
   regex:
     - &title '(Title )?(?P<title>\d+) '
-    - &usc (U\.?|United) ?(S\.?|States) ?(C\.?|Code)
+    - &usc (U\.?|United) ?(S\.?|States) ?(C\.?|Code)( ?[AS]\.?)?
     - &section ' ((&sect;|&#167|§){1,2}|Sect?(ions?|s?\.))? ?(?P<section>(\d[\d.-]*\w|\d))'
     - &subsec ( ?(?P<subsec>(\(\w+\))+))?
   broadRegex:
@@ -79,7 +79,10 @@
   URL: https://www.govinfo.gov/content/pkg/STATUTE-{volume}/pdf/STATUTE-{volume}-Pg{page}.pdf
 
 - name: Federal Register
-  regex: (?P<volume>\d+) (Fed\. ?Reg\.|F\.? ?R\.?) (?P<page>\d+)
+  regex: (?P<volume>\d+) (Fed\. ?Reg\.|F\.? ?R\.?) (?P<page>\d([,\d]+\d)?)
+  mutations:
+    - token: page
+      omit: ','
   URL: https://www.federalregister.gov/documents/search?conditions[term]={volume}+FR+{page}
 
 - name: Code of Federal Relations
