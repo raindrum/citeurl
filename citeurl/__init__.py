@@ -81,8 +81,8 @@ class Citation:
         and substitutions to them. Tokens are """
         processed_tokens = dict(self.tokens)
         for key, val in self.schema.defaults.items():
-            if key not in url_tokens or processed_tokens[key] is None:
-                url_tokens[key] = val
+            if key not in processed_tokens or processed_tokens[key] is None:
+                processed_tokens[key] = val
         for mut in self.schema.mutations:
             input_value = processed_tokens.get(mut.token)
             if input_value:
