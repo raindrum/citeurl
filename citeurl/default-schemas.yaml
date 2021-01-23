@@ -12,9 +12,9 @@
     - *title
     - *usc
     - *section
-    - &broadsub ((\(| )(?P<subsec>.+))?
+    - &broadsub ( ?(?P<subsec>(\(\w+\))+|((\w{1,5}) ?)+))?
   idForms: &id_sec_sub
-    - - &id_at '(<(i|em|u)>)?[Ii]d\.(<\/(i|em|u)>)?(,? at ?)?'
+    - - &id_at '\b[Ii]d\.,?(<\/(i|em|u)>)?(,? at ?)?'
       - *section
       - *subsec
     - - *id_at
@@ -92,7 +92,7 @@
       omit: ','
   URL: https://www.federalregister.gov/documents/search?conditions[term]={volume}+FR+{page}
 
-- name: Code of Federal Relations
+- name: Code of Federal Regulations
   regex:
     - *title
     - &cfr (C\.? ?F\.? ?R\.?|Code of Federal Regulations)( [Pp]arts?| [Pp]ts?\.)?

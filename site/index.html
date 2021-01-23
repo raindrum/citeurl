@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="None">
+    
+    
+    <link rel="shortcut icon" href="./img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>CiteURL</title>
+    <link href="./css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="./css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="./css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="./js/jquery-3.2.1.min.js"></script>
+    <script src="./js/bootstrap-3.3.7.min.js"></script>
+    <script src="./js/highlight.pack.js"></script>
+    
+      <script src="./js/elasticlunr.min.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '.';
+      var is_top_frame = (window === window.parent);
+        
+        var pageToc = [
+          {title: "Getting Started", url: "#_top", children: [
+          ]},
+        ];
+
+    </script>
+    <script src="./js/base.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+<nav class="navbar wm-page-top-frame">
+  <div class="container-fluid wm-top-container">
+    
+    <div class="wm-top-tool pull-right wm-vcenter">
+      <form class="dropdown wm-vcentered" id="wm-search-form" action="./search.html">
+        
+        <button id="wm-search-show" class="btn btn-sm btn-default" type="submit"
+          ><i class="fa fa-search" aria-hidden="true"></i></button>
+
+        <div class="input-group input-group-sm wm-top-search">
+          <input type="text" name="q" class="form-control" id="mkdocs-search-query" placeholder="Search" autocomplete="off">
+          <span class="input-group-btn" role="search">
+            
+            <button class="btn btn-default dropdown-toggle collapse" data-toggle="dropdown" type="button"><span class="caret"></span></button>
+            <ul id="mkdocs-search-results" class="dropdown-menu dropdown-menu-right"></ul>
+            <button id="wm-search-go" class="btn btn-default" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+          </span>
+        </div>
+      </form>
+    </div>
+
+    
+    <div class="wm-top-tool wm-vcenter pull-right wm-small-left">
+      <button id="wm-toc-button" type="button" class="btn btn-sm btn-default wm-vcentered"><i class="fa fa-th-list" aria-hidden="true"></i></button>
+    </div>
+
+    
+    
+
+    
+    <a href="" class="wm-top-brand wm-top-link wm-vcenter">
+      
+      <div class="wm-top-title">
+        CiteURL<br>
+        
+          <span class="wm-top-version">4.0.0</span>
+        
+      </div>
+    </a>
+  </div>
+</nav>
+
+  <div id="main-content" class="wm-page-top-frame">
+    
+<nav class="wm-toc-pane">
+  
+  <ul class="wm-toctree">
+        <li class="wm-toc-li wm-toc-lev1 "><a href="" class="wm-article-link wm-toc-text">Getting Started</a>
+</li>
+        <li class="wm-toc-li wm-toc-lev1 "><a href="classes/" class="wm-article-link wm-toc-text">Classes</a>
+</li>
+        <li class="wm-toc-li wm-toc-lev1 "><a href="functions/" class="wm-article-link wm-toc-text">Functions</a>
+</li>
+        <li class="wm-toc-li wm-toc-lev1 "><a href="schema-yamls/" class="wm-article-link wm-toc-text">Writing Your Own Schemas</a>
+</li>
+  </ul>
+</nav>
+
+    <div class="wm-content-pane">
+      <iframe class="wm-article" name="article"></iframe>
+    </div>
+  </div>
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="classes/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="classes/" class="btn btn-xs btn-link">
+        Classes
+      </a>
+    </div>
+    
+  </div>
+
+    
+
+    <h1 id="getting-started">Getting Started</h1>
+<p>CiteURL is a tool to process legal citations in text. You can throw a court case at it and get a list of every citation in it, from <code>42 U.S.C. § 1983</code> to <code>Id. at § 1988(b)</code>. You can also use it to look up a URL to view the citation online, or insert those URLs as hyperlinks in the text.</p>
+<p>To use CiteURL, you'll need to import the <a href="classes#citator">Citator</a> class, which contains most of the important features. Then, instantiate a citator to recognize citations:</p>
+<pre><code class="language-python">from citeurl import Citator
+citator = Citator()
+</code></pre>
+<p>After that, you can feed text to the citator to return <a href="classes#citation">Citation</a> objects:</p>
+<pre><code class="language-python">text = &quot;&quot;&quot;
+Federal law provides that courts should award prevailing civil
+rights plaintiffs reasonable attorneys fees, see 42 USC § 1988(b),
+and, by discretion, expert fees, see id. at (c). This is because
+the importance of civil rights litigation cannot be measured by a
+damages judgment. See Riverside v. Rivera, 477 U.S. 561 (1986).
+But Evans v. Jeff D. upheld a settlement where the plaintiffs got
+everything they wanted, on the condition that they waive attorneys
+fees. 475 U.S. 717 (1986). This ruling lets savvy defendants
+create a wedge between plaintiffs and their attorneys, discouraging
+civil rights suits and undermining the court's logic in Riverside,
+477 U.S. at 574-78.
+&quot;&quot;&quot;
+citations = citator.list_citations(text)
+</code></pre>
+<p>Once you have a list of citations, you can get information about them:</p>
+<pre><code class="language-python">for citation in citations:
+    print(citation.text + ' --- ' + str(citation.schema) + ' --- ' + citation.URL
+
+# 42 USC § 1988(b) --- United States Code --- https://www.law.cornell.edu/uscode/text/42/1988#b
+# id. at (c) --- United States Code --- https://www.law.cornell.edu/uscode/text/42/1988#c
+# 477 U.S. 561 --- Caselaw Access Project --- https://cite.case.law/us/477/561
+# 475 U.S. 717 --- Caselaw Access Project --- https://cite.case.law/us/475/717
+# 477 U.S. at 574-78 --- Caselaw Access Project --- https://cite.case.law/us/477/561#p574
+</code></pre>
+<p>You can also use <a href="functions#insert_links">insert_links()</a> to insert the citations back into the source text as hyperlinks:</p>
+<pre><code class="language-python">from citeurl import insert_links
+
+output = insert_links(citations, text)
+print(output)
+# Federal law provides that courts should award prevailing civil
+# rights plaintiffs reasonable attorneys fees, see &lt;a class=&quot;citation&quot; 
+# href=&quot;https://www.law.cornell.edu/uscode/text/42/1988#b&quot;&gt;42 USC § 1988(b)&lt;/a&gt;,
+# and, by discretion, expert fees, see &lt;a class=&quot;citation&quot; 
+# href=&quot;https://www.law.cornell.edu/uscode/text/42/1988#c&quot;&gt;id. at (c)&lt;/a&gt;.
+# This is because the importance of civil rights litigation cannot be
+# measured by a damages judgment. See Riverside v. Rivera, &lt;a class=&quot;citation&quot; 
+# href=&quot;https://cite.case.law/us/477/561&quot;&gt;477 U.S. 561&lt;/a&gt; (1986).
+# But Evans v. Jeff D. upheld a settlement where the plaintiffs got
+# everything they wanted, on the condition that they waive attorneys
+# fees. &lt;a class=&quot;citation&quot; href=&quot;https://cite.case.law/us/475/717&quot;&gt;475 U.S.
+# 717&lt;/a&gt; (1986). This ruling lets savvy defendants create a wedge between
+# plaintiffs and their attorneys, discouraging civil rights suits and
+# undermining the court's logic in Riverside, &lt;a class=&quot;citation&quot; 
+# href=&quot;https://cite.case.law/us/477/561#p574&quot;&gt;477 U.S. at 574-78&lt;/a&gt;.
+</code></pre>
+<p>Or, you can use <a href="functions#list_authorities">list_authorities</a> to combine the citations into a list of authorities cited in the text, and see how often each one is cited:</p>
+<pre><code class="language-python">from citeurl import list_authorities
+
+authorities = list_authorities(citations)
+for authority in authorities:
+    print(authority)
+    print(len(authority.citations))
+# 42 USC § 1988
+# 2
+# 477 U.S. 561
+# 2
+# 475 U.S. 717
+# 1
+</code></pre>
+<p>If you want to use CiteURL to recognize citations that aren't supported by its default library, you can create <a href="schema-yamls">custom citation schemas in YAML files</a>.</p>
+
+  <br>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="classes/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="classes/" class="btn btn-xs btn-link">
+        Classes
+      </a>
+    </div>
+    
+  </div>
+
+    <br>
+</div>
+
+<footer class="container-fluid wm-page-content">
+  <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a> using <a href="https://github.com/gristlabs/mkdocs-windmill">Windmill</a> theme by Grist Labs.</p>
+</footer>
+
+</body>
+</html>
+<!--
+MkDocs version : 1.1.2
+Build Date UTC : 2021-01-23 23:12:01.923578+00:00
+-->

@@ -9,16 +9,25 @@ from markdown.postprocessors import Postprocessor
 from . import Citator
 
 class CitationPostprocessor(Postprocessor):
-    def __init__(self, citator, css_class='citation', use_id_forms=False):
+    def __init__(
+        self,
+        citator,
+        attributes: dict,
+        link_detailed_ids: bool,
+        link_plain_ids: bool
+    ):
         super().__init__()
         self.citator = citator
-        self.css_class = css_class
-        self.use_id_forms = use_id_forms
+        self.attributes = attributes
+        self.link_detailed_ids = link_detailed_ids
+        self.link_plain_ids = link_plain_ids
     def run(self, text):
         return self.citator.insert_links(
             text,
-            css_class=self.css_class,
-            id_forms=self.use_id_forms)
+            attrs=self.attributes,
+            link_detailed_ids=self.link_detailed_ids,
+            link_plain_ids=self.link_plain_ids
+        )
 
 class CiteURLExtension(Extension):
     """Detects legal citations and inserts relevant hyperlinks."""
@@ -33,13 +42,18 @@ class CiteURLExtension(Extension):
                 True,
                 "Load CiteURL's default citation schemas? - Default: True"
             ],
-            'use_id_forms': [
+            'link_detailed_ids': [
                 True,
-                "Recognize 'id.' shortform citations. - Default: True"
+                "Whether to link citations like 'Id. at 3' - Default: True"
             ],
-            'css_class': [
-                'citation',
-                'The class of <a> element to insert. - Default: citation'
+            'link_plain_ids': [
+                False,
+                "Whether to link citations like 'Id.' - Defualt: False"
+            ],
+            'attributes': [
+                {'class': 'citation'},
+                ("A dictionary of attributes (besides href) that the inserted"
+                + " links should have. - Default: {'class': 'citation'}")
             ]
         }
         super(CiteURLExtension, self).__init__(**kwargs)
@@ -53,8 +67,9 @@ class CiteURLExtension(Extension):
         md.postprocessors.register(
             CitationPostprocessor(
                 citator,
-                self.config['css_class'][0],
-                self.config['use_id_forms'][0]
+                self.config['attributes'][0],
+                self.config['link_detailed_ids'][0],
+                self.config['link_plain_ids'][0]
             ),
             "CiteURL",
             1

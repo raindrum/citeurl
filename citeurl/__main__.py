@@ -10,8 +10,13 @@ from argparse import ArgumentParser, SUPPRESS
 from . import Citator
 
 def main():
-    p = ArgumentParser(description=__doc__)
-    p.add_argument(
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "-i",
+        "--input",
+        help="the file to read from",
+    )
+    parser.add_argument(
         "text",
         help=(
             "a string containing legal citations. Can be omitted if -i is "
@@ -20,17 +25,13 @@ def main():
         nargs="*",
         default=(None if stdin.isatty() else [''.join(stdin.read()[0:-1])])
     )
-    p.add_argument(
-        "-i",
-        "--input",
-        help="the file to read from",
-    )
-    p.add_argument(
+    action = parser.add_mutually_exclusive_group(required=False)
+    action.add_argument(
         "-o",
         "--output",
         help="the file to write to, rather than stdout",
     )
-    p.add_argument(
+    action.add_argument(
         "-l",
         "--lookup",
         action="store_true",
@@ -39,13 +40,26 @@ def main():
             + " into a body of text. Uses broader regex if available"
         ),
     )
-    p.add_argument(
+    action.add_argument(
+        "-a",
+        "--authorities",
+        action="store",
+        nargs="?",
+        const=-1,
+        type=int,
+        help=(
+            "return list of all the authorities cited in the text, "
+            + "with information about each one. If a number is given, "
+            + "return only the X authorities with the most citations." 
+        )
+    )
+    parser.add_argument(
         "-n",
         "--no-default-schemas",
         action="store_true",
         help="prevent loading the default set of schemas",
     )
-    p.add_argument(
+    parser.add_argument(
         "-s",
         "--schema-file",
         action="append",
@@ -56,7 +70,7 @@ def main():
             + "https://github.com/raindrum/citeurl#writing-your-own-schemas."
         )
     )
-    p.add_argument(
+    parser.add_argument(
         "-c",
         "--css-class",
         default='citation',
@@ -65,22 +79,22 @@ def main():
             + 'Defaults to "citation"'
         )
     )
-    p.add_argument(
+    parser.add_argument(
         "-I",
-        "--no-id-forms",
+        "--no-link-ids",
         action="store_true",
-        help="don't look for 'id.' citations"
+        help="don't hyperlink citations like 'id. at 30'"
     )
-    args = p.parse_args()
+    args = parser.parse_args()
         
     # parse text or file input
     if args.input:
         with open(args.input, 'r') as f:
-            query = f.read()[0:-1]
+            text = f.read()[0:-1]
     elif args.text:
-        query = ' '.join(args.text)
+        text = ' '.join(args.text)
     else:
-        p.print_help()
+        parser.print_help()
         return
     
     # load schemas
@@ -96,8 +110,10 @@ def main():
 
     # print output to file or stdout
     if args.lookup:
-        citation = citator.lookup(query)
+        citation = citator.lookup(text)
         if citation:
+            print(citation.text)
+            print("=" * len(citation.text))
             print('Source: %s' % citation.schema)
             for key, value in citation.tokens.items():
                 if not value: continue
@@ -105,11 +121,23 @@ def main():
             print('URL: %s' % citation.URL)
         else:
             print("Couldn't recognize citation.")
+    elif args.authorities:
+        authorities = citator.list_authorities(text)
+        if args.authorities != '-1':
+            authorities = authorities[:args.authorities]
+        for authority in authorities:
+            #print("Authority: %s" % authority)
+            print(authority)
+            print("=" * len(str(authority)))
+            print("Citations: %s" % len(authority.citations))
+            if authority.URL:
+                print("URL: %s" % authority.URL)
+            print()
     else:
         out_text = citator.insert_links(
-            query,
-            css_class = args.css_class,
-            id_forms = not args.no_id_forms)
+            text,
+            attrs={'class': args.css_class} if args.css_class else [],
+            link_detailed_ids = not args.no_link_ids)
         if args.output:
             with open(args.output, 'w') as f:
                 f.write(out_text)
