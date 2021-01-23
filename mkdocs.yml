@@ -1,4 +1,6 @@
 site_name: CiteURL
+docs_dir: 'docs_md'
+site_dir: 'docs'
 
 theme:
   name: "windmill"

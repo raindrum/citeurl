@@ -1,5 +1,7 @@
 *.sh
 *.egg-info/
 custom.yaml
+mkdocs.yml
 build/
 demo/
+docs_md/

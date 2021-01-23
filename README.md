@@ -78,7 +78,3 @@ for citation in citator.list_citations(text):
 ```
 
 For more information, see the CiteURL documentation.
-
-## Custom Schemas
-
-CiteURL relies on 
