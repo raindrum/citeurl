@@ -209,7 +209,7 @@ class Authority:
             allowed_differences: A list of tokens whose values can
                 differ among citations to the same authority
         """
-        self.schema: Schema = first_cite.schema
+        self.schema: Schema = first_cite._original_cite().schema
         self.citations: list = [first_cite]
         # List the token values that distinguish this authority
         # from others in the same schema.
@@ -248,9 +248,11 @@ class Authority:
             new_value = prelude + self.defining_tokens[token]
             text = text.replace(old_value, new_value)
         self.name: str = text
-        self.base_citation: Citation = self.schema.lookup(text, False)
+        self.base_citation: Citation = self.schema.lookup(text, True)
         if self.base_citation:
             self.URL: str = self.base_citation.URL
+        else:
+            self.URL: str = None
     
     def include(self, citation):
         """Adds the citation to this schema's list of citations."""
