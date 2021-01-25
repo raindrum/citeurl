@@ -18,5 +18,5 @@ plugins:
           heading_level: 3
 
 extra:
-  version: 4.0.3
+  version: 4.0.4
   history_buttons: false

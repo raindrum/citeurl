@@ -23,6 +23,8 @@ class Citation:
         tokens: Dictionary of the named capture groups from the regex
             this citation matched. For "id." and "shortform" citations,
             this includes tokens carried over from the parent citation.
+        processed_tokens: Dictionary of tokens after they have been
+            modified via mutations and substitutions.
         URL: The URL where a user can read this citation online
         
     """
@@ -46,6 +48,7 @@ class Citation:
                 self.tokens[key] = val
         else:
             self.tokens: dict = match.groupdict()
+        self.processed_tokens = self.schema._process_tokens(self.tokens)
         self.URL: str = self._get_url()
     
     def __repr__(self):
@@ -64,32 +67,15 @@ class Citation:
         if not hasattr(self.schema, 'URL'):
             return None
         # Process matched tokens (i.e. named regex capture groups)
-        url_tokens = self._get_processed_tokens()
         URL = """"""
         for part in self.schema.URL:
-            for key, value in url_tokens.items():
+            for key, value in self.processed_tokens.items():
                 if not value: continue
                 part = part.replace('{%s}' % key, value)
             missing_value = re.search('\{.+\}', part)
             if not missing_value:
                 URL += part
         return URL
-    
-    def _get_processed_tokens(self):
-        """
-        Return a copy of the citation's tokens after applying mutations
-        and substitutions to them. Tokens are """
-        processed_tokens = dict(self.tokens)
-        for key, val in self.schema.defaults.items():
-            if key not in processed_tokens or processed_tokens[key] is None:
-                processed_tokens[key] = val
-        for mut in self.schema.mutations:
-            input_value = processed_tokens.get(mut.token)
-            if input_value:
-                processed_tokens[mut.token] = mut._mutate(input_value)
-        for sub in self.schema.substitutions:
-            processed_tokens = sub._substitute(processed_tokens)
-        return processed_tokens
     
     def get_link(self, attrs: dict={'class': 'citation'}):
         """Return citation's link element, with given attributes"""
@@ -180,16 +166,18 @@ class Authority:
     A single source cited one or more times in a text.
     
     Attributes:
-        base_cite: A citation object representing the hypothetical
-            generic citation to this authority.
-        name: The text of base_cite
-        citations: The list of all the citations that refer to
-            this authority.
-        schema: The schema which found all the citations to this
-            authority
         defining_tokens: A dictionary of tokens that define this
             authority, such that any citations with incompatible
-            token values will not match it.
+            token values will not match it. Note that this uses
+            processed_tokens (those which have been modified by
+            the schema's mutations and substitutions).
+        schema: The schema which found all the citations to this
+            authority
+        citations: The list of all the citations that refer to
+            this authority.
+        base_citation: A citation object representing the hypothetical
+            generic citation to this authority.
+        name: The text of base_cite
     """
     def __init__(self, first_cite, allowed_differences: list=[]):
         """
@@ -209,50 +197,30 @@ class Authority:
             allowed_differences: A list of tokens whose values can
                 differ among citations to the same authority
         """
-        self.schema: Schema = first_cite._original_cite().schema
-        self.citations: list = [first_cite]
-        # List the token values that distinguish this authority
-        # from others in the same schema.
-        self.defining_tokens: dict = {}
-        for t in first_cite.tokens:
-            if first_cite.tokens[t] != None and t not in allowed_differences:
-                self.defining_tokens[t] = first_cite.tokens[t]
-        # Do some real crazy regex stuff to make a longform citation
-        # from whatever the first citation in the authority is, which
-        # may or may not be a shortform.
         long_cite = first_cite._original_cite()
-        pattern = ''
-        missing = []
-        for k in self.defining_tokens.keys():
-            if k not in long_cite.tokens or long_cite.tokens[k] == None:
-                missing.append(k)
-        for key in missing:
-            self.defining_tokens.pop(key)
-        for token in self.defining_tokens:
-            token_regex = re.escape(long_cite.tokens[token])
-            pattern_segment = (
-                '((?P<%s>.*?)(?P<%s>%s))?'
-                % (token + '_prelude', token, token_regex)
-            )
-            if pattern == '':
-                pattern = pattern_segment
-            else:
-                pattern = pattern[:-2] + pattern_segment + ')?'
-        longform_match = re.match(pattern, long_cite.text)
-        text = long_cite.text[:longform_match.span(token)[1]]
-        for token in self.defining_tokens:
-            if not longform_match.group(token):
-                continue
-            prelude = str(longform_match.group(token + '_prelude'))
-            old_value = prelude + longform_match.group(token)
-            new_value = prelude + self.defining_tokens[token]
-            text = text.replace(old_value, new_value)
-        self.name: str = text
-        self.base_citation: Citation = self.schema.lookup(text, True)
-        if self.base_citation:
-            self.URL: str = self.base_citation.URL
-        else:
-            self.URL: str = None
+        self.schema: Schema = long_cite.schema
+        self.citations: list = [first_cite]
+        # List the token values that distinguish this authority from
+        # others in the same schema. This uses processed tokens, not
+        # raw, so that a citation to "50 U.S. 5" will match
+        # a citation to "50 U. S. 5", etc.
+        self.defining_tokens: dict = {}
+        for t in first_cite.processed_tokens:
+            if (
+                first_cite.processed_tokens[t] != None
+                and t not in allowed_differences
+            ):
+                self.defining_tokens[t] = first_cite.processed_tokens[t]
+        # Next, derive a base citation to represent this authority.
+        # If the first_citation to this authority isn't a longform, use
+        # whatever longform it's a child of.
+        try:
+            self.base_citation = self._derive_base_citation(long_cite)
+        except:
+            self.base_citation = first_cite
+        # Set other instance variables
+        self.name: str = self.base_citation.text
+        self.URL: str = self.base_citation.URL
     
     def include(self, citation):
         """Adds the citation to this schema's list of citations."""
@@ -265,7 +233,10 @@ class Authority:
         """
         if self.schema.name != citation.schema.name:
             return False
-        differences = citation.tokens.items() - self.defining_tokens.items()
+        differences = (
+            citation.processed_tokens.items()
+            - self.defining_tokens.items()
+        )
         different_tokens = [t[0] for t in differences if t[1] is not None]
         for token in different_tokens:
             if token in self.defining_tokens:
@@ -274,6 +245,51 @@ class Authority:
     
     def __repr__(self):
         return self.name
+    
+    def _derive_base_citation(self, parent: Citation) -> Citation:
+        replacement_tokens = {}
+        for key, value in self.citations[0].tokens.items():
+            if key in self.defining_tokens:
+                replacement_tokens[key] = value
+        # Check if the parent longform citation contains all the defining
+        # tokens. If it doesn't, use the shortform that does.
+        missing = []
+        for key in replacement_tokens.keys():
+            if key not in parent.tokens or parent.tokens[key] == None:
+                parent = self.citations[0]
+                break
+        # Next, construct a regex pattern to pull out the defining
+        # tokens, along with the non-token text preceding each one. The
+        # non-token "prelude" text lets us replace the text of each
+        # token only when they appear in context. 
+        pattern = ''
+        for token in replacement_tokens:
+            regex = re.escape(parent.tokens[token])
+            segment = f"""((?P<{token}_prelude>.*?)(?P<{token}>{regex}))?"""
+            if pattern:
+                pattern = pattern[:-2] + segment + ')?'
+            else: pattern = segment
+        match = re.match(pattern, parent.text)
+        # Slice off all the text after the last defining token. This will
+        # remove things like subsections, etc. It assumes that optional
+        # tokens are always after the mandatory ones.
+        base_cite_text = parent.text[:match.span(token)[1]]
+        # For each token, replace the value from the longform citation
+        # with the proper value for this authority.
+        for token in replacement_tokens:
+            if not match.group(token):
+                continue
+            prelude = str(match.group(token + '_prelude'))
+            old_value = prelude + match.group(token)
+            new_value = prelude + replacement_tokens[token]
+            base_cite_text = base_cite_text.replace(old_value, new_value)
+        # Default to strict matching, but fall back to broadRegex
+        # if strict match doesn't exist. Don't default to broadRegex
+        # because it might not capture the full text
+        base_cite = self.schema.lookup(base_cite_text, broad=False)
+        if not base_cite:
+            base_cite = self.schema.lookup(base_cite_text, broad=True)
+        return base_cite
 
 
 class Citator:
@@ -641,7 +657,7 @@ class Schema:
         text: str,
         broad: bool=False,
         span: tuple=(0,)
-    ) -> Iterable[Citation]:
+    ) -> Iterable:
         """
         Generator to return all citations the schema finds in text.
         
@@ -697,6 +713,23 @@ class Schema:
                         % (self.parent_citation.schema.name, e)
                     )
         return self.__dict__[attr]
+
+    def _process_tokens(self, tokens: dict):
+        """
+        Returns a copy of the given set of tokens, after applying the
+        schema's defaults, mutations, and substitutions.
+        """
+        processed_tokens = dict(tokens)
+        for key, val in self.defaults.items():
+            if key not in processed_tokens or processed_tokens[key] is None:
+                processed_tokens[key] = val
+        for mut in self.mutations:
+            input_value = processed_tokens.get(mut.token)
+            if input_value:
+                processed_tokens[mut.token] = mut._mutate(input_value)
+        for sub in self.substitutions:
+            processed_tokens = sub._substitute(processed_tokens)
+        return processed_tokens
 
     class _Mutation:
         """

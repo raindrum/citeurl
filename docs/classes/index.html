@@ -967,7 +967,7 @@ for citations. Defaults to (0,) to scan the entire text.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>Iterable[citeurl.Citation]</code></td>
+<td><code>Iterable</code></td>
 <td>
 <p>Generator that yields each citation the schema finds in the
     text, or None.</p>
@@ -983,7 +983,7 @@ for citations. Defaults to (0,) to scan the entire text.</p>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">span</span><span class="p">:</span> <span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,)</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Citation</span><span class="p">]:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Generator to return all citations the schema finds in text.</span>
 
@@ -1163,6 +1163,14 @@ this includes tokens carried over from the parent citation.</p>
 </td>
 </tr>
 <tr>
+<td><code>processed_tokens</code></td>
+<td><code></code></td>
+<td>
+<p>Dictionary of tokens after they have been
+modified via mutations and substitutions.</p>
+</td>
+</tr>
+<tr>
 <td><code>URL</code></td>
 <td><code>str</code></td>
 <td>
@@ -1208,6 +1216,7 @@ by means other than a Citator or Schema object.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">processed_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">_process_tokens</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_url</span><span class="p">()</span>
 </code></pre>
 </div>
@@ -1289,26 +1298,14 @@ except those that overwrite specified tokens.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>base_cite</code></td>
-<td><code></code></td>
+<td><code>defining_tokens</code></td>
+<td><code>dict</code></td>
 <td>
-<p>A citation object representing the hypothetical
-generic citation to this authority.</p>
-</td>
-</tr>
-<tr>
-<td><code>name</code></td>
-<td><code>str</code></td>
-<td>
-<p>The text of base_cite</p>
-</td>
-</tr>
-<tr>
-<td><code>citations</code></td>
-<td><code>list</code></td>
-<td>
-<p>The list of all the citations that refer to
-this authority.</p>
+<p>A dictionary of tokens that define this
+authority, such that any citations with incompatible
+token values will not match it. Note that this uses
+processed_tokens (those which have been modified by
+the schema's mutations and substitutions).</p>
 </td>
 </tr>
 <tr>
@@ -1320,12 +1317,26 @@ authority</p>
 </td>
 </tr>
 <tr>
-<td><code>defining_tokens</code></td>
-<td><code>dict</code></td>
+<td><code>citations</code></td>
+<td><code>list</code></td>
 <td>
-<p>A dictionary of tokens that define this
-authority, such that any citations with incompatible
-token values will not match it.</p>
+<p>The list of all the citations that refer to
+this authority.</p>
+</td>
+</tr>
+<tr>
+<td><code>base_citation</code></td>
+<td><code></code></td>
+<td>
+<p>A citation object representing the hypothetical
+generic citation to this authority.</p>
+</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>
+<p>The text of base_cite</p>
 </td>
 </tr>
 </tbody>
@@ -1402,50 +1413,30 @@ differ among citations to the same authority</p>
 <span class="sd">        allowed_differences: A list of tokens whose values can</span>
 <span class="sd">            differ among citations to the same authority</span>
 <span class="sd">    """</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span> <span class="n">Schema</span> <span class="o">=</span> <span class="n">first_cite</span><span class="o">.</span><span class="n">_original_cite</span><span class="p">()</span><span class="o">.</span><span class="n">schema</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">citations</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_cite</span><span class="p">]</span>
-    <span class="c1"># List the token values that distinguish this authority</span>
-    <span class="c1"># from others in the same schema.</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">first_cite</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">first_cite</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">!=</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">t</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_differences</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_cite</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
-    <span class="c1"># Do some real crazy regex stuff to make a longform citation</span>
-    <span class="c1"># from whatever the first citation in the authority is, which</span>
-    <span class="c1"># may or may not be a shortform.</span>
     <span class="n">long_cite</span> <span class="o">=</span> <span class="n">first_cite</span><span class="o">.</span><span class="n">_original_cite</span><span class="p">()</span>
-    <span class="n">pattern</span> <span class="o">=</span> <span class="s1">''</span>
-    <span class="n">missing</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">long_cite</span><span class="o">.</span><span class="n">tokens</span> <span class="ow">or</span> <span class="n">long_cite</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">missing</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">missing</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="p">:</span>
-        <span class="n">token_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">long_cite</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">token</span><span class="p">])</span>
-        <span class="n">pattern_segment</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s1">'((?P&lt;</span><span class="si">%s</span><span class="s1">&gt;.*?)(?P&lt;</span><span class="si">%s</span><span class="s1">&gt;</span><span class="si">%s</span><span class="s1">))?'</span>
-            <span class="o">%</span> <span class="p">(</span><span class="n">token</span> <span class="o">+</span> <span class="s1">'_prelude'</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">token_regex</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="n">pattern</span> <span class="o">==</span> <span class="s1">''</span><span class="p">:</span>
-            <span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern_segment</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">pattern_segment</span> <span class="o">+</span> <span class="s1">')?'</span>
-    <span class="n">longform_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">long_cite</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">long_cite</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="n">longform_match</span><span class="o">.</span><span class="n">span</span><span class="p">(</span><span class="n">token</span><span class="p">)[</span><span class="mi">1</span><span class="p">]]</span>
-    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">longform_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
-            <span class="k">continue</span>
-        <span class="n">prelude</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">longform_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">token</span> <span class="o">+</span> <span class="s1">'_prelude'</span><span class="p">))</span>
-        <span class="n">old_value</span> <span class="o">=</span> <span class="n">prelude</span> <span class="o">+</span> <span class="n">longform_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
-        <span class="n">new_value</span> <span class="o">=</span> <span class="n">prelude</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="p">[</span><span class="n">token</span><span class="p">]</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">old_value</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">text</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span><span class="p">:</span> <span class="n">Citation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span><span class="o">.</span><span class="n">URL</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span> <span class="n">Schema</span> <span class="o">=</span> <span class="n">long_cite</span><span class="o">.</span><span class="n">schema</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">citations</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_cite</span><span class="p">]</span>
+    <span class="c1"># List the token values that distinguish this authority from</span>
+    <span class="c1"># others in the same schema. This uses processed tokens, not</span>
+    <span class="c1"># raw, so that a citation to "50 U.S. 5" will match</span>
+    <span class="c1"># a citation to "50 U. S. 5", etc.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">first_cite</span><span class="o">.</span><span class="n">processed_tokens</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">first_cite</span><span class="o">.</span><span class="n">processed_tokens</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">!=</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">t</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_differences</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_cite</span><span class="o">.</span><span class="n">processed_tokens</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+    <span class="c1"># Next, derive a base citation to represent this authority.</span>
+    <span class="c1"># If the first_citation to this authority isn't a longform, use</span>
+    <span class="c1"># whatever longform it's a child of.</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_derive_base_citation</span><span class="p">(</span><span class="n">long_cite</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span> <span class="o">=</span> <span class="n">first_cite</span>
+    <span class="c1"># Set other instance variables</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span><span class="o">.</span><span class="n">text</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span><span class="o">.</span><span class="n">URL</span>
 </code></pre>
 </div>
 </details>
@@ -1491,7 +1482,10 @@ tokens of this authority.</p>
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">citation</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
-    <span class="n">differences</span> <span class="o">=</span> <span class="n">citation</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="n">differences</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">citation</span><span class="o">.</span><span class="n">processed_tokens</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">)</span>
     <span class="n">different_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">differences</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">different_tokens</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="p">:</span>

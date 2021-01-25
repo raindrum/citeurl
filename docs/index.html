@@ -35,6 +35,9 @@
         
         var pageToc = [
           {title: "Getting Started", url: "#_top", children: [
+              {title: "Installation", url: "#installation" },
+              {title: "Frontends", url: "#frontends" },
+              {title: "Python Library", url: "#python-library" },
           ]},
         ];
 
@@ -82,7 +85,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
       <div class="wm-top-title">
         CiteURL<br>
         
-          <span class="wm-top-version">4.0.0</span>
+          <span class="wm-top-version">4.0.4</span>
         
       </div>
     </a>
@@ -137,7 +140,40 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 
     <h1 id="getting-started">Getting Started</h1>
 <p>CiteURL is a tool to process legal citations in text. You can throw a court case at it and get a list of every citation in it, from <code>42 U.S.C. § 1983</code> to <code>Id. at § 1988(b)</code>. You can also use it to look up a URL to view the citation online, or insert those URLs as hyperlinks in the text.</p>
-<p>To use CiteURL, you'll need to import the <a href="classes#citator">Citator</a> class, which contains most of the important features. Then, instantiate a citator to recognize citations:</p>
+<h2 id="installation">Installation</h2>
+<p>Just run the following command:</p>
+<pre><code class="language-bash">python -m pip install citeurl
+</code></pre>
+<h2 id="frontends">Frontends</h2>
+<p>Most of the documentation on this site concerns CiteURL as a Python library you can use in your own projects. But there are a few built-in ways to use it as well. These interfaces are simpler, so their documentation is contained below:</p>
+<h3 id="command-line-interface">Command-Line Interface</h3>
+<p>The simplest way to use CiteURL is via the <code>citeurl</code> command.</p>
+<p>To create a hyperlink for each citation in <code>input.html</code> and save the result as <code>output.html</code>, use a command like this:</p>
+<pre><code class="language-bash">citeurl -i input.html -o output.html
+</code></pre>
+<p>Alternatively, on many operating systems you can pipe the output of another command into CiteURL. For instance:</p>
+<pre><code class="language-bash">cat input.html | citeurl
+</code></pre>
+<p>If you want to look up a single citation instead of processing a block of text, use the <code>-l</code> option, like so:</p>
+<pre><code class="language-bash">citeurl -l &quot;42 USC 1983&quot;
+</code></pre>
+<p>If you want to return the top 10 authorities cited in a text, you can use this:</p>
+<pre><code class="language-bash">citeurl -i input.html -a 10
+</code></pre>
+<p>And if you want to use a <a href="schema-yamls">your own set of citation schemas</a>, you can use the <code>-s</code> option, followed by the path to a YAML file. If you want to prevent loading CiteURL's default set of schemas, use <code>-n</code>.</p>
+<h3 id="markdown-extension">Markdown Extension</h3>
+<p>CiteURL can also be used as an extension to <a href="https://python-markdown.github.io/">Python-Markdown</a>. You can load the extension as <code>citeurl</code>, and it supports the following options:</p>
+<ul>
+<li><code>custom_schemas</code>: A list of paths to YAML files containing <a href="schema-yamls">custom citation schemas</a>. Defaults to none.</li>
+<li><code>use_defaults</code>: Whether CiteURL should load the default citation schemas. Defaults to <code>True</code>.</li>
+<li><code>attributes</code>: A dictionary of HTML attributes to give each hyperlink that CiteURL inserts into the text. Defaults to <code>{'class': 'citation'}</code>.</li>
+<li><code>link_detailed_ids</code>: Whether to insert links for citations like <code>Id. at 305</code>. Defaults to <code>True</code>.</li>
+<li><code>link_plain_ids</code>: Whether to insert links for citations like <code>Id.</code>. Defaults to <code>False</code>.</li>
+</ul>
+<h3 id="gnome-shell-search-provider">GNOME Shell Search Provider</h3>
+<p>If you use the GNOME desktop environment, you can install <a href="https://github.com/raindrum/gnome-citeurl-search-provider">my other project</a> to look up citations right from your desktop!</p>
+<h2 id="python-library">Python Library</h2>
+<p>To use CiteURL as a Python library, you'll need to import the <a href="classes#citator">Citator</a> class, which contains most of the important features. Then, instantiate a citator to recognize citations:</p>
 <pre><code class="language-python">from citeurl import Citator
 citator = Citator()
 </code></pre>
@@ -203,6 +239,7 @@ for authority in authorities:
 # 1
 </code></pre>
 <p>If you want to use CiteURL to recognize citations that aren't supported by its default library, you can create <a href="schema-yamls">custom citation schemas in YAML files</a>.</p>
+<p>For more information, see the documentation on the CiteURL module's <a href="classes">classes</a> and <a href="functions">module-level functions</a>.</p>
 
   <br>
     
@@ -237,5 +274,5 @@ for authority in authorities:
 </html>
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2021-01-24 00:04:08.026523+00:00
+Build Date UTC : 2021-01-25 00:20:25.445897+00:00
 -->
