@@ -4,7 +4,7 @@
 
 CiteURL is an extensible tool to process legal citations in text. It recognizes longform and shortform citations, subsections and pincites, and it can generate links to view them online. It can also create a list of all the authorities cited in a document, in order of how many times each citation occurs in the text.
 
-By default, CiteURL supports citations to U.S. court decisions, the U.S. Code and various other federal materials, plus California statutes. You can find the full list [here](https://github.com/raindrum/citeurl/blob/master/citeurl/default-schemas.yml). But you can also customize it to add support for more bodies of law by [writing your own citation schemas](https://raindrum.github.io/citeurl/#schema-yamls/) in YAML format.
+By default, CiteURL supports citations to U.S. court decisions, the U.S. Code and various other federal materials, plus California statutes. You can find the full list [here](https://github.com/raindrum/citeurl/blob/main/citeurl/default-schemas.yml). But you can also customize it to add support for more bodies of law by [writing your own citation schemas](https://raindrum.github.io/citeurl/#schema-yamls/) in YAML format.
 
 For federal rules, regulations, and statutes, CiteURL's default set of schemas generates links to Cornell's [Legal Information Institute](https://www.law.cornell.edu/). For court cases, it uses Harvard's [Caselaw Access Project](https://cite.case.law/), though this will likely switch to [CourtListener](https://www.courtlistener.com/) in a future version.
 
@@ -48,13 +48,13 @@ If you want to return the top 10 authorities cited in a text, you can use this:
 citeurl -i input.html -a 10
 ```
 
-And if you want to use a [your own set of citation schemas](schema-yamls), you can use the `-s` option, followed by the path to a YAML file. If you want to prevent loading CiteURL's default set of schemas, use `-n`.
+And if you want to use a [your own set of citation schemas](https://raindrum.github.io/citeurl/#schema-yamls), you can use the `-s` option, followed by the path to a YAML file. If you want to prevent loading CiteURL's default set of schemas, use `-n`.
 
 ### Markdown Extension
 
 CiteURL can also be used as an extension to [Python-Markdown](https://python-markdown.github.io/). You can load the extension as `citeurl`, and it supports the following options:
 
-- `custom_schemas`: A list of paths to YAML files containing [custom citation schemas](schema-yamls). Defaults to none.
+- `custom_schemas`: A list of paths to YAML files containing [custom citation schemas](https://raindrum.github.io/citeurl/#schema-yamls). Defaults to none.
 - `use_defaults`: Whether CiteURL should load the default citation schemas. Defaults to `True`.
 - `attributes`: A dictionary of HTML attributes to give each hyperlink that CiteURL inserts into the text. Defaults to `{'class': 'citation'}`.
 - `link_detailed_ids`: Whether to insert links for citations like `Id. at 305`. Defaults to `True`.
@@ -66,14 +66,14 @@ If you use the GNOME desktop environment, you can install [my other project](htt
 
 ## Python Library
 
-To use CiteURL as a Python library, you'll need to import the [Citator](classes#citator) class, which contains most of the important features. Then, instantiate a citator to recognize citations:
+To use CiteURL as a Python library, you'll need to import the [Citator](https://raindrum.github.io/citeurl/classes#citator) class, which contains most of the important features. Then, instantiate a citator to recognize citations:
 
 ```python
 from citeurl import Citator
 citator = Citator()
 ```
 
-After that, you can feed text to the citator to return [Citation](classes#citation) objects:
+After that, you can feed text to the citator to return [Citation](https://raindrum.github.io/citeurl/classes#citation) objects:
 
 ```python
 text = """
@@ -105,7 +105,7 @@ for citation in citations:
 # 477 U.S. at 574-78 --- Caselaw Access Project --- https://cite.case.law/us/477/561#p574
 ```
 
-You can also use [insert_links()](functions#insert_links) to insert the citations back into the source text as hyperlinks:
+You can also use [insert_links()](https://raindrum.github.io/citeurl/functions#insert_links) to insert the citations back into the source text as hyperlinks:
 
 ```python
 from citeurl import insert_links
@@ -129,7 +129,7 @@ print(output)
 # href="https://cite.case.law/us/477/561#p574">477 U.S. at 574-78</a>.
 ```
 
-Or, you can use [list_authorities](functions#list_authorities) to combine the citations into a list of authorities cited in the text, and see how often each one is cited:
+Or, you can use [list_authorities](https://raindrum.github.io/citeurl/functions#list_authorities) to combine the citations into a list of authorities cited in the text, and see how often each one is cited:
 
 ```python
 from citeurl import list_authorities
@@ -148,4 +148,4 @@ for authority in authorities:
 
 If you want to use CiteURL to recognize citations that aren't supported by its default library, you can create [custom citation schemas in YAML files](schema-yamls).
 
-For more information, see the documentation on the CiteURL module's [classes](classes) and [module-level functions](functions).
+For more information, see the documentation on the CiteURL module's [classes](https://raindrum.github.io/citeurl/classes) and [module-level functions](https://raindrum.github.io/citeurl/functions).
