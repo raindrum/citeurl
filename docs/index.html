@@ -139,9 +139,11 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
     
 
     <h1 id="getting-started">Getting Started</h1>
-<p>CiteURL is a tool to process legal citations in text. You can throw a court case at it and get a list of every citation in it, from <code>42 U.S.C. § 1983</code> to <code>Id. at § 1988(b)</code>. You can also use it to look up a URL to view the citation online, or insert those URLs as hyperlinks in the text.</p>
+<p>CiteURL is an extensible tool to process legal citations in text. It recognizes longform and shortform citations, subsections and pincites, and it can generate links to view them online. It can also create a list of all the authorities cited in a document, in order of how many times each citation occurs in the text.</p>
+<p>By default, CiteURL supports citations to U.S. court decisions, the U.S. Code and various other federal materials, plus California statutes. You can find the full list <a href="https://github.com/raindrum/citeurl/blob/master/citeurl/default-schemas.yml">here</a>. But you can also customize it to add support for more bodies of law by <a href="https://raindrum.github.io/citeurl/#schema-yamls/">writing your own citation schemas</a> in YAML format.</p>
+<p>For federal rules, regulations, and statutes, CiteURL's default set of schemas generates links to Cornell's <a href="https://www.law.cornell.edu/">Legal Information Institute</a>. For court cases, it uses Harvard's <a href="https://cite.case.law/">Caselaw Access Project</a>, though this will likely switch to <a href="https://www.courtlistener.com/">CourtListener</a> in a future version.</p>
 <h2 id="installation">Installation</h2>
-<p>Just run the following command:</p>
+<p>CiteURL has been tested with Python version 3.9, but earlier versions probably work. Install Python if you don't have it, then run this command:</p>
 <pre><code class="language-bash">python -m pip install citeurl
 </code></pre>
 <h2 id="frontends">Frontends</h2>
@@ -274,5 +276,5 @@ for authority in authorities:
 </html>
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2021-01-25 00:20:25.445897+00:00
+Build Date UTC : 2021-01-25 00:25:09.161926+00:00
 -->
