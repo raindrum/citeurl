@@ -214,10 +214,7 @@ class Authority:
         # Next, derive a base citation to represent this authority.
         # If the first_citation to this authority isn't a longform, use
         # whatever longform it's a child of.
-        try:
-            self.base_citation = self._derive_base_citation(long_cite)
-        except:
-            self.base_citation = first_cite
+        self.base_citation = self._derive_base_citation(long_cite)
         # Set other instance variables
         self.name: str = self.base_citation.text
         self.URL: str = self.base_citation.URL
@@ -285,10 +282,13 @@ class Authority:
             base_cite_text = base_cite_text.replace(old_value, new_value)
         # Default to strict matching, but fall back to broadRegex
         # if strict match doesn't exist. Don't default to broadRegex
-        # because it might not capture the full text
+        # because it might not capture the full text.
+        # If that still fails, just use the shortform.
         base_cite = self.schema.lookup(base_cite_text, broad=False)
         if not base_cite:
             base_cite = self.schema.lookup(base_cite_text, broad=True)
+        if not base_cite:
+            base_cite = self.citations[0]
         return base_cite
 
 

@@ -34,7 +34,7 @@
     - '(U\.? ?S\.? ?|United States) Const(itution|\.),? '
     - &us_const_art_am '([Aa]rt(icle|\.) (?P<article>[\dIViv]{1,3})|[Aa]m(endment|(end|dt?)?\.) (?P<amendment>[\dXIVxiv]{1,3}))'
     - (
-    - &us_const_sec '(,? ((&sect;|&#167|§){1,2}|Sect?(ions?|s?\.))? ?(?P<section>\d+))'
+    - &us_const_sec '(,? ((&sect;|&#167|§){1,2}|Sect?(ions?|s?\.)) ?(?P<section>\d+))'
     - (
     - &us_const_clause '(,? (cl(ause|\.) ?(?P<clause>[0-9]+)))'
     - )?)?
