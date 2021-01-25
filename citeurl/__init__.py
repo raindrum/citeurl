@@ -48,7 +48,7 @@ class Citation:
                 self.tokens[key] = val
         else:
             self.tokens: dict = match.groupdict()
-        self.processed_tokens = self.schema._process_tokens(self.tokens)
+        self.processed_tokens: dict = self.schema._process_tokens(self.tokens)
         self.URL: str = self._get_url()
     
     def __repr__(self):
@@ -308,7 +308,7 @@ class Citator:
         self,
         *yaml_paths,
         defaults: bool=True,
-        generic_id: str='\b(Ib)?[Ii]d\.(<\/(i|em|u)>)?'
+        generic_id: str=r"\b(Ib)?[Ii]d\.(<\/(i|em|u)>)?"
     ):
         """
         Calls load_yaml one or more times, to load the citator with

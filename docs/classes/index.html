@@ -125,7 +125,7 @@ the most-recently cited source.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="citeurl.Citator.__init__">
 
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">yaml_paths</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">generic_id</span><span class="o">=</span><span class="s1">'</span><span class="se">\x08</span><span class="s1">(Ib)?[Ii]d</span><span class="se">\\</span><span class="s1">.(&lt;</span><span class="se">\\</span><span class="s1">/(i|em|u)&gt;)?'</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">yaml_paths</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">generic_id</span><span class="o">=</span><span class="s1">'</span><span class="se">\\</span><span class="s1">b(Ib)?[Ii]d</span><span class="se">\\</span><span class="s1">.(&lt;</span><span class="se">\\</span><span class="s1">/(i|em|u)&gt;)?'</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -173,7 +173,7 @@ recognize a simple citation to the most-recently cited
 source. Detects "id." or "ibid." by default. To
 disable, set to None.</p>
 </td>
-<td><code>'\x08(Ib)?[Ii]d\\.(&lt;\\/(i|em|u)&gt;)?'</code></td>
+<td><code>'\\b(Ib)?[Ii]d\\.(&lt;\\/(i|em|u)&gt;)?'</code></td>
 </tr>
 </tbody>
 </table>
@@ -184,7 +184,7 @@ disable, set to None.</p>
     <span class="bp">self</span><span class="p">,</span>
     <span class="o">*</span><span class="n">yaml_paths</span><span class="p">,</span>
     <span class="n">defaults</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">generic_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">'</span><span class="se">\b</span><span class="s1">(Ib)?[Ii]d\.(&lt;\/(i|em|u)&gt;)?'</span>
+    <span class="n">generic_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="sa">r</span><span class="s2">"\b(Ib)?[Ii]d\.(&lt;\/(i|em|u)&gt;)?"</span>
 <span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Calls load_yaml one or more times, to load the citator with</span>
@@ -1164,7 +1164,7 @@ this includes tokens carried over from the parent citation.</p>
 </tr>
 <tr>
 <td><code>processed_tokens</code></td>
-<td><code></code></td>
+<td><code>dict</code></td>
 <td>
 <p>Dictionary of tokens after they have been
 modified via mutations and substitutions.</p>
@@ -1216,7 +1216,7 @@ by means other than a Citator or Schema object.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">processed_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">_process_tokens</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">processed_tokens</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">_process_tokens</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_url</span><span class="p">()</span>
 </code></pre>
 </div>
