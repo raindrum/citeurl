@@ -51,7 +51,7 @@ class Citation:
         self.processed_tokens: dict = self.schema._process_tokens(self.tokens)
         self.URL: str = self._get_url()
     
-    def __repr__(self):
+    def __str__(self):
         return self.text
     
     def _get_url(self) -> str:
@@ -240,7 +240,7 @@ class Authority:
                 return False
         return True
     
-    def __repr__(self):
+    def __str__(self):
         return self.name
     
     def _derive_base_citation(self, parent: Citation) -> Citation:
@@ -353,7 +353,7 @@ class Citator:
         id_forms: bool=True,
         id_break_regex: str=None,
         id_break_indices: list=[],
-    ) -> list[Citation]:
+    ) -> list:
         """
         Scan a text and return a list of all citations in it, in
         order of appearance.
@@ -460,7 +460,7 @@ class Citator:
             url_optional=url_optional
         )
         
-    def list_authorities(self, text: str) -> list[Authority]:
+    def list_authorities(self, text: str) -> list:
         """
         Convenience method to list all the authorities cited in a
         given text.
@@ -473,7 +473,7 @@ class Citator:
         citations = self.list_citations(text)
         return list_authorities(citations)
         
-    def __repr__(self):
+    def __str__(self):
         return str(self.schemas)
 
 
@@ -624,7 +624,7 @@ class Schema:
         # Extra data for shortform citations
         self.parent_citation: Citation = parent_citation
         
-    def __repr__(self):
+    def __str__(self):
         return self.name
     
     def lookup(
@@ -811,7 +811,7 @@ class Schema:
 
 
 def insert_links(
-    citations: list[Citation],
+    citations: list,
     text: str,
     attrs: dict={'class': 'citation'},
     link_detailed_ids: bool=True,
@@ -893,7 +893,7 @@ def _sort_key(citation):
 def list_authorities(
     citations: list,
     allow_token_differences: list=['subsec', 'pincite', 'clause']
-) -> list[Authority]:
+) -> list:
     """
     Combine a list of citations into a list of authorities, each
     of which represents all the citations to a particular source.

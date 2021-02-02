@@ -5,14 +5,14 @@ with open('README.md', 'r') as f:
 
 setuptools.setup(
     name='citeurl',
-    version='4.0.7',
+    version='4.0.8',
     description='an extensible tool to process legal citations in text',
     author='Simon Raindrum Sherred',
     author_email='simonraindrum@gmail.com',
     license='MIT',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/raindrum/citeurl",
+    url="https://raindrum.github.io/citeurl",
     packages=setuptools.find_packages(),
     entry_points={
         'console_scripts': ['citeurl=citeurl.__main__:main'],

@@ -119,7 +119,7 @@
 
 - name: Federal Rules of Civil Procedure
   regex:
-    - &frcp '(F\.? ?R\.? ?C\.? ?P\.?|Fed\.? R(\.?|ule) ?Civ\.? ?Pr?o?c?\.?|Federal Rules? of Civil Procedure)'
+    - &frcp '(F\.? ?R\.? ?C\.? ?P\.?|Fed\.? ?R(\.?|ule) ?Civ\.? ?Pr?o?c?\.?|Federal Rules? of Civil Procedure)'
     - &rule ' ?(Rule )?(?P<rule>\d+[a-z]?)'
     - *subsec
   broadRegex: [*frcp, *rule, *broadsub]
@@ -133,14 +133,14 @@
 
 - name: Federal Rules of Appellate Procedure
   regex:
-    - (F\.? ?R\.? ?A\.? ?P\.?|Fed\.? R(\.?|ule) ?App\.? ?Pr?o?c?\.?|Federal Rules? of Appellate Procedure)
+    - (F\.? ?R\.? ?A\.? ?P\.?|Fed\.? ?R(\.?|ule) ?App\.? ?Pr?o?c?\.?|Federal Rules? of Appellate Procedure)
     - *rule
   idForms: *id_rule_sub
   URL: https://www.law.cornell.edu/rules/frap/rule_{rule}
 
 - name: Federal Rules of Criminal Procedure
   regex:
-    - &frcrp '(F\.? ?R\.? ?Cr\.? ?P\.?|Fed\.? R(\.?|ule) ?Crim\.? ?Pr?o?c?\.?|Federal Rules? of Criminal Procedure)'
+    - &frcrp '(F\.? ?R\.? ?Cr\.? ?P\.?|Fed\.? ?R(\.?|ule) ?Crim\.? ?Pr?o?c?\.?|Federal Rules? of Criminal Procedure)'
     - *rule
     - *subsec
   idForms: *id_rule_sub
@@ -371,7 +371,7 @@
     - ' (?P<page>\d+)\b(,? (?P<pincite>\d+)([-–]\d+)?\b)?'
   idForms:
     - - *id_at
-      - &pincite (?P<pincite>\d+)(?!\d| [A-Z])([-–]\d+)?
+      - &pincite (p(age|pp?\.) ?)?(?P<pincite>\d+)(?!\d| [A-Z])([-–]\d+)?
   shortForms:
     - - '{volume} {reporter} at '
       - *pincite
