@@ -218,10 +218,15 @@ class Authority:
         # Set other instance variables
         self.name: str = self.base_citation.text
         self.URL: str = self.base_citation.URL
+        # finally, give the first citation a reference to this authority
+        first_cite.authority = self
     
     def include(self, citation):
-        """Adds the citation to this schema's list of citations."""
+        """Adds the citation to this schema's list of citations. Also,
+        adds the `authority` tag to the citation, referring back to this
+        authority."""
         self.citations.append(citation)
+        citation.authority = self
     
     def matches(self, citation) -> bool:
         """
@@ -897,6 +902,9 @@ def list_authorities(
     """
     Combine a list of citations into a list of authorities, each
     of which represents all the citations to a particular source.
+    
+    As a side-effect, this also gives each citation an `authority`
+    attribute referring to the proper authority.
     
     Arguments:
         citations: The list of citations to combine

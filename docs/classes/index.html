@@ -1434,6 +1434,8 @@ differ among citations to the same authority</p>
     <span class="c1"># Set other instance variables</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span><span class="o">.</span><span class="n">text</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span><span class="o">.</span><span class="n">URL</span>
+    <span class="c1"># finally, give the first citation a reference to this authority</span>
+    <span class="n">first_cite</span><span class="o">.</span><span class="n">authority</span> <span class="o">=</span> <span class="bp">self</span>
 </code></pre>
 </div>
 </details>
@@ -1447,13 +1449,18 @@ differ among citations to the same authority</p>
 
       </h3>
 <div class="doc doc-contents ">
-<p>Adds the citation to this schema's list of citations.</p>
+<p>Adds the citation to this schema's list of citations. Also,
+adds the <code>authority</code> tag to the citation, referring back to this
+authority.</p>
 <details class="quote">
           <summary>Source code in <code>citeurl/__init__.py</code></summary>
           <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">include</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citation</span><span class="p">):</span>
-    <span class="sd">"""Adds the citation to this schema's list of citations."""</span>
+    <span class="sd">"""Adds the citation to this schema's list of citations. Also,</span>
+<span class="sd">    adds the `authority` tag to the citation, referring back to this</span>
+<span class="sd">    authority."""</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">citations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">citation</span><span class="p">)</span>
+    <span class="n">citation</span><span class="o">.</span><span class="n">authority</span> <span class="o">=</span> <span class="bp">self</span>
 </code></pre>
 </div>
 </details>

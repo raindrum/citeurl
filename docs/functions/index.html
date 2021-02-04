@@ -232,6 +232,8 @@ do not have an associated URL</p>
 <div class="doc doc-contents first">
 <p>Combine a list of citations into a list of authorities, each
 of which represents all the citations to a particular source.</p>
+<p>As a side-effect, this also gives each citation an <code>authority</code>
+attribute referring to the proper authority.</p>
 <p><strong>Parameters:</strong></p>
 <table>
 <thead>
@@ -290,6 +292,9 @@ that refer to each, from most to least.</p>
     <span class="sd">"""</span>
 <span class="sd">    Combine a list of citations into a list of authorities, each</span>
 <span class="sd">    of which represents all the citations to a particular source.</span>
+
+<span class="sd">    As a side-effect, this also gives each citation an `authority`</span>
+<span class="sd">    attribute referring to the proper authority.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        citations: The list of citations to combine</span>
