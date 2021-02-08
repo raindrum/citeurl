@@ -5,6 +5,9 @@ This is a tool to detect legal citations in text, and generate relevant hyperlin
 # python standard imports
 from sys import stdin
 from argparse import ArgumentParser, SUPPRESS
+from tempfile import NamedTemporaryFile
+import webbrowser
+import time
 
 # internal imports
 from . import Citator
@@ -32,12 +35,11 @@ def main():
         help="the file to write to, rather than stdout",
     )
     action.add_argument(
-        "-l",
-        "--lookup",
+        "-l", "--lookup",
         action="store_true",
         help=(
-            "return URL for a single citation instead of inserting links"
-            + " into a body of text. Uses broader regex if available"
+            "look up first citation found in the text, instead of "
+            + "inserting links. Uses broader regex if available."
         ),
     )
     action.add_argument(
@@ -51,6 +53,16 @@ def main():
             "return list of all the authorities cited in the text, "
             + "with information about each one. If a number is given, "
             + "return only the X authorities with the most citations." 
+        )
+    )
+    parser.add_argument(
+        "-b", "--browse",
+        action="store_true",
+        help=(
+            "open the result in a browser. If the '-l' option is used, "
+            + "it will directly open the generated URL. Otherwise, it "
+            + "makes a temporary HTML file with the hyperlinked text, "
+            + "and opens that. Has no effect if paired with '-a'."
         )
     )
     parser.add_argument(
@@ -81,9 +93,14 @@ def main():
     )
     parser.add_argument(
         "-I",
-        "--no-link-ids",
-        action="store_true",
-        help="don't hyperlink citations like 'id. at 30'"
+        "--link-ids",
+        action="store",
+        type=str,
+        default='detailed',
+        choices=['all', 'detailed', 'none'],
+        help='which "id" citations to hyperlink. Options are "all", "none", '
+            + 'and "detailed". Defaults to detailed, which links "id. at 35" '
+            + 'but not "id."'
     )
     args = parser.parse_args()
         
@@ -112,36 +129,47 @@ def main():
     if args.lookup:
         citation = citator.lookup(text)
         if citation:
-            print(citation.text)
-            print("=" * len(citation.text))
-            print('Source: %s' % citation.schema)
+            key_lengths = [len(k) for k in citation.tokens.keys()]
+            tab_width = max(key_lengths) + 2
+            print('Source: '.ljust(tab_width) + str(citation.schema))
             for key, value in citation.tokens.items():
-                if not value: continue
-                print('%s: %s' % (key.title(), value))
-            print('URL: %s' % citation.URL)
+                if not value:
+                    continue
+                print(f'{key.title()}: '.ljust(tab_width) + value)
+            print('URL: '.ljust(tab_width) + citation.URL)
+            if args.browser:
+                webbrowser.open(citation.URL)
         else:
             print("Couldn't recognize citation.")
     elif args.authorities:
         authorities = citator.list_authorities(text)
-        if args.authorities != '-1':
+        if args.authorities != -1:
             authorities = authorities[:args.authorities]
+        outputs = []
         for authority in authorities:
-            #print("Authority: %s" % authority)
-            print(authority)
-            print("=" * len(str(authority)))
-            print("Citations: %s" % len(authority.citations))
+            output = f"Authority:  {authority}"
+            output += f"\nSource:     {authority.schema}"
             if authority.URL:
-                print("URL: %s" % authority.URL)
-            print()
+                output += "\nURL:        " + authority.URL
+            output += f"\nReferences: {len(authority.citations)}"
+            outputs.append(output)
+        print('\n\n'.join(outputs))
     else:
         out_text = citator.insert_links(
             text,
             attrs={'class': args.css_class} if args.css_class else [],
-            link_detailed_ids = not args.no_link_ids)
+            link_detailed_ids=False if args.link_ids == 'none' else True,
+            link_plain_ids=True if args.link_ids == 'all' else False)
         if args.output:
             with open(args.output, 'w') as f:
                 f.write(out_text)
-        else:
+        if args.browser:
+            with NamedTemporaryFile('r+', suffix='.html') as f:
+                f.write(out_text)
+                webbrowser.open('file://' + f.name)
+                f.seek(0)
+                time.sleep(2)
+        if not args.output and not args.browser:
             print(out_text)
 
 if __name__ == "__main__":

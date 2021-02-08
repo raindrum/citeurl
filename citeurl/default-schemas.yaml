@@ -7,27 +7,27 @@
     - &title '(Title )?(?P<title>\d+) '
     - &usc (U\.?|United) ?(S\.?|States) ?(C\.?|Code)( ?[AS]\.?)?
     - &section ' ((&sect;|&#167|§){1,2}|Sect?(ions?|s?\.))? ?(?P<section>(\d[\d.-]*\w|\d))'
-    - &subsec ( ?(?P<subsec>(\(\w+\))+))?
+    - &subsection ( ?(?P<subsection>(\(\w+\))+))?
   broadRegex:
     - *title
     - *usc
     - *section
-    - &broadsub ( ?(?P<subsec>(\(\w+\))+|((\w{1,5}) ?)+))?
+    - &broadsub ( ?(?P<subsection>(\(\w+\))+|((\w{1,5}) ?)+))?
   idForms: &id_sec_sub
     - - &id_at '\b[Ii]d\.,?(<\/(i|em|u)>)?(,? at ?)?'
       - *section
-      - *subsec
+      - *subsection
     - - *id_at
-      - &mandatory_subsec (?P<subsec>(\(\w+\))+)
+      - &mandatory_subsection (?P<subsection>(\(\w+\))+)
     - - (&sect;|&#167|§){1,2} ?(?P<section>[\d.-]*\w)
-      - *subsec
+      - *subsection
   mutations: &usc_sub
-    - token: subsec
+    - token: subsection
       splitter: \W
       joiner: _
   URL: &usc_url
     - https://www.law.cornell.edu/uscode/text/{title}/{section}
-    - '#{subsec}'
+    - '#{subsection}'
 
 - name: United States Constitution
   regex:
@@ -40,9 +40,10 @@
     - )?)?
   broadRegex: [*us_const_art_am, '(', *us_const_sec, '(', *us_const_clause, ')?)?']
   idForms:
+    - [*id_at, *us_const_art_am, '(', *us_const_sec, '(', *us_const_clause, ')?)?']
     - [*id_at, *us_const_sec, '(', *us_const_clause, ')?']
     - [*id_at, *us_const_clause]
-  shortForms: [[*us_const_art_am, *us_const_sec, '(', *us_const_clause, ')?']]
+  shortForms: [[*us_const_art_am, '(', *us_const_sec, '(', *us_const_clause, ')?)?']]
   mutations:
     - token: article
       case: lower
@@ -89,34 +90,34 @@
     - *title
     - &cfr (C\.? ?F\.? ?R\.?|Code of Federal Regulations)( [Pp]arts?| [Pp]ts?\.)?
     - *section
-    - *subsec
+    - *subsection
   idForms: *id_sec_sub
   broadRegex: [*title, *cfr, *section, *broadsub]
   mutations: *usc_sub
   URL: &cfr_url
     - https://www.law.cornell.edu/cfr/text/{title}/{section}
-    - '#{subsec}'
+    - '#{subsection}'
 
 ####################################################
 # FEDERAL RULES
 ####################################################
 # These are all drawn from the Cornell website. Only
-# some of them support subsections, and others are a
+# some of them support subsectiontions, and others are a
 # bit spotty, due to limitations with the Cornell site.
 
 - name: Federal Rules of Civil Procedure
   regex:
     - &frcp '(F\.? ?R\.? ?C\.? ?P\.?|Fed\.? ?R(\.?|ule) ?Civ\.? ?Pr?o?c?\.?|Federal Rules? of Civil Procedure)'
     - &rule ' ?(Rule )?(?P<rule>\d+[a-z]?)'
-    - *subsec
+    - *subsection
   broadRegex: [*frcp, *rule, *broadsub]
   idForms: &id_rule_sub
-    - [*id_at, *rule, *subsec]
-    - [*id_at, *mandatory_subsec]
+    - [*id_at, *rule, *subsection]
+    - [*id_at, *mandatory_subsection]
   mutations: *usc_sub
   URL:
     - https://www.law.cornell.edu/rules/frcp/rule_{rule}
-    - '#rule_{rule}_{subsec}'
+    - '#rule_{rule}_{subsection}'
 
 - name: Federal Rules of Appellate Procedure
   regex:
@@ -126,14 +127,14 @@
   URL: https://www.law.cornell.edu/rules/frap/rule_{rule}
 
 - name: Federal Rules of Criminal Procedure
-  regex: [&frcrp '(F\.? ?R\.? ?Cr\.? ?P\.?|Fed\.? ?R(\.?|ule) ?Crim\.? ?Pr?o?c?\.?|Federal Rules? of Criminal Procedure)', *rule, *subsec]
+  regex: [&frcrp '(F\.? ?R\.? ?Cr\.? ?P\.?|Fed\.? ?R(\.?|ule) ?Crim\.? ?Pr?o?c?\.?|Federal Rules? of Criminal Procedure)', *rule, *subsection]
   idForms: *id_rule_sub
   broadRegex: [*frcrp, *rule, *broadsub]
   mutations: *usc_sub
   URL:
     - https://www.law.cornell.edu/rules/frcrmp
     - /rule_{rule}
-    - '#rule_{rule}_{subsec}'
+    - '#rule_{rule}_{subsection}'
 
 - name: Federal Rules of Evidence
   regex:
@@ -151,7 +152,7 @@
 # where applicable (and implemented).
 
 - name: Immigration and Nationality Act
-  regex: [&ina '(I\.? ?N\.? ?A\.?|Immigration and Nationality Act)', *section, *subsec]
+  regex: [&ina '(Immigration ([Aa]nd|&) Nationality Act|I\.? ?N\.? ?A\.?)', *section, *subsection]
   broadRegex: [*ina, *section, *broadsub]
   idForms: *id_sec_sub
   mutations: *usc_sub
@@ -163,9 +164,9 @@
 
 - name: Internal Revenue Code
   regex:
-    - &irc 'I\.? ?R\.? ?C\.?'
+    - &irc '(Internal Revenue Code|I\.? ?R\.? ?C\.?)'
     - *section
-    - *subsec
+    - *subsection
   broadRegex: [*irc, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {'title': '26'}
@@ -173,7 +174,7 @@
   URL: *usc_url
 
 - name: Treasury Regulations
-  regex: [&treasreg 'Treas\.? ?Reg\.?', *section, *subsec]
+  regex: [&treasreg 'Treas(ury|\.?) ?Reg(ulations?|\.?)', *section, *subsection]
   broadRegex: [*treasreg, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {'title': '26'}
@@ -182,9 +183,9 @@
 
 - name: National Labor Relations Act
   regex:
-    - &nlra N\.? ?L\.? ?R\.? ?A\.?
+    - &nlra (Natioanal Labor Relations Act|N\.? ?L\.? ?R\.? ?A\.?)
     - *section
-    - *subsec
+    - *subsection
   broadRegex: [*nlra, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {'title': '29'}
@@ -203,7 +204,7 @@
   URL: https://www.nlrb.gov/cases-decisions/decisions/board-decisions?search_term=&volume={volume}&slip_opinion_number={slip}
 
 - name: Endangered Species Act
-  regex: [&esa 'E\.? ?S\.? ?A\.?', *section, *subsec]
+  regex: [&esa '(Endangered Species Act|E\.? ?S\.? ?A\.?)', *section, *subsection]
   broadRegex: [*esa, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {'title': '16'}
@@ -217,7 +218,7 @@
   regex:
     - &caa C\.? ?A\.? ?A\.?
     - *section
-    - *subsec
+    - *subsection
   broadRegex: [*caa, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {'title': '42'}
@@ -229,9 +230,9 @@
 
 - name: Clean Water Act
   regex:
-    - &cwa C\.? ?W\.? ?A\.?
+    - &cwa (Clean Water Act|C\.? ?W\.? ?A\.?)
     - *section
-    - *subsec
+    - *subsection
   broadRegex: [*cwa, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {'title': '33'}
@@ -243,9 +244,9 @@
 
 - name: Fair Housing Act
   regex:
-    - &fha F\.? ?h\.? ?A\.?
+    - &fha (Fair Housing Act|F\.? ?h\.? ?A\.?)
     - *section
-    - *subsec
+    - *subsection
   broadRegex: [*fha, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {'title': '42'}
@@ -257,9 +258,9 @@
 
 - name: Americans With Disabilities Act
   regex:
-    - &ada A\.? ?D\.? ?A\.?
+    - &ada (Americans [Ww]ith Disabilities Act|A\.? ?D\.? ?A\.?)
     - *section
-    - *subsec
+    - *subsection
   broadRegex: [*ada, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {'title': '42'}
@@ -275,13 +276,13 @@
 
 - name: Uniform Commercial Code
   regex:
-    - &ucc '(U\.? ?C\.? ?C\.?|Uniform Commercial Code)( ?§)? (?P<article>\d[a-z]?)\W+(?P<section>\d+)'
-    - *subsec
+    - &ucc '(Uniform Commercial Code|U\.? ?C\.? ?C\.?)( ?§)? (?P<article>\d[a-z]?)\W+(?P<section>\d+)'
+    - *subsection
   broadRegex: [*ucc, *broadsub]
   mutations: *usc_sub
   URL:
     - https://www.law.cornell.edu/ucc/{article}/{article}-{section}
-    - '#{article}-{section}{subsec}'
+    - '#{article}-{section}{subsection}'
 
 ####################################################
 # STATE LAW
@@ -294,27 +295,46 @@
   regex:
     - ((CAL|Cal)\.?|California) (?P<code>.{2,40}?)\.?( Code)?
     - *section
+    - *subsection
   mutations:
     - token: code
       case: upper
   substitutions:
     - token: code
+      outputToken: codeAcronym
       useRegex: true
       index: {'Bus(iness|\.) (and|&) Prof(essions|s?)|B\.? ?& ?P\.?|BPC':'BPC', 'Civil|CIV':'CIV', 'Code( of)? (Civil Procedure|Civ\. ?P(roc?)?\.)|CCP':'CCP', 'Commercial|Comm?\.|COM':'COM', 'Education|EDU?C':'EDC', 'Elections|ELEC':'ELEC', 'Evidence|EVID':'EVID', 'Family|FAM':'FAM', 'Financial|FIN':'FIN', 'Fish (and|&) Game|FGC|F&G':'FGC', 'Food (and|&) Agricultural|FAC':'FAC', 'Government|GOV':'GOV', 'Harbors (and|&) Navigation|HNC|H&N':'HNC', 'Health (and|&) Safety|HSC|H&S':'HSC', 'Insurance|INS':'INS', 'Labor|LAB':'LAB', 'Military (and|&) Veterans|MVC|M&V':'MVC', 'Penal|PEN':'PEN', 'Probate|PROB':'PROB', 'Public Contract|PCC':'PCC', 'Public Resources|PRC':'PRC', 'Pub(lic|\.) Util(ities|s?)|PUC':'PUC', 'Revenue (and|&) Taxation|RTC|R&T':'RTC', 'Streets (and|&) Highways|SHC|S&H':'SHC', 'Unemp(loyment|\.) Ins(urance|(ur)?)|UIC':'UIC', 'Vehic(le)?|VEH':'VEH', 'Water|WAT':'WAT', 'Welfare (and|&) Institutions|WIC':'WIC'}
   idForms: *id_sec_sub
-  URL: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode={code}&sectionNum={section}
+  shortForms:
+    - ['{codeAcronym}', *section, *subsection]
+    - ['{code}( Code)?', *section, *subsection]
+  URL: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode={codeAcronym}&sectionNum={section}
 
 - name: Delaware General Corporations Law
   regex:
-    - (D\.? ?G\.? ?C\.? ?L\.?|Del(aware|\.) ?Gen(eral|\.) ?Corp(orations?|\.) ?L(aw|\.))
+    - (D\.? ?G\.? ?C\.? ?L\.?|Del(aware|\.) ?Gen(eral|\.) ?Corp(orations?|s?\.) ?L(aw|\.))
     - *section
-    - *subsec
+    - *subsection
+  idForms: *id_sec_sub
   substitutions:
     - token: section
-      outputToken: subchap
+      outputToken: subchapter
       useRegex: true
       index: {'1[01]\d': '01', '12\d': '02', '13\d': '03', '14\d': '04', '1[5-7]\d': '05', '20\d': '06', '2[1-3]\d': '07', '24\d': '08', '2[56]\d': '09', '2[78]\d': '10', '29\d|30\d': '11', '31\d': '12', '3[23]\d': '13', '3[45]\d': '14', '36\d': '15', '37\d|38[0-5]': '16', '38[89]|390': '17', '39[1-9]': '18'}
-  URL: https://delcode.delaware.gov/title8/c001/sc{subchap}/index.shtml#{section}
+  URL: https://delcode.delaware.gov/title8/c001/sc{subchapter}/index.shtml#{section}
+
+- name: Consolidated Laws of New York
+  regex: ['(New York|N\.? ?Y\.?) (?P<chapter>.{2,40}?)\.?( Law)?', *section, *subsection]
+  idForms: *id_sec_sub
+  shortForms:
+    - ['{chapterAcronym}', *section, *subsection]
+    - ['{chapter}( Law)?', *section, *subsection]
+  substitutions:
+    - token: chapter
+      outputToken: chapterAcronym
+      useRegex: true
+      index: {'Abandoned Property|ABP':'ABP', 'Agriculture (and|&) Markets|AGM|A&M', 'Alcoholic Beverage Control|ABC':'ABC', 'Alternative County Government|ACG':'ACG', 'Arts (and|&) Cultural Affairs|ACA':'ACA', 'Banking|BNK':'BNK', 'Benevolent Orders|BVO':'BVO', 'Bus(iness|\.) Corp(orations?|s?)|BSC':'BSC', 'Canal|CAL':'CAL', 'Civil Practice Law (and|&) Rules|CVP':'CVP', 'Civ(il|\.) Service|CIV':'CIV', 'Coop(erative|\.) Corp(orations|s?)|CCO':'CCO', 'Correction|COR':'COR', 'County|CNT':'CNT', 'Crim(inal|\.) Pro(cedure|c?)|CPL':'CPL', 'Debtor (and|&) Creditor|DCD':'DCD', 'Domestic Relations|DOM':'DOM', 'Econ(omic|\.) Dev(elopment|\.)|COM':'COM', 'Education|EDN':'EDN', 'Elder|ELD':'ELD', 'Election|ELN':'ELN', 'Eminent Domain Procedure|EDP':'EDP', "Employer(s'?)? Liability|EML":'EML', 'Energy|ENG':'ENG', 'Env(ironmental|\.) Cons(ervation)?|ENV':'ENV', 'Estates, Powers (and|&) Trusts|EPT':'EPT', 'Exec(utive|\.)|EXC':'EXC', 'Fin(ancial|\.) Serv(ices|s?)|FIS':'FIS', 'Gen(eral|\.) Associations|GAS':'GAS', 'Gen(eral|\.) Business|GBS':'GBS', 'Gen(eral|\.) City|GCT':'GCT', 'Gen(eral|\.) Construction|GCN':'GCN', 'Gen(eral|\.) Mun(icipal|\.)|GMU':'GMU', 'Gen(eral|\.) Obligations|GOB':'GOB', 'Highway|HAY':'HAY', 'Indian|IND':'IND', 'Judiciary|JUD':'JUD', 'Legislative|LEG':'LEG', 'Lien|LIE':'LIE', 'Limited Liability Company|LLC':'LLC', 'Local Finance|LFN':'LFN', 'Mental Hygeine|MHY':'MHY', 'Military|MIL':'MIL', 'Multiple Dwelling|MDW':'MDW', 'Multiple Residence|MRE':'MRE', 'Mun(icipal|\.) Home Rule|MHR':'MHR', 'Mun(icipal|i?\.) Housing Authorities|MHA':'MHA', 'Navigation|NAV':'NAV', '(State )?Print(ing|\.)? (and|&) Pub(lic|\.) Doc(uments|s?)|PPD':'PPD', 'Parks, Rec(reation|\.) (and|&) Hist(oric|\.) Preservation|PAR':'PAR', 'Partnership|PTR':'PTR', 'Penal|PEN':'PEN', 'Personal Property|PEP':'PEP', 'Private Housing Fin(ance)?|PVH':'PVH', 'Pub(lic|\.) Auth(orities)?|PBA':'PBA', 'Pub(lic|\.) Health|PBH':'PBH', 'Pub(lic|\.) Housing|PBG':'PBG', 'Pub(lic|\.) Officers|PBO':'PBO', 'Racing, Pari-Mutuel Wagering (and|&) Breeding|PML':'PML', 'Railroad|RRD':'RRD', 'Rapid Trans(it)?|RAT':'RAT', 'Real Property Actions (and|&) Proceedings':'ngs', 'Real Property Tax|RPT':'RPT', 'Real Property|RPP':'RPP', 'Religious Corp(orations|s)|RCO':'RCO', 'Retirement (and|&) Soc(ial|\.) Security|RSS':'RSS', 'Rural Elec(tric|\.) Coop(eratives?)?|REL':'REL', 'Second Class Cities|SCC':'SCC', 'Soil (and|&) Water Conservation Districts|SWC':'SWC', 'State Administrative Procedure Act|SAP':'SAP', 'State Finance|STF':'STF', 'State|STL':'STL', 'Statute of Local Gov(ernments|s?)|SLG':'SLG', 'Town|TWN':'TWN', 'Trans(portation|p?\.) Corp(orations|s?)|TCP':'TCP', 'Transportation|TRA':'TRA', 'Uniform Commercial Code|UCC':'UCC', 'Village|VIL':'VIL', "Volunteer Ambulance Workers'? Benefit|VAW":'VAW', "Volunteer Firefighters'? Benefit|VOL"}
+  URL: https://www.nysenate.gov/legislation/laws/{chapterAcronym}/{section}
 
 ####################################################
 # COURT CASES
@@ -326,7 +346,7 @@
 - name: Caselaw Access Project
   regex:
     - '(?<=\b)(?P<volume>\d+) '
-    - (?P<reporter>Abb\. Ct\. App\.|Abb\.N\. Cas\.|Abb\. Pr\.|Abb\. Pr\. \(n\.s\.\)|Va\. \(Va\. Cas\.\)|Adams Co\. L\.J\.|Add\.|Dallam|Franklin Co\. Legal J\.|Aik\.|Ala\. App\.|Ala\.|Alaska Fed\.|Alaska|Am\. Samoa|Am\. Samoa 2d|Am\. Samoa 3d|Ohio App\. Unrep\.|Ant\. N\.P\. Cas\.|A\.D\.2d|A\.D\.|A\.D\.3d|Ky\. \(Hughes\)|Ariz\. App\.|Ariz\.|Ark\. App\.|Ark\.|Armstrong\. Election Cases|A\.|Balt\. C\. Rep\.|Barb\. Ch\.|Barb\.|B\. Co\. Leg\. J\.|Berk's Co\. L\.J\.\.|Blackf\.|Blair Co\. L\.R\.|Blair Co\. L\.R\. 2d|Bosworth Super\. Ct\. Rep\.|Bradford Co\. L\.J\.|Brad\.|Brayt\.|Bucks Co\. L\.R\.|Bur\.|Bur\.|Butler Co\. Legal J\.|E\.D\. Pa\.|Cai\. Cas\.|Cai\.|Cal\. App\.|Cal\. App\. 5th|Cal\. App\. 4th|Cal\. App\. 2d|Cal\. App\. 3d|Cal\. 3d|Cal\. 4th|Cal\.|Cal\. 2d|Cal\. Super\. Ct\.|Cal\. Unrep\.|Cambria Co\. L\.J\.|Cambria Co\. Rep\.|Carbon Co\. L\.J\.|N\.C\. \(Car\. L\. Rep\.\)|N\.J\. \(Manumission\)|S\.C\.L\. \(McMul\.\)|S\.C\.L\. \(Chev\.\)|Tapp\. Rep\.|D\. Pa\.|Ohio|S\.C\. Eq\. \(Chev\. Eq\.\)|Monaghan|Sadler|Ky\. \(Litt\. Sel\. Cas\.\)|C\.C\.L\.J\.|C\.C\.L\.J\. 2d|S\.C\. Eq\. \(McCord Eq\.\)|S\.C\. Eq\. \(Ril\. Eq\.\)|Chand\.|Charlton Rep\.|Ches\. Co\. Rep\.|D\. Chip\.|N\. Chip\.|Mun\.  L\. Rep\.|Hosea's Rep\.|N\.Y\. City Ct\. Rep\.|Cl\. Ch\.|Cole\. & Cai\. Cas\.|Cole\. Cas\.|Colo\. App\.|Colo\. L\. Rep\.|Colo\. N\. P\.|Colo\.|Willson|White & W\.|N\.C\. \(Cam\. & Nor\.\)|King's Conflicting Cases|Conn\. App\.|Conn\. Cir\. Ct\.|Kirby|Root|Conn\.|Conn\. Supp\.|Connoly Sur\. Rep\.|Ct\. Cl\.|C\.C\.P\.A\.|Ct\. Cust\.|Cow\.|Craw\. Co\. Leg\. J\.|Cumberland L\.J\.|Cust\. B\. & Dec\.|Dakota|Dallam|Dall\.|Daly \(N\.Y\.\)|Dau\. Co\. Rep\.|Day|T\.C\.A\.|P\.R\. Dec\.|Teiss\.|Va\. Ch\. Dec\.|Ky\. \(Sneed\)|Pears\.|Smith|Ga\. Super\. Ct\.|Georgia Decisions|C\.M\.A\.|Del\. Cas\.|Del\. Ch\.|Del\. Co\. Reps\.|Del\. \(Harr\.\)|Del\. \(Penne\.\)|Del\. \(Boyce\)|Del\. \(Marv\.\)|Del\. \(Houst\.\)|Del\.|Dem\. Sur\.|Denio|Docket|Dudley Rep\.|Duer Super\. Ct\. Rep\.|Edm\. Sel\. Cas\.|E\.D\. Smith|Edw\. Ch\.|S\.C\. Eq\. \(McMul\. Eq\.\)|S\.C\. Eq\. \(Speers Eq\.\)|Erie\. Co\. L\.J\.|P\.R\. Sent\.|Fay\. L\.J\.|F\. Cas\.|Fed\. Cl\.|F\.|F\. ?2d|F\. ?3d|F\.R\.D\.|F\. ?Supp\.( ?[23]d)?|Fla\.|Fla\. Supp\.|Fla\. Supp\. 2d|Ga\. App\.|Ga\. L\. Rep\.|Ga\.|Gault|Gibb\. Surr\.|Guam|Hall Super\. Ct\. Rep\.|H\. & G\.|Haw\. App\.|Haw\.|Haz\. Pa\. Reg\.|Va\. \(Hen\. & M\.\)|Hill & Den\.|Hill|Hilt\.|Hoff\. Ch\.|Hopk\. Ch\.|How\. App\. Cas\.|How\. Pr\.|How\. Pr\. \(n\.s\.\)|Idaho|Ill\. App\.|Ill\. App\. 2d|Ill\. App\. 3d|Ill\. Cir\. Ct\. Rep\.|Ill\. Ct\. Cl\.|Ill\. \(Scam\)|Ill\. \(Breese\)|Ill\. \(Gilm\.\)|Ill\.|Ill\. 2d|Ind\. App\.|Ind\. L\. Rep\.|Ind\.|Indian Terr\.|Iowa|Jeff\.|Johns\. Cas\.|Johns\. Ch\.|Johns\.|Jones and Spencer's Super\. Ct\. Rep\.|Edsall|Pa\. \(Admiralty\)|Kan\. App\. 2d|Kan\.|Ky\. \(A\.K\. Marsh\.\)|Ky\. Op\.|Ky\.|Keyes|Lack\. Bar\. R\.|Lack\. Bar  R\.|Lack\. Jur\.|Lack\. L\. N\.|Lack\. L\.R\.|Lanc\. Bar|Lanc\. L\. Rev\.|Lans\. Ch\.|Lans\.|Law\. L\.J\.|Law Times|Law Times \(N\.S\.\)|Lebanon Co\. L\.J\.|Foster|Leg\. Gaz\.|Leg\. Gaz\.|Pa\. Leg\. Gaz\.|Gunby|Leg\. Rec\. Rep\.|Lehigh Co\. L\.J\.|Lehigh Val\. L\. Rep\.|Liquor Tax Rep\.|Lock\. Rev\. Cas\.|La\. Ann\.|La\. App\.|La\.|La\.|Luz\. L\.J\.|Luz\. L\.O\.|Luz\. Leg\. Reg\.|Luz\. Leg\. Reg\.|Lycoming R\.|Magis\. & Const\.|Me\.|McGrath|N\.C\. \(Mart\.\)|Mart\. \(n\.s\.\)|Mart\. \(o\.s\.\)|Md\. App\.|Md\.|H\. & McH\.|Mass\. \(Allen\)|Mass\. App\. Ct\.|Mass\. App\. Dec\.|Davis L\. Ct\. Cas\.|Davis L\. Ct\. Cas\.|Mass\. \(Cush\)|Mass\. \(Pick\.\)|Mass\. \(Gray\)|Mass\. \(Tyng\)|Mass\. \(Will\.\)|Mass\. \(Met\.\)|Mass\.|Mass\. Supp\.|Mercer|Mich\. App\. |Howell N\.P\.|Mich\.|M\.C\.L\.J\.|Mills Surr\.|Minn\.|Minor|Va\.|Miss\. Ct\. Rec\.|Miss\. Dec\.|Miss\. \(Walker\)|Miss\.|Miss\. \(Howard\)|Miss\. \(S\. & M\.\)|Mor\. St\. Cas\.|Mo\. App\.|Mo\.|Monroe L\.R\.|Mont\.|Mont\. Co\. L\. Rep\.|Navajo Rptr\.|Neb\. App\.|Neb\.|Nev\.|N\.H\.|N\.J\. Eq\.|N\.J\.L\.|N\.J\. Misc\.|N\.J\.|N\.J\. Super\.|N\.J\. Tax Ct\.|N\.M\.|N\.M\.|N\.Y\. Crim\.|Misc\.2d|Misc\.3d|Misc\.|N\.Y\. 2d|N\.Y\.|N\.Y\.3d|N\.Y\. St\. Rptr\.|Northam\. Law Rep\.|N\.C\. App\.|N\.C\.|N\.C\. \(Busb\. Eq\)|N\.C\. \(Busb\.\)|N\.C\. \(Dev\. & Bat\. Eq\.\)|N\.C\. \(Dev\. & Bat\.\)|N\.C\. \(Dev\. Eq\.\)|N\.C\. \(Dev\.\)|N\.C\. \(Hawks\)|N\.C\. \(Hayw\.\)|N\.C\. \(Ired\. Eq\.\)|N\.C\. \(Ired\.\)|N\.C\. \(Jones Eq\.\)|N\.C\. \(Jones\)|N\.C\. \(Mur\.\)|N\.C\. \(Phil\. Eq\.\)|N\.C\. \(Phil\.\)|N\.C\. \(Tay\.\)|N\.C\. \(Win\.\)|N\.D\.|N\.E\.|N\.E\.2d|N\.E\.3d|N\. Mar\. I\. Commw\.|N\. Mar\. I\.|Northum\. Co\. Leg\. N\.|Northumb\. L\.J\.|N\.W\.|N\.W\.2d|Ohio App\.|Ohio App\. 2d|Ohio App\. 3d|Ohio C\.C\. Dec\.|Ohio C\.C\. \(N\.S\.\)|Ohio Cir\. Dec\.|Ohio Ct\. App\.|Ohio Misc\.|Ohio Misc\. 2d|Ohio Nisi Prius|Ohio Nisi Prius \(N\.S\.\)|Ohio Op\. 2d|Ohio Op\. 3d|Ohio Op\.|Ohio St\.|Ohio St\. \(n\.s\.\)|Ohio St\. 2d|Ohio St\. 3d|Okla\. Crim\.|Okla\.|Olwine's L\.J\.|Or\.|Or\. App\.|Or\. Tax|P\.|P\.2d|P\.3d|Paige Ch\.|Park\. Crim\. Rep\.|Pelt\.|Pa\. L\. Rec\.|Pa\. Commw\.|Pa\. Corp\. R\.|Pa\. Co\. Ct\.|Pa\. D\. & C\. 2d|Pa\. D\. & C\.|Pa\. D\. & C\. 3d|Pa\. D\. & C\. 5th|Pa\. D\. & C\. 4th|Pa\. Fid\.|Pa\. Fid\. 2d|Pa\. Fid\. 3d|Pa\. Just\. L\. Rep\.|Pa\. L\.J\. Rep\.|Pa\.|Pa\. Super\. Ct\.|Pennyp\.|Phila\. Co\. R\.|Phila\. Reports|Pin\.|Pittsb\. L\.J\.|Pitts\. R\.|Port\.|P\.R\. Fed\.|Pow\. Surr\.|Mich\. Pr\.|Singer Prob\. Cas\.|N\.Y\. Proc\. Ct\. Ass\.|P\.R\.|Rec\. Q\. Ct\.|Rec\. Ct\. Assistants|Rec\. Co\. Ch\. \(S\.C\.\)|Rec\. Ct\. Gen\. Sess\.|Rec\. Bucks\. Co\. \(Pa\.\)|Rec\. T\. Warwick \(R\.I\.\)|Rec\. Ct\. Ches\. Co\. Pa\.|Rec\. Co\. Ct\.|Rec\. V\.A\. Ct\. \(R\.I\.\)|Redf\.|S\.C\.L\. \(Ril\.\)|Ct\. Cl\.|Mich\. Ct\. Cl\.|App\. D\.C\.|Bro\. Com\. P\.|Ashm\. \(Pa\.\)|Conn\. Super\. Ct\.|Conn\. Super\. Ct\.|Disney \(Ohio\)|Binn\.|Pen\. & W\.|Rawle|Serg\. & Rawl\.|Watts & Serg\.|Whart\.|Yeates|S\.C\. Eq\. \(Des\.Eq\.\)|Ky\. \(Hard\.\)|Handy|Super\. Ct\. Jud\.|Tenn\. \(Hayw\.\)|Grant|D\.C\. \(MacArth\. & M\.\)|D\.C\. \(Tuck\. & Cl\.\)|Jahn|S\.C\.L\. \(Strob\.\)|Gill|G\. & J\.|S\.C\. Eq\. \(Dud\. Eq\.\)|S\.C\.L\. \(Bail\.\)|N\.Y\.|Walk\. Ch\.|Tenn\. Crim\. App\.|H\. & J\.|Wilson|Miss\. \(S\. & M\. Ch\.\)|S\.C\.L\. \(Bay\)|Morris|Watts|Tenn\. \(Mart\. & Yer\.\)|Tenn\. \(Cold\.\)|Tenn\. \(Heisk\.\)|Tenn\. \(Yer\.\)|Tenn\. \(Head\)|Tenn\. \(Meigs\)|Tenn\. \(Hum\.\)|D\.C\.|D\.C\. \(MacArth\.\)|D\.C\. \(Mackey\)|Doug\.|Ark\. Terr\. Rep\.|McGl\.|D\.C\. \(patent\)|Ky\. \(Bibb\)|Ky\. \(Litt\.\)|Ky\. \(T\.B\. Mon\.\)|Ky\. \(B\. Mon\.\)|Wright|Ohio Ch\.|Ky\. \(J\.J\. Marsh\.\)|S\.C\.L\. \(Speers\)|S\.C\.L\. \(Rich\.\)|S\.C\.L\. \(Rice\)|S\.C\.L\. \(Rich\.\)|S\.C\.L\. \(Dud\.\)|S\.C\.L\. \(Hill\)|Hay\. & Haz\.|D\.C\. Cir\.|D\.C\. \(Cranch\)|Brightly|Walker|Ind\. App\.|Kan\. App\.|Md\. Ch\.|Md\. Ch\.|Freem\. Ch\.|Wilcox|S\.C\.L\. \(McCord\)|S\.C\.L\. \(Nott & McC\.\)|S\.C\.L\. \(Harp\.\)|Harr\. Ch\.|Miles|Cal\. Dist\. Ct\.|McCahon|S\.C\. Eq\. \(Rice Eq\.\)|S\.C\. Eq\. \(Rich\. Eq\.\)|S\.C\. Eq\. \(Hill Eq\.\)|S\.C\. Eq\. \(Rich\. Eq\.\)|S\.C\. Eq\. \(Rich\. Cas\.\)|S\.C\. Eq\. \(Strobh\. Eq\.\)|S\.C\. Eq\. \(Bail\. Eq\.\)|Greene|Myrick|D\. Haw\.|Rep\. Cont\. Elect\. Case\.|Rep\. Cont\. El\.|Howison|Coffey|Charlton|S\.C\. Eq\. \(Harp\. Eq\.\)|Brewster|S\.C\.L\. \(Mill\)|S\.C\.L\. \(Tread\.\)|S\.C\.L\. \(Brev\.\)|Mass\. App\. Div\.|Mass\. App\. Div\.|Goebel|Ky\. \(Dana\)|Ky\. \(Duv\.\)|Ky\. \(Met\.\)|Ky\. \(Bush\)|Vaux|Tenn\. \(Swan\)|Tenn\. \(Sneed\)|Bradf\.|T\.C\.|B\.T\.A\.|R\.I\. Ct\. Rec\.|R\.I\. Dec\.|R\.I\.|Super\. Ct\. \(R\.I\.\)|Robertson's Super\. Ct\. Rep\.|Rob\.|Sand\. Ch\.|Sandford Super\. Ct\. Rep\.|Sarat\. Ch\. Sent\.|Schuy\. L\. Rec\.|Schuy\. Reg\.|Seld\. Notes|Yates|Parsons|Sick\. Op\. Att'y Gen\.|Silv\. Ct\. App\.|Silv\. Sup\.|Smith|Som\. L\.J\.|S\.C\.|S\.D\.|S\.E\.|S\.E\.2d|So\.|So\.2d|So\.3d|S\.W\.|S\.W\.2d|S\.W\.3d|Stew\.|Stew\. & P\.|S\.C\.D\.C\. \(N\.S\.\)|N\.Y\. Sup\. Ct\.|Susq\. Leg\. Chron\.|Sweeney Super\. Ct\. Rep\.|Robards|N\.C\. \(Taylor\)|La\. App\. \(Teiss\.\)|Tenn\. App\.|Tenn\. Cas\.|Tenn\. Ch\. R\.|Tenn\.|Tenn\. \(Peck\)|Tenn\. \(Cooke\)|Tenn\. \(Overt\.\)|Tex\. Civ\. App\.|Tex\. Ct\. App\.|Tex\. Crim\.|Tex\. L\. R\.|Tex\.|Posey|N\.J\. \(Burlington County Ct\.\)|Cin\. Sup\. Ct\. Rep\.|Com\. Pl\. Rep\.|Pa\. Dist\.|Mass\. Law Rep\.|Mich\. N\.P\. R\.|Westchester|Ohio Law Abs\.|Ohio L\.R\.|Ald\.|Thomp\. & Cook|Blume Sup\. Ct\. Trans\.|Trans\. App\.|Tuck\. Surr\.|Tyl\.|Cl\. Ct\.|U\.S\. App\. D\.C\.|Ct\. Int'l Trade|Cust\. Ct\.|U\.S\.|U\.S\. \(Black\)|U\.S\. \(Cranch\)|U\.S\. \(Dall\.\)|U\.S\. \(How\.\)|U\.S\. \(Pet\.\)|U\.S\. \(Wall\.\)|U\.S\. \(Wheat\.\)|Mann\. Unrep\. Cas\.|Blume Unrep\. Op\.|Unrep\. Tenn\. Cas\.|Cal\.|Utah|Utah 2d|Vt\.|Va\. Cir\.|Va\. Col\. Dec\.|Va\. App\.|Va\. Dec\.|Va\. \(Rand\.\)|Va\. \(Munf\.\)|Va\. \(Wash\.\)|Va\.|Va\. \(Gratt\.\)|Va\. \(Gilmer\)|Va\. \(Call\)|Va\. \(Patt\. & Heath\)|Va\. \(Rob\.\)|Va\. \(Leigh\)|V\.I\.|Wash\. App\.|Wash\. Co\.\(Pa\.\)|Wash\.|Wash\. 2d|Wash\. Terr\.|Week\. No\. Cas\. \(Pa\.\)|Wend\.|Wes\. C\.L\.J\.|Tribal|A\.2d|A\.3d|B\.R\.|F\. App'?x\.?|Haw\.|M\.J\.|N\.Y\.S\. 2d|N\.Y\.S\. 2d|N\.Y\.S\.|Vet\. App\.|W\. Va\.|Wheel\. Cr\. Cas\.|Wis\.|Wis\. 2d|Wyo\.|Yates Sel\. Cas\.|York Leg\. Rec\.)
+    - (?P<reporter>Abb\. Ct\. App\.|Abb\.N\. Cas\.|Abb\. Pr\.|Abb\. Pr\. \(n\.s\.\)|Va\. \(Va\. Cas\.\)|Adams Co\. L\.J\.|Add\.|Dallam|Franklin Co\. Legal J\.|Aik\.|Ala\. App\.|Ala\.|Alaska Fed\.|Alaska|Am\. Samoa|Am\. Samoa 2d|Am\. Samoa 3d|Ohio App\. Unrep\.|Ant\. N\.P\. Cas\.|A\.D\.2d|A\.D\.|A\.D\.3d|Ky\. \(Hughes\)|Ariz\. App\.|Ariz\.|Ark\. App\.|Ark\.|Armstrong\. Election Cases|A\.|Balt\. C\. Rep\.|Barb\. Ch\.|Barb\.|B\. Co\. Leg\. J\.|Berk's Co\. L\.J\.\.|Blackf\.|Blair Co\. L\.R\.|Blair Co\. L\.R\. 2d|Bosworth Super\. Ct\. Rep\.|Bradford Co\. L\.J\.|Brad\.|Brayt\.|Bucks Co\. L\.R\.|Bur\.|Bur\.|Butler Co\. Legal J\.|E\.D\. Pa\.|Cai\. Cas\.|Cai\.|Cal\. App\.|Cal\. App\. 5th|Cal\. App\. 4th|Cal\. App\. 2d|Cal\. App\. 3d|Cal\. 3d|Cal\. 4th|Cal\.|Cal\. 2d|Cal\. Super\. Ct\.|Cal\. Unrep\.|Cambria Co\. L\.J\.|Cambria Co\. Rep\.|Carbon Co\. L\.J\.|N\.C\. \(Car\. L\. Rep\.\)|N\.J\. \(Manumission\)|S\.C\.L\. \(McMul\.\)|S\.C\.L\. \(Chev\.\)|Tapp\. Rep\.|D\. Pa\.|Ohio|S\.C\. Eq\. \(Chev\. Eq\.\)|Monaghan|Sadler|Ky\. \(Litt\. Sel\. Cas\.\)|C\.C\.L\.J\.|C\.C\.L\.J\. 2d|S\.C\. Eq\. \(McCord Eq\.\)|S\.C\. Eq\. \(Ril\. Eq\.\)|Chand\.|Charlton Rep\.|Ches\. Co\. Rep\.|D\. Chip\.|N\. Chip\.|Mun\.  L\. Rep\.|Hosea's Rep\.|N\.Y\. City Ct\. Rep\.|Cl\. Ch\.|Cole\. & Cai\. Cas\.|Cole\. Cas\.|Colo\. App\.|Colo\. L\. Rep\.|Colo\. N\. P\.|Colo\.|Willson|White & W\.|N\.C\. \(Cam\. & Nor\.\)|King's Conflicting Cases|Conn\. App\.|Conn\. Cir\. Ct\.|Kirby|Root|Conn\.|Conn\. Supp\.|Connoly Sur\. Rep\.|Ct\. Cl\.|C\.C\.P\.A\.|Ct\. Cust\.|Cow\.|Craw\. Co\. Leg\. J\.|Cumberland L\.J\.|Cust\. B\. & Dec\.|Dakota|Dallam|Dall\.|Daly \(N\.Y\.\)|Dau\. Co\. Rep\.|Day|T\.C\.A\.|P\.R\. Dec\.|Teiss\.|Va\. Ch\. Dec\.|Ky\. \(Sneed\)|Pears\.|Smith|Ga\. Super\. Ct\.|Georgia Decisions|C\.M\.A\.|Del\. Cas\.|Del\. Ch\.|Del\. Co\. Reps\.|Del\. \(Harr\.\)|Del\. \(Penne\.\)|Del\. \(Boyce\)|Del\. \(Marv\.\)|Del\. \(Houst\.\)|Del\.|Dem\. Sur\.|Denio|Docket|Dudley Rep\.|Duer Super\. Ct\. Rep\.|Edm\. Sel\. Cas\.|E\.D\. Smith|Edw\. Ch\.|S\.C\. Eq\. \(McMul\. Eq\.\)|S\.C\. Eq\. \(Speers Eq\.\)|Erie\. Co\. L\.J\.|P\.R\. Sent\.|Fay\. L\.J\.|F\. Cas\.|Fed\. Cl\.|F\.|F\. ?2d|F\. ?3d|F\.R\.D\.|F\. ?Supp\.( ?[23]d)?|Fla\.|Fla\. Supp\.|Fla\. Supp\. 2d|Ga\. App\.|Ga\. L\. Rep\.|Ga\.|Gault|Gibb\. Surr\.|Guam|Hall Super\. Ct\. Rep\.|H\. & G\.|Haw\. App\.|Haw\.|Haz\. Pa\. Reg\.|Va\. \(Hen\. & M\.\)|Hill & Den\.|Hill|Hilt\.|Hoff\. Ch\.|Hopk\. Ch\.|How\. App\. Cas\.|How\. Pr\.|How\. Pr\. \(n\.s\.\)|Idaho|Ill\. App\.|Ill\. App\. 2d|Ill\. App\. 3d|Ill\. Cir\. Ct\. Rep\.|Ill\. Ct\. Cl\.|Ill\. \(Scam\)|Ill\. \(Breese\)|Ill\. \(Gilm\.\)|Ill\.|Ill\. 2d|Ind\. App\.|Ind\. L\. Rep\.|Ind\.|Indian Terr\.|Iowa|Jeff\.|Johns\. Cas\.|Johns\. Ch\.|Johns\.|Jones and Spencer's Super\. Ct\. Rep\.|Edsall|Pa\. \(Admiralty\)|Kan\. App\. 2d|Kan\.|Ky\. \(A\.K\. Marsh\.\)|Ky\. Op\.|Ky\.|Keyes|Lack\. Bar\. R\.|Lack\. Bar  R\.|Lack\. Jur\.|Lack\. L\. N\.|Lack\. L\.R\.|Lanc\. Bar|Lanc\. L\. Rev\.|Lans\. Ch\.|Lans\.|Law\. L\.J\.|Law Times|Law Times \(N\.S\.\)|Lebanon Co\. L\.J\.|Foster|Leg\. Gaz\.|Leg\. Gaz\.|Pa\. Leg\. Gaz\.|Gunby|Leg\. Rec\. Rep\.|Lehigh Co\. L\.J\.|Lehigh Val\. L\. Rep\.|Liquor Tax Rep\.|Lock\. Rev\. Cas\.|La\. Ann\.|La\. App\.|La\.|La\.|Luz\. L\.J\.|Luz\. L\.O\.|Luz\. Leg\. Reg\.|Luz\. Leg\. Reg\.|Lycoming R\.|Magis\. & Const\.|Me\.|McGrath|N\.C\. \(Mart\.\)|Mart\. \(n\.s\.\)|Mart\. \(o\.s\.\)|Md\. App\.|Md\.|H\. & McH\.|Mass\. \(Allen\)|Mass\. App\. Ct\.|Mass\. App\. Dec\.|Davis L\. Ct\. Cas\.|Davis L\. Ct\. Cas\.|Mass\. \(Cush\)|Mass\. \(Pick\.\)|Mass\. \(Gray\)|Mass\. \(Tyng\)|Mass\. \(Will\.\)|Mass\. \(Met\.\)|Mass\.|Mass\. Supp\.|Mercer|Mich\. App\. |Howell N\.P\.|Mich\.|M\.C\.L\.J\.|Mills Surr\.|Minn\.|Minor|Va\.|Miss\. Ct\. Rec\.|Miss\. Dec\.|Miss\. \(Walker\)|Miss\.|Miss\. \(Howard\)|Miss\. \(S\. & M\.\)|Mor\. St\. Cas\.|Mo\. App\.|Mo\.|Monroe L\.R\.|Mont\.|Mont\. Co\. L\. Rep\.|Navajo Rptr\.|Neb\. App\.|Neb\.|Nev\.|N\.H\.|N\.J\. Eq\.|N\.J\.L\.|N\.J\. Misc\.|N\.J\.|N\.J\. Super\.|N\.J\. Tax Ct\.|N\.M\.|N\.M\.|N\.Y\. Crim\.|Misc\.2d|Misc\.3d|Misc\.|N\.Y\. ?2d|N\.Y\.|N\.Y\. ?3d|N\.Y\. St\. Rptr\.|Northam\. Law Rep\.|N\.C\. App\.|N\.C\.|N\.C\. \(Busb\. Eq\)|N\.C\. \(Busb\.\)|N\.C\. \(Dev\. & Bat\. Eq\.\)|N\.C\. \(Dev\. & Bat\.\)|N\.C\. \(Dev\. Eq\.\)|N\.C\. \(Dev\.\)|N\.C\. \(Hawks\)|N\.C\. \(Hayw\.\)|N\.C\. \(Ired\. Eq\.\)|N\.C\. \(Ired\.\)|N\.C\. \(Jones Eq\.\)|N\.C\. \(Jones\)|N\.C\. \(Mur\.\)|N\.C\. \(Phil\. Eq\.\)|N\.C\. \(Phil\.\)|N\.C\. \(Tay\.\)|N\.C\. \(Win\.\)|N\.D\.|N\.E\.|N\.E\.2d|N\.E\.3d|N\. Mar\. I\. Commw\.|N\. Mar\. I\.|Northum\. Co\. Leg\. N\.|Northumb\. L\.J\.|N\.W\.|N\.W\.2d|Ohio App\.|Ohio App\. 2d|Ohio App\. 3d|Ohio C\.C\. Dec\.|Ohio C\.C\. \(N\.S\.\)|Ohio Cir\. Dec\.|Ohio Ct\. App\.|Ohio Misc\.|Ohio Misc\. 2d|Ohio Nisi Prius|Ohio Nisi Prius \(N\.S\.\)|Ohio Op\. 2d|Ohio Op\. 3d|Ohio Op\.|Ohio St\.|Ohio St\. \(n\.s\.\)|Ohio St\. 2d|Ohio St\. 3d|Okla\. Crim\.|Okla\.|Olwine's L\.J\.|Or\.|Or\. App\.|Or\. Tax|P\.|P\.2d|P\.3d|Paige Ch\.|Park\. Crim\. Rep\.|Pelt\.|Pa\. L\. Rec\.|Pa\. Commw\.|Pa\. Corp\. R\.|Pa\. Co\. Ct\.|Pa\. D\. & C\. 2d|Pa\. D\. & C\.|Pa\. D\. & C\. 3d|Pa\. D\. & C\. 5th|Pa\. D\. & C\. 4th|Pa\. Fid\.|Pa\. Fid\. 2d|Pa\. Fid\. 3d|Pa\. Just\. L\. Rep\.|Pa\. L\.J\. Rep\.|Pa\.|Pa\. Super\. Ct\.|Pennyp\.|Phila\. Co\. R\.|Phila\. Reports|Pin\.|Pittsb\. L\.J\.|Pitts\. R\.|Port\.|P\.R\. Fed\.|Pow\. Surr\.|Mich\. Pr\.|Singer Prob\. Cas\.|N\.Y\. Proc\. Ct\. Ass\.|P\.R\.|Rec\. Q\. Ct\.|Rec\. Ct\. Assistants|Rec\. Co\. Ch\. \(S\.C\.\)|Rec\. Ct\. Gen\. Sess\.|Rec\. Bucks\. Co\. \(Pa\.\)|Rec\. T\. Warwick \(R\.I\.\)|Rec\. Ct\. Ches\. Co\. Pa\.|Rec\. Co\. Ct\.|Rec\. V\.A\. Ct\. \(R\.I\.\)|Redf\.|S\.C\.L\. \(Ril\.\)|Ct\. Cl\.|Mich\. Ct\. Cl\.|App\. D\.C\.|Bro\. Com\. P\.|Ashm\. \(Pa\.\)|Conn\. Super\. Ct\.|Conn\. Super\. Ct\.|Disney \(Ohio\)|Binn\.|Pen\. & W\.|Rawle|Serg\. & Rawl\.|Watts & Serg\.|Whart\.|Yeates|S\.C\. Eq\. \(Des\.Eq\.\)|Ky\. \(Hard\.\)|Handy|Super\. Ct\. Jud\.|Tenn\. \(Hayw\.\)|Grant|D\.C\. \(MacArth\. & M\.\)|D\.C\. \(Tuck\. & Cl\.\)|Jahn|S\.C\.L\. \(Strob\.\)|Gill|G\. & J\.|S\.C\. Eq\. \(Dud\. Eq\.\)|S\.C\.L\. \(Bail\.\)|N\.Y\.|Walk\. Ch\.|Tenn\. Crim\. App\.|H\. & J\.|Wilson|Miss\. \(S\. & M\. Ch\.\)|S\.C\.L\. \(Bay\)|Morris|Watts|Tenn\. \(Mart\. & Yer\.\)|Tenn\. \(Cold\.\)|Tenn\. \(Heisk\.\)|Tenn\. \(Yer\.\)|Tenn\. \(Head\)|Tenn\. \(Meigs\)|Tenn\. \(Hum\.\)|D\.C\.|D\.C\. \(MacArth\.\)|D\.C\. \(Mackey\)|Doug\.|Ark\. Terr\. Rep\.|McGl\.|D\.C\. \(patent\)|Ky\. \(Bibb\)|Ky\. \(Litt\.\)|Ky\. \(T\.B\. Mon\.\)|Ky\. \(B\. Mon\.\)|Wright|Ohio Ch\.|Ky\. \(J\.J\. Marsh\.\)|S\.C\.L\. \(Speers\)|S\.C\.L\. \(Rich\.\)|S\.C\.L\. \(Rice\)|S\.C\.L\. \(Rich\.\)|S\.C\.L\. \(Dud\.\)|S\.C\.L\. \(Hill\)|Hay\. & Haz\.|D\.C\. Cir\.|D\.C\. \(Cranch\)|Brightly|Walker|Ind\. App\.|Kan\. App\.|Md\. Ch\.|Md\. Ch\.|Freem\. Ch\.|Wilcox|S\.C\.L\. \(McCord\)|S\.C\.L\. \(Nott & McC\.\)|S\.C\.L\. \(Harp\.\)|Harr\. Ch\.|Miles|Cal\. Dist\. Ct\.|McCahon|S\.C\. Eq\. \(Rice Eq\.\)|S\.C\. Eq\. \(Rich\. Eq\.\)|S\.C\. Eq\. \(Hill Eq\.\)|S\.C\. Eq\. \(Rich\. Eq\.\)|S\.C\. Eq\. \(Rich\. Cas\.\)|S\.C\. Eq\. \(Strobh\. Eq\.\)|S\.C\. Eq\. \(Bail\. Eq\.\)|Greene|Myrick|D\. Haw\.|Rep\. Cont\. Elect\. Case\.|Rep\. Cont\. El\.|Howison|Coffey|Charlton|S\.C\. Eq\. \(Harp\. Eq\.\)|Brewster|S\.C\.L\. \(Mill\)|S\.C\.L\. \(Tread\.\)|S\.C\.L\. \(Brev\.\)|Mass\. App\. Div\.|Mass\. App\. Div\.|Goebel|Ky\. \(Dana\)|Ky\. \(Duv\.\)|Ky\. \(Met\.\)|Ky\. \(Bush\)|Vaux|Tenn\. \(Swan\)|Tenn\. \(Sneed\)|Bradf\.|T\.C\.|B\.T\.A\.|R\.I\. Ct\. Rec\.|R\.I\. Dec\.|R\.I\.|Super\. Ct\. \(R\.I\.\)|Robertson's Super\. Ct\. Rep\.|Rob\.|Sand\. Ch\.|Sandford Super\. Ct\. Rep\.|Sarat\. Ch\. Sent\.|Schuy\. L\. Rec\.|Schuy\. Reg\.|Seld\. Notes|Yates|Parsons|Sick\. Op\. Att'y Gen\.|Silv\. Ct\. App\.|Silv\. Sup\.|Smith|Som\. L\.J\.|S\.C\.|S\.D\.|S\.E\.|S\.E\.2d|So\.|So\.2d|So\.3d|S\.W\.|S\.W\.2d|S\.W\.3d|Stew\.|Stew\. & P\.|S\.C\.D\.C\. \(N\.S\.\)|N\.Y\. Sup\. Ct\.|Susq\. Leg\. Chron\.|Sweeney Super\. Ct\. Rep\.|Robards|N\.C\. \(Taylor\)|La\. App\. \(Teiss\.\)|Tenn\. App\.|Tenn\. Cas\.|Tenn\. Ch\. R\.|Tenn\.|Tenn\. \(Peck\)|Tenn\. \(Cooke\)|Tenn\. \(Overt\.\)|Tex\. Civ\. App\.|Tex\. Ct\. App\.|Tex\. Crim\.|Tex\. L\. R\.|Tex\.|Posey|N\.J\. \(Burlington County Ct\.\)|Cin\. Sup\. Ct\. Rep\.|Com\. Pl\. Rep\.|Pa\. Dist\.|Mass\. Law Rep\.|Mich\. N\.P\. R\.|Westchester|Ohio Law Abs\.|Ohio L\.R\.|Ald\.|Thomp\. & Cook|Blume Sup\. Ct\. Trans\.|Trans\. App\.|Tuck\. Surr\.|Tyl\.|Cl\. Ct\.|U\.S\. App\. D\.C\.|Ct\. Int'l Trade|Cust\. Ct\.|U\.S\.|U\.S\. \(Black\)|U\.S\. \(Cranch\)|U\.S\. \(Dall\.\)|U\.S\. \(How\.\)|U\.S\. \(Pet\.\)|U\.S\. \(Wall\.\)|U\.S\. \(Wheat\.\)|Mann\. Unrep\. Cas\.|Blume Unrep\. Op\.|Unrep\. Tenn\. Cas\.|Cal\.|Utah|Utah 2d|Vt\.|Va\. Cir\.|Va\. Col\. Dec\.|Va\. App\.|Va\. Dec\.|Va\. \(Rand\.\)|Va\. \(Munf\.\)|Va\. \(Wash\.\)|Va\.|Va\. \(Gratt\.\)|Va\. \(Gilmer\)|Va\. \(Call\)|Va\. \(Patt\. & Heath\)|Va\. \(Rob\.\)|Va\. \(Leigh\)|V\.I\.|Wash\. App\.|Wash\. Co\.\(Pa\.\)|Wash\.|Wash\. 2d|Wash\. Terr\.|Week\. No\. Cas\. \(Pa\.\)|Wend\.|Wes\. C\.L\.J\.|Tribal|A\.2d|A\.3d|B\.R\.|F\. App'?x\.?|Haw\.|M\.J\.|N\.Y\.S\. 2d|N\.Y\.S\. 2d|N\.Y\.S\.|Vet\. App\.|W\. Va\.|Wheel\. Cr\. Cas\.|Wis\.|Wis\. 2d|Wyo\.|Yates Sel\. Cas\.|York Leg\. Rec\.)
     - ' (?P<page>\d+)\b(,? (?P<pincite>\d+)([-–]\d+)?\b)?'
   idForms: [[*id_at, &pincite '(p(age|pp?\.) ?)?(?P<pincite>\d+)(?!\d| [A-Z])([-–]\d+)?']]
   shortForms:
@@ -339,7 +359,7 @@
       joiner: '-'
   substitutions:
     - token: reporter
-      index: {'fed-appx': 'f-appx', 'f-2d': 'f2d', 'f-3d': 'f3d', 'fsupp': 'f-supp', 'fsupp2d': 'f-supp-2d', 'fsupp3d': 'f-supp-3d'}
+      index: {'fed-appx':'f-appx', 'f-2d':'f2d', 'f-3d':'f3d', 'fsupp':'f-supp', 'fsupp2d':'f-supp-2d', 'fsupp3d':'f-supp-3d', 'ny-2d':'ny2d', 'ny-3d':'ny3d'}
       allowUnmatched: true
   URL:
     - https://cite.case.law/{reporter}/{volume}/{page}

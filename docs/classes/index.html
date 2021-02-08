@@ -219,10 +219,11 @@ disable, set to None.</p>
 
       </h3>
 <div class="doc doc-contents ">
-<p>Convenience method to insert citation links into text.</p>
+<p>Convenience method to return a copy of the given text, with
+citation hyperlinks inserted.</p>
 <p>If you plan to do more than just insert links, it's better to
-get a list of citations with list_citations, then insert the
-links with the module-wide insert_links function.</p>
+get a list of citations with list_citations first, then insert
+those links with the module-wide insert_links function.</p>
 <details class="quote">
           <summary>Source code in <code>citeurl/__init__.py</code></summary>
           <div class="highlight">
@@ -236,11 +237,12 @@ links with the module-wide insert_links function.</p>
     <span class="n">id_break_regex</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">id_break_indices</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">"""</span>
-<span class="sd">    Convenience method to insert citation links into text.</span>
+<span class="sd">    Convenience method to return a copy of the given text, with</span>
+<span class="sd">    citation hyperlinks inserted.</span>
 
 <span class="sd">    If you plan to do more than just insert links, it's better to</span>
-<span class="sd">    get a list of citations with list_citations, then insert the</span>
-<span class="sd">    links with the module-wide insert_links function.</span>
+<span class="sd">    get a list of citations with list_citations first, then insert</span>
+<span class="sd">    those links with the module-wide insert_links function.</span>
 <span class="sd">    """</span>
     <span class="n">citations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_citations</span><span class="p">(</span>
         <span class="n">text</span><span class="p">,</span>
@@ -519,8 +521,8 @@ so it uses broadRegex and case-insensitive matching by default.</p>
 <td><code>broad</code></td>
 <td><code>bool</code></td>
 <td>
-<p>Whether to use case-insensitie regex matching and, if
-available, each schema's broadRegex.</p>
+<p>Whether to use case-insensitive regex matching and,
+if available, each schema's broadRegex.</p>
 </td>
 <td><code>True</code></td>
 </tr>
@@ -563,8 +565,8 @@ available, each schema's broadRegex.</p>
 <span class="sd">    so it uses broadRegex and case-insensitive matching by default.</span>
 
 <span class="sd">    Arguments:</span>
-<span class="sd">        broad: Whether to use case-insensitie regex matching and, if</span>
-<span class="sd">            available, each schema's broadRegex.</span>
+<span class="sd">        broad: Whether to use case-insensitive regex matching and,</span>
+<span class="sd">            if available, each schema's broadRegex.</span>
 <span class="sd">        query: The text to scan for a citation</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        A single citation object, or None</span>
@@ -1224,34 +1226,6 @@ by means other than a Citator or Schema object.</p>
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Citation.child_citations">
-
-<code class="highlight language-python"><span class="n">child_citations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defining_tokens</span><span class="o">=</span><span class="p">[])</span></code>
-
-
-      </h3>
-<div class="doc doc-contents ">
-<p>List all citations that inherit from this one,
-except those that overwrite specified tokens.</p>
-<details class="quote">
-          <summary>Source code in <code>citeurl/__init__.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">child_citations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defining_tokens</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[]):</span>
-    <span class="sd">"""</span>
-<span class="sd">    List all citations that inherit from this one,</span>
-<span class="sd">    except those that overwrite specified tokens.</span>
-<span class="sd">    """</span>
-    <span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">citation</span> <span class="o">=</span> <span class="bp">self</span>
-    <span class="k">while</span> <span class="n">citation</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">parent_citation</span><span class="p">:</span>
-        <span class="n">citation</span> <span class="o">=</span> <span class="n">citation</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">parent_citation</span>
-    <span class="k">return</span> <span class="n">citation</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="citeurl.Citation.get_link">
 
 <code class="highlight language-python"><span class="n">get_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">'class'</span><span class="p">:</span> <span class="s1">'citation'</span><span class="p">})</span></code>
@@ -1486,13 +1460,9 @@ tokens of this authority.</p>
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">citation</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
-    <span class="n">differences</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">citation</span><span class="o">.</span><span class="n">processed_tokens</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-    <span class="p">)</span>
-    <span class="n">different_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">differences</span> <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">different_tokens</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">token</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">citation</span><span class="o">.</span><span class="n">processed_tokens</span>
+            <span class="ow">or</span> <span class="n">citation</span><span class="o">.</span><span class="n">processed_tokens</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">!=</span> <span class="n">value</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="kc">True</span>
 </code></pre>

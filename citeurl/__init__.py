@@ -26,7 +26,6 @@ class Citation:
         processed_tokens: Dictionary of tokens after they have been
             modified via mutations and substitutions.
         URL: The URL where a user can read this citation online
-        
     """
     def __init__(
         self,
@@ -88,17 +87,6 @@ class Citation:
             attr_str += ' %s="%s"' % (key, value)
         return '<a%s>%s</a>' % (attr_str, self.text)
     
-    def child_citations(self, defining_tokens: list=[]):
-        """
-        List all citations that inherit from this one,
-        except those that overwrite specified tokens.
-        """
-        children = []
-        citation = self
-        while citation.schema.parent_citation:
-            citation = citation.schema.parent_citation
-        return citation
-    
     def _original_cite(self):
         """
         Get whichever citation this is an id. or shortform
@@ -115,10 +103,12 @@ class Citation:
             self.schema.idForms if is_id
             else self.schema.shortForms
         )
+        # make a dictionary of the original tokens, or unique processed tokens
+        template_fillers = {**self.processed_tokens, **self.tokens}
         for template in regex_templates:
             # Insert context values into template to make new regex
             regex = template
-            for key, value in self.tokens.items():
+            for key, value in template_fillers.items():
                 if not value: continue
                 regex = regex.replace('{%s}' % key, value)
             schemas.append(Schema(
@@ -235,13 +225,9 @@ class Authority:
         """
         if self.schema.name != citation.schema.name:
             return False
-        differences = (
-            citation.processed_tokens.items()
-            - self.defining_tokens.items()
-        )
-        different_tokens = [t[0] for t in differences if t[1] is not None]
-        for token in different_tokens:
-            if token in self.defining_tokens:
+        for key, value in self.defining_tokens.items():
+            if (key not in citation.processed_tokens
+                or citation.processed_tokens[key] != value):
                 return False
         return True
     
@@ -255,7 +241,6 @@ class Authority:
                 replacement_tokens[key] = value
         # Check if the parent longform citation contains all the defining
         # tokens. If it doesn't, use the shortform that does.
-        missing = []
         for key in replacement_tokens.keys():
             if key not in parent.tokens or parent.tokens[key] == None:
                 parent = self.citations[0]
@@ -423,8 +408,8 @@ class Citator:
         so it uses broadRegex and case-insensitive matching by default.
         
         Arguments:
-            broad: Whether to use case-insensitie regex matching and, if
-                available, each schema's broadRegex.
+            broad: Whether to use case-insensitive regex matching and,
+                if available, each schema's broadRegex.
             query: The text to scan for a citation
         Returns:
             A single citation object, or None
@@ -445,11 +430,12 @@ class Citator:
         id_break_regex: str=None,
         id_break_indices: list=[]) -> str:
         """
-        Convenience method to insert citation links into text.
+        Convenience method to return a copy of the given text, with
+        citation hyperlinks inserted.
         
         If you plan to do more than just insert links, it's better to
-        get a list of citations with list_citations, then insert the
-        links with the module-wide insert_links function.
+        get a list of citations with list_citations first, then insert
+        those links with the module-wide insert_links function.
         """
         citations = self.list_citations(
             text,
@@ -842,22 +828,20 @@ def insert_links(
         The input text, with HTML links inserted for each citation
     """
     offset = 0
-    for c in citations:
-        if not c.URL and not url_optional:
+    for citation in citations:
+        if not citation.URL and not url_optional:
             continue
-        if c.schema.is_id:
-            if c.schema._compiled_re().groupindex:
+        if citation.schema.is_id:
+            if citation.schema._compiled_re().groupindex:
                 if not link_detailed_ids:
                     continue
             elif not link_plain_ids:
                 continue
-        link = c.get_link(attrs=attrs)
-        span = (
-            c.span[0] + offset,
-            c.span[1] + offset
-        )
-        text = ''.join([text[:span[0]], link, text[span[1]:]])
-        offset += len(link) - len(c.text)
+        link = citation.get_link(attrs=attrs)
+        cite_start = citation.span[0] + offset
+        cite_end = citation.span[1] + offset
+        text = ''.join([text[:cite_start], link, text[cite_end:]])
+        offset += len(link) - len(citation.text)
     return text
 
 
@@ -897,7 +881,7 @@ def _sort_key(citation):
 
 def list_authorities(
     citations: list,
-    allow_token_differences: list=['subsec', 'pincite', 'clause']
+    allow_token_differences: list=['subsection', 'pincite', 'clause']
 ) -> list:
     """
     Combine a list of citations into a list of authorities, each
