@@ -137,7 +137,7 @@ def main():
                     continue
                 print(f'{key.title()}: '.ljust(tab_width) + value)
             print('URL: '.ljust(tab_width) + citation.URL)
-            if args.browser:
+            if args.browse:
                 webbrowser.open(citation.URL)
         else:
             print("Couldn't recognize citation.")
@@ -163,13 +163,13 @@ def main():
         if args.output:
             with open(args.output, 'w') as f:
                 f.write(out_text)
-        if args.browser:
+        if args.browse:
             with NamedTemporaryFile('r+', suffix='.html') as f:
                 f.write(out_text)
                 webbrowser.open('file://' + f.name)
                 f.seek(0)
                 time.sleep(2)
-        if not args.output and not args.browser:
+        if not args.output and not args.browse:
             print(out_text)
 
 if __name__ == "__main__":
