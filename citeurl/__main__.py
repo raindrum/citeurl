@@ -52,7 +52,7 @@ def main():
         help=(
             "return list of all the authorities cited in the text, "
             + "with information about each one. If a number is given, "
-            + "return only the X authorities with the most citations." 
+            + "return only the X authorities with the most citations."
         )
     )
     parser.add_argument(
@@ -129,7 +129,10 @@ def main():
     if args.lookup:
         citation = citator.lookup(text)
         if citation:
-            key_lengths = [len(k) for k in citation.tokens.keys()]
+            key_lengths = [
+                len(k) for k in citation.tokens.keys()
+                if citation.tokens[k]
+            ]
             tab_width = max(key_lengths) + 2
             print('Source: '.ljust(tab_width) + str(citation.schema))
             for key, value in citation.tokens.items():
