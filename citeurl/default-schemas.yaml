@@ -354,7 +354,7 @@
 
 - name: Texas Codes
   regex:
-    - (Tex(as|\.)|TX) (?P<code>.{2,40}?)\.?( Code)?
+    - (Tex(as|\.)|TX) (?P<code>.{2,40}?)\.?( Code( Ann(otated|\.))?)?
     - *ch_dot_sec
     - *subsection
   idForms: [[*id_at, *ch_dot_sec, *subsection]]
@@ -365,7 +365,7 @@
     - token: code
       outputToken: codeAcronym
       useRegex: true
-      index: {'Agriculture|AGC?':'AG', 'Alc(oholic|\.) Bev(erage|\.)|ABC?':'AB', 'Aux(iliary|\.) Water Laws|A?WL':'WL', 'Bus(iness|\.) (and|&) Commerce|B&C|BCC?':'BC', 'Bus(iness|\.) Organizations|BOC?':'BO', 'Civ(il|\.) Prac(tice|\.) (and|&) Remedies|CPR?C?':'CP', 'Code( of)? Crim(inal|\.) ?Pro(cedure|c?\.)|CCrP|CRC?':'CR', 'Educ(ation|\.)|EDC?':'ED', 'Election|ELC?':'EL', 'Estates|ESC?':'ES', 'Fam(ily|\.)|FAC?|FAM':'FA', 'Fin(ance|\.)|FIC?|FIN':'FI', 'Gov(ernment|\.)|GO?VC?':'GV', 'Health (and|&) Safety|H&?SC?':'HS', 'Human Res(ources|\.)|HRC?':'HR', 'Ins(urance|\.)|INC?':'IN', 'Labor|LA':'LA', 'Local Gov(ernment|\.)|LGC?':'LG', 'Natural Res(ources|\.)|NRC?':'NR', 'Occupations|OC':'OC', 'Parks (and|&) Wildlife|PWC?':'PW', 'Penal|PEN?|PC':'PE', 'Property|PR|PC':'PR', 'Special Dist(rict|\.) Local Laws|SDC?':'SD', 'Tax|TX?C':'TX', 'Trans(portation|p?\.)|TNC?':'TN', 'Utilities|UTC?':'UT', 'Water|WAC?':'WA', 'Vernon.s Civ(il|\.) Stat(utes|s?\.)':'VC'}
+      index: {'Agriculture|AGC?':'AG', 'Alc(oholic|\.) Bev(erage|\.)|ABC?':'AB', 'Aux(iliary|\.) Water Laws|A?WL':'WL', 'Bus(iness|\.) (and|&) Commerce|B&C|BCC?':'BC', 'Bus(iness|\.) Org(anizations|s)|BOC?':'BO', 'Civ(il|\.) Prac(tice|\.) (and|&) Remedies|CPR?C?':'CP', 'Code( of)? Crim(inal|\.) ?Pro(cedure|c?)|CCrP|CRC?':'CR', 'Educ(ation)?|EDC?':'ED', 'Election|ELC?':'EL', 'Estates|ESC?':'ES', 'Fam(ily)?|FAC?|FAM':'FA', 'Fin(ance)?|FIC?|FIN':'FI', 'Gov(ernment|\.)|GO?VC?':'GV', 'Health (and|&) Safety|H&?SC?':'HS', 'Human Res(ources|\.)|HRC?':'HR', 'Ins(urance)?|INC?':'IN', 'Labor|LA':'LA', 'Local Gov(ernment|\.)|LGC?':'LG', 'Natural Res(ources|\.)|NRC?':'NR', 'Occupations|OC':'OC', 'Parks (and|&) Wildlife|PWC?':'PW', 'Penal|PEN?|PC':'PE', 'Property|PR|PC':'PR', 'Special Dist(rict|\.) Local Laws|SDC?':'SD', 'Tax|TX?C':'TX', 'Transp(ortation)?|TNC?':'TN', 'Utilities|UTC?':'UT', 'Water|WAC?':'WA', 'Vernon.s Civ(il|\.) Stat(utes|s?)':'VC'}
   URL: https://statutes.capitol.texas.gov/Docs/{codeAcronym}/htm/{codeAcronym}.{chapter}.htm#{chapter}.{section}
 
 - name: Consolidated Laws of New York
@@ -382,7 +382,7 @@
   URL: https://www.nysenate.gov/legislation/laws/{chapterAcronym}/{section}
 
 - name: Pennsylvania Code
-  regex: ['(?P<title>\d+) (Pennsylvania|Pa\.) ?Code', *ch_dot_sec, *subsection]
+  regex: ['(?P<title>\d+) (Pennsylvania|Pa\.) ?Code( Ann(otated|\.))?', *ch_dot_sec, *subsection]
   idForms: *id_sec_sub
   substitutions:
     - token: title
