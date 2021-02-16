@@ -792,7 +792,7 @@ class Schema:
                         output_val = value
                         break
             # modify token dict, throw error, or return unmodified
-            if output_val:
+            if output_val is not None:
                 tokens[self.outputToken] = output_val
             elif not self.allowUnmatched:
                 raise KeyError(
