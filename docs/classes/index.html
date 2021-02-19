@@ -598,7 +598,7 @@ the Schema class directly.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="citeurl.Schema.__init__">
 
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">regex</span><span class="p">,</span> <span class="n">URL</span><span class="p">,</span> <span class="n">broadRegex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">idForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">shortForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{},</span> <span class="n">mutations</span><span class="o">=</span><span class="p">[],</span> <span class="n">substitutions</span><span class="o">=</span><span class="p">[],</span> <span class="n">parent_citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">regex</span><span class="p">,</span> <span class="n">URL</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">broadRegex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">idForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">shortForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{},</span> <span class="n">mutations</span><span class="o">=</span><span class="p">[],</span> <span class="n">substitutions</span><span class="o">=</span><span class="p">[],</span> <span class="n">parent_citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -655,7 +655,7 @@ or as a list of strings to concatenate. In the latter
 case, if a list item contains a placeholder for which
 no value is set, the list item will be skipped.</p>
 </td>
-<td><em>required</em></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>defaults</code></td>
@@ -771,7 +771,7 @@ only relevant for procedurally-generated schemas.</p>
 <pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">regex</span><span class="p">,</span>
-    <span class="n">URL</span><span class="p">,</span>
+    <span class="n">URL</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">broadRegex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">idForms</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">shortForms</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[],</span>

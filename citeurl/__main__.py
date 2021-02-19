@@ -139,7 +139,7 @@ def main():
                 if not value:
                     continue
                 print(f'{key.title()}: '.ljust(tab_width) + value)
-            print('URL: '.ljust(tab_width) + citation.URL)
+            print('URL: '.ljust(tab_width) + (citation.URL or 'Unavailable'))
             if args.browse:
                 webbrowser.open(citation.URL)
         else:
