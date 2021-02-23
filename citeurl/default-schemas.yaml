@@ -355,7 +355,7 @@
       outputToken: lpad
       useRegex: true
       index: {'\d{4}':'', '\d{3}':'0', '\d{2}':'00', '\d{1}':'000'}
-  idForms: [[*id_at, *ch_dot_sec, *subsection]]
+  idForms: &ch_dot_sec_id [[*id_at, *ch_dot_sec, *subsection]]
   URL: https://www.flsenate.gov/Laws/Statutes/{year}/{lpad}{chapter}.{section}
 
 - name: Georgia Code
@@ -363,7 +363,7 @@
     - (G(eorgia|a\.) Code( Ann(otated|\.))?|(O\.?)?C\.?G\.?A\.?)
     - &title_dash_chapter_dash_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+)-(?P<chapter>\d+)-(?P<section>\d+)'
     - *subsection
-  idForms: &ch_dot_sec_id
+  idForms:
     - [*id_at, *title_dash_chapter_dash_section, *subsection]
     - [*id_at, *mandatory_subsection]
   # no URL because Georgia uses LexisNexis
@@ -393,7 +393,7 @@
       outputToken: lpad
       useRegex: true
       index: {'\d{2}':'0', '\d':'0'}
-  URL: https://iga.in.gov/legislative/laws/2020/ic/titles/{lpad}{title}#{title}-{article}-{chapter}-{section}
+  URL: https://iga.in.gov/legislative/laws/{year}/ic/titles/{lpad}{title}#{title}-{article}-{chapter}-{section}
 
 - name: Massachusetts General Laws
   regex:
