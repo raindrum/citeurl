@@ -291,6 +291,26 @@
 # don't make their statutes available through a predictable
 # URL scheme.
 
+- name: Arizona Revised Statutes
+  regex:
+    - Ariz(ona|\.)( Rev(ised|\.))? Stat(utes?|s?\.)( Ann(otated|\.))?
+    - &title_dash_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+(\.\d+)?[A-Z]?)-(?P<section>\d+(\.\d+)?[A-Z]?)'
+    - *subsection
+  idForms:
+    - [*id_at, *title_dash_section, *subsection]
+    - [*id_at, *section, *subsection]
+    - [*id_at, *mandatory_subsection]
+  mutations:
+    - token: section
+      splitter: \.
+      joiner: '-'
+  substitutions:
+    - token: section
+      outputToken: lpad
+      useRegex: true
+      index: {'\d{5}(\D\d+)?':'', '\d{4}(\D\d+)?':'0', '\d{3}(\D\d+)?':'00', '\d{2}(\D\d+)?':'000', '\d(\D\d+)?':'0000'}
+  URL: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/{title}/{lpad}{section}.htm
+
 - name: California Codes
   regex:
     - (Cal(ifornia|\.)|CAL?) (?P<code>[BCDEFGHILMPRSUVW].{2,40}?)( Code,?( Ann(otated|\.),?)?)?
@@ -328,7 +348,7 @@
     - (Florida Statutes( Annotated)?|Fla\. ?Stat\.( ?Ann\.)?),?
     - &ch_dot_sec ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<chapter>\d+)\.(?P<section>\d+)'
     - *subsection
-    - (,? \((?P<year>\d{4})\))?
+    - &year (,? \((?P<year>\d{4})\))?
   defaults: {'year':'2020'} # this must be updated yearly, unfortunately
   substitutions:
     - token: chapter
@@ -340,14 +360,17 @@
 
 - name: Georgia Code
   regex:
-    - G(eorgia|a\.) Code( Ann(otated|\.))?
-    - ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+)-(?P<chapter>\d+)-(?P<section>\d+)'
+    - (G(eorgia|a\.) Code( Ann(otated|\.))?|(O\.?)?C\.?G\.?A\.?)
+    - &title_dash_chapter_dash_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+)-(?P<chapter>\d+)-(?P<section>\d+)'
     - *subsection
+  idForms: &ch_dot_sec_id
+    - [*id_at, *title_dash_chapter_dash_section, *subsection]
+    - [*id_at, *mandatory_subsection]
   # no URL because Georgia uses LexisNexis
 
 - name: Illinois Compiled Statutes
   regex: (?P<chapter>\d+) ILCS (?P<act>\d+)/(?P<section>(\d[\d.-]*\w|\d))
-  shortForms: *id_sec_sub
+  idForms: *id_sec_sub
   substitutions:
     - token: chapter
       outputToken: chlpad
@@ -359,6 +382,77 @@
       index: {'\d{4}':'', '\d{3}':'0', '\d{2}':'00', '\d{1}':'000'}
   URL: https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName={chlpad}{chapter}{actlpad}{act}0K{section}
 
+- name: Indiana Code
+  regex:
+    - Ind(iana|\.) Code( Ann(otated|\.))?
+    - ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+)-(?P<article>\d+(\.\d+)?)-(?P<chapter>\d+(\.\d+)?)-(?P<section>\d+(\.\d+)?)'
+    - *year
+  defaults: {'year':'2020'} # this must be updated yearly, unfortunately
+  substitutions:
+    - token: title
+      outputToken: lpad
+      useRegex: true
+      index: {'\d{2}':'0', '\d':'0'}
+  URL: https://iga.in.gov/legislative/laws/2020/ic/titles/{lpad}{title}#{title}-{article}-{chapter}-{section}
+
+- name: Massachusetts General Laws
+  regex:
+    - (Mass(achusetts|\.) (Gen(eral|\.)|Ann(otated|\.)) Laws( Ann(otated|\.))?|M\.?G\.?L\.?(A\.?)?|A\.?L\.?M\.?)
+    - ',? [Cc]h(apter|\.) ?(?P<chapter>\d+[A-Z]?),? '
+    - &mass_section ((&sect;|&#167|§){1,2}|Sect?(ions?|s?\.))? ?(?P<section>\d+[A-Z]?\d*([/]\d+[A-Z]?)?)
+    - *subsection
+  idForms:
+    - [*id_at, ' ', *mass_section, *subsection]
+    - [*id_at, *mandatory_subsection]
+  mutations:
+    - token: section
+      splitter: '/'
+      joiner: '~'
+  URL: https://malegislature.gov/GeneralLaws/GoTo?ChapterGoTo={chapter}&SectionGoTo={section}
+
+- name: Michigan Compiled Laws
+  regex:
+    - Mich(igan|\.) Comp(iled|\.) Laws( (Serv(ice|\.)|Ann(otated|\.)))?
+    - *ch_dot_sec
+    - *subsection
+  idForms: *ch_dot_sec_id
+  URL: http://legislature.mi.gov/doc.aspx?mcl-{chapter}-{section}
+
+- name: New Jersey Statutes
+  regex:
+    - ((N\.J\.|New Jersey)( Rev(ised|\.))? Stat(utes|\.)( Ann(otated|\.))?|N\.?J\.?S\.?A)
+    - &title_colon_chapter_dash_sec ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+[A-Za-z]?):(?P<chapter>\d+[A-Za-z]?)-(?P<section>\d+(\.\d+)?[A-Za-z]?)'
+    - *subsection
+  idForms:
+    - [*id_at, *title_colon_chapter_dash_sec, *subsection]
+    - [*id_at, *section, *subsection]
+    - [*id_at, *mandatory_subsection]
+  URL: http://njlaw.rutgers.edu/collections/njstats/showsect.php?title={title}&chapter={chapter}&section={section}&actn=getsect
+
+- name: Consolidated Laws of New York
+  regex: ['(New York|N\.? ?Y\.?) ?(?P<chapter>.{2,40}?)( Law)?', *section, *subsection]
+  idForms: *id_sec_sub
+  shortForms:
+    - ['{chapterAcronym}', *section, *subsection]
+    - ['{chapter}( Law)?', *section, *subsection]
+  substitutions:
+    - token: chapter
+      outputToken: chapterAcronym
+      useRegex: true
+      index: {'Abandoned Property|ABP':'ABP', 'Agric(ulture|\.) (and|&) M(arkets|kts)|AGM|A&M', 'Alc(oholic|o?\.) Bev(erage|\.) Cont(rol|\.)|ABC':'ABC', 'Alt(ernative\.) C(ounty|ty\.) Gov(ernment|.t)|ACG':'ACG', 'Arts (and|&) Cult(ural|\.) Aff(airs|\.)|ACA':'ACA', 'Banking|BNK':'BNK', 'Ben(evolent|\.) Ord(ers|\.)|BVO':'BVO', 'Bus(iness|\.) Corp(orations?|s?)|BSC|BCL':'BSC', 'Canal|CAL':'CAL', 'Civil Practice Law (and|&) Rules|CVP|CPLR|C\. ?P\. ?L\. ?R':'CVP', 'Civ(il|\.) Serv(ice|\.)|CIV':'CIV', 'Coop(erative|\.) Corp(orations|s?)|CCO':'CCO', 'Correct(ion|\.)|COR':'COR', 'County|CNT':'CNT', 'Crim(inal|\.) Pro(cedure|c?)|CPL':'CPL', 'Debt(or|\.) (and|&) Cred(itor|\.)|DCD':'DCD', 'Dom(estic|\.) Rel(ations|\.)|DOM':'DOM', 'Econ(omic|\.) Dev(elopment|\.)|COM':'COM', 'Educ(ation|\.)|EDN':'EDN', 'Elder|ELD':'ELD', 'Elec(tion|\.)|ELN':'ELN', 'Em(inent|\.) Dom(ain|\.) Proc(edure|\.)|EDP':'EDP', 'Emp(loyer(s''?)?|l''rs) Liab(ility|\.)|EML':'EML', 'Energy|ENG':'ENG', 'Env(ironmental|(tl)?\.) Conserv(ation|\.)|ENV':'ENV', 'Est(ates,|\.) Powers (and|&) Trusts|EPT':'EPT', 'Exec(utive|\.)|EXC':'EXC', 'Fin(ancial|\.) Serv(ices|s?)|FIS':'FIS', 'Gen(eral|\.) Associations|GAS':'GAS', 'Gen(eral|\.) Bus(iness|\.)|GBS':'GBS', 'Gen(eral|\.) City|GCT':'GCT', 'Gen(eral|\.) Constr(uction|\.)|GCN':'GCN', 'Gen(eral|\.) Mun(icipal|\.)|GMU':'GMU', 'Gen(eral|\.) Oblig(ations|\.)|GOB':'GOB', 'High(way|\.)|HAY':'HAY', 'Indian|IND':'IND', 'Jud(iciary|\.)|JUD':'JUD', 'Legis(lative|\.)|LEG':'LEG', 'Lien|LIE':'LIE', 'L(imited|td\.) Liab(ility|\.) Co(mpany|\.)|LLC':'LLC', 'Local Fin(ance|\.)|LFN':'LFN', 'Mental Hyg(iene|\.)|MHY':'MHY', 'Mil(itary|\.)|MIL':'MIL', 'Mult(iple|\.) Dwell(ing|\.)|MDW':'MDW', 'Mult(iple|\.) Resid(ence|\.)|MRE':'MRE', 'Mun(icipal|\.) Home Rule|MHR':'MHR', 'Mun(icipal|i?\.) Housing Authorities|MHA':'MHA', 'Nav(igation|\.)|NAV':'NAV', '(State )?Print(ing|\.)? (and|&) Pub(lic|\.) Doc(uments|s?)|PPD':'PPD', 'Parks,? Rec(reation|\.) (and|&) Hist(oric|\.) Preserv(ation|\.)|PAR':'PAR', "P(artnership|'ship)|PTR":'PTR', 'Penal|PEN':'PEN', 'Pers(onal|\.) Prop(erty|\.)|PEP':'PEP', 'Priv(ate|\.) Hous(ing|\.) Fin(ance|\.)|PVH':'PVH', 'Pub(lic|\.) Auth(orities|\.)|PBA':'PBA', 'Pub(lic|\.) Health|PBH':'PBH', 'Pub(lic|\.) Housing|PBG':'PBG', 'Pub(lic|\.) Off(icers|\.)|PBO':'PBO', 'Rac(ing,|\.) Pari-Mut(uel|\.) Wag(ering|\.) (and|&) Breed(ing|\.)|PML':'PML', 'Railroad|R\.R\.|RRD':'RRD', 'Rapid Trans(it|\.)|RAT':'RAT', 'Real Prop(erty|\.) Act(ions|s\.)( (and|&) Proceedings)?|RPA':'RPA', 'Real Prop(erty|\.) Tax|RPT':'RPT', 'Real Prop(erty|\.)|RPP':'RPP', 'Relig(ious|\.) Corp(orations|s?\.)|RCO':'RCO', 'Retire(ment|\.) (and|&) Soc(ial|\.) Sec(urity|\.)|RSS':'RSS', 'Rural Elec(tric|\.) Coop(eratives?|s?\.)|REL':'REL', 'Second Class Cities|SCC':'SCC', 'Soil (and|&) Water Conserv(ation|\.) Dist(ricts|s?\.)|SWC':'SWC', 'State Administrative Procedure Act|A\.P\.A\.|SAP':'SAP', 'State Fin(ance|\.)|STF':'STF', 'State|STL':'STL', 'Statute of Local Gov(ernments|s?\.)|SLG':'SLG', 'Town|TWN':'TWN', 'Trans(portation|p?\.) Corp(orations|s?\.)|TCP':'TCP', 'Trans(portation|p?\.)|TRA':'TRA', 'Uniform Commercial Code|U\.?C\.?C\.?':'UCC', 'Village|VIL':'VIL', 'Vol(unteer|\.) Ambul(ance|\.) Workers''? Benefit|VAW':'VAW', 'Vol(unteer|\.) Fire(fighters''?|\.) Ben(efit|\.)|VOL':'VOL'}
+  URL: https://www.nysenate.gov/legislation/laws/{chapterAcronym}/{section}
+
+- name: North Carolina General Statutes
+  regex:
+    - (North Carolina Gen(eral|\.) Stat(utes|s?\.)|N\.? ?C\.? ?G\.? ?S\.?)
+    - &chapter_dash_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<chapter>\d+[A-Z]?)-(?P<section>\d+(\.\d+)?)'
+    - *subsection
+  idForms:
+    - [*id_at, *chapter_dash_section, *subsection]
+    - [*id_at, *section, *subsection]
+    - [*id_at, *mandatory_subsection]
+  URL: https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_{chapter}/GS_{chapter}-{section}.html
+
 - name: Ohio Revised Code
   regex:
     - Ohio Rev(ised|\.) Code( Ann(otated|\.))?
@@ -366,10 +460,35 @@
     - (\.(?P<section>\d+)
     - *subsection
     - )?
-  idForms: [[*id_at, *ch_dot_sec, *subsection]]
+  idForms:
+    - [*id_at, *ch_dot_sec, *subsection]
+    - [*id_at, *section, *subsection]
+    - [*id_at, *mandatory_subsection]
   URL:
     - https://codes.ohio.gov/orc/{chapter}
     - .{section}v1
+
+- name: Pennsylvania Code
+  regex: ['(?P<title>\d+) (Pennsylvania|Pa\.) ?Code( Ann(otated|\.))?', *ch_dot_sec, *subsection]
+  idForms: *id_sec_sub
+  substitutions:
+    - token: title
+      outputToken: lpad
+      useRegex: true
+      index: {'\d{3}':'', '\d{2}':'0', '\d{1}':'00'}
+  URL: http://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/{lpad}{title}/chapter{chapter}/s{chapter}.{section}.html
+
+- name: Tennessee Code
+  regex:
+    - Tenn(essee|\.) Code( Ann(otated|\.))?
+    - *title_dash_chapter_dash_section
+    - *subsection
+  idForms:
+    - [*id_at, *title_dash_chapter_dash_section, *subsection]
+    - [*id_at, *section, *subsection]
+    - [*id_at, *mandatory_subsection]
+  # Tennessee URLs have to be a search, because their URL scheme requires the *name* of every section
+  URL: https://www.tn.gov/lawsandpolicies/search-results.html?q={title}-{chapter}-{section}
 
 - name: Texas Codes
   regex:
@@ -387,28 +506,27 @@
       index: {'Agric(ulture|\.)|AGC?':'AG', 'Alc(oholic|o?\.) Bev(erage|\.)|ABC?':'AB', 'Aux(iliary|\.) Water Laws|A?WL':'WL', 'Bus(iness|\.) (and|&) Com(merce|m?\.)|B&C|BCC?':'BC', 'Bus(iness|\.) Org(anizations|s\.)|BOC?':'BO', 'Civ(il|\.) Prac(tice|\.) (and|&) Rem(edies|s?\.)|CPR?C?':'CP', 'Code( of)? Crim(inal|\.) ?Pro(cedure|c?\.)|CCrP|CRC?':'CR', 'Educ(ation|\.)|EDC?':'ED', 'Elec(tion|\.)|ELC?':'EL', 'Est(ates|\.)|ESC?':'ES', 'Fam(ily|\.)|FAC?|FAM':'FA', 'Fin(ance|\.)|FIC?|FIN':'FI', 'Gov(ernment|(''?t)?\.?)?|GO?VC?':'GV', 'Health (and|&) Safety|H&?SC?':'HS', 'Hum(an|\.) Res(ources|\.)|HRC?':'HR', 'Ins(urance|\.)|INC?':'IN', 'Labor|LA':'LA', 'Local Gov(ernment|''t)|LGC?':'LG', 'Nat(ural|\.) Res(ources|\.)|NRC?':'NR', 'Occ(upations|\.)|OC':'OC', 'Parks (and|&) Wild(life|\.)|PWC?':'PW', 'Penal|PEN?|PC':'PE', 'Prop(erty|\.)|PR|PC':'PR', 'Special Dist(rict|\.) Local Laws|Spec\. Dists\.|SDC?':'SD', 'Tax|TX?C':'TX', 'Trans(portation|p?\.)|TNC?':'TN', 'Util(ities|\.)|UTC?':'UT', 'Water|WAC?':'WA', 'Vernon''s Civ(il|\.) Stat(utes|s?\.)':'VC'}
   URL: https://statutes.capitol.texas.gov/Docs/{codeAcronym}/htm/{codeAcronym}.{chapter}.htm#{chapter}.{section}
 
-- name: Consolidated Laws of New York
-  regex: ['(New York|N\.? ?Y\.?) ?(?P<chapter>.{2,40}?)( Law)?', *section, *subsection]
-  idForms: *id_sec_sub
-  shortForms:
-    - ['{chapterAcronym}', *section, *subsection]
-    - ['{chapter}( Law)?', *section, *subsection]
-  substitutions:
-    - token: chapter
-      outputToken: chapterAcronym
-      useRegex: true
-      index: {'Abandoned Property|ABP':'ABP', 'Agric(ulture|\.) (and|&) M(arkets|kts)|AGM|A&M', 'Alc(oholic|o?\.) Bev(erage|\.) Cont(rol|\.)|ABC':'ABC', 'Alt(ernative\.) C(ounty|ty\.) Gov(ernment|.t)|ACG':'ACG', 'Arts (and|&) Cult(ural|\.) Aff(airs|\.)|ACA':'ACA', 'Banking|BNK':'BNK', 'Ben(evolent|\.) Ord(ers|\.)|BVO':'BVO', 'Bus(iness|\.) Corp(orations?|s?)|BSC|BCL':'BSC', 'Canal|CAL':'CAL', 'Civil Practice Law (and|&) Rules|CVP|CPLR|C\. ?P\. ?L\. ?R':'CVP', 'Civ(il|\.) Serv(ice|\.)|CIV':'CIV', 'Coop(erative|\.) Corp(orations|s?)|CCO':'CCO', 'Correct(ion|\.)|COR':'COR', 'County|CNT':'CNT', 'Crim(inal|\.) Pro(cedure|c?)|CPL':'CPL', 'Debt(or|\.) (and|&) Cred(itor|\.)|DCD':'DCD', 'Dom(estic|\.) Rel(ations|\.)|DOM':'DOM', 'Econ(omic|\.) Dev(elopment|\.)|COM':'COM', 'Educ(ation|\.)|EDN':'EDN', 'Elder|ELD':'ELD', 'Elec(tion|\.)|ELN':'ELN', 'Em(inent|\.) Dom(ain|\.) Proc(edure|\.)|EDP':'EDP', 'Emp(loyer(s''?)?|l''rs) Liab(ility|\.)|EML':'EML', 'Energy|ENG':'ENG', 'Env(ironmental|(tl)?\.) Conserv(ation|\.)|ENV':'ENV', 'Est(ates,|\.) Powers (and|&) Trusts|EPT':'EPT', 'Exec(utive|\.)|EXC':'EXC', 'Fin(ancial|\.) Serv(ices|s?)|FIS':'FIS', 'Gen(eral|\.) Associations|GAS':'GAS', 'Gen(eral|\.) Bus(iness|\.)|GBS':'GBS', 'Gen(eral|\.) City|GCT':'GCT', 'Gen(eral|\.) Constr(uction|\.)|GCN':'GCN', 'Gen(eral|\.) Mun(icipal|\.)|GMU':'GMU', 'Gen(eral|\.) Oblig(ations|\.)|GOB':'GOB', 'High(way|\.)|HAY':'HAY', 'Indian|IND':'IND', 'Jud(iciary|\.)|JUD':'JUD', 'Legis(lative|\.)|LEG':'LEG', 'Lien|LIE':'LIE', 'L(imited|td\.) Liab(ility|\.) Co(mpany|\.)|LLC':'LLC', 'Local Fin(ance|\.)|LFN':'LFN', 'Mental Hyg(iene|\.)|MHY':'MHY', 'Mil(itary|\.)|MIL':'MIL', 'Mult(iple|\.) Dwell(ing|\.)|MDW':'MDW', 'Mult(iple|\.) Resid(ence|\.)|MRE':'MRE', 'Mun(icipal|\.) Home Rule|MHR':'MHR', 'Mun(icipal|i?\.) Housing Authorities|MHA':'MHA', 'Nav(igation|\.)|NAV':'NAV', '(State )?Print(ing|\.)? (and|&) Pub(lic|\.) Doc(uments|s?)|PPD':'PPD', 'Parks,? Rec(reation|\.) (and|&) Hist(oric|\.) Preserv(ation|\.)|PAR':'PAR', "P(artnership|'ship)|PTR":'PTR', 'Penal|PEN':'PEN', 'Pers(onal|\.) Prop(erty|\.)|PEP':'PEP', 'Priv(ate|\.) Hous(ing|\.) Fin(ance|\.)|PVH':'PVH', 'Pub(lic|\.) Auth(orities|\.)|PBA':'PBA', 'Pub(lic|\.) Health|PBH':'PBH', 'Pub(lic|\.) Housing|PBG':'PBG', 'Pub(lic|\.) Off(icers|\.)|PBO':'PBO', 'Rac(ing,|\.) Pari-Mut(uel|\.) Wag(ering|\.) (and|&) Breed(ing|\.)|PML':'PML', 'Railroad|R\.R\.|RRD':'RRD', 'Rapid Trans(it|\.)|RAT':'RAT', 'Real Prop(erty|\.) Act(ions|s\.)( (and|&) Proceedings)?|RPA':'RPA', 'Real Prop(erty|\.) Tax|RPT':'RPT', 'Real Prop(erty|\.)|RPP':'RPP', 'Relig(ious|\.) Corp(orations|s?\.)|RCO':'RCO', 'Retire(ment|\.) (and|&) Soc(ial|\.) Sec(urity|\.)|RSS':'RSS', 'Rural Elec(tric|\.) Coop(eratives?|s?\.)|REL':'REL', 'Second Class Cities|SCC':'SCC', 'Soil (and|&) Water Conserv(ation|\.) Dist(ricts|s?\.)|SWC':'SWC', 'State Administrative Procedure Act|A\.P\.A\.|SAP':'SAP', 'State Fin(ance|\.)|STF':'STF', 'State|STL':'STL', 'Statute of Local Gov(ernments|s?\.)|SLG':'SLG', 'Town|TWN':'TWN', 'Trans(portation|p?\.) Corp(orations|s?\.)|TCP':'TCP', 'Trans(portation|p?\.)|TRA':'TRA', 'Uniform Commercial Code|U\.?C\.?C\.?':'UCC', 'Village|VIL':'VIL', 'Vol(unteer|\.) Ambul(ance|\.) Workers''? Benefit|VAW':'VAW', 'Vol(unteer|\.) Fire(fighters''?|\.) Ben(efit|\.)|VOL':'VOL'}
-  URL: https://www.nysenate.gov/legislation/laws/{chapterAcronym}/{section}
+- name: Virginia Code
+  regex:
+    - V(irginia|a\.) Code( Ann(otated|\.))?
+    - *title_dash_section
+    - *subsection
+  idForms:
+    - [*id_at, *title_dash_section, *subsection]
+    - [*id_at, *section, *subsection]
+    - [*id_at, *mandatory_subsection]
+  URL: https://law.lis.virginia.gov/vacode/title{title}/section{title}-{section}
 
-- name: Pennsylvania Code
-  regex: ['(?P<title>\d+) (Pennsylvania|Pa\.) ?Code( Ann(otated|\.))?', *ch_dot_sec, *subsection]
-  idForms: *id_sec_sub
-  substitutions:
-    - token: title
-      outputToken: lpad
-      useRegex: true
-      index: {'\d{3}':'', '\d{2}':'0', '\d{1}':'00'}
-  URL: http://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/{lpad}{title}/chapter{chapter}/s{chapter}.{section}.html
+- name: Revised Code of Washington
+  regex:
+    - (Wash(ington|\.) Rev(ised|\.) Code( Ann(otated|\.))?|R\.?C\.?W)
+    - &title_dot_chapter_dot_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+[A-Za-z]?)\.(?P<chapter>\d+[A-Za-z]?)\.(?P<section>\d+[A-Za-z]?)'
+    - *subsection
+  idForms:
+    - [*id_at, *title_dot_chapter_dot_section, *subsection]
+    - [*id_at, *section, *subsection]
+    - [*id_at, *mandatory_subsection]
+  URL: https://app.leg.wa.gov/RCW/default.aspx?cite={title}.{chapter}.{section}
 
 ####################################################
 # COURT CASES
