@@ -4,9 +4,11 @@
 
 CiteURL is an extensible tool to process legal citations in text. It recognizes longform and shortform citations, subsections and pincites, and it can generate links to view them online. It can also create a list of all the authorities cited in a document, in order of how many times each citation occurs in the text.
 
-By default, CiteURL supports citations to U.S. court decisions, the U.S. Code and various other federal materials, plus California statutes. You can find the full list [here](https://github.com/raindrum/citeurl/blob/main/citeurl/default-schemas.yml). But you can also customize it to add support for more bodies of law by [writing your own citation schemas](https://raindrum.github.io/citeurl/#schema-yamls/) in YAML format.
+By default, CiteURL supports citations to U.S. court decisions, the U.S. Code and various other federal materials. State laws are supported for over 25 states, and more are being added regularly. You can find the current list of supported sources of law [here](https://github.com/raindrum/citeurl/blob/main/citeurl/default-schemas.yaml).
 
-For federal rules, regulations, and statutes, CiteURL's default set of schemas generates links to Cornell's [Legal Information Institute](https://www.law.cornell.edu/). For court cases, it uses Harvard's [Caselaw Access Project](https://cite.case.law/), though this will likely switch to [CourtListener](https://www.courtlistener.com/) in a future version.
+You can also customize CiteURL to add support for more bodies of law by [writing your own citation schemas](https://raindrum.github.io/citeurl/#schema-yamls/) in YAML format.
+
+For court cases, CiteURL's defaults to using Harvard's [Caselaw Access Project](https://cite.case.law/), though this will likely switch to [CourtListener](https://www.courtlistener.com/) in a future version. For federal statutes, rules, and regulations, it links to Cornell's [Legal Information Institute](https://www.law.cornell.edu/). State law links use the website for each state's legislature, except where another site like [Justia](https://law.justia.com/codes/) or [LawServer.com](https://www.lawserver.com/tools/laws) is the only one with a compatible URL scheme.
 
 ## Installation
 

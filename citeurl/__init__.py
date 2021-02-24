@@ -881,7 +881,12 @@ def _sort_key(citation):
 
 def list_authorities(
     citations: list,
-    allow_token_differences: list=['subsection', 'pincite', 'clause']
+    allow_token_differences: list=[
+        'subsection',
+        'pincite',
+        'clause',
+        'subdivision'
+    ]
 ) -> list:
     """
     Combine a list of citations into a list of authorities, each
@@ -892,8 +897,8 @@ def list_authorities(
     
     Arguments:
         citations: The list of citations to combine
-        allow_token_differences: A list of tokens that can differ
-            among citations to the same authority.
+        allow_token_differences: A list of tokens whose values may 
+            differ among citations to the same authority.
     Returns:
         A list of authority objects, sorted by the number of citations
         that refer to each, from most to least.
