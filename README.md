@@ -4,11 +4,9 @@
 
 CiteURL is an extensible tool to process legal citations in text. It recognizes longform and shortform citations, subsections and pincites, and it can generate links to view them online. It can also create a list of all the authorities cited in a document, in order of how many times each citation occurs in the text.
 
-By default, CiteURL supports citations to U.S. court decisions, the U.S. Code and various other federal materials. State laws are supported for over 25 states, and more are being added regularly. You can find the current list of supported sources of law [here](https://github.com/raindrum/citeurl/blob/main/citeurl/default-schemas.yaml).
+CiteURL supports Bluebook-style citations to many bodies of U.S. federal and state law, including the U.S. Code, nearly all state statutes, and most pre-2018 published court cases. You can find the supported bodies of law [here](https://github.com/raindrum/citeurl/blob/main/citeurl/default-schemas.yaml). You can also customize CiteURL to add support for more bodies of law by [writing your own citation schemas](https://raindrum.github.io/citeurl/#schema-yamls/) in YAML format.
 
-You can also customize CiteURL to add support for more bodies of law by [writing your own citation schemas](https://raindrum.github.io/citeurl/#schema-yamls/) in YAML format.
-
-For court cases, CiteURL's defaults to using Harvard's [Caselaw Access Project](https://cite.case.law/), though this will likely switch to [CourtListener](https://www.courtlistener.com/) in a future version. For federal statutes, rules, and regulations, it links to Cornell's [Legal Information Institute](https://www.law.cornell.edu/). State law links use the website for each state's legislature, except where another site like [Justia](https://law.justia.com/codes/) or [LawServer.com](https://www.lawserver.com/tools/laws) is the only one with a compatible URL scheme.
+For court cases, CiteURL's defaults use Harvard's [Caselaw Access Project](https://cite.case.law/), though this will likely switch to [CourtListener](https://www.courtlistener.com/) in a future version. For federal statutes and rules, it links to Cornell's [Legal Information Institute](https://www.law.cornell.edu/). State law links use the website for each state's legislature, except where another site like [Justia](https://law.justia.com/codes/) or [LawServer.com](https://www.lawserver.com/tools/laws) is the only one with a compatible URL scheme.
 
 ## Installation
 

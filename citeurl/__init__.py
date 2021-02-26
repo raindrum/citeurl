@@ -69,7 +69,7 @@ class Citation:
         URL = """"""
         for part in self.schema.URL:
             for key, value in self.processed_tokens.items():
-                if not value: continue
+                if value is None: continue
                 part = part.replace('{%s}' % key, value)
             missing_value = re.search('\{.+\}', part)
             if not missing_value:

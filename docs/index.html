@@ -85,7 +85,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
       <div class="wm-top-title">
         CiteURL<br>
         
-          <span class="wm-top-version">4.1.8</span>
+          <span class="wm-top-version">4.1.9</span>
         
       </div>
     </a>
@@ -140,9 +140,8 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 
     <h1 id="getting-started">Getting Started</h1>
 <p>CiteURL is an extensible tool to process legal citations in text. It recognizes longform and shortform citations, subsections and pincites, and it can generate links to view them online. It can also create a list of all the authorities cited in a document, in order of how many times each citation occurs in the text.</p>
-<p>By default, CiteURL supports citations to U.S. court decisions, the U.S. Code and various other federal materials. State laws are supported for over 25 states, and more are being added regularly. You can find the current list of supported sources of law <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/default-schemas.yaml">here</a>. </p>
-<p>You can also customize CiteURL to add support for more bodies of law by <a href="https://raindrum.github.io/citeurl/#schema-yamls/">writing your own citation schemas</a> in YAML format.</p>
-<p>For court cases, CiteURL's defaults to using Harvard's <a href="https://cite.case.law/">Caselaw Access Project</a>, though this will likely switch to <a href="https://www.courtlistener.com/">CourtListener</a> in a future version. For federal statutes, rules, and regulations, it links to Cornell's <a href="https://www.law.cornell.edu/">Legal Information Institute</a>. State law links use the website for each state's legislature, except where another site like <a href="https://law.justia.com/codes/">Justia</a> or <a href="https://www.lawserver.com/tools/laws">LawServer.com</a> is the only one with a compatible URL scheme.</p>
+<p>CiteURL supports Bluebook-style citations to many bodies of U.S. federal and state law, including the U.S. Code, nearly all state statutes, and most pre-2018 published court cases. You can find the supported bodies of law <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/default-schemas.yaml">here</a>. You can also customize CiteURL to add support for more bodies of law by <a href="https://raindrum.github.io/citeurl/#schema-yamls/">writing your own citation schemas</a> in YAML format.</p>
+<p>For court cases, CiteURL's defaults use Harvard's <a href="https://cite.case.law/">Caselaw Access Project</a>, though this will likely switch to <a href="https://www.courtlistener.com/">CourtListener</a> in a future version. For federal statutes and rules, it links to Cornell's <a href="https://www.law.cornell.edu/">Legal Information Institute</a>. State law links use the website for each state's legislature, except where another site like <a href="https://law.justia.com/codes/">Justia</a> or <a href="https://www.lawserver.com/tools/laws">LawServer.com</a> is the only one with a compatible URL scheme.</p>
 <h2 id="installation">Installation</h2>
 <p>CiteURL has been tested with Python version 3.9, but earlier versions probably work. Install Python if you don't have it, then run this command:</p>
 <pre><code class="language-bash">python -m pip install citeurl
@@ -277,5 +276,5 @@ for authority in authorities:
 </html>
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2021-02-24 21:31:05.967432+00:00
+Build Date UTC : 2021-02-26 01:22:42.800116+00:00
 -->

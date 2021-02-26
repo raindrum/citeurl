@@ -6,7 +6,7 @@
   regex:
     - &title '(Title )?(?P<title>\d+) '
     - &usc (U\.?|United) ?(S\.?|States) ?(C\.?|Code)( ?[AS]\.?)?
-    - &section ' ((&sect;|&#167|§){1,2}|Sect?(ions?|s?\.))? ?(?P<section>(\d[\d.\-]*\w|\d))'
+    - &section ' ((&sect;|&#167|§){1,2}|Sect?(ions?|s?\.))? ?(?P<section>(\d[\d.\-—]*\w|\d))'
     - &subsection (?P<subsection>(\(\w+\))+)?
   broadRegex:
     - *title
@@ -36,7 +36,7 @@
     - (
     - &us_const_sec '(,? ((&sect;|&#167|§){1,2}|Sect?(ions?|s?\.)) ?(?P<section>\d+))'
     - (
-    - &us_const_clause '(,? (cl(ause|\.) ?(?P<clause>[0-9]+)))'
+    - &us_const_clause '(,? (cl(ause|\.) ?(?P<clause>\d+)))'
     - )?)?
   broadRegex: ['^', *us_const_art_am, '(', *us_const_sec, '(', *us_const_clause, ')?)?']
   idForms:
@@ -51,24 +51,22 @@
       case: lower
   substitutions:
     - token: article
-      allowUnmatched: true
-      index: {'1':'i', '2':'ii', '3':'iii', '4':'iv', '5':'v', '6':'vi', '7':'vii', '8':'viii', '9':'ix', '10':'x', '11':'xi', '12':'xii','13':'xiii', '14':'xiv', '15':'xv', '16':'xvi', '17':'xvii', '18':'xviii', '19':'xix', '20':'xx', '21':'xxi', '22':'xxii', '23':'xxiii', '24':'xxiv', '25':'xxv', '26':'xxvi', '27':'xxvii', '28':'xxviii', '29':'xxix', '30':'xxx'}
-    - token: amendment
-      outputToken: right_in_BOR
-      allowUnmatched: true
+      outputToken: article_roman
       useRegex: true
-      index: {'1|i':'first', '2|ii':'second', '3|iii':'third', '4|iv':'fourth', '5|v':'fifth', '6|vi':'sixth', '7|vii':'seventh', '8|viii':'eighth', '9|ix':'ninth', '10|x':'tenth'}
-    - token: amendment
-      outputToken: subsequent_amendment
+      index: {'1|i':'I', '2|ii':'II', '3|iii':'III', '4|iv':'IV', '5|v':'V', '6|vi':'VI', '7|vii':'VII'}
+    - token: article
       allowUnmatched: true
-      useRegex: true
-      index: {'11|xi':'xi', '12|xii':'xii', '13|xiii':'xiii', '14|xiv':'xiv', '15|xv':'xv', '16|xvi':'xvi', '17|xvii':'xvii', '18|xviii':'xviii', '19|xix':'xix', '20|xx':'xx', '21|xxi':'xxi', '22|xxii':'xxii', '23|xxiii':'xxii', '24|xxiv':'xxiv', '25|xxv':'xxv', '26|xxvi':'xxvi', '27|xxvii':'xxvii', '28|xxviii':'xxviii', '29|xxix':'xxix', '30|xxx':'xxx'}
+      index: &roman_numerals_to_arabic {'i':'1', 'ii':'2', 'iii':'3', 'iv':'4', 'v':'5', 'vi':'6', 'vii':'7', 'viii':'8', 'ix':'9', 'x':'10', 'xi':'11', 'xii':'12','xiii':'13', 'xiv':'14', 'xv':'15', 'xvi':'16', 'xvii':'17', 'xviii':'18', 'xix':'19', 'xx':'20', 'xxi':'21', 'xxii':'22', 'xxiii':'23', 'xxiv':'24', 'xxv':'25', 'xxvi':'26', 'xxvii':'27', 'xxviii':'28', 'xxix':'29', 'xxx':'30'}
+    - token: amendment
+      allowUnmatched: true
+      index: *roman_numerals_to_arabic
   URL:
-    - https://www.law.cornell.edu/constitution/
-    - article{article}
-    - '{right_in_BOR}_amendment'
-    - amendment{subsequent_amendment}
-    - '#section{section}'
+    - https://constitution.congress.gov/browse/
+    - amendment-{amendment}/
+    - article-{article}
+    - '#{article_roman}_S{section}'
+    - '#{amendment}_S{section}'
+    - _C{clause}
 
 - name: U.S. Public Laws
   regex: Pub(\.?|lic) ?L(\.?|aw) ?(No\.?)? ?(?P<congress>\d+)[–-](?P<law>\d+)
@@ -93,10 +91,9 @@
     - *subsection
   idForms: *id_sec_sub
   broadRegex: [*title, *cfr, *section, *broadsub]
-  mutations: *usc_sub
   URL: &cfr_url
-    - https://www.law.cornell.edu/cfr/text/{title}/{section}
-    - '#{subsection}'
+    - https://ecfr.federalregister.gov/cfr-reference?cfr%5Bdate%5D=current&cfr%5Breference%5D={title} CFR {section}
+    - '#p-{section}{subsection}'
 
 ####################################################
 # FEDERAL RULES
@@ -285,26 +282,55 @@
     - '#{article}-{section}{subsection}'
 
 ####################################################
-# STATE LAW
+# STATES AND TERRITORIES
 ####################################################
-# This will probably never be a complete set. Many states
-# don't make their statutes available through a predictable
-# URL scheme.
 
 - name: Code of Alabama, 1975
   regex:
-    - Ala(bama|\.) ?Code
-    - &title_dash_chapter_dash_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+[A-Z]?)-(?P<chapter>\d+[A-Z]?)-(?P<section>\d+(\.\d+)?)'
+    - (Ala(bama|\.)|AL) ?Code
+    - &title_dash_chapter_dash_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+(\.\d+)?[A-Za-z]?)-(?P<chapter>\d+(\.\d+)?[A-Za-z]?)-(?P<section>\d+(\.\d+)?)'
     - *subsection
+  mutations:
+    - token: title
+      case: upper
+    - token: chapter
+      case: upper
   idForms: &title_dash_chapter_dash_section_id
     - [*id_at, *title_dash_chapter_dash_section, *subsection]
     - [*id_at, ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<section>\d+(\.\d+)?)', *subsection]
     - [*id_at, *mandatory_subsection]
-  URL: http://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/{title}-{chapter}-{section}.htm
+  URL: https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/{title}-{chapter}-{section}.htm
+
+- name: Alaska Statutes
+  regex:
+    - (Alaska|AK) Stat(utes?|\.)( ?Ann(otated|\.))?
+    - &title_dot_chapter_dot_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+[A-Za-z]?)\.(?P<chapter>\d+[A-Za-z]?)\.(?P<section>\d+[A-Za-z]?)'
+    - *subsection
+  idForms: &title_dot_chapter_dot_section_id
+    - [*id_at, *title_dot_chapter_dot_section, *subsection]
+    - [*id_at, *section, *subsection]
+    - [*id_at, *mandatory_subsection]
+  URL: http://www.akleg.gov/basis/statutes.asp#{title}.{chapter}.{section}
+
+- name: American Samoa Code
+  regex:
+    - Am(erican|\.) ?Samoa Code( Ann(otated|\.))?
+    - ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+)\.(?P<section>\d+)'
+    - *subsection
+  idForms: *id_sec_sub
+  URL: https://new.asbar.org/code-annotated/{title}-{section}
+
+- name: Arkansas Code
+  regex:
+    - (Ark(ansas|\.)|AR) ?Code( Ann(otated|\.))?
+    - *title_dash_chapter_dash_section
+    - *subsection
+  idForms: *title_dash_chapter_dash_section_id
+  # no URL because they use LexisNexis; Justia URLs too irregular; unavailable on LawServer.com
 
 - name: Arizona Revised Statutes
   regex:
-    - Ariz(ona|\.)( ?Rev(ised|\.))? ?Stat(utes?|s?\.)( Ann(otated|\.))?
+    - (Ariz(ona|\.)|AZ)( ?Rev(ised|\.))? ?Stat(utes?|s?\.)( Ann(otated|\.))?
     - &title_dash_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+(\.\d+)?[A-Z]?)-(?P<section>\d+(\.\d+)?[A-Z]?)'
     - *subsection
   idForms: &title_dash_section_id
@@ -343,18 +369,18 @@
 
 - name: Colorado Revised Statutes
   regex:
-    - Colo(rado|\.) ?Rev(ised|\.) Stat(utes?|s?\.)( Ann(otated|\.))?
+    - (Colo(rado|\.)|CO)( ?Rev(ised|\.))? Stat(utes?|s?\.)( Ann(otated|\.))?
     - &title_dash_article_dash_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+(\.\d+)?)-(?P<article>\d+(\.\d+)?)-(?P<section>\d+(\.\d+)?)'
     - *subsection
   idForms:
     - [*id_at, *title_dash_article_dash_section, *subsection]
     - [*id_at, *section, *subsection]
     - [*id_at, *mandatory_subsection]
-  # no URL because they use LexisNexis
+  URL: https://www.sos.state.co.us/pubs/info_center/laws/Title{title}/Title{title}.pdf#search={title}-{article}-{section}.
 
 - name: General Statutes of Connecticut
   regex:
-    - Conn(ecticut|\.) ?Gen(eral|\.) ?Stat(utes?|s?\.)( Ann(otated|\.))?
+    - (Conn(ecticut|\.)|CT) ?Gen(eral|\.) ?Stat(utes?|s?\.)( Ann(otated|\.))?
     - &conn_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<section>(\d[a-z\-]*\w|\d+))'
     - *subsection
   idForms:
@@ -362,6 +388,17 @@
     - [*id_at, *mandatory_subsection]
   URL: https://www.lawserver.com/law/state/connecticut/ct-laws/connecticut_statutes_{section}
 
+- name: Delaware Code
+  regex:
+    - (Del(aware|\.)|DE) Code( Ann(otated|\.))?
+    - &standalone_title ',? [Tt]it(le|\.) ?(?P<title>\d+([-—][A-Z])?),?'
+    - *section
+    - *subsection
+  idForms: *id_sec_sub
+  mutations:
+    - token: section
+      case: lower
+  URL: https://www.lawserver.com/law/state/delaware/de-code/delaware_code_title_{title}_{section}
 - name: Delaware General Corporations Law
   regex:
     - (D\.? ?G\.? ?C\.? ?L\.?|Del(aware|\.) ?Gen(eral|\.) ?Corp(orations?|s?\.) ?L(aw|\.))
@@ -375,9 +412,19 @@
       index: {'1[01]\d': '01', '12\d': '02', '13\d': '03', '14\d': '04', '1[5-7]\d': '05', '20\d': '06', '2[1-3]\d': '07', '24\d': '08', '2[56]\d': '09', '2[78]\d': '10', '29\d|30\d': '11', '31\d': '12', '3[23]\d': '13', '3[45]\d': '14', '36\d': '15', '37\d|38[0-5]': '16', '38[89]|390': '17', '39[1-9]': '18'}
   URL: https://delcode.delaware.gov/title8/c001/sc{subchapter}/index.shtml#{section}.
 
+- name: District of Columbia Official Code
+  regex:
+    - (District of Columbia( Official)?|D\.? ?C\.?) ?Code( Ann(otated|\.))?
+    - *title_dash_section
+    - *subsection
+  idForms: *title_dash_section_id
+  URL:
+    - https://code.dccouncil.us/dc/council/code/sections/{title}-{section}.html
+    - '#{subsection}'
+
 - name: Florida Statutes
   regex:
-    - (Florida Statutes( Annotated)?|Fla\. ?Stat\.( ?Ann\.)?),?
+    - (Florida Statutes( Annotated)?|(Fla\.|FL) ?Stat\.( ?Ann\.)?),?
     - &ch_dot_sec ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<chapter>\d+[A-Z]?)\.(?P<section>\d+)'
     - *subsection
     - &year (,? \((?P<year>\d{4})\))?
@@ -395,11 +442,41 @@
 
 - name: Georgia Code
   regex:
-    - (G(eorgia|a\.) Code( Ann(otated|\.))?|(O\.?)?C\.?G\.?A\.?)
+    - (G(eorgia|a\.|A) Code( Ann(otated|\.))?|(O\.?)?C\.?G\.?A\.?)
     - *title_dash_chapter_dash_section
     - *subsection
   idForms: *title_dash_chapter_dash_section_id
-  # no URL because Georgia uses LexisNexis
+  # no URL because Georgia uses LexisNexis, and Justia URLs need article numbers
+
+- name: Guam Code
+  regex:
+    - (?P<title>\d+) Guam Code( Ann(otated|\.))?
+    - *section
+    - *subsection
+  idForms: *id_sec_sub
+  # no URL because guamcourts.org and Justia URLs need chapter numbers, and I can't find any other sources
+
+- name: Hawaii Revised Statutes
+  regex:
+    - (Haw(ai.?i|\.)|HI)( ?Rev(ised|\.))? ?Stat(utes?|\.)( Ann(otated|\.))?
+    - &chapter_dash_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<chapter>\d+[A-Z]?)[–-](?P<section>\d+(\.\d+)?)'
+    - *subsection
+  idForms: &chapter_dash_section_id
+    - [*id_at, *chapter_dash_section, *subsection]
+    - [*id_at, *section, *subsection]
+    - [*id_at, *mandatory_subsection]
+  URL: https://www.lawserver.com/law/state/hawaii/hi-statutes/hawaii_statutes_{chapter}-{section}
+
+- name: Idaho Code
+  regex:
+    - I(daho|D) Code( Ann(otated|\.))?
+    - &idaho_title_dash_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+[A-Z]?)[–-](?P<section>(?P<chapter>\d{1,2})\d{2}[A-Z]?)'
+    - *subsection
+  idForms:
+    - [*id_at, *idaho_title_dash_section, *subsection]
+    - [*id_at, ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<section>(?P<chapter>\d{1,2})\d{2}[A-Z]?)', *subsection]
+    - [*id_at, *mandatory_subsection]
+  URL: https://legislature.idaho.gov/statutesrules/idstat/Title{title}/T{title}CH{chapter}/SECT{title}-{section}/
 
 - name: Illinois Compiled Statutes
   regex: (?P<chapter>\d+) ILCS (?P<act>\d+)/(?P<section>(\d[\d.-]*\w|\d))
@@ -417,7 +494,7 @@
 
 - name: Indiana Code
   regex:
-    - Ind(iana|\.) ?Code( Ann(otated|\.))?
+    - (Ind(iana|\.)|IN) ?Code( Ann(otated|\.))?
     - ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+)-(?P<article>\d+(\.\d+)?)-(?P<chapter>\d+(\.\d+)?)-(?P<section>\d+(\.\d+)?)'
     - *year
   defaults: {'year':'2020'} # this must be updated yearly, unfortunately
@@ -428,9 +505,25 @@
       index: {'\d{2}':'0', '\d':'0'}
   URL: https://iga.in.gov/legislative/laws/{year}/ic/titles/{lpad}{title}#{title}-{article}-{chapter}-{section}
 
+- name: Iowa Code
+  regex:
+    - I(owa|A) Code( Ann(otated|\.))?
+    - *ch_dot_sec
+    - *subsection
+  idForms: *ch_dot_sec_id
+  URL: https://www.legis.iowa.gov/docs/code/{chapter}.{section}.pdf
+
+- name: Kansas Statutes
+  regex:
+    - (Kan(sas|\.)|KS) ?Stat(utes|\.)( ?Ann(otated|\.))?
+    - *chapter_dash_section
+    - *subsection
+  idForms: *chapter_dash_section_id
+  URL: https://www.lawserver.com/law/state/kansas/ks-statutes/kansas_statutes_{chapter}-{section}
+
 - name: Kentucky Revised Statutes
   regex:
-    - (K(entucky|y\.)( ?Rev(ised|\.))? ?Stat(utes?|s?\.)|KRS)
+    - (K(entucky|y\.|Y)( ?Rev(ised|\.))? ?Stat(utes?|s?\.)|KRS)
     - &ky_ch_dot_sec ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<chapter>(\d[\d.]*\w|\d))\.(?P<section>\d+)'
     - *subsection
   idForms:
@@ -457,7 +550,7 @@
 
 - name: Louisiana Codes
   regex:
-    - L(ouisiana|a\.) ?(?P<code>Civ(il|\.) ?Code|Code( of)? ((Civ(il|\.)|Crim(inal|\.)) ?Proc(edure|\.)|Evid(ence|\.))|Child(ren'?s|\.) ?Code)( Ann(otated|\.))?,?( [Aa]rt(icle|\.))? (?P<article>\d+)
+    - L(ouisiana|a\.|A) ?(?P<code>Civ(il|\.) ?Code|Code( of)? ((Civ(il|\.)|Crim(inal|\.)) ?Proc(edure|\.)|Evid(ence|\.))|Child(ren'?s|\.) ?Code)( Ann(otated|\.))?,?( [Aa]rt(icle|\.))? (?P<article>\d+)
     - *subsection
   substitutions:
     - token: code
@@ -466,9 +559,25 @@
       index: {'Civ(il|\.) ?Code':'civil_code', 'Code( of)? Civ(il|\.) ?Proc(edure|\.)':'code_of_civil_procedure', 'Code( of)? Crim(inal|\.) ?Proc(edure|\.)':'code_of_criminal_procedure', 'Code( of)? Evid(ence|\.)':'code_of_evidence', 'Child(ren''?s|\.) ?Code':'childrens_code'}
   URL: https://www.lawserver.com/law/state/louisiana/la-codes/louisiana_{code_slug}_{article}
 
+- name: Maine Statutes
+  regex:
+    - M(aine|e\.|E)( ?Rev(ised|\.))? ?Stat(utes?|\.)( ?Ann(otated|\.))?
+    - *standalone_title
+    - *section
+    - *subsection
+  idForms: *id_sec_sub
+  mutations:
+    - token: title
+      splitter: '—'
+      joiner: '-'
+    - token: section
+      splitter: '—'
+      joiner: '-'
+  URL: https://legislature.maine.gov/legis/statutes/{title}/title{title}sec{section}.html
+
 - name: Maryland Code
   regex:
-    - 'M(aryland|d\.) ?Code( Ann(otated|\.))?,? '
+    - 'M(aryland|d\.|D) ?Code( Ann(otated|\.))?,? '
     - (?P<article>(Ac|Al|[BCEFHILNPRST]).{4,38}?)
     - &md_title_dash_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+[A-Z]?)[-–](?P<section>[\dA-Z\-–.]*[\dA-Z])'
     - *subsection
@@ -486,11 +595,11 @@
       outputToken: article_code
       useRegex: true
       index: {'Acric(ulture|\.)':'gag', 'Alco(holic|\.) ?Bev(erages|s?\.)':'gab', 'Bus(iness|\.) ?Occ(upations|\.) ?(and|&) ?Prof(essions|s?\.)':'gbo', 'Bus(iness|\.) ?Reg(ulation|\.)':'gbr', 'Com(mercial|\.) ?Law':'gcl', 'Corp(orations|s\.) ?(and|&) Ass(ociations|''ns)':'gca', 'Corr(ectional|\.) ?Serv(ices|s\.)':'gcs', 'C(ourts|ts\.) ?(and|&) ?Jud(icial|\.) ?Proc(eedings|\.)':'gcj', 'Crim(inal|\.) ?Law':'gcr', 'Crim(inal|\.) ?Proc(edure|\.)':'gcp', 'Econ(omic|\.) ?Dev(elopment|\.)':'gec', 'Educ(ation|\.)':'ged', 'Elec(tion|\.) ?Law':'gel', 'Envir(onment|\.)':'gen', 'Est(ates|\.) ?(and|&) ?Trusts':'get', 'Fam(ily|\.) ?Law':'gfl', 'Fin(ancial|\.) Inst(itutions|\.)':'gfi', 'Health ?[-–] ?Gen(eral|\.)':'ggp', 'Health Occ(upations|\.)':'gho', 'Hous(ing|\.) ?(and|&) ?C(ommunity|mty\.) ?Dev(elopment|''t|\.)':'ghs', 'Hum(an|\.) ?Serv(ices|s\.)':'ghu', 'Ins(urance|\.)':'gin', 'Lab(or|\.) ?(and|&) ?Empl(oyment|\.)':'gle', 'Land Use':'glu', 'Local Gov(ernment|''t)':'glg', 'Nat(ural|\.) ?Res(ources|\.)':'gnr', 'Pub(lic|\.) ?Safety':'gps', 'Pub(lic|\.) ?Util(ity|\.)':'gpu', 'Real Prop(erty|\.)':'grp', 'State Fin(ance|\.) (and|&) Proc(urement|\.)':'gsf', 'State Gov(ernment|''t)':'gsg', 'State Pers(onnel|\.) (and|&) Pens(ions|\.)':'gsp', 'Tax ?[-–] ?Gen(eral|\.)':'gtg', 'Tax ?[-–] ?Prop(erty|\.)':'gtp', 'Transp(ortation|\.)':'gtr'}
-  URL: http://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article={article_code}&section={title}-{section}
+  URL: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article={article_code}&section={title}-{section}
 
 - name: Massachusetts General Laws
   regex:
-    - (Mass(achusetts|\.) ?(Gen(eral|\.)|Ann(otated|\.)) ?Laws( Ann(otated|\.))?|M\.?G\.?L\.?(A\.?)?|A\.?L\.?M\.?)
+    - ((Mass(achusetts|\.)|MA) ?(Gen(eral|\.)|Ann(otated|\.)) ?Laws( Ann(otated|\.))?|M\.?G\.?L\.?(A\.?)?|A\.?L\.?M\.?)
     - ',? [Cc]h(apter|\.) ?(?P<chapter>\d+[A-Z]?),? '
     - &mass_section ((&sect;|&#167|§){1,2}|Sect?(ions?|s?\.))? ?(?P<section>\d+[A-Z]?\d*([/]\d+[A-Z]?)?)
     - *subsection
@@ -505,15 +614,15 @@
 
 - name: Michigan Compiled Laws
   regex:
-    - Mich(igan|\.) Comp(iled|\.) Laws( (Serv(ice|\.)|Ann(otated|\.)))?
+    - (Mich(igan|\.)|MI) Comp(iled|\.) Laws( (Serv(ice|\.)|Ann(otated|\.)))?
     - *ch_dot_sec
     - *subsection
   idForms: *ch_dot_sec_id
-  URL: http://legislature.mi.gov/doc.aspx?mcl-{chapter}-{section}
+  URL: https://legislature.mi.gov/doc.aspx?mcl-{chapter}-{section}
 
 - name: Minnesota Statutes
   regex:
-    - Minn(esota|\.) ?Stat(utes?|s?\.)( Ann(otated|\.))?
+    - (Minn(esota|\.)|MN) ?Stat(utes?|s?\.)( Ann(otated|\.))?
     - *ch_dot_sec
     - &minn_subsec (?P<subsection>\((?P<subdivision>\d\w*)\)(\(\w+\))*|(\(\w+\))+)
     - '?'
@@ -524,24 +633,97 @@
     - https://www.revisor.mn.gov/statutes/cite/{chapter}.{section}
     - '#stat.{chapter}.{section}.{subdivision}'
 
+- name: Mississippi Code
+  regex:
+    - (Miss(issippi|\.)|MS) ?Code( Ann(otated|\.))?
+    - *title_dash_chapter_dash_section
+    - *subsection
+    - *year
+  defaults: {'year':'2019'} # needs yearly updates
+  idForms: *title_dash_chapter_dash_section_id
+  URL: https://law.justia.com/codes/mississippi/{year}/title-{title}/chapter-{chapter}/section-{title}-{chapter}-{section}/index.html
+
 - name: Missouri Revised Statutes
   regex:
-    - ((M(issouri|o\.)( Ann(otated|\.))? ?Rev(ised|\.) ?Stat(utes|s?\.)( Ann(otated|\.))?|R\.?S\.?M[Oo]\.?))
+    - ((M(issouri|o\.|O)( Ann(otated|\.))? ?Rev(ised|\.) ?Stat(utes|s?\.)( Ann(otated|\.))?|R\.?S\.?M[Oo]\.?))
     - *ch_dot_sec
     - *subsection
   idForms: *ch_dot_sec_id
   URL: https://revisor.mo.gov/main/OneSection.aspx?section={chapter}.{section}
 
+- name: Montana Code
+  regex:
+    - (Mont(ana|\.)|MT) Code( Ann(otated|\.))?
+    - *title_dash_chapter_dash_section
+    - *subsection
+  idForms: *title_dash_chapter_dash_section_id
+  URL: https://www.lawserver.com/law/state/montana/mt-code/montana_code_{title}-{chapter}-{section}
+
+- name: Revised Statutes of Nebraska
+  regex:
+    - (Neb(raska|\.)|NE)( ?Rev(ised|\.))? ?Stat(utes?|\.)( ?Ann(otated|\.))?
+    - *chapter_dash_section
+    - *subsection
+  idForms: *chapter_dash_section_id
+  URL: https://www.nebraskalegislature.gov/laws/statutes.php?statute={chapter}-{section}
+
+- name: New Hampshire Revised Statutes
+  regex:
+    - (New Hampshire|N\.? ?H\.?)( ?Rev(ised|\.))? Stat(utes?|\.)( ?Ann(otated|\.))?
+    - &nh_chapter_colon_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<chapter>\d+([-–][A-Za-z])?):(?P<section>\d+([-–][A-Za-z])?)'
+    - *subsection
+  idForms:
+    - [*id_at, *nh_chapter_colon_section, *subsection]
+    - [*id_at, ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<section>\d+([-–][A-Za-z])?)', *subsection]
+    - [*id_at, *mandatory_subsection]
+  mutations:
+    - token: chapter
+      splitter: '–'
+      joiner: '-'
+      case: lower
+    - token: section
+      splitter: '–'
+      joiner: '-'
+      case: lower
+  URL: https://www.lawserver.com/law/state/new-hampshire/nh-statutes/new_hampshire_revised_statutes_{chapter}_{section}
+
 - name: New Jersey Statutes
   regex:
-    - ((N\.J\.|New Jersey)( Rev(ised|\.))? Stat(utes|\.)( Ann(otated|\.))?|N\.?J\.?S\.?A)
+    - ((N\.? ?J\.?|New Jersey)( ?Rev(ised|\.))? Stat(utes|\.)( Ann(otated|\.))?|N\.?J\.?S\.?A)
     - &title_colon_chapter_dash_sec ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+[A-Za-z]?):(?P<chapter>\d+[A-Za-z]?)-(?P<section>\d+(\.\d+)?[A-Za-z]?)'
     - *subsection
   idForms:
     - [*id_at, *title_colon_chapter_dash_sec, *subsection]
     - [*id_at, *section, *subsection]
     - [*id_at, *mandatory_subsection]
-  URL: http://njlaw.rutgers.edu/collections/njstats/showsect.php?title={title}&chapter={chapter}&section={section}&actn=getsect
+  URL: https://njlaw.rutgers.edu/collections/njstats/showsect.php?title={title}&chapter={chapter}&section={section}&actn=getsect
+
+- name: Nevada Revised Statutes
+  regex:
+    - ((Nev(ada|\.)|NV)( ?Rev(ised|\.))? ?Stat(utes|\.)( ?Ann(otated|\.))?|NRS)
+    - *ch_dot_sec
+    - *subsection
+  idForms: *ch_dot_sec_id
+  substitutions:
+    - token: chapter
+      outputToken: lpad
+      useRegex: true
+      index: {'\d{3}[A-Z]?':'', '\d{2}[A-Z]?':'0', '\d{1}[A-Z]?':'00'}
+  URL: https://www.leg.state.nv.us/NRS/NRS-{lpad}{chapter}.html#NRS{lpad}{chapter}Sec{section}
+
+- name: New Mexico Statutes Annotated 1978
+  regex:
+    - ((New Mexico|N\.? ?M\.?) ?Stat(utes?|\.)( ?Ann(otated|\.))?|NMSA)
+    - &chapter_dash_article_dash_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<chapter>\d+[A-Za-z]?)-(?P<article>\d+[A-Za-z]?)-(?P<section>\d+(\.\d+)?[A-Z]?)'
+    - *subsection
+  idForms: &chapter_dash_article_dash_section_id
+    - [*id_at, *chapter_dash_article_dash_section, *subsection]
+    - [*id_at, ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<section>\d+(\.\d+)?)', *subsection]
+  substitutions:
+    - token: chapter
+      outputToken: chapter_code
+      index: {'1':'4351', '2':'4359', '3':'4362', '4':'4372', '5':'4376', '6':'4381', '7':'4340', '8':'4354', '9':'4357', '10':'4364', '11':'4370', '12':'4374', '13':'4378', '14':'4384', '15':'4387', '16':'4390', '17':'4341', '18':'4346', '19':'4350', '20':'4356', '21':'4361', '22':'4368', '22A':'4377', '23':'4380', '24':'4384', '25':'4391', '26':'4355', '27':'4358', '28':'4365', '29':'4367', '30':'4371', '31':'4379', '32':'4385', '32A':'4389', '33':'4396', '34':'4399', '35':'4360', '36':'4363', '37':'4366', '38':'4369', '39':'4373', '40':'4375', '41':'4382', '42':'4386', '42A':'4392', '43':'4395', '44':'4388', '45':'4393', '46':'4401', '46A':'4405', '46B':'4406', '47':'4408', '48':'4413', '49':'4416', '50':'4420', '51':'4425', '52':'4394', '53':'4400', '54':'4404', '55':'4411', '56':'4418', '57':'4423', '58':'4426', '59':'4435', '59A':'4438', '60':'4443', '61':'4397', '62':'4407', '63':'4412', '64':'4414', '65':'4417', '66':'4422', '67':'4429', '68':'4434', '69':'4437', '70':'4440', '71':'4398', '72':'4402', '73':'4409', '74':'4415', '75':'4421', '76':'4424', '77':'4427'}
+  URL: https://nmonesource.com/nmos/nmsa/en/item/{chapter_code}/index.do#!b/{chapter}-{article}-{section}
 
 - name: Consolidated Laws of New York
   regex: ['(New York|N\.? ?Y\.?) ?(?P<chapter>.{2,40}?)( Law)?', *section, *subsection]
@@ -558,18 +740,49 @@
 
 - name: North Carolina General Statutes
   regex:
-    - (North Carolina Gen(eral|\.) Stat(utes|s?\.)|N\.? ?C\.? ?G\.? ?S\.?)
-    - &chapter_dash_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<chapter>\d+[A-Z]?)[–-](?P<section>\d+(\.\d+)?)'
+    - ((North Carolina|N\.? ?C\.?) ?Gen(eral|\.) ?Stat(utes|s?\.)|N\.? ?C\.? ?G\.? ?S\.?)
+    - *chapter_dash_section
     - *subsection
-  idForms:
-    - [*id_at, *chapter_dash_section, *subsection]
-    - [*id_at, *section, *subsection]
-    - [*id_at, *mandatory_subsection]
+  idForms: *chapter_dash_section_id
   URL: https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_{chapter}/GS_{chapter}[–-]{section}.html
+
+- name: North Dakota Century Code
+  regex:
+    - (North Dakota|N\.? ?D\.?) ?Cent(ury|\.) ?Code( Ann(otated|\.))?
+    - *title_dash_chapter_dash_section
+    - *subsection
+  idForms: *title_dash_chapter_dash_section_id
+  mutations:
+    - token: title
+      splitter: \.
+      joiner: '-'
+    - token: chapter
+      splitter: \.
+      joiner: '-'
+  substitutions:
+    - token: chapter
+      outputToken: chapter_lpad
+      useRegex: true
+      allowUnmatched: true
+      index: {'\d{2}(\D\d+)?':'', '\d(\D\d+)?':'0'}
+    - token: section
+      outputToken: section_lpad
+      useRegex: true
+      allowUnmatched: true
+      index: {'\d{2}(\D\d+)?':'', '\d(\D\d+)?':'0'}
+  URL: https://www.lawserver.com/law/state/north-dakota/nd-code/north_dakota_code_{title}_{chapter_lpad}{chapter}_{section_lpad}{section}
+
+- name: Northern Mariana Islands Commonwealth Code
+  regex:
+    - (?P<title>\d+) N(orthern|\.) ?Mar(iana|\.) ?I(slands|\.) ?Code
+    - *section
+    - *subsection
+  idForms: *id_sec_sub
+  URL: https://cnmilaw.org/pdf/cmc_section/T{title}/{section}.pdf
 
 - name: Ohio Revised Code
   regex:
-    - Ohio Rev(ised|\.) ?Code( Ann(otated|\.))?
+    - O(hio|H) Rev(ised|\.) ?Code( Ann(otated|\.))?
     - ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<chapter>\d+)'
     - (\.(?P<section>\d+)
     - *subsection
@@ -581,8 +794,8 @@
 
 - name: Oklahoma Statutes
   regex:
-    - 'Okla(homa|\.) ?Stat(utes|\.),? '
-    - '[Tt]it(le|\.) ?(?P<title>\d+[A-Z]?),?'
+    - '(Okla(homa|\.)|OK) ?Stat(utes|\.)'
+    - *standalone_title
     - *section
     - *subsection
     - *year
@@ -590,32 +803,47 @@
   mutations:
     - token: title
       case: lower
-  idForms:
-    - [*id_at, *section, *subsection]
-    - [*id_at, *mandatory_subsection]
+  idForms: *id_sec_sub
   URL: https://law.justia.com/codes/oklahoma/{year}/title-{title}/section-{title}-{section}/index.html
 
 - name: Oregon Revised Statutes
   regex:
-    - Or(egon|\.) ?Rev(ised|\.) ?Stat(utes|s?\.)( Ann(otated|\.))?
+    - (Or(egon|\.)|OR) ?Rev(ised|\.) ?Stat(utes|s?\.)( Ann(otated|\.))?
     - *ch_dot_sec
     - *subsection
   idForms: *ch_dot_sec_id
   URL: https://www.oregonlaws.org/ors/{chapter}.{section}
 
 - name: Pennsylvania Code
-  regex: ['(?P<title>\d+) (Pennsylvania|Pa\.) ?Code( Ann(otated|\.))?', *ch_dot_sec, *subsection]
+  regex: ['(?P<title>\d+) (Pennsylvania|Pa\.|PA) ?Code( Ann(otated|\.))?', *ch_dot_sec, *subsection]
   idForms: *id_sec_sub
   substitutions:
     - token: title
       outputToken: lpad
       useRegex: true
       index: {'\d{3}':'', '\d{2}':'0', '\d{1}':'00'}
-  URL: http://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/{lpad}{title}/chapter{chapter}/s{chapter}.{section}.html
+  URL: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/{lpad}{title}/chapter{chapter}/s{chapter}.{section}.html
+
+- name: Laws of Puerto Rico
+  regex:
+    - (Puerto Rico|P\.? ?R\.?) ?L(aws|eyes)( An(notated|notado|n?\.))?
+    - *standalone_title
+    - *section
+    - *subsection
+  idForms: *id_sec_sub
+  # no URL because they use LexisNexis
+
+- name: General Laws of Rhode Island
+  regex:
+    - (Rhode Island|R\.? ?I\.?) ?Gen(eral|\.) ?Laws
+    - *title_dash_chapter_dash_section
+    - *subsection
+  idForms: *title_dash_chapter_dash_section_id
+  URL: http://webserver.rilin.state.ri.us/Statutes/TITLE{title}/{title}-{chapter}/{title}-{chapter}-{section}.HTM
 
 - name: South Carolina Code of Laws
   regex:
-    - (South Carolina|S\.? ?C\.?) Code( Ann(otated|\.))?
+    - (South Carolina|S\.? ?C\.?) ?Code( Ann(otated|\.))?
     - *title_dash_chapter_dash_section
     - *subsection
   idForms: *title_dash_chapter_dash_section_id
@@ -626,9 +854,17 @@
       index: {'\d{3}':'', '\d{2}':'0', '\d':'00'}
   URL: https://www.scstatehouse.gov/code/t{title}c{lpad}{chapter}.php#{title}-{chapter}-{section}
 
+- name: South Dakota Codified Laws
+  regex:
+    - (South Dakota|S\.? ?D\.?) ?Codified Laws
+    - *title_dash_chapter_dash_section
+    - *subsection
+  idForms: *title_dash_chapter_dash_section_id
+  URL: https://sdlegislature.gov/Statutes/Codified_Laws/DisplayStatute.aspx?Type=Statute&Statute={title}-{chapter}-{section}
+
 - name: Tennessee Code
   regex:
-    - Tenn(essee|\.) ?Code( Ann(otated|\.))?
+    - (Tenn(essee|\.)|TN) ?Code( Ann(otated|\.))?
     - *title_dash_chapter_dash_section
     - *subsection
   idForms: *title_dash_chapter_dash_section_id
@@ -650,28 +886,79 @@
       index: {'Agric(ulture|\.)|AGC?':'AG', 'Alc(oholic|o?\.) Bev(erage|\.)|ABC?':'AB', 'Aux(iliary|\.) Water Laws|A?WL':'WL', 'Bus(iness|\.) (and|&) Com(merce|m?\.)|B&C|BCC?':'BC', 'Bus(iness|\.) Org(anizations|s\.)|BOC?':'BO', 'Civ(il|\.) Prac(tice|\.) (and|&) Rem(edies|s?\.)|CPR?C?':'CP', 'Code( of)? Crim(inal|\.) ?Pro(cedure|c?\.)|CCrP|CRC?':'CR', 'Educ(ation|\.)|EDC?':'ED', 'Elec(tion|\.)|ELC?':'EL', 'Est(ates|\.)|ESC?':'ES', 'Fam(ily|\.)|FAC?|FAM':'FA', 'Fin(ance|\.)|FIC?|FIN':'FI', 'Gov(ernment|(''?t)?\.?)?|GO?VC?':'GV', 'Health (and|&) Safety|H&?SC?':'HS', 'Hum(an|\.) Res(ources|\.)|HRC?':'HR', 'Ins(urance|\.)|INC?':'IN', 'Labor|LA':'LA', 'Local Gov(ernment|''t)|LGC?':'LG', 'Nat(ural|\.) Res(ources|\.)|NRC?':'NR', 'Occ(upations|\.)|OC':'OC', 'Parks (and|&) Wild(life|\.)|PWC?':'PW', 'Penal|PEN?|PC':'PE', 'Prop(erty|\.)|PR|PC':'PR', 'Special Dist(rict|\.) Local Laws|Spec\. Dists\.|SDC?':'SD', 'Tax|TX?C':'TX', 'Trans(portation|p?\.)|TNC?':'TN', 'Util(ities|\.)|UTC?':'UT', 'Water|WAC?':'WA', 'Vernon''s Civ(il|\.) Stat(utes|s?\.)':'VC'}
   URL: https://statutes.capitol.texas.gov/Docs/{codeAcronym}/htm/{codeAcronym}.{chapter}.htm#{chapter}.{section}
 
+- name: Utah Code
+  regex: 
+    - (Utah|UT) ?Code( Ann(otated|\.))?
+    - *title_dash_chapter_dash_section
+    - *subsection
+  idForms: *title_dash_chapter_dash_section_id
+  mutations:
+    - token: title
+      case: upper
+  URL:
+    - https://le.utah.gov/xcode/Title{title}/Chapter{chapter}/{title}-{chapter}-S{section}.html
+    - '#{title}-{chapter}-{section}{subsection}'
+
+- name: Vermont Statutes
+  regex:
+    - V(ermont|t\.|T) ?Stat(utes?|\.)( ?Ann(otated|\.))?
+    - *standalone_title
+    - *section
+    - *subsection
+  idForms: *id_sec_sub
+  URL: https://www.lawserver.com/law/state/vermont/vt-statutes/vermont_statutes_title_{title}_{section}
+
+- name: Wyoming Statutes
+  regex:
+    - (Wyo(ming|\.)|WY) ?Stat(utes?|\.)( ?Ann(otated|\.))?
+    - *title_dash_chapter_dash_section
+    - *subsection
+  idForms: *title_dash_chapter_dash_section_id
+  substitutions:
+    - token: title
+      outputToken: lpad
+      useRegex: true
+      index: {'\d':'0', '\d{2}':''}
+  URL: https://wyoleg.gov/statutes/compress/title{lpad}{title}.pdf#search={title}-{chapter}-{section}.
+
 - name: Virginia Code
   regex:
-    - V(irginia|a\.) Code( Ann(otated|\.))?
+    - (?<!W\. )(?<!West )(?<!W\.)V(irginia|a\.|A) ?Code( Ann(otated|\.))?
     - *title_dash_section
     - *subsection
   idForms: *title_dash_section_id
   URL: https://law.lis.virginia.gov/vacode/title{title}/section{title}-{section}
 
+- name: Virgin Islands Code
+  regex:
+    - (Virgin Islands|V\.? ?I\.?) Code( Ann(otated|\.))?
+    - *standalone_title
+    - *chapter_dash_section
+    - *subsection
+    - *year
+  idForms: *chapter_dash_section_id
+  defaults: {'year':'2019'} # needs yearly updates
+  URL: https://law.justia.com/codes/virgin-islands/{year}/title-{title}/chapter-{chapter}/{section}/
+
 - name: Revised Code of Washington
   regex:
-    - (Wash(ington|\.) Rev(ised|\.) Code( Ann(otated|\.))?|R\.?C\.?W)
-    - &title_dot_chapter_dot_section ' ?(Sections?|(&sect;|&#167|§){1,2})? ?(?P<title>\d+[A-Za-z]?)\.(?P<chapter>\d+[A-Za-z]?)\.(?P<section>\d+[A-Za-z]?)'
+    - ((Wash(ington|\.)|WA)( ?Rev(ised|\.))? Code( Ann(otated|\.))?|R\.?C\.?W)
+    - *title_dot_chapter_dot_section
     - *subsection
-  idForms:
-    - [*id_at, *title_dot_chapter_dot_section, *subsection]
-    - [*id_at, *section, *subsection]
-    - [*id_at, *mandatory_subsection]
+  idForms: *title_dot_chapter_dot_section_id
   URL: https://app.leg.wa.gov/RCW/default.aspx?cite={title}.{chapter}.{section}
+
+- name: West Virginia Code
+  regex:
+    - (West Virginia|W\. ?Va?\.|WV) ?Code( Ann(otated|\.))?
+    - *chapter_dash_article_dash_section
+    - *subsection
+  idForms: *chapter_dash_article_dash_section_id
+  URL: http://www.wvlegislature.gov/wvcode/ChapterEntire.cfm?chap={chapter}&art={article}&section={section}
 
 - name: Wisconsin Statutes
   regex:
-    - Wis(consin|\.) Stat(utes?|s?\.)( Ann(otated|\.))?
+    - (Wis(consin|\.)|WI) ?Stat(utes?|s?\.)( ?Ann(otated|\.))?
     - *ch_dot_sec
     - *subsection
   idForms: *ch_dot_sec_id
