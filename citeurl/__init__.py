@@ -341,7 +341,7 @@ class Citator:
     def list_citations(self,
         text: str,
         id_forms: bool=True,
-        id_break_regex: str=None,
+        id_break_regex: str='L\. ?Rev\.|J\. ?Law',
         id_break_indices: list=[],
     ) -> list:
         """
@@ -427,7 +427,7 @@ class Citator:
         url_optional: bool=False,
         link_detailed_ids: bool=True,
         link_plain_ids: bool=False,
-        id_break_regex: str=None,
+        id_break_regex: str='L\. ?Rev\.|J\. ?Law',
         id_break_indices: list=[]) -> str:
         """
         Convenience method to return a copy of the given text, with

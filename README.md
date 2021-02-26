@@ -8,6 +8,8 @@ CiteURL supports Bluebook-style citations to many bodies of U.S. federal and sta
 
 For court cases, CiteURL's defaults use Harvard's [Caselaw Access Project](https://cite.case.law/), though this will likely switch to [CourtListener](https://www.courtlistener.com/) in a future version. For federal statutes and rules, it links to Cornell's [Legal Information Institute](https://www.law.cornell.edu/). State law links use the website for each state's legislature, except where another site like [Justia](https://law.justia.com/codes/) or [LawServer.com](https://www.lawserver.com/tools/laws) is the only one with a compatible URL scheme.
 
+If you want to try out the citation lookup features without installing anything, you can use the [javascript implementation on my website](https://raindrum.github.io/lawsearch)!
+
 ## Installation
 
 CiteURL has been tested with Python version 3.9, but earlier versions probably work. Install Python if you don't have it, then run this command:

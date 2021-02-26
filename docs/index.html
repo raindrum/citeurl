@@ -85,7 +85,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
       <div class="wm-top-title">
         CiteURL<br>
         
-          <span class="wm-top-version">4.1.9</span>
+          <span class="wm-top-version">4.1.10</span>
         
       </div>
     </a>
@@ -142,6 +142,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <p>CiteURL is an extensible tool to process legal citations in text. It recognizes longform and shortform citations, subsections and pincites, and it can generate links to view them online. It can also create a list of all the authorities cited in a document, in order of how many times each citation occurs in the text.</p>
 <p>CiteURL supports Bluebook-style citations to many bodies of U.S. federal and state law, including the U.S. Code, nearly all state statutes, and most pre-2018 published court cases. You can find the supported bodies of law <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/default-schemas.yaml">here</a>. You can also customize CiteURL to add support for more bodies of law by <a href="https://raindrum.github.io/citeurl/#schema-yamls/">writing your own citation schemas</a> in YAML format.</p>
 <p>For court cases, CiteURL's defaults use Harvard's <a href="https://cite.case.law/">Caselaw Access Project</a>, though this will likely switch to <a href="https://www.courtlistener.com/">CourtListener</a> in a future version. For federal statutes and rules, it links to Cornell's <a href="https://www.law.cornell.edu/">Legal Information Institute</a>. State law links use the website for each state's legislature, except where another site like <a href="https://law.justia.com/codes/">Justia</a> or <a href="https://www.lawserver.com/tools/laws">LawServer.com</a> is the only one with a compatible URL scheme.</p>
+<p>If you want to try out the citation lookup features without installing anything, you can use the <a href="https://raindrum.github.io/lawsearch">javascript implementation on my website</a>!</p>
 <h2 id="installation">Installation</h2>
 <p>CiteURL has been tested with Python version 3.9, but earlier versions probably work. Install Python if you don't have it, then run this command:</p>
 <pre><code class="language-bash">python -m pip install citeurl
@@ -276,5 +277,5 @@ for authority in authorities:
 </html>
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2021-02-26 01:22:42.800116+00:00
+Build Date UTC : 2021-02-26 19:02:20.637653+00:00
 -->
