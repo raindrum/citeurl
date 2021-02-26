@@ -23,6 +23,8 @@
       - *section       
       - *subsection
     - &subsection_id [*id_at, '(?P<subsection>(\(\w+\))+)']
+  shortForms:
+    - [*mandatory_section_sign, *section, *subsection, ' of [Tt]itle (?P<title>\d+)']
   mutations: &usc_sub
     - token: subsection
       splitter: \W
@@ -373,11 +375,22 @@
     - '(Colo(rado|\.)|CO)( ?Rev(ised|\.))? Stat(utes?|s?\.)( Ann(otated|\.))? '
     - &title_dash_article_dash_section '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<title>\d+(\.\d+)?)[-‑–](?P<article>\d+(\.\d+)?)[-‑–](?P<section>\d+(\.\d+)?)'
     - *subsection
+    - &year (,? \((?P<year>\d{4})\))?
   idForms:
     - [*optional_id_at, *title_dash_article_dash_section, *subsection]
     - *standalone_section
     - *subsection_id
-  URL: https://www.sos.state.co.us/pubs/info_center/laws/Title{title}/Title{title}.pdf#search={title}-{article}-{section}.
+  defaults: {'year':'2020'} # needs yearly updates
+  substitutions:
+    - token: title
+      outputToken: lpad
+      useRegex: true
+      index: {'\d{2}':'', '\d':'0'}
+    - token: year # force pre-2013 to current year
+      allowUnmatched: true
+      useRegex: true
+      index: {'1[89]\d{2}|200\d|201[0-2]':'2020'} # needs yearly updates
+  URL: https://leg.colorado.gov/sites/default/files/images/olls/crs{year}-title-{title}.pdf#search={lpad}{title}-{article}-{section}.
 
 - name: General Statutes of Connecticut
   regex:
@@ -429,7 +442,7 @@
     - '(Florida Statutes( Annotated)?|(Fla\.|FL) ?Stat\.( ?Ann\.)?),? '
     - &ch_dot_sec '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<chapter>\d+[A-Z]?)\.(?P<section>\d+)'
     - *subsection
-    - &year (,? \((?P<year>\d{4})\))?
+    - *year
   defaults: {'year':'2020'} # this must be updated yearly, unfortunately
   substitutions:
     - token: chapter
@@ -659,7 +672,7 @@
 
 - name: Montana Code
   regex:
-    - '(Mont(ana|\.)|MT) Code( Ann(otated|\.))? '
+    - '(Mont(ana|\.)|MT)( Rev(ised|\.))? Codes?( Ann(otated|\.))? '
     - *title_dash_chapter_dash_section
     - *subsection
   idForms: *title_dash_chapter_dash_section_id
