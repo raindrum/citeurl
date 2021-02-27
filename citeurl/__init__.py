@@ -204,7 +204,10 @@ class Authority:
         # Next, derive a base citation to represent this authority.
         # If the first_citation to this authority isn't a longform, use
         # whatever longform it's a child of.
-        self.base_citation = self._derive_base_citation(long_cite)
+        try:
+            self.base_citation = self._derive_base_citation(long_cite)
+        except TypeError:
+            self.base_citation = first_cite
         # Set other instance variables
         self.name: str = self.base_citation.text
         self.URL: str = self.base_citation.URL
@@ -232,7 +235,7 @@ class Authority:
         return True
     
     def __str__(self):
-        return self.name
+        return str(self.base_citation)
     
     def _derive_base_citation(self, parent: Citation) -> Citation:
         replacement_tokens = {}

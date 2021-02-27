@@ -1404,7 +1404,10 @@ differ among citations to the same authority</p>
     <span class="c1"># Next, derive a base citation to represent this authority.</span>
     <span class="c1"># If the first_citation to this authority isn't a longform, use</span>
     <span class="c1"># whatever longform it's a child of.</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_derive_base_citation</span><span class="p">(</span><span class="n">long_cite</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_derive_base_citation</span><span class="p">(</span><span class="n">long_cite</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span> <span class="o">=</span> <span class="n">first_cite</span>
     <span class="c1"># Set other instance variables</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span><span class="o">.</span><span class="n">text</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span><span class="o">.</span><span class="n">URL</span>
