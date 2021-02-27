@@ -1015,13 +1015,9 @@
     - *ch_dot_sec
     - *subsection
   idForms: *ch_dot_sec_id
-  mutations:
-    - token: subsection
-      splitter: \W
-      joiner: /
   URL:
-    - https://docs.legis.wisconsin.gov/statutes/statutes/{chapter}/v/{section}
-    - '/{subsection}'
+    - https://docs.legis.wisconsin.gov/document/statutes/{chapter}.{section}
+    - '{subsection}'
 
 - name: Wyoming Statutes
   regex:
