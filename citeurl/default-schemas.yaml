@@ -6,7 +6,7 @@
   regex:
     - &title '(Title )?(?P<title>\d+) '
     - &usc (U\.?|United) ?(S\.?|States) ?(C\.?|Code)( ?[AS]\.?)?
-    - &section ' ((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.\-—]*\w|\d))'
+    - &section ' ((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.]*\w|\d))'
     - &subsection (?P<subsection>(\(\w+\))+)?
   broadRegex:
     - *title
@@ -35,14 +35,14 @@
 
 - name: United States Constitution
   regex:
-    - '(U\.? ?S\.? ?|United States) Const(itution|\.),? '
+    - &us_const '(U\.? ?S\.?|United States) ?Const(itution|\.),? '
     - &us_const_art_am '([Aa]rt(icle|\.) (?P<article>[\dIViv]{1,3})|[Aa]m(endment|(end|dt?)?\.) (?P<amendment>[\dXIVxiv]{1,3}))'
     - (
-    - &us_const_sec '(,? ((&sect;|&#167|§){1,2}|Sect?(ions?|s?\.)) ?(?P<section>\d+))'
+    - &us_const_sec '(,? ((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>\d+))'
     - (
-    - &us_const_clause '(,? (cl(ause|\.) ?(?P<clause>\d+)))'
+    - &us_const_clause '(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))'
     - )?)?
-  broadRegex: ['^', *us_const_art_am, '(', *us_const_sec, '(', *us_const_clause, ')?)?']
+  broadRegex: ['(^|', *us_const, ')', *us_const_art_am, '(', *us_const_sec, '(', *us_const_clause, ')?)?']
   idForms:
     - [*id_at, *us_const_art_am, '(', *us_const_sec, '(', *us_const_clause, ')?)?']
     - [*id_at, *us_const_sec, '(', *us_const_clause, ')?']
@@ -59,11 +59,13 @@
       useRegex: true
       index: {'1|i':'I', '2|ii':'II', '3|iii':'III', '4|iv':'IV', '5|v':'V', '6|vi':'VI', '7|vii':'VII'}
     - token: article
+      useRegex: true
       allowUnmatched: true
-      index: &roman_numerals_to_arabic {'i':'1', 'ii':'2', 'iii':'3', 'iv':'4', 'v':'5', 'vi':'6', 'vii':'7', 'viii':'8', 'ix':'9', 'x':'10', 'xi':'11', 'xii':'12','xiii':'13', 'xiv':'14', 'xv':'15', 'xvi':'16', 'xvii':'17', 'xviii':'18', 'xix':'19', 'xx':'20', 'xxi':'21', 'xxii':'22', 'xxiii':'23', 'xxiv':'24', 'xxv':'25', 'xxvi':'26', 'xxvii':'27', 'xxviii':'28', 'xxix':'29', 'xxx':'30'}
+      index: &roman_to_arabic {'I|1':'1', 'II|2':'2', 'III|3':'3', 'IV|4':'4', 'V|5':'5', 'VI|6':'6', 'VII|7':'7', 'VIII|8':'8', 'IX|9':'9', 'X|10':'10', 'XI|11':'11', 'XII|12':'12','XIII|13':'13', 'XIV|14':'14', 'XV|15':'15', 'XVI|16':'16', 'XVII|17':'17', 'XVIII|18':'18', 'XIX|19':'19', 'XX|20':'20', 'XXI|21':'21', 'XXII|22':'22', 'XXIII|23':'23', 'XXIV|24':'24', 'XXV|25':'25', 'XXVI|26':'26', 'XXVII|27':'27', 'XXVIII|28':'28', 'XXIX|29':'29', 'XXX|30':'30', 'XXXI|31':'31', 'XXXII|32':'32', 'XXXIII|33':'33', 'XXXIV|34':'34', 'XXXV|35':'35', 'XXXVI|36':'36', 'XXXVII|37':'37', 'XXXVIII|38':'38', 'XXXIX|39':'39', 'XXXX|40':'40'}
     - token: amendment
+      useRegex: true
       allowUnmatched: true
-      index: *roman_numerals_to_arabic
+      index: *roman_to_arabic
   URL:
     - https://constitution.congress.gov/browse/
     - amendment-{amendment}/
@@ -291,8 +293,8 @@
 
 - name: Code of Alabama, 1975
   regex:
-    - '(Ala(bama|\.)|AL)'
-    - &rev_ann_code_stat '( ?Rev(ised|\.))?( ?Ann(otated|\.))? ?(Codes?|Stat(utes|s?\.?))( ?Ann(otated|\.))?,? ?'
+    - &al_name '(Ala(bama|\.)|AL)'
+    - &rev_ann_code_stat '( ?Rev(ised|\.))?( ?Ann(otated|\.))?( ?Gen(eral|\.))? ?(Codes?|Stat(utes|s?\.?))( ?Ann(otated|\.))?,? ?'
     - &title_dash_chapter_dash_section '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<title>\d+(\.\d+)?[A-Za-z]?)[-‑–](?P<chapter>\d+(\.\d+)?[A-Za-z]?)[-‑–](?P<section>\d+(\.\d+)?)'
     - *subsection
   mutations:
@@ -305,9 +307,25 @@
     - *subsection_id
   URL: https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/{title}-{chapter}-{section}.htm
 
+- name: Alabama Constitution
+  regex:
+    - *al_name
+    - &const_art_sec_cl ' ?Const(itution|\.) ?[Aa]rt(icle|\.) ?(?P<article>[\dIVXivx]{1,8}),? ?((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.]*\w|\d))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?'
+  idForms: &const_art_sec_cl_ids
+    - [*optional_id_at, '(?P<article>[\dIVXivx]{1,3}) ?((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.]*\w|\d))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?']
+    - [*id_at, '((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.]*\w|\d))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?']
+    - [*optional_id_at, '((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?']
+    - [*optional_id_at, '[Cc]l(ause|\.) ?(?P<clause>\d+)']
+  substitutions: &arabic_article_to_roman_article
+    - token: article
+      outputToken: roman_article
+      useRegex: true
+      index: &arabic_to_roman {'1|I':'I', '2|II':'II', '3|III':'III', '4|IV':'IV', '5|V':'V', '6|VI':'VI', '7|VII':'VII', '8|VIII':'VIII', '9|IX':'IX', '10|X':'X', '11|XI':'XI', '12|XII':'XII','13|XIII':'XIII', '14|XIV':'XIV', '15|XV':'XV', '16|XVI':'XVI', '17|XVII':'XVII', '18|XVIII':'XVIII', '19|XIX':'XIX', '20|XX':'XX', '21|XXI':'XXI', '22|XXII':'XXII', '23|XXIII':'XXIII', '24|XXIV':'XXIV', '25|XXV':'XXV', '26|XXVI':'XXVI', '27|XXVII':'XXVII', '28|XXVIII':'XXVIII', '29|XXIX':'XXIX', '30|XXX':'XXX', '31|XXXI':'XXXI', '32|XXXII':'XXXII', '33|XXXIII':'XXXIII', '34|XXXIV':'XXXIV', '35|XXXV':'XXXV', '36|XXXVI':'XXXVI', '37|XXXVII':'XXXVII', '38|XXXVIII':'XXXVIII', '39|XXXIX':'XXXIX', '40|XXXX':'XXXX'}
+  URL: https://ballotpedia.org/Article_{roman_article},_Alabama_Constitution#Section_{section}
+
 - name: Alaska Statutes
   regex:
-    - (Alaska|AK)
+    - &ak_name (Alaska|AK)
     - *rev_ann_code_stat
     - &title_dot_chapter_dot_section '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<title>\d+[A-Za-z]?)\.(?P<chapter>\d+[A-Za-z]?)\.(?P<section>\d+[A-Za-z]?)'
     - *subsection
@@ -316,27 +334,49 @@
     - *subsection_id
   URL: http://www.akleg.gov/basis/statutes.asp#{title}.{chapter}.{section}
 
+- name: Alaska Constitution
+  regex: [*ak_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Alaska_Constitution#Section_{section}
+
 - name: American Samoa Code
   regex:
-    - Am(erican|\.) ?Samoa
+    - &american_samoa_name Am(erican|\.) ?Samoa
     - *rev_ann_code_stat
     - ' ?((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<title>\d+)\.(?P<section>\d+)'
     - *subsection
   idForms: *id_sec_sub
   URL: https://new.asbar.org/code-annotated/{title}-{section}
 
+- name: American Samoa Constitution
+  regex: [*american_samoa_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_American_Samoa_Constitution#Section_{section}
+
 - name: Arkansas Code
   regex:
-    - (Ark(ansas|\.)|AR)
+    - &ar_name (Ark(ansas|\.)|AR)
     - *rev_ann_code_stat
     - *title_dash_chapter_dash_section
     - *subsection
   idForms: *title_dash_chapter_dash_section_id
   # no URL because they use LexisNexis; Justia URLs too irregular; unavailable on LawServer.com
 
+- name: Arkansas Constitution
+  regex: [*ar_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: &roman_article_to_arabic_article
+    - token: article
+      outputToken: arabic_article
+      useRegex: true
+      index: *roman_to_arabic
+  URL: https://ballotpedia.org/Article_{arabic_article},_Arkansas_Constitution#Section_{section}
+
 - name: Arizona Revised Statutes
   regex:
-    - (Ariz(ona|\.)|AZ)
+    - &az_name (Ariz(ona|\.)|AZ)
     - *rev_ann_code_stat
     - &title_dash_section '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<title>\d+(\.\d+)?[A-Z]?)-(?P<section>\d+(\.\d+)?[A-Z]?)'
     - *subsection
@@ -356,9 +396,17 @@
       index: {'\d{5}(\D\d+)?':'', '\d{4}(\D\d+)?':'0', '\d{3}(\D\d+)?':'00', '\d{2}(\D\d+)?':'000', '\d(\D\d+)?':'0000'}
   URL: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/{title}/{lpad}{section}.htm
 
+- name: Arizona Constitution
+  regex: [*az_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *roman_article_to_arabic_article
+  URL: https://ballotpedia.org/Article_{arabic_article},_Arizona_Constitution#Section_{section}
+# need to add support for article 6.1 / VI.I
+
 - name: California Codes
   regex:
-    - (Cal(ifornia|\.)|CAL?) ?(?P<code>[BCDEFGHILMPRSUVW].{2,40}?)
+    - &ca_name (Cal(ifornia|\.)|CAL?)
+    - ' ?(?P<code>[BCDEFGHILMPRSUVW].{2,40}?)'
     - *rev_ann_code_stat
     - *section
     - *subsection
@@ -376,9 +424,15 @@
     - ['{code}( Code)?', *section, *subsection]
   URL: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode={codeAcronym}&sectionNum={section}
 
+- name: California Constitution
+  regex: [*ca_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CONS&sectionNum=SEC.%20{section}.&article={roman_article}
+
 - name: Colorado Revised Statutes
   regex:
-    - (Colo(rado|\.)|CO)
+    - &co_name (Colo(rado|\.)|CO)
     - *rev_ann_code_stat
     - &title_dash_article_dash_section '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<title>\d+(\.\d+)?)[-‑–](?P<article>\d+(\.\d+)?)[-‑–](?P<section>\d+(\.\d+)?)'
     - *subsection
@@ -399,9 +453,15 @@
       index: {'1[89]\d{2}|200\d|201[0-2]':'2020'} # needs yearly updates
   URL: https://leg.colorado.gov/sites/default/files/images/olls/crs{year}-title-{title}.pdf#search={lpad}{title}-{article}-{section}.
 
+- name: Colorado Constitution
+  regex: [*co_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Colorado_Constitution#Section_{section}
+
 - name: General Statutes of Connecticut
   regex:
-    - (Conn(ecticut|\.)|CT) ?Gen(eral|\.)
+    - &ct_name (Conn(ecticut|\.)|CT)
     - *rev_ann_code_stat
     - &conn_section '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<section>(\d[a-z\-]*\w|\d+))'
     - *subsection
@@ -411,9 +471,15 @@
     - *subsection_id
   URL: https://www.lawserver.com/law/state/connecticut/ct-laws/connecticut_statutes_{section}
 
+- name: Connecticut Constitution
+  regex: [*ct_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Connecticut_Constitution#Section_{section}
+
 - name: Delaware Code
   regex:
-    - (Del(aware|\.)|DE)
+    - &de_name (Del(aware|\.)|DE)
     - *rev_ann_code_stat
     - &standalone_title ',? [Tt]it(le|\.) ?(?P<title>\d+([-‑–][A-Z])?),?'
     - *section
@@ -436,9 +502,15 @@
       index: {'1[01]\d': '01', '12\d': '02', '13\d': '03', '14\d': '04', '1[5-7]\d': '05', '20\d': '06', '2[1-3]\d': '07', '24\d': '08', '2[56]\d': '09', '2[78]\d': '10', '29\d|30\d': '11', '31\d': '12', '3[23]\d': '13', '3[45]\d': '14', '36\d': '15', '37\d|38[0-5]': '16', '38[89]|390': '17', '39[1-9]': '18'}
   URL: https://delcode.delaware.gov/title8/c001/sc{subchapter}/index.shtml#{section}.
 
+- name: Delaware Constitution
+  regex: [*de_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Delaware_Constitution#Section_{section}
+
 - name: District of Columbia Official Code
   regex:
-    - (District of Columbia( Official)?|D\.? ?C\.?)
+    - &dc_name (District of Columbia( Official)?|D\.? ?C\.?)
     - *rev_ann_code_stat
     - *title_dash_section
     - *subsection
@@ -449,7 +521,7 @@
 
 - name: Florida Statutes
   regex:
-    - (Fl(orida|a?\.)|FL)
+    - &fl_name (Fl(orida|a?\.)|FL)
     - *rev_ann_code_stat
     - &ch_dot_sec '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<chapter>\d+[A-Z]?)\.(?P<section>\d+\w?)'
     - *subsection
@@ -466,15 +538,33 @@
     - *subsection_id
   URL: https://www.flsenate.gov/Laws/Statutes/{year}/{lpad}{chapter}.{section}
 
+- name: Florida Constitution
+  regex: [*fl_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions:
+    - token: section
+      outputToken: lpad
+      useRegex: true
+      index: {'\d{2}':'', '\d':'0'}
+    - token: article
+      outputToken: arabic_article
+      useRegex: true
+      index: *roman_to_arabic
+  URL: https://www.flsenate.gov/Laws/Constitution#A{arabic_article}S{lpad}{section}
+
 - name: Georgia Code
   regex:
-    - (G(eorgia|a\.|A)
+    - '('
+    - &ga_name G(eorgia|a\.|A)
     - *rev_ann_code_stat
     - '|O\.? ?C\.? ?G\.? ?A\.? )'
     - *title_dash_chapter_dash_section
     - *subsection
   idForms: *title_dash_chapter_dash_section_id
   # no URL because Georgia uses LexisNexis, and Justia URLs need article numbers
+
+# add Georgia Constitution here
+# it's in article, section, paragraph format
 
 - name: Guam Code
   regex:
@@ -487,7 +577,7 @@
 
 - name: Hawaii Revised Statutes
   regex:
-    - (Haw(ai.?i|\.)|HI)
+    - &hi_name (Haw(ai.?i|\.)|HI)
     - *rev_ann_code_stat
     - &chapter_dash_section '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<chapter>\d+[A-Z]?)[-‑–](?P<section>\d+(\.\d+)?)'
     - *subsection
@@ -497,9 +587,15 @@
     - *subsection_id
   URL: https://www.lawserver.com/law/state/hawaii/hi-statutes/hawaii_statutes_{chapter}-{section}
 
+- name: Hawaii Constitution
+  regex: [*hi_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Hawaii_Constitution#Section_{section}
+
 - name: Idaho Code
   regex:
-    - I(daho|D)
+    - &idaho_name I(daho|D)
     - *rev_ann_code_stat
     - &idaho_title_dash_section '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<title>\d+[A-Z]?)[-‑–](?P<section>(?P<chapter>\d{1,2})\d{2}[A-Z]?)'
     - *subsection
@@ -507,6 +603,12 @@
     - [*optional_id_at, *mandatory_section_sign, *idaho_title_dash_section, *subsection]
     - *subsection_id
   URL: https://legislature.idaho.gov/statutesrules/idstat/Title{title}/T{title}CH{chapter}/SECT{title}-{section}/
+
+- name: Idaho Constitution
+  regex: [*idaho_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Idaho_Constitution#Section_{section}
 
 - name: Illinois Compiled Statutes
   regex: (?P<chapter>\d+) ILCS (?P<act>\d+)/(?P<section>(\d[\d.-]*\w|\d))
@@ -522,9 +624,15 @@
       index: {'\d{4}':'', '\d{3}':'0', '\d{2}':'00', '\d{1}':'000'}
   URL: https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName={chlpad}{chapter}{actlpad}{act}0K{section}
 
+- name: Illinois Constitution
+  regex: ['(Il(linois|l?\.)|IL)', *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Illinois_Constitution#Section_{section}
+
 - name: Indiana Code
   regex:
-    - (Ind(iana|\.)|IN)
+    - &in_name (Ind(iana|\.)|IN)
     - *rev_ann_code_stat
     - &title_dash_article_dash_chapter_dash_section '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<title>\d+)-(?P<article>\d+(\.\d+)?)-(?P<chapter>\d+(\.\d+)?)-(?P<section>\d+(\.\d+)?)'
     - *year
@@ -538,27 +646,48 @@
       index: {'\d{2}':'0', '\d':'0'}
   URL: https://iga.in.gov/legislative/laws/{year}/ic/titles/{lpad}{title}#{title}-{article}-{chapter}-{section}
 
+- name: Indiana Constitution
+  regex: [*in_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *roman_article_to_arabic_article
+  URL: https://ballotpedia.org/Article_{arabic_article},_Indiana_Constitution#Section_{section}
+
 - name: Iowa Code
   regex:
-    - I(owa|A)
+    - &ia_name I(owa|A)
     - *rev_ann_code_stat
     - *ch_dot_sec
     - *subsection
   idForms: *ch_dot_sec_id
   URL: https://www.legis.iowa.gov/docs/code/{chapter}.{section}.pdf
 
+- name: Iowa Constitution
+  regex: [*ia_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Iowa_Constitution#Section_{section}
+# need to add support for legislative department
+
 - name: Kansas Statutes
   regex:
-    - (Kan(sas|\.)|KS)
+    - &ks_name (Kan(sas|\.)|KS)
     - *rev_ann_code_stat
     - *chapter_dash_section
     - *subsection
   idForms: *chapter_dash_section_id
   URL: https://www.lawserver.com/law/state/kansas/ks-statutes/kansas_statutes_{chapter}-{section}
 
+- name: Kansas Constitution
+  regex: [*ks_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *roman_article_to_arabic_article
+  URL: https://ballotpedia.org/Article_{arabic_article},_Kansas_Constitution#Section_{section}
+# need to add bill of rights support
+
 - name: Kentucky Revised Statutes
   regex:
-    - (K(entucky|y\.|Y)
+    - '('
+    - &ky_name K(entucky|y\.|Y)
     - *rev_ann_code_stat
     - '|KRS )'
     - &ky_ch_dot_sec '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<chapter>(\d[\d.]*\w|\d))\.(?P<section>\d+)'
@@ -575,9 +704,12 @@
       joiner: '-'
   URL: https://www.lawserver.com/law/state/kentucky/ky-statutes/kentucky_statutes_{chapter}-{section}
 
+# add Kentucky constitution here
+# the whole thing is divided into named chapters
+
 - name: Louisiana Statutes
   regex:
-    - L(ouisiana|a\.)
+    - &la_name L(ouisiana|a\.|A)
     - *rev_ann_code_stat
     - &title_colon_section '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<title>\d+[A-Z]?):(?P<section>\d+(\.\d+)?)'
     - *subsection
@@ -598,9 +730,15 @@
       index: {'Civ(il|\.) ?Code':'civil_code', 'Code( of)? Civ(il|\.) ?Proc(edure|\.)':'code_of_civil_procedure', 'Code( of)? Crim(inal|\.) ?Proc(edure|\.)':'code_of_criminal_procedure', 'Code( of)? Evid(ence|\.)':'code_of_evidence', 'Child(ren''?s|\.) ?Code':'childrens_code'}
   URL: https://www.lawserver.com/law/state/louisiana/la-codes/louisiana_{code_slug}_{article}
 
+- name: Louisiana Constitution
+  regex: [*la_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Louisiana_Constitution#Section_{section}
+
 - name: Maine Statutes
   regex:
-    - M(aine|e\.|E)
+    - &me_name M(aine|e\.|E)
     - *rev_ann_code_stat
     - *standalone_title
     - *section
@@ -615,9 +753,16 @@
       joiner: '-'
   URL: https://legislature.maine.gov/legis/statutes/{title}/title{title}sec{section}.html
 
+- name: Maine Constitution
+  regex: [*me_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Maine_Constitution#Section_{section}
+# need to add support for parts within articles
+
 - name: Maryland Code
   regex:
-    - M(aryland|d\.|D)
+    - &md_name M(aryland|d\.|D)
     - *rev_ann_code_stat
     - '(?P<article>(Ac|Al|[BCEFHILNPRST]).{4,38}?) '
     - &md_title_dash_section '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<title>\d+[A-Z]?)[-‑–](?P<section>[\dA-Z\-–.]*[\dA-Z])'
@@ -638,6 +783,13 @@
       index: {'Acric(ulture|\.)':'gag', 'Alco(holic|\.) ?Bev(erages|s?\.)':'gab', 'Bus(iness|\.) ?Occ(upations|\.) ?(and|&) ?Prof(essions|s?\.)':'gbo', 'Bus(iness|\.) ?Reg(ulation|\.)':'gbr', 'Com(mercial|\.) ?Law':'gcl', 'Corp(orations|s\.) ?(and|&) Ass(ociations|''ns)':'gca', 'Corr(ectional|\.) ?Serv(ices|s\.)':'gcs', 'C(ourts|ts\.) ?(and|&) ?Jud(icial|\.) ?Proc(eedings|\.)':'gcj', 'Crim(inal|\.) ?Law':'gcr', 'Crim(inal|\.) ?Proc(edure|\.)':'gcp', 'Econ(omic|\.) ?Dev(elopment|\.)':'gec', 'Educ(ation|\.)':'ged', 'Elec(tion|\.) ?Law':'gel', 'Envir(onment|\.)':'gen', 'Est(ates|\.) ?(and|&) ?Trusts':'get', 'Fam(ily|\.) ?Law':'gfl', 'Fin(ancial|\.) Inst(itutions|\.)':'gfi', 'Health ?[-–] ?Gen(eral|\.)':'ggp', 'Health Occ(upations|\.)':'gho', 'Hous(ing|\.) ?(and|&) ?C(ommunity|mty\.) ?Dev(elopment|''t|\.)':'ghs', 'Hum(an|\.) ?Serv(ices|s\.)':'ghu', 'Ins(urance|\.)':'gin', 'Lab(or|\.) ?(and|&) ?Empl(oyment|\.)':'gle', 'Land Use':'glu', 'Local Gov(ernment|''t)':'glg', 'Nat(ural|\.) ?Res(ources|\.)':'gnr', 'Pub(lic|\.) ?Safety':'gps', 'Pub(lic|\.) ?Util(ity|\.)':'gpu', 'Real Prop(erty|\.)':'grp', 'State Fin(ance|\.) (and|&) Proc(urement|\.)':'gsf', 'State Gov(ernment|''t)':'gsg', 'State Pers(onnel|\.) (and|&) Pens(ions|\.)':'gsp', 'Tax ?[-–] ?Gen(eral|\.)':'gtg', 'Tax ?[-–] ?Prop(erty|\.)':'gtp', 'Transp(ortation|\.)':'gtr'}
   URL: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article={article_code}&section={title}-{section}
 
+- name: Maryland Constitution
+  regex: [*md_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Maryland_Constitution#Section_{section}
+# need to add support for declaration of rights
+
 - name: Massachusetts General Laws
   regex:
     - ((Mass(achusetts|\.)|MA) ?(Gen(eral|\.)|Ann(otated|\.)) ?Laws( Ann(otated|\.))?|M\.?G\.?L\.?(A\.?)?|A\.?L\.?M\.?)
@@ -653,17 +805,27 @@
       joiner: '~'
   URL: https://malegislature.gov/GeneralLaws/GoTo?ChapterGoTo={chapter}&SectionGoTo={section}
 
+# add Massachusetts constitution here 
+# two parts; first has articles, second has chapters
+
 - name: Michigan Compiled Laws
   regex:
-    - '(Mich(igan|\.)|MI) Comp(iled|\.) Laws( (Serv(ice|\.)|Ann(otated|\.)))? '
+    - &mi_name (Mich(igan|\.)|MI)
+    - ' Comp(iled|\.) Laws( (Serv(ice|\.)|Ann(otated|\.)))? '
     - *ch_dot_sec
     - *subsection
   idForms: *ch_dot_sec_id
   URL: https://legislature.mi.gov/doc.aspx?mcl-{chapter}-{section}
 
+- name: Michigan Constitution
+  regex: [*mi_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Michigan_Constitution#Section_{section}
+
 - name: Minnesota Statutes
   regex:
-    - (Minn(esota|\.)|MN)
+    - &mn_name (Minn(esota|\.)|MN)
     - *rev_ann_code_stat
     - *ch_dot_sec
     - &minn_subsec (?P<subsection>\((?P<subdivision>\d\w*)\)(\(\w+\))*|(\(\w+\))+)
@@ -676,9 +838,15 @@
     - https://www.revisor.mn.gov/statutes/cite/{chapter}.{section}
     - '#stat.{chapter}.{section}.{subdivision}'
 
+- name: Minnesota Constitution
+  regex: [*mn_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Minnesota_Constitution#Section_{section}
+
 - name: Mississippi Code
   regex:
-    - (Miss(issippi|\.)|MS)
+    - &ms_name (Miss(issippi|\.)|MS)
     - *rev_ann_code_stat
     - *title_dash_chapter_dash_section
     - *subsection
@@ -686,6 +854,12 @@
   defaults: {'year':'2019'} # needs yearly updates
   idForms: *title_dash_chapter_dash_section_id
   URL: https://law.justia.com/codes/mississippi/{year}/title-{title}/chapter-{chapter}/section-{title}-{chapter}-{section}/index.html
+
+- name: Mississippi Constitution
+  regex: [*ms_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Mississippi_Constitution#Section_{section}
 
 - name: Missouri Revised Statutes
   regex:
@@ -695,26 +869,45 @@
   idForms: *ch_dot_sec_id
   URL: https://revisor.mo.gov/main/OneSection.aspx?section={chapter}.{section}
 
+- name: Missouri Constitution
+  regex: ['M(issouri|o\.|O)', *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Missouri_Constitution#Section_{section}
+
 - name: Montana Code
   regex:
-    - (Mont(ana|\.)|MT)
+    - &mt_name (Mont(ana|\.)|MT)
     - *rev_ann_code_stat
     - *title_dash_chapter_dash_section
     - *subsection
   idForms: *title_dash_chapter_dash_section_id
   URL: https://www.lawserver.com/law/state/montana/mt-code/montana_code_{title}-{chapter}-{section}
 
+- name: Montana Constitution
+  regex: [*mt_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Montana_Constitution#Section_{section}
+
 - name: Revised Statutes of Nebraska
   regex:
-    - '(Neb(raska|\.)|NE)( ?Rev(ised|\.))? ?Stat(utes?|\.)( ?Ann(otated|\.))? '
+    - &ne_name (Neb(raska|\.)|NE)
+    - *rev_ann_code_stat
     - *chapter_dash_section
     - *subsection
   idForms: *chapter_dash_section_id
   URL: https://www.nebraskalegislature.gov/laws/statutes.php?statute={chapter}-{section}
 
+- name: Nebraska Constitution
+  regex: [*ne_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Nebraska_Constitution#Section_{section}
+
 - name: New Hampshire Revised Statutes
   regex:
-    - (New Hampshire|N\.? ?H\.?)
+    - &nh_name (New Hampshire|N\.? ?H\.?)
     - *rev_ann_code_stat
     - &nh_chapter_colon_section '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<chapter>\d+([-–][A-Za-z])?):(?P<section>\d+([-‑–][A-Za-z])?)'
     - *subsection
@@ -733,6 +926,9 @@
       case: lower
   URL: https://www.lawserver.com/law/state/new-hampshire/nh-statutes/new_hampshire_revised_statutes_{chapter}_{section}
 
+# Add New Hampshire Constitution here
+# it's in three parts, with articles; ballotpedia probably not ideal
+
 - name: New Jersey Statutes
   regex:
     - ((N\.? ?J\.?|New Jersey)
@@ -745,9 +941,17 @@
     - *subsection_id
   URL: https://njlaw.rutgers.edu/collections/njstats/showsect.php?title={title}&chapter={chapter}&section={section}&actn=getsect
 
+- name: New Jersey Constitution
+  regex: ['(N\.? ?J\.?|New Jersey)', *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_New_Jersey_Constitution#Section_{section}
+# need to add support for paragraphs in lieu of sections (see article I)
+
 - name: Nevada Revised Statutes
   regex:
-    - ((Nev(ada|\.)|NV)
+    - '('
+    - &nv_name (Nev(ada|\.)|NV)
     - *rev_ann_code_stat
     - '|NRS )'
     - *ch_dot_sec
@@ -760,9 +964,17 @@
       index: {'\d{3}[A-Z]?':'', '\d{2}[A-Z]?':'0', '\d{1}[A-Z]?':'00'}
   URL: https://www.leg.state.nv.us/NRS/NRS-{lpad}{chapter}.html#NRS{lpad}{chapter}Sec{section}
 
+- name: Nevada Constitution
+  regex: [*nv_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *roman_article_to_arabic_article
+  URL: https://ballotpedia.org/Article_{arabic_article},_Nevada_Constitution#Section_{section}
+# should add support for election ordinance
+
 - name: New Mexico Statutes Annotated 1978
   regex:
-    - ((New Mexico|N\.? ?M\.?)
+    - '('
+    - &nm_name (New Mexico|N\.? ?M\.?)
     - *rev_ann_code_stat
     - '|NMSA )'
     - &chapter_dash_article_dash_section '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<chapter>\d+[A-Za-z]?)-(?P<article>\d+[A-Za-z]?)-(?P<section>\d+(\.\d+)?[A-Z]?)'
@@ -776,8 +988,18 @@
       index: {'1':'4351', '2':'4359', '3':'4362', '4':'4372', '5':'4376', '6':'4381', '7':'4340', '8':'4354', '9':'4357', '10':'4364', '11':'4370', '12':'4374', '13':'4378', '14':'4384', '15':'4387', '16':'4390', '17':'4341', '18':'4346', '19':'4350', '20':'4356', '21':'4361', '22':'4368', '22A':'4377', '23':'4380', '24':'4384', '25':'4391', '26':'4355', '27':'4358', '28':'4365', '29':'4367', '30':'4371', '31':'4379', '32':'4385', '32A':'4389', '33':'4396', '34':'4399', '35':'4360', '36':'4363', '37':'4366', '38':'4369', '39':'4373', '40':'4375', '41':'4382', '42':'4386', '42A':'4392', '43':'4395', '44':'4388', '45':'4393', '46':'4401', '46A':'4405', '46B':'4406', '47':'4408', '48':'4413', '49':'4416', '50':'4420', '51':'4425', '52':'4394', '53':'4400', '54':'4404', '55':'4411', '56':'4418', '57':'4423', '58':'4426', '59':'4435', '59A':'4438', '60':'4443', '61':'4397', '62':'4407', '63':'4412', '64':'4414', '65':'4417', '66':'4422', '67':'4429', '68':'4434', '69':'4437', '70':'4440', '71':'4398', '72':'4402', '73':'4409', '74':'4415', '75':'4421', '76':'4424', '77':'4427'}
   URL: https://nmonesource.com/nmos/nmsa/en/item/{chapter_code}/index.do#!b/{chapter}-{article}-{section}
 
+- name: New Mexico Constitution
+  regex: [*nm_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_New_Mexico_Constitution#Section_{section}
+
 - name: Consolidated Laws of New York
-  regex: ['(New York|N\.? ?Y\.?) ?(?P<chapter>.{2,40}?)( Law)?', *section, *subsection]
+  regex:
+    - &ny_name '(New York|N\.? ?Y\.?)'
+    - ' ?(?P<chapter>.{2,40}?)( Law)?'
+    - *section
+    - *subsection
   idForms: *id_sec_sub
   shortForms:
     - ['{chapterAcronym}', *section, *subsection]
@@ -789,6 +1011,12 @@
       index: {'Abandoned Property|ABP':'ABP', 'Agric(ulture|\.) (and|&) M(arkets|kts)|AGM|A&M', 'Alc(oholic|o?\.) Bev(erage|\.) Cont(rol|\.)|ABC':'ABC', 'Alt(ernative\.) C(ounty|ty\.) Gov(ernment|.t)|ACG':'ACG', 'Arts (and|&) Cult(ural|\.) Aff(airs|\.)|ACA':'ACA', 'Banking|BNK':'BNK', 'Ben(evolent|\.) Ord(ers|\.)|BVO':'BVO', 'Bus(iness|\.) Corp(orations?|s?)|BSC|BCL':'BSC', 'Canal|CAL':'CAL', 'Civil Practice Law (and|&) Rules|CVP|CPLR|C\. ?P\. ?L\. ?R':'CVP', 'Civ(il|\.) Serv(ice|\.)|CIV':'CIV', 'Coop(erative|\.) Corp(orations|s?)|CCO':'CCO', 'Correct(ion|\.)|COR':'COR', 'County|CNT':'CNT', 'Crim(inal|\.) Pro(cedure|c?)|CPL':'CPL', 'Debt(or|\.) (and|&) Cred(itor|\.)|DCD':'DCD', 'Dom(estic|\.) Rel(ations|\.)|DOM':'DOM', 'Econ(omic|\.) Dev(elopment|\.)|COM':'COM', 'Educ(ation|\.)|EDN':'EDN', 'Elder|ELD':'ELD', 'Elec(tion|\.)|ELN':'ELN', 'Em(inent|\.) Dom(ain|\.) Proc(edure|\.)|EDP':'EDP', 'Emp(loyer(s''?)?|l''rs) Liab(ility|\.)|EML':'EML', 'Energy|ENG':'ENG', 'Env(ironmental|(tl)?\.) Conserv(ation|\.)|ENV':'ENV', 'Est(ates,|\.) Powers (and|&) Trusts|EPT':'EPT', 'Exec(utive|\.)|EXC':'EXC', 'Fin(ancial|\.) Serv(ices|s?)|FIS':'FIS', 'Gen(eral|\.) Associations|GAS':'GAS', 'Gen(eral|\.) Bus(iness|\.)|GBS':'GBS', 'Gen(eral|\.) City|GCT':'GCT', 'Gen(eral|\.) Constr(uction|\.)|GCN':'GCN', 'Gen(eral|\.) Mun(icipal|\.)|GMU':'GMU', 'Gen(eral|\.) Oblig(ations|\.)|GOB':'GOB', 'High(way|\.)|HAY':'HAY', 'Indian|IND':'IND', 'Jud(iciary|\.)|JUD':'JUD', 'Legis(lative|\.)|LEG':'LEG', 'Lien|LIE':'LIE', 'L(imited|td\.) Liab(ility|\.) Co(mpany|\.)|LLC':'LLC', 'Local Fin(ance|\.)|LFN':'LFN', 'Mental Hyg(iene|\.)|MHY':'MHY', 'Mil(itary|\.)|MIL':'MIL', 'Mult(iple|\.) Dwell(ing|\.)|MDW':'MDW', 'Mult(iple|\.) Resid(ence|\.)|MRE':'MRE', 'Mun(icipal|\.) Home Rule|MHR':'MHR', 'Mun(icipal|i?\.) Housing Authorities|MHA':'MHA', 'Nav(igation|\.)|NAV':'NAV', '(State )?Print(ing|\.)? (and|&) Pub(lic|\.) Doc(uments|s?)|PPD':'PPD', 'Parks,? Rec(reation|\.) (and|&) Hist(oric|\.) Preserv(ation|\.)|PAR':'PAR', "P(artnership|'ship)|PTR":'PTR', 'Penal|PEN':'PEN', 'Pers(onal|\.) Prop(erty|\.)|PEP':'PEP', 'Priv(ate|\.) Hous(ing|\.) Fin(ance|\.)|PVH':'PVH', 'Pub(lic|\.) Auth(orities|\.)|PBA':'PBA', 'Pub(lic|\.) Health|PBH':'PBH', 'Pub(lic|\.) Housing|PBG':'PBG', 'Pub(lic|\.) Off(icers|\.)|PBO':'PBO', 'Rac(ing,|\.) Pari-Mut(uel|\.) Wag(ering|\.) (and|&) Breed(ing|\.)|PML':'PML', 'Railroad|R\.R\.|RRD':'RRD', 'Rapid Trans(it|\.)|RAT':'RAT', 'Real Prop(erty|\.) Act(ions|s\.)( (and|&) Proceedings)?|RPA':'RPA', 'Real Prop(erty|\.) Tax|RPT':'RPT', 'Real Prop(erty|\.)|RPP':'RPP', 'Relig(ious|\.) Corp(orations|s?\.)|RCO':'RCO', 'Retire(ment|\.) (and|&) Soc(ial|\.) Sec(urity|\.)|RSS':'RSS', 'Rural Elec(tric|\.) Coop(eratives?|s?\.)|REL':'REL', 'Second Class Cities|SCC':'SCC', 'Soil (and|&) Water Conserv(ation|\.) Dist(ricts|s?\.)|SWC':'SWC', 'State Administrative Procedure Act|A\.P\.A\.|SAP':'SAP', 'State Fin(ance|\.)|STF':'STF', 'State|STL':'STL', 'Statute of Local Gov(ernments|s?\.)|SLG':'SLG', 'Town|TWN':'TWN', 'Trans(portation|p?\.) Corp(orations|s?\.)|TCP':'TCP', 'Trans(portation|p?\.)|TRA':'TRA', 'Uniform Commercial Code|U\.?C\.?C\.?':'UCC', 'Village|VIL':'VIL', 'Vol(unteer|\.) Ambul(ance|\.) Workers''? Benefit|VAW':'VAW', 'Vol(unteer|\.) Fire(fighters''?|\.) Ben(efit|\.)|VOL':'VOL'}
   URL: https://www.nysenate.gov/legislation/laws/{chapterAcronym}/{section}
 
+- name: New York Constitution
+  regex: [*ny_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_New_York_Constitution#Section_{section}
+
 - name: North Carolina General Statutes
   regex:
     - '((North Carolina|N\.? ?C\.?) ?Gen(eral|\.) ?Stat(utes|s?\.)|N\.? ?C\.? ?G\.? ?S\.?) '
@@ -797,9 +1025,16 @@
   idForms: *chapter_dash_section_id
   URL: https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_{chapter}/GS_{chapter}-{section}.html
 
+- name: North Carolina Constitution
+  regex: ['(North Carolina|N\.? ?C\.?)', *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_North_Carolina_Constitution#Section_{section}
+
 - name: North Dakota Century Code
   regex:
-    - '(North Dakota|N\.? ?D\.?) ?Cent(ury|\.) ?Code( Ann(otated|\.))? '
+    - &nd_name (North Dakota|N\.? ?D\.?)
+    - ' ?Cent(ury|\.) ?Code( Ann(otated|\.))? '
     - *title_dash_chapter_dash_section
     - *subsection
   idForms: *title_dash_chapter_dash_section_id
@@ -823,18 +1058,31 @@
       index: {'\d{2}(\D\d+)?':'', '\d(\D\d+)?':'0'}
   URL: https://www.lawserver.com/law/state/north-dakota/nd-code/north_dakota_code_{title}_{chapter_lpad}{chapter}_{section_lpad}{section}
 
+- name: North Dakota Constitution
+  regex: [*nd_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_North_Dakota_Constitution#Section_{section}
+
 - name: Northern Mariana Islands Commonwealth Code
   regex:
-    - (?P<title>\d+) N(orthern|\.) ?Mar(iana|\.) ?I(slands|\.)
+    - '(?P<title>\d+) '
+    - &nmi_name N(orthern|\.) ?Mar(iana|\.) ?I(slands|\.)
     - *rev_ann_code_stat
     - *section
     - *subsection
   idForms: *id_sec_sub
   URL: https://cnmilaw.org/pdf/cmc_section/T{title}/{section}.pdf
 
+- name: Northern Mariana Islands Constitution
+  regex: [*nmi_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Northern_Mariana_Islands_Constitution#Section_{section}
+
 - name: Ohio Revised Code
   regex:
-    - O(hio|H)
+    - &oh_name O(hio|H)
     - *rev_ann_code_stat
     - '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<chapter>\d+)(\.(?P<section>\d+)'
     - *subsection
@@ -844,9 +1092,15 @@
     - https://codes.ohio.gov/orc/{chapter}
     - .{section}v1
 
+- name: Ohio Constitution
+  regex: [*oh_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Ohio_Constitution#Section_{section}
+
 - name: Oklahoma Statutes
   regex:
-    - (Okla(homa|\.)|OK)
+    - &ok_name (Okla(homa|\.)|OK)
     - *rev_ann_code_stat
     - *standalone_title
     - *section
@@ -859,17 +1113,30 @@
   idForms: *id_sec_sub
   URL: https://law.justia.com/codes/oklahoma/{year}/title-{title}/section-{title}-{section}/index.html
 
+- name: Oklahoma Constitution
+  regex: [*ok_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Oklahoma_Constitution#Section_{section}
+
 - name: Oregon Revised Statutes
   regex:
-    - (Or(egon|e?\.)|OR)
+    - &or_name (Or(egon|e?\.)|OR)
     - *rev_ann_code_stat
     - *ch_dot_sec
     - *subsection
   idForms: *ch_dot_sec_id
   URL: https://www.oregonlaws.org/ors/{chapter}.{section}
 
+- name: Oregon Constitution
+  regex: [*or_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Oregon_Constitution#Section_{section}
+# need to add support for unusual article names like XI-A and XI-I(2)
+
 - name: Pennsylvania Code
-  regex: ['(?P<title>\d+) (Pennsylvania|Pa\.|PA)', *rev_ann_code_stat, *ch_dot_sec, *subsection]
+  regex: ['(?P<title>\d+) ', &pa_name '(Pennsylvania|Pa\.|PA)', *rev_ann_code_stat, *ch_dot_sec, *subsection]
   idForms: *id_sec_sub
   substitutions:
     - token: title
@@ -878,26 +1145,46 @@
       index: {'\d{3}':'', '\d{2}':'0', '\d{1}':'00'}
   URL: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/{lpad}{title}/chapter{chapter}/s{chapter}.{section}.html
 
+- name: Pennsylvania Constitution
+  regex: [*pa_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Pennsylvania_Constitution#Section_{section}
+
 - name: Laws of Puerto Rico
   regex:
-    - '(Puerto Rico|P\.? ?R\.?) ?L(aws|eyes)( An(notated|notado|n?\.))?'
+    - &pr_name (Puerto Rico|P\.? ?R\.?)
+    - ' ?L(aws|eyes)( An(notated|notado|n?\.))?'
     - *standalone_title
     - *section
     - *subsection
   idForms: *id_sec_sub
   # no URL because they use LexisNexis
 
+- name: Puerto Rico Constitution
+  regex: [*pr_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Puerto_Rico_Constitution#Section_{section}
+
 - name: General Laws of Rhode Island
   regex:
-    - '(Rhode Island|R\.? ?I\.?) ?Gen(eral|\.) ?Laws '
+    - &ri_name (Rhode Island|R\.? ?I\.?)
+    - ' ?Gen(eral|\.) ?Laws '
     - *title_dash_chapter_dash_section
     - *subsection
   idForms: *title_dash_chapter_dash_section_id
   URL: http://webserver.rilin.state.ri.us/Statutes/TITLE{title}/{title}-{chapter}/{title}-{chapter}-{section}.HTM
 
+- name: Rhode Island Constitution
+  regex: [*ri_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Rhode_Island_Constitution#Section_{section}
+
 - name: South Carolina Code of Laws
   regex:
-    - (South Carolina|S\.? ?C\.?)
+    - &sc_name (South Carolina|S\.? ?C\.?)
     - *rev_ann_code_stat
     - *title_dash_chapter_dash_section
     - *subsection
@@ -909,6 +1196,12 @@
       index: {'\d{3}':'', '\d{2}':'0', '\d':'00'}
   URL: https://www.scstatehouse.gov/code/t{title}c{lpad}{chapter}.php#{title}-{chapter}-{section}
 
+- name: South Carolina Constitution
+  regex: [*sc_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_South_Carolina_Constitution#Section_{section}
+
 - name: South Dakota Codified Laws
   regex:
     - '(South Dakota|S\.? ?D\.?) ?(Codified|Comp(iled|\.)) Laws( Ann(otated|\.))? '
@@ -917,18 +1210,31 @@
   idForms: *title_dash_chapter_dash_section_id
   URL: https://sdlegislature.gov/Statutes/Codified_Laws/DisplayStatute.aspx?Type=Statute&Statute={title}-{chapter}-{section}
 
+- name: South Dakota Constitution
+  regex: ['(South Dakota|S\.? ?D\.?)', *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_South_Dakota_Constitution#Section_{section}
+
 - name: Tennessee Code
   regex:
-    - (Tenn(essee|\.)|TN)
+    - &tn_name (Tenn(essee|\.)|TN)
     - *rev_ann_code_stat
     - *title_dash_chapter_dash_section
     - *subsection
   idForms: *title_dash_chapter_dash_section_id
   URL: https://www.lawserver.com/law/state/tennessee/tn-code/tennessee_code_{title}-{chapter}-{section}
 
+- name: Tennessee Constitution
+  regex: [*tn_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Tennessee_Constitution#Section_{section}
+
 - name: Texas Codes
   regex:
-    - '(Tex(as|\.)|TX) (?P<code>\w.{2,40}?)( Code( Ann(otated|\.))?)? '
+    - &tx_name '(Tex(as|\.)|TX)'
+    - ' (?P<code>\w.{2,40}?)( Code( Ann(otated|\.))?)? '
     - *ch_dot_sec
     - *subsection
   idForms: 
@@ -944,9 +1250,15 @@
       index: {'Agric(ulture|\.)|AGC?':'AG', 'Alc(oholic|o?\.) Bev(erage|\.)|ABC?':'AB', 'Aux(iliary|\.) Water Laws|A?WL':'WL', 'Bus(iness|\.) (and|&) Com(merce|m?\.)|B&C|BCC?':'BC', 'Bus(iness|\.) Org(anizations|s\.)|BOC?':'BO', 'Civ(il|\.) Prac(tice|\.) (and|&) Rem(edies|s?\.)|CPR?C?':'CP', 'Code( of)? Crim(inal|\.) ?Pro(cedure|c?\.)|CCrP|CRC?':'CR', 'Educ(ation|\.)|EDC?':'ED', 'Elec(tion|\.)|ELC?':'EL', 'Est(ates|\.)|ESC?':'ES', 'Fam(ily|\.)|FAC?|FAM':'FA', 'Fin(ance|\.)|FIC?|FIN':'FI', 'Gov(ernment|(''?t)?\.?)?|GO?VC?':'GV', 'Health (and|&) Safety|H&?SC?':'HS', 'Hum(an|\.) Res(ources|\.)|HRC?':'HR', 'Ins(urance|\.)|INC?':'IN', 'Labor|LA':'LA', 'Local Gov(ernment|''t)|LGC?':'LG', 'Nat(ural|\.) Res(ources|\.)|NRC?':'NR', 'Occ(upations|\.)|OC':'OC', 'Parks (and|&) Wild(life|\.)|PWC?':'PW', 'Penal|PEN?|PC':'PE', 'Prop(erty|\.)|PR|PC':'PR', 'Special Dist(rict|\.) Local Laws|Spec\. Dists\.|SDC?':'SD', 'Tax|TX?C':'TX', 'Trans(portation|p?\.)|TNC?':'TN', 'Util(ities|\.)|UTC?':'UT', 'Water|WAC?':'WA', 'Vernon''s Civ(il|\.) Stat(utes|s?\.)':'VC'}
   URL: https://statutes.capitol.texas.gov/Docs/{codeAcronym}/htm/{codeAcronym}.{chapter}.htm#{chapter}.{section}
 
+- name: Texas Constitution
+  regex: [*tx_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *roman_article_to_arabic_article
+  URL: https://statutes.capitol.texas.gov/Docs/CN/htm/CN.{arabic_article}/CN.{arabic_article}.{section}.htm
+
 - name: Utah Code
   regex: 
-    - (Utah|UT)
+    - &ut_name (Utah|UT)
     - *rev_ann_code_stat
     - *title_dash_chapter_dash_section
     - *subsection
@@ -958,9 +1270,15 @@
     - https://le.utah.gov/xcode/Title{title}/Chapter{chapter}/{title}-{chapter}-S{section}.html
     - '#{title}-{chapter}-{section}{subsection}'
 
+- name: Utah Constitution
+  regex: [*ut_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Utah_Constitution#Section_{section}
+
 - name: Vermont Statutes
   regex:
-    - V(ermont|t\.|T)
+    - &vt_name V(ermont|t\.|T)
     - *rev_ann_code_stat
     - *standalone_title
     - *section
@@ -968,14 +1286,24 @@
   idForms: *id_sec_sub
   URL: https://www.lawserver.com/law/state/vermont/vt-statutes/vermont_statutes_title_{title}_{section}
 
+# add support for Vermont Constitution here
+# it's in two chapters; first has articles, second has sections
+
 - name: Virginia Code
   regex:
-    - (?<!W\. )(?<!West )(?<!W\.)V(irginia|a\.|A)
+    - &va_name (?<!W\. )(?<!West )(?<!W\.)V(irginia|a\.|A)
     - *rev_ann_code_stat
     - *title_dash_section
     - *subsection
   idForms: *title_dash_section_id
   URL: https://law.lis.virginia.gov/vacode/title{title}/section{title}-{section}
+
+- name: Virginia Constitution
+  regex: [*va_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Virginia_Constitution#Section_{section}
+# should add support for schedule
 
 - name: Virgin Islands Code
   regex:
@@ -991,7 +1319,8 @@
 
 - name: Revised Code of Washington
   regex:
-    - ((Wash(ington|\.)|WA)
+    - '('
+    - &wa_name (Wash(ington|\.)|WA)
     - *rev_ann_code_stat
     - '|R\.?C\.?W\.? )'
     - *title_dot_chapter_dot_section
@@ -999,18 +1328,30 @@
   idForms: *title_dot_chapter_dot_section_id
   URL: https://app.leg.wa.gov/RCW/default.aspx?cite={title}.{chapter}.{section}
 
+- name: Washington Constitution
+  regex: [*wa_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Washington_State_Constitution#Section_{section}
+
 - name: West Virginia Code
   regex:
-    - (West Virginia|W\. ?Va?\.|WV)
+    - &wv_name (West Virginia|W\. ?Va?\.|WV)
     - *rev_ann_code_stat
     - *chapter_dash_article_dash_section
     - *subsection
   idForms: *chapter_dash_article_dash_section_id
   URL: http://www.wvlegislature.gov/wvcode/ChapterEntire.cfm?chap={chapter}&art={article}&section={section}
 
+- name: West Virginia Constitution
+  regex: [*wv_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_West_Virginia_Constitution#Section_{section}
+
 - name: Wisconsin Statutes
   regex:
-    - (Wis(consin|\.)|WI)
+    - &wi_name (Wis(consin|\.)|WI)
     - *rev_ann_code_stat
     - *ch_dot_sec
     - *subsection
@@ -1019,9 +1360,15 @@
     - https://docs.legis.wisconsin.gov/document/statutes/{chapter}.{section}
     - '{subsection}'
 
+- name: Wisconsin Constitution
+  regex: [*wi_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *arabic_article_to_roman_article
+  URL: https://ballotpedia.org/Article_{roman_article},_Wisconsin_Constitution#Section_{section}
+
 - name: Wyoming Statutes
   regex:
-    - (Wyo(ming|\.)|WY)
+    - &wy_name (Wyo(ming|\.)|WY)
     - *rev_ann_code_stat
     - *title_dash_chapter_dash_section
     - *subsection
@@ -1033,6 +1380,12 @@
       index: {'\d':'0', '\d{2}':''}
   URL: https://wyoleg.gov/statutes/compress/title{lpad}{title}.pdf#search={title}-{chapter}-{section}.
 
+- name: Wyoming Constitution
+  regex: [*wy_name, *const_art_sec_cl]
+  idForms: *const_art_sec_cl_ids
+  substitutions: *roman_article_to_arabic_article
+  URL: https://ballotpedia.org/Article_{arabic_article},_Wyoming_Constitution#Section_{section}
+
 ####################################################
 # COURT CASES
 ####################################################
@@ -1043,7 +1396,7 @@
 - name: Caselaw Access Project
   regex:
     - '(?<=\b)(?P<volume>\d+) '
-    - (?P<reporter>Abb\. Ct\. App\.|Abb\.N\. Cas\.|Abb\. Pr\.|Abb\. Pr\. \(n\.s\.\)|Va\. \(Va\. Cas\.\)|Adams Co\. L\.J\.|Add\.|Dallam|Franklin Co\. Legal J\.|Aik\.|Ala\. App\.|Ala\.|Alaska Fed\.|Alaska|Am\. Samoa|Am\. Samoa 2d|Am\. Samoa 3d|Ohio App\. Unrep\.|Ant\. N\.P\. Cas\.|A\.D\.2d|A\.D\.|A\.D\.3d|Ky\. \(Hughes\)|Ariz\. App\.|Ariz\.|Ark\. App\.|Ark\.|Armstrong\. Election Cases|A\.|Balt\. C\. Rep\.|Barb\. Ch\.|Barb\.|B\. Co\. Leg\. J\.|Berk's Co\. L\.J\.\.|Blackf\.|Blair Co\. L\.R\.|Blair Co\. L\.R\. 2d|Bosworth Super\. Ct\. Rep\.|Bradford Co\. L\.J\.|Brad\.|Brayt\.|Bucks Co\. L\.R\.|Bur\.|Bur\.|Butler Co\. Legal J\.|E\.D\. Pa\.|Cai\. Cas\.|Cai\.|Cal\. ?App\.|Cal\. ?App\. ?5th|Cal\. ?App\. ?4th|Cal\. ?App\. ?2d|Cal\. ?App\. ?3d|Cal\. ?3d|Cal\. ?4th|Cal\.|Cal\. ?2d|Cal\. ?Super\. ?Ct\.|Cal\. ?Unrep\.|Cambria Co\. L\.J\.|Cambria Co\. Rep\.|Carbon Co\. L\.J\.|N\.C\. \(Car\. L\. Rep\.\)|N\.J\. \(Manumission\)|S\.C\.L\. \(McMul\.\)|S\.C\.L\. \(Chev\.\)|Tapp\. Rep\.|D\. Pa\.|Ohio|S\.C\. Eq\. \(Chev\. Eq\.\)|Monaghan|Sadler|Ky\. \(Litt\. Sel\. Cas\.\)|C\.C\.L\.J\.|C\.C\.L\.J\. 2d|S\.C\. Eq\. \(McCord Eq\.\)|S\.C\. Eq\. \(Ril\. Eq\.\)|Chand\.|Charlton Rep\.|Ches\. Co\. Rep\.|D\. Chip\.|N\. Chip\.|Mun\.  L\. Rep\.|Hosea's Rep\.|N\.Y\. City Ct\. Rep\.|Cl\. Ch\.|Cole\. & Cai\. Cas\.|Cole\. Cas\.|Colo\. App\.|Colo\. L\. Rep\.|Colo\. N\. P\.|Colo\.|Willson|White & W\.|N\.C\. \(Cam\. & Nor\.\)|King's Conflicting Cases|Conn\. App\.|Conn\. Cir\. Ct\.|Kirby|Root|Conn\.|Conn\. Supp\.|Connoly Sur\. Rep\.|Ct\. Cl\.|C\.C\.P\.A\.|Ct\. Cust\.|Cow\.|Craw\. Co\. Leg\. J\.|Cumberland L\.J\.|Cust\. B\. & Dec\.|Dakota|Dallam|Dall\.|Daly \(N\.Y\.\)|Dau\. Co\. Rep\.|Day|T\.C\.A\.|P\.R\. Dec\.|Teiss\.|Va\. Ch\. Dec\.|Ky\. \(Sneed\)|Pears\.|Smith|Ga\. Super\. Ct\.|Georgia Decisions|C\.M\.A\.|Del\. Cas\.|Del\. Ch\.|Del\. Co\. Reps\.|Del\. \(Harr\.\)|Del\. \(Penne\.\)|Del\. \(Boyce\)|Del\. \(Marv\.\)|Del\. \(Houst\.\)|Del\.|Dem\. Sur\.|Denio|Docket|Dudley Rep\.|Duer Super\. Ct\. Rep\.|Edm\. Sel\. Cas\.|E\.D\. Smith|Edw\. Ch\.|S\.C\. Eq\. \(McMul\. Eq\.\)|S\.C\. Eq\. \(Speers Eq\.\)|Erie\. Co\. L\.J\.|P\.R\. Sent\.|Fay\. L\.J\.|F\. Cas\.|Fed\. Cl\.|F\.|F\. ?2d|F\. ?3d|F\.R\.D\.|F\. ?Supp\.( ?[23]d)?|Fla\.|Fla\. Supp\.|Fla\. Supp\. 2d|Ga\. App\.|Ga\. L\. Rep\.|Ga\.|Gault|Gibb\. Surr\.|Guam|Hall Super\. Ct\. Rep\.|H\. & G\.|Haw\. App\.|Haw\.|Haz\. Pa\. Reg\.|Va\. \(Hen\. & M\.\)|Hill & Den\.|Hill|Hilt\.|Hoff\. Ch\.|Hopk\. Ch\.|How\. App\. Cas\.|How\. Pr\.|How\. Pr\. \(n\.s\.\)|Idaho|Ill\. App\.|Ill\. App\. 2d|Ill\. App\. 3d|Ill\. Cir\. Ct\. Rep\.|Ill\. Ct\. Cl\.|Ill\. \(Scam\)|Ill\. \(Breese\)|Ill\. \(Gilm\.\)|Ill\.|Ill\. 2d|Ind\. App\.|Ind\. L\. Rep\.|Ind\.|Indian Terr\.|Iowa|Jeff\.|Johns\. Cas\.|Johns\. Ch\.|Johns\.|Jones and Spencer's Super\. Ct\. Rep\.|Edsall|Pa\. \(Admiralty\)|Kan\. App\. 2d|Kan\.|Ky\. \(A\.K\. Marsh\.\)|Ky\. Op\.|Ky\.|Keyes|Lack\. Bar\. R\.|Lack\. Bar  R\.|Lack\. Jur\.|Lack\. L\. N\.|Lack\. L\.R\.|Lanc\. Bar|Lanc\. L\. Rev\.|Lans\. Ch\.|Lans\.|Law\. L\.J\.|Law Times|Law Times \(N\.S\.\)|Lebanon Co\. L\.J\.|Foster|Leg\. Gaz\.|Leg\. Gaz\.|Pa\. Leg\. Gaz\.|Gunby|Leg\. Rec\. Rep\.|Lehigh Co\. L\.J\.|Lehigh Val\. L\. Rep\.|Liquor Tax Rep\.|Lock\. Rev\. Cas\.|La\. Ann\.|La\. App\.|La\.|La\.|Luz\. L\.J\.|Luz\. L\.O\.|Luz\. Leg\. Reg\.|Luz\. Leg\. Reg\.|Lycoming R\.|Magis\. & Const\.|Me\.|McGrath|N\.C\. \(Mart\.\)|Mart\. \(n\.s\.\)|Mart\. \(o\.s\.\)|Md\. App\.|Md\.|H\. & McH\.|Mass\. \(Allen\)|Mass\. App\. Ct\.|Mass\. App\. Dec\.|Davis L\. Ct\. Cas\.|Davis L\. Ct\. Cas\.|Mass\. \(Cush\)|Mass\. \(Pick\.\)|Mass\. \(Gray\)|Mass\. \(Tyng\)|Mass\. \(Will\.\)|Mass\. \(Met\.\)|Mass\.|Mass\. Supp\.|Mercer|Mich\. App\. |Howell N\.P\.|Mich\.|M\.C\.L\.J\.|Mills Surr\.|Minn\.|Minor|Va\.|Miss\. Ct\. Rec\.|Miss\. Dec\.|Miss\. \(Walker\)|Miss\.|Miss\. \(Howard\)|Miss\. \(S\. & M\.\)|Mor\. St\. Cas\.|Mo\. App\.|Mo\.|Monroe L\.R\.|Mont\.|Mont\. Co\. L\. Rep\.|Navajo Rptr\.|Neb\. App\.|Neb\.|Nev\.|N\.H\.|N\.J\. Eq\.|N\.J\.L\.|N\.J\. Misc\.|N\.J\.|N\.J\. Super\.|N\.J\. Tax Ct\.|N\.M\.|N\.M\.|N\.Y\. Crim\.|Misc\.2d|Misc\.3d|Misc\.|N\.Y\. ?2d|N\.Y\.|N\.Y\. ?3d|N\.Y\. St\. Rptr\.|Northam\. Law Rep\.|N\.C\. App\.|N\.C\.|N\.C\. \(Busb\. Eq\)|N\.C\. \(Busb\.\)|N\.C\. \(Dev\. & Bat\. Eq\.\)|N\.C\. \(Dev\. & Bat\.\)|N\.C\. \(Dev\. Eq\.\)|N\.C\. \(Dev\.\)|N\.C\. \(Hawks\)|N\.C\. \(Hayw\.\)|N\.C\. \(Ired\. Eq\.\)|N\.C\. \(Ired\.\)|N\.C\. \(Jones Eq\.\)|N\.C\. \(Jones\)|N\.C\. \(Mur\.\)|N\.C\. \(Phil\. Eq\.\)|N\.C\. \(Phil\.\)|N\.C\. \(Tay\.\)|N\.C\. \(Win\.\)|N\.D\.|N\.E\.|N\.E\.2d|N\.E\.3d|N\. Mar\. I\. Commw\.|N\. Mar\. I\.|Northum\. Co\. Leg\. N\.|Northumb\. L\.J\.|N\.W\.|N\.W\.2d|Ohio App\.|Ohio App\. 2d|Ohio App\. 3d|Ohio C\.C\. Dec\.|Ohio C\.C\. \(N\.S\.\)|Ohio Cir\. Dec\.|Ohio Ct\. App\.|Ohio Misc\.|Ohio Misc\. 2d|Ohio Nisi Prius|Ohio Nisi Prius \(N\.S\.\)|Ohio Op\. 2d|Ohio Op\. 3d|Ohio Op\.|Ohio St\.|Ohio St\. \(n\.s\.\)|Ohio St\. 2d|Ohio St\. 3d|Okla\. Crim\.|Okla\.|Olwine's L\.J\.|Or\.|Or\. App\.|Or\. Tax|P\.|P\.2d|P\.3d|Paige Ch\.|Park\. Crim\. Rep\.|Pelt\.|Pa\. L\. Rec\.|Pa\. Commw\.|Pa\. Corp\. R\.|Pa\. Co\. Ct\.|Pa\. D\. & C\. 2d|Pa\. D\. & C\.|Pa\. D\. & C\. 3d|Pa\. D\. & C\. 5th|Pa\. D\. & C\. 4th|Pa\. Fid\.|Pa\. Fid\. 2d|Pa\. Fid\. 3d|Pa\. Just\. L\. Rep\.|Pa\. L\.J\. Rep\.|Pa\.|Pa\. Super\. Ct\.|Pennyp\.|Phila\. Co\. R\.|Phila\. Reports|Pin\.|Pittsb\. L\.J\.|Pitts\. R\.|Port\.|P\.R\. Fed\.|Pow\. Surr\.|Mich\. Pr\.|Singer Prob\. Cas\.|N\.Y\. Proc\. Ct\. Ass\.|P\.R\.|Rec\. Q\. Ct\.|Rec\. Ct\. Assistants|Rec\. Co\. Ch\. \(S\.C\.\)|Rec\. Ct\. Gen\. Sess\.|Rec\. Bucks\. Co\. \(Pa\.\)|Rec\. T\. Warwick \(R\.I\.\)|Rec\. Ct\. Ches\. Co\. Pa\.|Rec\. Co\. Ct\.|Rec\. V\.A\. Ct\. \(R\.I\.\)|Redf\.|S\.C\.L\. \(Ril\.\)|Ct\. Cl\.|Mich\. Ct\. Cl\.|App\. D\.C\.|Bro\. Com\. P\.|Ashm\. \(Pa\.\)|Conn\. Super\. Ct\.|Conn\. Super\. Ct\.|Disney \(Ohio\)|Binn\.|Pen\. & W\.|Rawle|Serg\. & Rawl\.|Watts & Serg\.|Whart\.|Yeates|S\.C\. Eq\. \(Des\.Eq\.\)|Ky\. \(Hard\.\)|Handy|Super\. Ct\. Jud\.|Tenn\. \(Hayw\.\)|Grant|D\.C\. \(MacArth\. & M\.\)|D\.C\. \(Tuck\. & Cl\.\)|Jahn|S\.C\.L\. \(Strob\.\)|Gill|G\. & J\.|S\.C\. Eq\. \(Dud\. Eq\.\)|S\.C\.L\. \(Bail\.\)|N\.Y\.|Walk\. Ch\.|Tenn\. Crim\. App\.|H\. & J\.|Wilson|Miss\. \(S\. & M\. Ch\.\)|S\.C\.L\. \(Bay\)|Morris|Watts|Tenn\. \(Mart\. & Yer\.\)|Tenn\. \(Cold\.\)|Tenn\. \(Heisk\.\)|Tenn\. \(Yer\.\)|Tenn\. \(Head\)|Tenn\. \(Meigs\)|Tenn\. \(Hum\.\)|D\.C\.|D\.C\. \(MacArth\.\)|D\.C\. \(Mackey\)|Doug\.|Ark\. Terr\. Rep\.|McGl\.|D\.C\. \(patent\)|Ky\. \(Bibb\)|Ky\. \(Litt\.\)|Ky\. \(T\.B\. Mon\.\)|Ky\. \(B\. Mon\.\)|Wright|Ohio Ch\.|Ky\. \(J\.J\. Marsh\.\)|S\.C\.L\. \(Speers\)|S\.C\.L\. \(Rich\.\)|S\.C\.L\. \(Rice\)|S\.C\.L\. \(Rich\.\)|S\.C\.L\. \(Dud\.\)|S\.C\.L\. \(Hill\)|Hay\. & Haz\.|D\.C\. Cir\.|D\.C\. \(Cranch\)|Brightly|Walker|Ind\. App\.|Kan\. App\.|Md\. Ch\.|Md\. Ch\.|Freem\. Ch\.|Wilcox|S\.C\.L\. \(McCord\)|S\.C\.L\. \(Nott & McC\.\)|S\.C\.L\. \(Harp\.\)|Harr\. Ch\.|Miles|Cal\. ?Dist\. Ct\.|McCahon|S\.C\. Eq\. \(Rice Eq\.\)|S\.C\. Eq\. \(Rich\. Eq\.\)|S\.C\. Eq\. \(Hill Eq\.\)|S\.C\. Eq\. \(Rich\. Eq\.\)|S\.C\. Eq\. \(Rich\. Cas\.\)|S\.C\. Eq\. \(Strobh\. Eq\.\)|S\.C\. Eq\. \(Bail\. Eq\.\)|Greene|Myrick|D\. Haw\.|Rep\. Cont\. Elect\. Case\.|Rep\. Cont\. El\.|Howison|Coffey|Charlton|S\.C\. Eq\. \(Harp\. Eq\.\)|Brewster|S\.C\.L\. \(Mill\)|S\.C\.L\. \(Tread\.\)|S\.C\.L\. \(Brev\.\)|Mass\. App\. Div\.|Mass\. App\. Div\.|Goebel|Ky\. \(Dana\)|Ky\. \(Duv\.\)|Ky\. \(Met\.\)|Ky\. \(Bush\)|Vaux|Tenn\. \(Swan\)|Tenn\. \(Sneed\)|Bradf\.|T\.C\.|B\.T\.A\.|R\.I\. Ct\. Rec\.|R\.I\. Dec\.|R\.I\.|Super\. Ct\. \(R\.I\.\)|Robertson's Super\. Ct\. Rep\.|Rob\.|Sand\. Ch\.|Sandford Super\. Ct\. Rep\.|Sarat\. Ch\. Sent\.|Schuy\. L\. Rec\.|Schuy\. Reg\.|Seld\. Notes|Yates|Parsons|Sick\. Op\. Att'y Gen\.|Silv\. Ct\. App\.|Silv\. Sup\.|Smith|Som\. L\.J\.|S\.C\.|S\.D\.|S\.E\.|S\.E\.2d|So\.|So\.2d|So\.3d|S\.W\.|S\.W\.2d|S\.W\.3d|Stew\.|Stew\. & P\.|S\.C\.D\.C\. \(N\.S\.\)|N\.Y\. Sup\. Ct\.|Susq\. Leg\. Chron\.|Sweeney Super\. Ct\. Rep\.|Robards|N\.C\. \(Taylor\)|La\. App\. \(Teiss\.\)|Tenn\. App\.|Tenn\. Cas\.|Tenn\. Ch\. R\.|Tenn\.|Tenn\. \(Peck\)|Tenn\. \(Cooke\)|Tenn\. \(Overt\.\)|Tex\. Civ\. App\.|Tex\. Ct\. App\.|Tex\. Crim\.|Tex\. L\. R\.|Tex\.|Posey|N\.J\. \(Burlington County Ct\.\)|Cin\. Sup\. Ct\. Rep\.|Com\. Pl\. Rep\.|Pa\. Dist\.|Mass\. Law Rep\.|Mich\. N\.P\. R\.|Westchester|Ohio Law Abs\.|Ohio L\.R\.|Ald\.|Thomp\. & Cook|Blume Sup\. Ct\. Trans\.|Trans\. App\.|Tuck\. Surr\.|Tyl\.|Cl\. Ct\.|U\.S\. App\. D\.C\.|Ct\. Int'l Trade|Cust\. Ct\.|U\. ?S\.|U\.S\. \(Black\)|U\.S\. \(Cranch\)|U\.S\. \(Dall\.\)|U\.S\. \(How\.\)|U\.S\. \(Pet\.\)|U\.S\. \(Wall\.\)|U\.S\. \(Wheat\.\)|Mann\. Unrep\. Cas\.|Blume Unrep\. Op\.|Unrep\. Tenn\. Cas\.|Cal\.|Utah|Utah 2d|Vt\.|Va\. Cir\.|Va\. Col\. Dec\.|Va\. App\.|Va\. Dec\.|Va\. \(Rand\.\)|Va\. \(Munf\.\)|Va\. \(Wash\.\)|Va\.|Va\. \(Gratt\.\)|Va\. \(Gilmer\)|Va\. \(Call\)|Va\. \(Patt\. & Heath\)|Va\. \(Rob\.\)|Va\. \(Leigh\)|V\.I\.|Wash\. App\.|Wash\. Co\.\(Pa\.\)|Wash\.|Wash\. 2d|Wash\. Terr\.|Week\. No\. Cas\. \(Pa\.\)|Wend\.|Wes\. C\.L\.J\.|Tribal|A\.2d|A\.3d|B\.R\.|F\. App'?x\.?|Haw\.|M\.J\.|N\.Y\.S\. 2d|N\.Y\.S\. 2d|N\.Y\.S\.|Vet\. App\.|W\. Va\.|Wheel\. Cr\. Cas\.|Wis\.|Wis\. 2d|Wyo\.|Yates Sel\. Cas\.|York Leg\. Rec\.)
+    - (?P<reporter>Abb\. Ct\. App\.|Abb\.N\. Cas\.|Abb\. Pr\.|Abb\. Pr\. \(n\.s\.\)|Va\. \(Va\. Cas\.\)|Adams Co\. L\.J\.|Add\.|Dallam|Franklin Co\. Legal J\.|Aik\.|Ala\. App\.|Ala\.|Alaska Fed\.|Alaska|Am\. Samoa|Am\. Samoa 2d|Am\. Samoa 3d|Ohio App\. Unrep\.|Ant\. N\.P\. Cas\.|A\.D\.2d|A\.D\.|A\.D\.3d|Ky\. \(Hughes\)|Ariz\. App\.|Ariz\.|Ark\. App\.|Ark\.|Armstrong\. Election Cases|A\.|Balt\. C\. Rep\.|Barb\. Ch\.|Barb\.|B\. Co\. Leg\. J\.|Berk's Co\. L\.J\.\.|Blackf\.|Blair Co\. L\.R\.|Blair Co\. L\.R\. 2d|Bosworth Super\. Ct\. Rep\.|Bradford Co\. L\.J\.|Brad\.|Brayt\.|Bucks Co\. L\.R\.|Bur\.|Bur\.|Butler Co\. Legal J\.|E\.D\. Pa\.|Cai\. Cas\.|Cai\.|Cal\. ?App\.|Cal\. ?App\. ?5th|Cal\. ?App\. ?4th|Cal\. ?App\. ?2d|Cal\. ?App\. ?3d|Cal\. ?3d|Cal\. ?4th|Cal\.|Cal\. ?2d|Cal\. ?Super\. ?Ct\.|Cal\. ?Unrep\.|Cambria Co\. L\.J\.|Cambria Co\. Rep\.|Carbon Co\. L\.J\.|N\.C\. \(Car\. L\. Rep\.\)|N\.J\. \(Manumission\)|S\.C\.L\. \(McMul\.\)|S\.C\.L\. \(Chev\.\)|Tapp\. Rep\.|D\. Pa\.|Ohio|S\.C\. Eq\. \(Chev\. Eq\.\)|Monaghan|Sadler|Ky\. \(Litt\. Sel\. Cas\.\)|C\.C\.L\.J\.|C\.C\.L\.J\. 2d|S\.C\. Eq\. \(McCord Eq\.\)|S\.C\. Eq\. \(Ril\. Eq\.\)|Chand\.|Charlton Rep\.|Ches\. Co\. Rep\.|D\. Chip\.|N\. Chip\.|Mun\.  L\. Rep\.|Hosea's Rep\.|N\.Y\. City Ct\. Rep\.|Cl\. Ch\.|Cole\. & Cai\. Cas\.|Cole\. Cas\.|Colo\. App\.|Colo\. L\. Rep\.|Colo\. N\. P\.|Colo\.|Willson|White & W\.|N\.C\. \(Cam\. & Nor\.\)|King's Conflicting Cases|Conn\. App\.|Conn\. Cir\. Ct\.|Kirby|Root|Conn\.|Conn\. Supp\.|Connoly Sur\. Rep\.|Ct\. Cl\.|C\.C\.P\.A\.|Ct\. Cust\.|Cow\.|Craw\. Co\. Leg\. J\.|Cumberland L\.J\.|Cust\. B\. & Dec\.|Dakota|Dallam|Dall\.|Daly \(N\.Y\.\)|Dau\. Co\. Rep\.|Day|T\.C\.A\.|P\.R\. Dec\.|Teiss\.|Va\. Ch\. Dec\.|Ky\. \(Sneed\)|Pears\.|Smith|Ga\. Super\. Ct\.|Georgia Decisions|C\.M\.A\.|Del\. Cas\.|Del\. Ch\.|Del\. Co\. Reps\.|Del\. \(Harr\.\)|Del\. \(Penne\.\)|Del\. \(Boyce\)|Del\. \(Marv\.\)|Del\. \(Houst\.\)|Del\.|Dem\. Sur\.|Denio|Docket|Dudley Rep\.|Duer Super\. Ct\. Rep\.|Edm\. Sel\. Cas\.|E\.D\. Smith|Edw\. Ch\.|S\.C\. Eq\. \(McMul\. Eq\.\)|S\.C\. Eq\. \(Speers Eq\.\)|Erie\. Co\. L\.J\.|P\.R\. Sent\.|Fay\. L\.J\.|F\. Cas\.|Fed\. Cl\.|F\.|F\. ?2d|F\. ?3d|F\.R\.D\.|F\. ?Supp\.( ?[23]d)?|Fla\.|Fla\. Supp\.|Fla\. Supp\. 2d|Ga\. App\.|Ga\. L\. Rep\.|Ga\.|Gault|Gibb\. Surr\.|Guam|Hall Super\. Ct\. Rep\.|H\. & G\.|Haw\. App\.|Haw\.|Haz\. Pa\. Reg\.|Va\. \(Hen\. & M\.\)|Hill & Den\.|Hill|Hilt\.|Hoff\. Ch\.|Hopk\. Ch\.|How\. App\. Cas\.|How\. Pr\.|How\. Pr\. \(n\.s\.\)|Idaho|Ill\. App\.|Ill\. App\. 2d|Ill\. App\. 3d|Ill\. Cir\. Ct\. Rep\.|Ill\. Ct\. Cl\.|Ill\. \(Scam\)|Ill\. \(Breese\)|Ill\. \(Gilm\.\)|Ill\.|Ill\. 2d|Ind\. App\.|Ind\. L\. Rep\.|Ind\.|Indian Terr\.|Iowa|Jeff\.|Johns\. Cas\.|Johns\. Ch\.|Johns\.|Jones and Spencer's Super\. Ct\. Rep\.|Edsall|Pa\. \(Admiralty\)|Kan\. App\. 2d|Kan\.|Ky\. \(A\.K\. Marsh\.\)|Ky\. Op\.|Ky\.|Keyes|Lack\. Bar\. R\.|Lack\. Bar  R\.|Lack\. Jur\.|Lack\. L\. N\.|Lack\. L\.R\.|Lanc\. Bar|Lanc\. L\. Rev\.|Lans\. Ch\.|Lans\.|Law\. L\.J\.|Law Times|Law Times \(N\.S\.\)|Lebanon Co\. L\.J\.|Foster|Leg\. Gaz\.|Leg\. Gaz\.|Pa\. Leg\. Gaz\.|Gunby|Leg\. Rec\. Rep\.|Lehigh Co\. L\.J\.|Lehigh Val\. L\. Rep\.|Liquor Tax Rep\.|Lock\. Rev\. Cas\.|La\. Ann\.|La\. App\.|La\.|La\.|Luz\. L\.J\.|Luz\. L\.O\.|Luz\. Leg\. Reg\.|Luz\. Leg\. Reg\.|Lycoming R\.|Magis\. & Const\.|Me\.|McGrath|N\.C\. \(Mart\.\)|Mart\. \(n\.s\.\)|Mart\. \(o\.s\.\)|Md\. App\.|Md\.|H\. & McH\.|Mass\. \(Allen\)|Mass\. App\. Ct\.|Mass\. App\. Dec\.|Davis L\. Ct\. Cas\.|Davis L\. Ct\. Cas\.|Mass\. \(Cush\)|Mass\. \(Pick\.\)|Mass\. \(Gray\)|Mass\. \(Tyng\)|Mass\. \(Will\.\)|Mass\. \(Met\.\)|Mass\.|Mass\. Supp\.|Mercer|Mich\. App\. |Howell N\.P\.|Mich\.|M\.C\.L\.J\.|Mills Surr\.|Minn\.|Minor|Va\.|Miss\. Ct\. Rec\.|Miss\. Dec\.|Miss\. \(Walker\)|Miss\.|Miss\. \(Howard\)|Miss\. \(S\. & M\.\)|Mor\. St\. Cas\.|Mo\. App\.|Mo\.|Monroe L\.R\.|Mont\.|Mont\. Co\. L\. Rep\.|Navajo Rptr\.|Neb\. App\.|Neb\.|Nev\.|N\.H\.|N\.J\. Eq\.|N\.J\.L\.|N\.J\. Misc\.|N\.J\.|N\.J\. Super\.|N\.J\. Tax Ct\.|N\.M\.|N\.M\.|N\.Y\. Crim\.|Misc\.2d|Misc\.3d|Misc\.|N\.Y\. ?2d|N\.Y\.|N\.Y\. ?3d|N\.Y\. St\. Rptr\.|Northam\. Law Rep\.|N\.C\. App\.|N\.C\.|N\.C\. \(Busb\. Eq\)|N\.C\. \(Busb\.\)|N\.C\. \(Dev\. & Bat\. Eq\.\)|N\.C\. \(Dev\. & Bat\.\)|N\.C\. \(Dev\. Eq\.\)|N\.C\. \(Dev\.\)|N\.C\. \(Hawks\)|N\.C\. \(Hayw\.\)|N\.C\. \(Ired\. Eq\.\)|N\.C\. \(Ired\.\)|N\.C\. \(Jones Eq\.\)|N\.C\. \(Jones\)|N\.C\. \(Mur\.\)|N\.C\. \(Phil\. Eq\.\)|N\.C\. \(Phil\.\)|N\.C\. \(Tay\.\)|N\.C\. \(Win\.\)|N\.D\.|N\.E\.|N\.E\.2d|N\.E\.3d|N\. Mar\. I\. Commw\.|N\. Mar\. I\.|Northum\. Co\. Leg\. N\.|Northumb\. L\.J\.|N\.W\.|N\.W\.2d|Ohio App\.|Ohio App\. 2d|Ohio App\. 3d|Ohio C\.C\. Dec\.|Ohio C\.C\. \(N\.S\.\)|Ohio Cir\. Dec\.|Ohio Ct\. App\.|Ohio Misc\.|Ohio Misc\. 2d|Ohio Nisi Prius|Ohio Nisi Prius \(N\.S\.\)|Ohio Op\. 2d|Ohio Op\. 3d|Ohio Op\.|Ohio St\.|Ohio St\. \(n\.s\.\)|Ohio St\. 2d|Ohio St\. 3d|Okla\. Crim\.|Okla\.|Olwine's L\.J\.|Or\.|Or\. App\.|Or\. Tax|P\.|P\.2d|P\.3d|Paige Ch\.|Park\. Crim\. Rep\.|Pelt\.|Pa\. L\. Rec\.|Pa\. Commw\.|Pa\. Corp\. R\.|Pa\. Co\. Ct\.|Pa\. D\. & C\. 2d|Pa\. D\. & C\.|Pa\. D\. & C\. 3d|Pa\. D\. & C\. 5th|Pa\. D\. & C\. 4th|Pa\. Fid\.|Pa\. Fid\. 2d|Pa\. Fid\. 3d|Pa\. Just\. L\. Rep\.|Pa\. L\.J\. Rep\.|Pa\.|Pa\. Super\. Ct\.|Pennyp\.|Phila\. Co\. R\.|Phila\. Reports|Pin\.|Pittsb\. L\.J\.|Pitts\. R\.|Port\.|P\.R\. Fed\.|Pow\. Surr\.|Mich\. Pr\.|Singer Prob\. Cas\.|N\.Y\. Proc\. Ct\. Ass\.|P\.R\.|Rec\. Q\. Ct\.|Rec\. Ct\. Assistants|Rec\. Co\. Ch\. \(S\.C\.\)|Rec\. Ct\. Gen\. Sess\.|Rec\. Bucks\. Co\. \(Pa\.\)|Rec\. T\. Warwick \(R\.I\.\)|Rec\. Ct\. Ches\. Co\. Pa\.|Rec\. Co\. Ct\.|Rec\. V\.A\. Ct\. \(R\.I\.\)|Redf\.|S\.C\.L\. \(Ril\.\)|Ct\. Cl\.|Mich\. Ct\. Cl\.|App\. D\.C\.|Bro\. Com\. P\.|Ashm\. \(Pa\.\)|Conn\. Super\. Ct\.|Conn\. Super\. Ct\.|Disney \(Ohio\)|Binn\.|Pen\. & W\.|Rawle|Serg\. & Rawl\.|Watts & Serg\.|Whart\.|Yeates|S\.C\. Eq\. \(Des\.Eq\.\)|Ky\. \(Hard\.\)|Handy|Super\. Ct\. Jud\.|Tenn\. \(Hayw\.\)|Grant|D\.C\. \(MacArth\. & M\.\)|D\.C\. \(Tuck\. & Cl\.\)|Jahn|S\.C\.L\. \(Strob\.\)|Gill|G\. & J\.|S\.C\. Eq\. \(Dud\. Eq\.\)|S\.C\.L\. \(Bail\.\)|N\.Y\.|Walk\. Ch\.|Tenn\. Crim\. App\.|H\. & J\.|Wilson|Miss\. \(S\. & M\. Ch\.\)|S\.C\.L\. \(Bay\)|Morris|Watts|Tenn\. \(Mart\. & Yer\.\)|Tenn\. \(Cold\.\)|Tenn\. \(Heisk\.\)|Tenn\. \(Yer\.\)|Tenn\. \(Head\)|Tenn\. \(Meigs\)|Tenn\. \(Hum\.\)|D\.C\.|D\.C\. \(MacArth\.\)|D\.C\. \(Mackey\)|Doug\.|Ark\. Terr\. Rep\.|McGl\.|D\.C\. \(patent\)|Ky\. \(Bibb\)|Ky\. \(Litt\.\)|Ky\. \(T\.B\. Mon\.\)|Ky\. \(B\. Mon\.\)|Wright|Ohio Ch\.|Ky\. \(J\.J\. Marsh\.\)|S\.C\.L\. \(Speers\)|S\.C\.L\. \(Rich\.\)|S\.C\.L\. \(Rice\)|S\.C\.L\. \(Rich\.\)|S\.C\.L\. \(Dud\.\)|S\.C\.L\. \(Hill\)|Hay\. & Haz\.|D\.C\. Cir\.|D\.C\. \(Cranch\)|Brightly|Walker|Ind\. App\.|Kan\. App\.|Md\. Ch\.|Md\. Ch\.|Freem\. Ch\.|Wilcox|S\.C\.L\. \(McCord\)|S\.C\.L\. \(Nott & McC\.\)|S\.C\.L\. \(Harp\.\)|Harr\. Ch\.|Miles|Cal\. ?Dist\. Ct\.|McCahon|S\.C\. Eq\. \(Rice Eq\.\)|S\.C\. Eq\. \(Rich\. Eq\.\)|S\.C\. Eq\. \(Hill Eq\.\)|S\.C\. Eq\. \(Rich\. Eq\.\)|S\.C\. Eq\. \(Rich\. Cas\.\)|S\.C\. Eq\. \(Strobh\. Eq\.\)|S\.C\. Eq\. \(Bail\. Eq\.\)|Greene|Myrick|D\. Haw\.|Rep\. Cont\. Elect\. Case\.|Rep\. Cont\. El\.|Howison|Coffey|Charlton|S\.C\. Eq\. \(Harp\. Eq\.\)|Brewster|S\.C\.L\. \(Mill\)|S\.C\.L\. \(Tread\.\)|S\.C\.L\. \(Brev\.\)|Mass\. App\. Div\.|Mass\. App\. Div\.|Goebel|Ky\. \(Dana\)|Ky\. \(Duv\.\)|Ky\. \(Met\.\)|Ky\. \(Bush\)|Vaux|Tenn\. \(Swan\)|Tenn\. \(Sneed\)|Bradf\.|T\.C\.|B\.T\.A\.|R\.I\. Ct\. Rec\.|R\.I\. Dec\.|R\.I\.|Super\. Ct\. \(R\.I\.\)|Robertson's Super\. Ct\. Rep\.|Rob\.|Sand\. Ch\.|Sandford Super\. Ct\. Rep\.|Sarat\. Ch\. Sent\.|Schuy\. L\. Rec\.|Schuy\. Reg\.|Seld\. Notes|Yates|Parsons|Sick\. Op\. Att'y Gen\.|Silv\. Ct\. App\.|Silv\. Sup\.|Smith|Som\. L\.J\.|S\.C\.|S\.D\.|S\.E\.|S\.E\.2d|So\.|So\.2d|So\.3d|S\.W\.|S\.W\.2d|S\.W\.3d|Stew\.|Stew\. & P\.|S\.C\.D\.C\. \(N\.S\.\)|N\.Y\. Sup\. Ct\.|Susq\. Leg\. Chron\.|Sweeney Super\. Ct\. Rep\.|Robards|N\.C\. \(Taylor\)|La\. App\. \(Teiss\.\)|Tenn\. App\.|Tenn\. Cas\.|Tenn\. Ch\. R\.|Tenn\.|Tenn\. \(Peck\)|Tenn\. \(Cooke\)|Tenn\. \(Overt\.\)|Tex\. Civ\. App\.|Tex\. Ct\. App\.|Tex\. Crim\.|Tex\. L\. R\.|Tex\.|Posey|N\.J\. \(Burlington County Ct\.\)|Cin\. Sup\. Ct\. Rep\.|Com\. Pl\. Rep\.|Pa\. Dist\.|Mass\. Law Rep\.|Mich\. N\.P\. R\.|Westchester|Ohio Law Abs\.|Ohio L\.R\.|Ald\.|Thomp\. & Cook|Blume Sup\. Ct\. Trans\.|Trans\. App\.|Tuck\. Surr\.|Tyl\.|Cl\. Ct\.|U\.S\. App\. D\.C\.|Ct\. Int'l Trade|Cust\. Ct\.|U\. ?S\.|U\.S\. \(Black\)|U\.S\. \(Cranch\)|U\.S\. \(Dall\.\)|U\.S\. \(How\.\)|U\.S\. \(Pet\.\)|U\.S\. \(Wall\.\)|U\.S\. \(Wheat\.\)|Mann\. Unrep\. Cas\.|Blume Unrep\. Op\.|Unrep\. Tenn\. Cas\.|Cal\.|Utah|Utah 2d|Vt\.|Va\. Cir\.|Va\. Col\. Dec\.|Va\. App\.|Va\. Dec\.|Va\. \(Rand\.\)|Va\. \(Munf\.\)|Va\. \(Wash\.\)|Va\.|Va\. \(Gratt\.\)|Va\. \(Gilmer\)|Va\. \(Call\)|Va\. \(Patt\. & Heath\)|Va\. \(Rob\.\)|Va\. \(Leigh\)|V\.I\.|Wash\. App\.|Wash\. Co\.\(Pa\.\)|Wash\.|Wash\. 2d|Wash\. Terr\.|Week\. No\. Cas\. \(Pa\.\)|Wend\.|Wes\. C\.L\.J\.|Tribal|A\. ?2d|A\. ?3d|B\.R\.|F\. App'?x\.?|Haw\.|M\.J\.|N\.Y\.S\. 2d|N\.Y\.S\. 2d|N\.Y\.S\.|Vet\. App\.|W\. Va\.|Wheel\. Cr\. Cas\.|Wis\.|Wis\. 2d|Wyo\.|Yates Sel\. Cas\.|York Leg\. Rec\.)
     - ' (?P<page>\d+)\b(,?( at)? (?P<pincite>\d+)(([-‑–]| to | through )(?P<pincite_end>\d+))?\b)?'
   idForms: [[*id_at, &pincite '(p(age|p?\.) ?)?(?P<pincite>\d+)(?!\d| [A-Z])([-‑–]\d+)?']]
   shortForms: [['{volume} {reporter},? at ', *pincite]]
@@ -1055,7 +1408,7 @@
       joiner: '-'
   substitutions:
     - token: reporter
-      index: {'fed-appx':'f-appx', 'f-2d':'f2d', 'f-3d':'f3d', 'fsupp':'f-supp', 'fsupp2d':'f-supp-2d', 'fsupp3d':'f-supp-3d', 'ny-2d':'ny2d', 'ny-3d':'ny3d', 'calapp':'cal-app','calapp2d':'cal-app-2d', 'calapp3d':'cal-app-3d', 'calapp4th':'cal-app-4th', 'calapp5th':'cal-app-5th', 'caldistct':'cal-dist-ct', 'calsuperct':'cal-super-ct', 'calunrep':'cal-unrep', 'cal2d':'cal-2d', 'cal3d':'cal-3d', 'cal4th':'cal-4th', 'u-s':'us'}
+      index: {'a-2d':'a2d', 'a-3d':'a3d', 'fed-appx':'f-appx', 'f-2d':'f2d', 'f-3d':'f3d', 'fsupp':'f-supp', 'fsupp2d':'f-supp-2d', 'fsupp3d':'f-supp-3d', 'ny-2d':'ny2d', 'ny-3d':'ny3d', 'calapp':'cal-app','calapp2d':'cal-app-2d', 'calapp3d':'cal-app-3d', 'calapp4th':'cal-app-4th', 'calapp5th':'cal-app-5th', 'caldistct':'cal-dist-ct', 'calsuperct':'cal-super-ct', 'calunrep':'cal-unrep', 'cal2d':'cal-2d', 'cal3d':'cal-3d', 'cal4th':'cal-4th', 'u-s':'us'}
       allowUnmatched: true
   URL:
     - https://cite.case.law/{reporter}/{volume}/{page}

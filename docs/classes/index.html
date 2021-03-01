@@ -184,7 +184,7 @@ disable, set to None.</p>
     <span class="bp">self</span><span class="p">,</span>
     <span class="o">*</span><span class="n">yaml_paths</span><span class="p">,</span>
     <span class="n">defaults</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">generic_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="sa">r</span><span class="s2">"\b(Ib)?[Ii]d\.(&lt;\/(i|em|u)&gt;)?"</span>
+    <span class="n">generic_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">GENERIC_ID</span>
 <span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Calls load_yaml one or more times, to load the citator with</span>
@@ -203,7 +203,7 @@ disable, set to None.</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">generic_id</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">schemas</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">defaults</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">default_yaml_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">DEFAULT_YAML_PATH</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">yaml_paths</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 </code></pre>
@@ -214,7 +214,7 @@ disable, set to None.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="citeurl.Citator.insert_links">
 
-<code class="highlight language-python"><span class="n">insert_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">'class'</span><span class="p">:</span> <span class="s1">'citation'</span><span class="p">},</span> <span class="n">url_optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">link_detailed_ids</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">link_plain_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">id_break_regex</span><span class="o">=</span><span class="s1">'L</span><span class="se">\\</span><span class="s1">. ?Rev</span><span class="se">\\</span><span class="s1">.|J</span><span class="se">\\</span><span class="s1">. ?Law'</span><span class="p">,</span> <span class="n">id_break_indices</span><span class="o">=</span><span class="p">[])</span></code>
+<code class="highlight language-python"><span class="n">insert_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">'class'</span><span class="p">:</span> <span class="s1">'citation'</span><span class="p">},</span> <span class="n">url_optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">link_detailed_ids</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">link_plain_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">id_break_regex</span><span class="o">=</span><span class="s1">'L</span><span class="se">\\</span><span class="s1">. ?Rev</span><span class="se">\\</span><span class="s1">.|J</span><span class="se">\\</span><span class="s1">. ?Law|</span><span class="se">\\</span><span class="s1">. ?([Cc]ode|[Cc]onst)'</span><span class="p">,</span> <span class="n">id_break_indices</span><span class="o">=</span><span class="p">[])</span></code>
 
 
       </h3>
@@ -234,7 +234,7 @@ those links with the module-wide insert_links function.</p>
     <span class="n">url_optional</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">link_detailed_ids</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">link_plain_ids</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">id_break_regex</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">'L\. ?Rev\.|J\. ?Law'</span><span class="p">,</span>
+    <span class="n">id_break_regex</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">DEFAULT_ID_BREAKS</span><span class="p">,</span>
     <span class="n">id_break_indices</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Convenience method to return a copy of the given text, with</span>
@@ -299,7 +299,7 @@ function.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="citeurl.Citator.list_citations">
 
-<code class="highlight language-python"><span class="n">list_citations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">id_forms</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">id_break_regex</span><span class="o">=</span><span class="s1">'L</span><span class="se">\\</span><span class="s1">. ?Rev</span><span class="se">\\</span><span class="s1">.|J</span><span class="se">\\</span><span class="s1">. ?Law'</span><span class="p">,</span> <span class="n">id_break_indices</span><span class="o">=</span><span class="p">[])</span></code>
+<code class="highlight language-python"><span class="n">list_citations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">id_forms</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">id_break_regex</span><span class="o">=</span><span class="s1">'L</span><span class="se">\\</span><span class="s1">. ?Rev</span><span class="se">\\</span><span class="s1">.|J</span><span class="se">\\</span><span class="s1">. ?Law|</span><span class="se">\\</span><span class="s1">. ?([Cc]ode|[Cc]onst)'</span><span class="p">,</span> <span class="n">id_break_indices</span><span class="o">=</span><span class="p">[])</span></code>
 
 
       </h3>
@@ -333,7 +333,7 @@ order of appearance.</p>
 occurrence of the pattern will interrupt a chain of
 "id." citations as if it were another citation.</p>
 </td>
-<td><code>'L\\. ?Rev\\.|J\\. ?Law'</code></td>
+<td><code>'L\\. ?Rev\\.|J\\. ?Law|\\. ?([Cc]ode|[Cc]onst)'</code></td>
 </tr>
 <tr>
 <td><code>id_break_indices</code></td>
@@ -370,7 +370,7 @@ text.</p>
 <pre><span></span><code><span class="k">def</span> <span class="nf">list_citations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">id_forms</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">id_break_regex</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s1">'L\. ?Rev\.|J\. ?Law'</span><span class="p">,</span>
+    <span class="n">id_break_regex</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">DEFAULT_ID_BREAKS</span><span class="p">,</span>
     <span class="n">id_break_indices</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
     <span class="sd">"""</span>

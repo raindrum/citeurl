@@ -6,9 +6,23 @@ from typing import Iterable
 # external imports
 from yaml import safe_load
 
-default_yaml_path = (
-    Path(__file__).parent.absolute() / 'default-schemas.yaml'
-)
+# file with all the schemas to load by default
+DEFAULT_YAML_PATH = Path(__file__).parent.absolute() / 'default-schemas.yaml'
+
+# regex for "Id."-type citations that will be recognized for all schemas
+GENERIC_ID = r"\b(Ib)?[Ii]d\.(<\/(i|em|u)>)?"
+
+# regex to break chains of "Id."-type citations
+DEFAULT_ID_BREAKS = 'L\. ?Rev\.|J\. ?Law|\. ?([Cc]ode|[Cc]onst)'
+
+# these tokens differ without being considered a different authority
+NON_AUTHORITY_TOKENS = [
+    'subsection',
+    'pincite',
+    'clause',
+    'subdivision',
+    'pincite_end',
+]
 
 
 class Citation:
@@ -301,7 +315,7 @@ class Citator:
         self,
         *yaml_paths,
         defaults: bool=True,
-        generic_id: str=r"\b(Ib)?[Ii]d\.(<\/(i|em|u)>)?"
+        generic_id: str=GENERIC_ID
     ):
         """
         Calls load_yaml one or more times, to load the citator with
@@ -320,7 +334,7 @@ class Citator:
         self.generic_id: str = generic_id
         self.schemas: list = []
         if defaults:
-            self.load_yaml(default_yaml_path)
+            self.load_yaml(DEFAULT_YAML_PATH)
         for path in yaml_paths:
             self.load_yaml(path)
     
@@ -344,7 +358,7 @@ class Citator:
     def list_citations(self,
         text: str,
         id_forms: bool=True,
-        id_break_regex: str='L\. ?Rev\.|J\. ?Law',
+        id_break_regex: str=DEFAULT_ID_BREAKS,
         id_break_indices: list=[],
     ) -> list:
         """
@@ -430,7 +444,7 @@ class Citator:
         url_optional: bool=False,
         link_detailed_ids: bool=True,
         link_plain_ids: bool=False,
-        id_break_regex: str='L\. ?Rev\.|J\. ?Law',
+        id_break_regex: str=DEFAULT_ID_BREAKS,
         id_break_indices: list=[]) -> str:
         """
         Convenience method to return a copy of the given text, with
@@ -883,13 +897,8 @@ def _sort_key(citation):
 
 
 def list_authorities(
-    citations: list,
-    allow_token_differences: list=[
-        'subsection',
-        'pincite',
-        'clause',
-        'subdivision'
-    ]
+    citations: list, 
+    irrelevant_tokens: list=NON_AUTHORITY_TOKENS
 ) -> list:
     """
     Combine a list of citations into a list of authorities, each
@@ -900,7 +909,7 @@ def list_authorities(
     
     Arguments:
         citations: The list of citations to combine
-        allow_token_differences: A list of tokens whose values may 
+        unimportant_tokens: A list of tokens whose values may 
             differ among citations to the same authority.
     Returns:
         A list of authority objects, sorted by the number of citations
@@ -913,7 +922,7 @@ def list_authorities(
                 authority.include(citation)
                 break
         else:
-            authorities.append(Authority(citation, allow_token_differences))
+            authorities.append(Authority(citation, irrelevant_tokens))
     def authority_sort_key(authority):
         return 0 - len(authority.citations)
     return sorted(authorities, key=authority_sort_key)

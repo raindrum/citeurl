@@ -252,13 +252,13 @@ attribute referring to the proper authority.</p>
 <td><em>required</em></td>
 </tr>
 <tr>
-<td><code>allow_token_differences</code></td>
-<td><code>list</code></td>
+<td><code>unimportant_tokens</code></td>
+<td><code></code></td>
 <td>
 <p>A list of tokens whose values may 
 differ among citations to the same authority.</p>
 </td>
-<td><code>['subsection', 'pincite', 'clause', 'subdivision']</code></td>
+<td><em>required</em></td>
 </tr>
 </tbody>
 </table>
@@ -284,13 +284,8 @@ that refer to each, from most to least.</p>
           <summary>Source code in <code>citeurl/__init__.py</code></summary>
           <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">list_authorities</span><span class="p">(</span>
-    <span class="n">citations</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
-    <span class="n">allow_token_differences</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[</span>
-        <span class="s1">'subsection'</span><span class="p">,</span>
-        <span class="s1">'pincite'</span><span class="p">,</span>
-        <span class="s1">'clause'</span><span class="p">,</span>
-        <span class="s1">'subdivision'</span>
-    <span class="p">]</span>
+    <span class="n">citations</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> 
+    <span class="n">irrelevant_tokens</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="n">NON_AUTHORITY_TOKENS</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Combine a list of citations into a list of authorities, each</span>
@@ -301,7 +296,7 @@ that refer to each, from most to least.</p>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        citations: The list of citations to combine</span>
-<span class="sd">        allow_token_differences: A list of tokens whose values may </span>
+<span class="sd">        unimportant_tokens: A list of tokens whose values may </span>
 <span class="sd">            differ among citations to the same authority.</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        A list of authority objects, sorted by the number of citations</span>
@@ -314,7 +309,7 @@ that refer to each, from most to least.</p>
                 <span class="n">authority</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="n">citation</span><span class="p">)</span>
                 <span class="k">break</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">authorities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Authority</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="n">allow_token_differences</span><span class="p">))</span>
+            <span class="n">authorities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Authority</span><span class="p">(</span><span class="n">citation</span><span class="p">,</span> <span class="n">irrelevant_tokens</span><span class="p">))</span>
     <span class="k">def</span> <span class="nf">authority_sort_key</span><span class="p">(</span><span class="n">authority</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">0</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">authority</span><span class="o">.</span><span class="n">citations</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">authorities</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">authority_sort_key</span><span class="p">)</span>
