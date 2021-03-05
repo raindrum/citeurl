@@ -219,7 +219,7 @@
 
 - name: Clean Air Act
   regex:
-    - &caa C\.? ?A\.? ?A\.?
+    - &caa (C\.? ?A\.? ?A\.?|Clean Air Act)
     - *section
     - *subsection
   broadRegex: [*caa, *section, *broadsub]
@@ -415,8 +415,7 @@
 - name: California Codes
   regex:
     - &ca_name (Cal(ifornia|\.)|CAL?)
-    - ' ?(?P<code>[BCDEFGHILMPRSUVW].{2,40}?)'
-    - *rev_ann_code_stat
+    - ' ?(?P<code>[BCDEFGHILMPRSUVW].{2,40}?)( ?Code)?'
     - *section
     - *subsection
   mutations:
