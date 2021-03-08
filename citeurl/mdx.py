@@ -61,7 +61,7 @@ class CiteURLExtension(Extension):
     def extendMarkdown(self, md):
         custom_schemas = self.config['custom_schemas'][0] or []
         citator = Citator(
-            *custom_schemas,
+            yaml_paths=custom_schemas,
             defaults=self.config['use_defaults'][0]
         )
         md.postprocessors.register(

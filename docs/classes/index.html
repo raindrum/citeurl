@@ -125,7 +125,7 @@ the most-recently cited source.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="citeurl.Citator.__init__">
 
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">yaml_paths</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">generic_id</span><span class="o">=</span><span class="s1">'</span><span class="se">\\</span><span class="s1">b(Ib)?[Ii]d</span><span class="se">\\</span><span class="s1">.(&lt;</span><span class="se">\\</span><span class="s1">/(i|em|u)&gt;)?'</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml_paths</span><span class="o">=</span><span class="p">[],</span> <span class="n">defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">generic_id</span><span class="o">=</span><span class="s1">'</span><span class="se">\\</span><span class="s1">b(Ib)?[Ii]d</span><span class="se">\\</span><span class="s1">.(&lt;</span><span class="se">\\</span><span class="s1">/(i|em|u)&gt;)?'</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -156,13 +156,12 @@ schemas.</p>
 </tr>
 <tr>
 <td><code>yaml_paths</code></td>
-<td><code></code></td>
+<td><code>list</code></td>
 <td>
-<p>Additional YAML file paths, passed as individual
-arguments, that should be loaded to populate the
-citator's schemas.</p>
+<p>paths to additional YAML files with schemas that
+should be loaded to supplement or replace the defaults.</p>
 </td>
-<td><code>()</code></td>
+<td><code>[]</code></td>
 </tr>
 <tr>
 <td><code>generic_id</code></td>
@@ -182,7 +181,7 @@ disable, set to None.</p>
           <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="o">*</span><span class="n">yaml_paths</span><span class="p">,</span>
+    <span class="n">yaml_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">defaults</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">generic_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">GENERIC_ID</span>
 <span class="p">):</span>
@@ -192,9 +191,8 @@ disable, set to None.</p>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        defaults: Whether to load CiteURL's default schemas</span>
-<span class="sd">        yaml_paths: Additional YAML file paths, passed as individual</span>
-<span class="sd">            arguments, that should be loaded to populate the</span>
-<span class="sd">            citator's schemas.</span>
+<span class="sd">        yaml_paths: paths to additional YAML files with schemas that</span>
+<span class="sd">            should be loaded to supplement or replace the defaults.</span>
 <span class="sd">        generic_id: a common regex to append to all schemas, to</span>
 <span class="sd">            recognize a simple citation to the most-recently cited</span>
 <span class="sd">            source. Detects "id." or "ibid." by default. To</span>

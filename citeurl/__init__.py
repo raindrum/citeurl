@@ -313,7 +313,7 @@ class Citator:
     """
     def __init__(
         self,
-        *yaml_paths,
+        yaml_paths: list[str]=[],
         defaults: bool=True,
         generic_id: str=GENERIC_ID
     ):
@@ -323,9 +323,8 @@ class Citator:
         
         Arguments:
             defaults: Whether to load CiteURL's default schemas
-            yaml_paths: Additional YAML file paths, passed as individual
-                arguments, that should be loaded to populate the
-                citator's schemas.
+            yaml_paths: paths to additional YAML files with schemas that
+                should be loaded to supplement or replace the defaults.
             generic_id: a common regex to append to all schemas, to
                 recognize a simple citation to the most-recently cited
                 source. Detects "id." or "ibid." by default. To

@@ -117,7 +117,7 @@ def main():
     # load schemas
     defaults = not args.no_default_schemas
     if 'schema_file' in args:
-        citator = Citator(args.schema_file, defaults)
+        citator = Citator(yaml_paths=args.schema_file, defaults=defaults)
     elif defaults:
         citator = Citator()
     else:

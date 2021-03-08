@@ -5,7 +5,7 @@ with open('README.md', 'r') as f:
 
 setuptools.setup(
     name='citeurl',
-    version='4.1.17',
+    version='4.1.18',
     description='an extensible tool to process legal citations in text',
     author='Simon Raindrum Sherred',
     author_email='simonraindrum@gmail.com',
@@ -15,7 +15,7 @@ setuptools.setup(
     url="https://raindrum.github.io/citeurl",
     packages=setuptools.find_packages(),
     entry_points={
-        'console_scripts': ['citeurl=citeurl.__main__:main'],
+        'console_scripts': ['citeurl=citeurl.cli:main'],
         'markdown.extensions': ['citeurl=citeurl.mdx:CiteURLExtension'],
     },
     include_package_data=True,
