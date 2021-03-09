@@ -422,7 +422,7 @@
 - name: California Codes
   regex:
     - &ca_name (Cal(ifornia|\.)|CAL?)
-    - ' ?(?P<code>[BCDEFGHILMPRSUVW].{2,40}?)( ?Code)?'
+    - ' ?(?P<code>[BCDEFGHILMPRSUVW].{2,40}?)( ?Code( Ann(otated|\.))?,?)?'
     - *section
     - *subsection
   mutations:
@@ -432,7 +432,7 @@
     - token: code
       outputToken: codeAcronym
       useRegex: true
-      index: {'Bus(iness|\.) (and|&) Prof(essions|s?\.)|B\.? ?& ?P\.?|BPC':'BPC', 'Civ(il|\.)|CIV':'CIV', '(Code( of)? )?(Civil Procedure|Civ\. ?P(roc?)?\.)|CCP':'CCP', 'Commercial|Comm?\.|COM':'COM', 'Corp(orations?|\.)|CORP':'CORP', 'Educ(ation|\.)|EDU?C':'EDC', 'Elec(tions|\.)|ELEC':'ELEC', 'Evid(ence|\.)|EVID':'EVID', 'Fam(ily|\.)|FAM':'FAM', 'Fin(ancial|\.)|FIN':'FIN', 'Fish (and|&) Game|FGC|F&G':'FGC', 'Food (and|&) Agric(ultural|\.)|FAC':'FAC', 'Gov(ernment|''?t\.?)|GOV':'GOV', 'Harb(ors|\.) (and|&) Nav(igation|\.)|HNC|H&N':'HNC', 'Health (and|&) Safety|HSC|H&S':'HSC', 'Ins(urance|\.)|INS':'INS', 'Lab(or|\.)|LAB':'LAB', 'Mil(itary|\.) (and|&) Vet(erans|\.)|MVC|M&V':'MVC', 'Penal|PEN':'PEN', 'Prob(ate|\.)|PROB':'PROB', 'Pub(lic|\.) Cont(ract|\.)|PCC':'PCC', 'Pub(lic|\.) Res(ources|\.)|PRC':'PRC', 'Pub(lic|\.) Util(ities|s?\.)|PUC':'PUC', 'Rev(enue|\.) (and|&) Tax(ation|\.)|RTC|R&T':'RTC', 'St(reets|s\.) (and|&) High(ways|\.)|SHC|S&H':'SHC', 'Unemp(loyment|\.) Ins(urance|(ur)?\.)|UIC':'UIC', 'Veh(icle|(ic)?\.)|VEH':'VEH', 'Water|WAT':'WAT', 'Welf(are|\.) (and|&) Inst(itutions|s?\.)|WIC':'WIC'}
+      index: {'Bus(iness|\.) (and|&) Prof(essions|s?\.)|B\.? ?& ?P\.?|BPC':'BPC', 'Civ(il|\.)|CIV':'CIV', '(Code( of)? )?(Civil Procedure|Civ\. ?P(roc?)?\.)|CCP':'CCP', 'Commercial|Comm?\.|COM':'COM', 'Corp(orations?|\.)|CORP':'CORP', 'Educ(ation|\.)|EDU?C':'EDC', 'Elec(tions|\.)|ELEC':'ELEC', 'Evid(ence|\.)|EVID':'EVID', 'Fam(ily|\.)|FAM':'FAM', 'Fin(ancial|\.)|FIN':'FIN', 'Fish (and|&) Game|FGC|F&G':'FGC', 'Food (and|&) Agric(ultural|\.)|FAC':'FAC', 'Gov(ernment|''?t\.?)|GOV':'GOV', 'Harb(ors|\.) (and|&) Nav(igation|\.)|HNC|H&N':'HNC', 'Health (and|&) Safety|HSC|H&S':'HSC', 'Ins(urance|\.)|INS':'INS', 'Lab(or|\.)|LAB':'LAB', 'Mil(itary|\.) (and|&) Vet(erans|\.)|MVC|M&V':'MVC', 'Penal|PEN':'PEN', 'Prob(ate|\.)|PROB':'PROB', 'Pub(lic|\.) Cont(ract|\.)|PCC':'PCC', 'Pub(lic|\.) ?Res(ources|\.)|PRC':'PRC', 'Pub(lic|\.) Util(ities|s?\.)|PUC':'PUC', 'Rev(enue|\.) (and|&) Tax(ation|\.)|RTC|R&T':'RTC', 'St(reets|s\.) (and|&) High(ways|\.)|SHC|S&H':'SHC', 'Unemp(loyment|\.) Ins(urance|(ur)?\.)|UIC':'UIC', 'Veh(icle|(ic)?\.)|VEH':'VEH', 'Water|WAT':'WAT', 'Welf(are|\.) (and|&) Inst(itutions|s?\.)|WIC':'WIC'}
   idForms: *id_sec_sub
   shortForms:
     - ['{codeAcronym}', *section, *subsection]
@@ -511,9 +511,9 @@
 
 - name: Delaware Code
   regex:
+    - '([Tt]it(le|\.) )?(?P<title>\d{1,2}),? '
     - &de_name (Del(aware|\.)|DE)
-    - *rev_ann_code_stat
-    - &standalone_title ',? [Tt]it(le|\.) ?(?P<title>\d+([-‑–][A-Z])?),?'
+    - ' ?C(ode|\.)'
     - *section
     - *subsection
   idForms: *id_sec_sub
@@ -813,7 +813,7 @@
   regex:
     - &me_name M(aine|e\.|E)
     - *rev_ann_code_stat
-    - *standalone_title
+    - &standalone_title ',? [Tt]it(le|\.) ?(?P<title>\d+([-‑–][A-Z])?),?'
     - *section
     - *subsection
   idForms: *id_sec_sub

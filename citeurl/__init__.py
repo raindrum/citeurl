@@ -15,7 +15,7 @@ GENERIC_ID = r"\b(Ib)?[Ii]d\.(<\/(i|em|u)>)?"
 # regex to break chains of "Id."-type citations
 DEFAULT_ID_BREAKS = 'L\. ?Rev\.|J\. ?Law|\. ?([Cc]ode|[Cc]onst)'
 
-# these tokens differ without being considered a different authority
+# these tokens can differ without being considered a different authority
 NON_AUTHORITY_TOKENS = [
     'subsection',
     'pincite',
