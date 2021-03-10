@@ -85,7 +85,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
       <div class="wm-top-title">
         CiteURL<br>
         
-          <span class="wm-top-version">4.1.19</span>
+          <span class="wm-top-version">4.1.20</span>
         
       </div>
     </a>
@@ -139,23 +139,30 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
     
 
     <h1 id="getting-started">Getting Started</h1>
-<p>CiteURL is an extensible tool to process legal citations in text. It recognizes longform and shortform citations, subsections and pincites, and it can generate links to view them online. It can also create a list of all the authorities cited in a document, in order of how many times each citation occurs in the text.</p>
-<p>CiteURL supports Bluebook-style citations to many bodies of U.S. federal and state law, including the U.S. Code, nearly all state statutes, and most pre-2018 published court cases. You can find the supported bodies of law <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/default-schemas.yaml">here</a>. You can also customize CiteURL to add support for more bodies of law by <a href="https://raindrum.github.io/citeurl/#schema-yamls/">writing your own citation schemas</a> in YAML format.</p>
-<p>For court cases, CiteURL's defaults use Harvard's <a href="https://cite.case.law/">Caselaw Access Project</a>, though this will likely switch to <a href="https://www.courtlistener.com/">CourtListener</a> in a future version. For federal statutes and rules, it links to Cornell's <a href="https://www.law.cornell.edu/">Legal Information Institute</a>. State law links use the website for each state's legislature, except where another site like <a href="https://law.justia.com/codes/">Justia</a> or <a href="https://www.lawserver.com/tools/laws">LawServer.com</a> is the only one with a compatible URL scheme.</p>
-<p>If you want to try out the citation lookup features without installing anything, you can use the <a href="https://raindrum.github.io/lawsearch">javascript implementation on my website</a>!</p>
+<p>CiteURL is an extensible tool to process legal citations in text and generate links to sites where you can view the cited language online. By default, it supports Bluebook-style citations to the following bodies of law, among others:</p>
+<ul>
+<li>most state and federal court cases</li>
+<li>the U.S. Code and Code of Federal Regulations</li>
+<li>the U.S. Constitution and all state constitutions</li>
+<li>codified laws for every state and territory except Arkansas, Georgia, Guam, and Puerto Rico</li>
+</ul>
+<p>The full list is available <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/default-schemas.yaml">here</a>. You can also customize CiteURL to support more bodies of law by <a href="https://raindrum.github.io/citeurl/#schema-yamls/">writing your own citation schemas</a> in YAML format.</p>
 <h2 id="installation">Installation</h2>
 <p>CiteURL has been tested with Python version 3.9, but earlier versions probably work. Install Python if you don't have it, then run this command:</p>
 <pre><code class="language-bash">python -m pip install citeurl
 </code></pre>
 <h2 id="frontends">Frontends</h2>
 <p>Most of the documentation on this site concerns CiteURL as a Python library you can use in your own projects. But there are a few built-in ways to use it as well. These interfaces are simpler, so their documentation is contained below:</p>
+<h3 id="lawsearch">LawSearch</h3>
+<p>If you want to try out the citation lookup features without installing anything, you can use <a href="https://raindrum.github.io/lawsearch">LawSearch</a>, a JavaScript implementation of CiteURL that I maintain on my website.</p>
+<p>LawSearch is mainly meant for end users who just want to look up laws, but it's also helpful as a developer tool to understand the basic process CiteURL uses to generate URLs from citations. Whenever LawSearch is run, it describes the process step-by-step in the developer console.</p>
 <h3 id="command-line-interface">Command-Line Interface</h3>
-<p>The simplest way to use CiteURL is via the <code>citeurl</code> command.</p>
+<p>Besides LawSearch, the next-simplest way to use CiteURL is via the <code>citeurl</code> command.</p>
 <p>To create a hyperlink for each citation in <code>input.html</code> and save the result as <code>output.html</code>, use a command like this:</p>
 <pre><code class="language-bash">citeurl -i input.html -o output.html
 </code></pre>
-<p>Alternatively, on many operating systems you can pipe the output of another command into CiteURL. For instance:</p>
-<pre><code class="language-bash">cat input.html | citeurl
+<p>You can also pipe the output of a command into CiteURL, and read the output in a web browser:</p>
+<pre><code class="language-bash">curl https://www.courtlistener.com/opinion/109815/carey-v-piphus/ | citeurl -b
 </code></pre>
 <p>If you want to look up a single citation instead of processing a block of text, use the <code>-l</code> option, like so:</p>
 <pre><code class="language-bash">citeurl -l &quot;42 USC 1983&quot;
@@ -277,5 +284,5 @@ for authority in authorities:
 </html>
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2021-03-09 16:48:08.677440+00:00
+Build Date UTC : 2021-03-10 23:24:27.139968+00:00
 -->

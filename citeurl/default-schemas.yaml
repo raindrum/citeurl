@@ -775,8 +775,17 @@
       joiner: '-'
   URL: https://www.lawserver.com/law/state/kentucky/ky-statutes/kentucky_statutes_{chapter}-{section}
 
-# add Kentucky constitution here
-# the whole thing is divided into named chapters
+- name: Kentucky Constitution
+  regex:
+    - *ky_name
+    - ' ?Const(itution|\.),?'
+    - ( ?(Art(icle|\.) ?)?([IVXivx]{1,7}|\d{1,2}|Bill of Rights|Rights of Victims of Crime|Dist(ribution|\.) of the Powers of Gov(ernment|('t)?\.?)|(The )?(Leg(islative|(is)?\.)|Exec(utive|\.)|Jud(icial|\.)) ?Dep(artment|('t)?\.?)|Counties (and|&) County Seats|Impeachments|(C(ounty|ty\.)|Fisc(al|\.)) ?C(ourts|ts\.)|Justices of the Peace|Suff(rage|\.) ?(and|&) ?Elec(tions|\.)|Mun(icipalities|i?\.)|Rev(enue|\.) ?(and|&) ?Tax(ation|\.?)|Educ(ation|\.)|Corp(orations?|s?\.)|R(ailroads|\.R\.) (and|&) Com(merce|m?\.)|(The )?Militia|Gen(eral|\.) ?Prov(isions|s?\.)|Mode of Rev(ision|\.)),?)?
+    - *section
+  substitutions:
+    - token: section
+      outputToken: rsn
+      index: {'1':'3', '2':'4', '3':'5', '4':'6', '5':'7', '6':'8', '7':'9', '8':'10', '9':'11', '10':'12', '11':'13', '12':'14', '13':'15', '14':'16', '15':'17', '16':'18', '17':'19', '18':'20', '19':'21', '20':'22', '21':'23', '22':'24', '23':'25', '24':'26', '25':'27', '26':'28', '26A':'305', '27':'30', '28':'31', '29':'33', '30':'34', '31':'35', '32':'36', '33':'37', '34':'38', '35':'39', '36':'40', '37':'41', '38':'42', '39':'43', '40':'44', '41':'45', '42':'46', '43':'47', '44':'48', '45':'49', '46':'50', '47':'51', '48':'52', '49':'53', '50':'54', '51':'55', '52':'56', '53':'57', '54':'58', '55':'59', '56':'60', '57':'61', '58':'62', '59':'63', '60':'64', '61':'65', '62':'66', '63':'68', '64':'69', '65':'70', '66':'72', '67':'73', '68':'74', '69':'77', '70':'78', '71':'79', '72':'80', '73':'81', '74':'82', '75':'83', '76':'84', '77':'85', '78':'86', '79':'87', '80':'88', '81':'89', '82':'90', '83':'91', '84':'92', '85':'93', '86':'94', '87':'95', '88':'96', '89':'97', '90':'98', '91':'99', '92':'100', '93':'101', '94':'102', '95':'103', '96':'104', '97':'106', '98':'107', '99':'108', '100':'109', '101':'110', '102':'111', '103':'112', '104':'113', '105':'114', '106':'115', '107':'116', '108':'117', '109':'119', '110':'121', '111':'123', '112':'125', '113':'127', '114':'129', '115':'131', '116':'132', '117':'134', '118':'135', '119':'136', '120':'137', '121':'138', '122':'139', '123':'140', '124':'141', '125':'142', '126':'143', '127':'144', '128':'145', '129':'146', '130':'147', '131':'148', '132':'149', '133':'150', '134':'151', '135':'152', '136':'153', '137':'154', '138':'155', '139':'156', '140':'158', '141':'159', '142':'161', '143':'162', '144':'164', '145':'166', '146':'167', '147':'168', '148':'169', '149':'170', '150':'171', '151':'172', '152':'173', '153':'174', '154':'175', '155':'176', '156':'180', '156A':'177', '156B':'178', '157':'183', '157A':'181', '157B':'182', '158':'184', '159':'185', '160':'186', '161':'187', '162':'188', '163':'189', '164':'190', '165':'191', '166':'192', '167':'193', '168':'194', '169':'196', '170':'197', '171':'198', '172':'201', '172A':'199', '172B':'200', '173':'202', '174':'203', '175':'204', '176':'205', '177':'206', '178':'207', '179':'208', '180':'209', '181':'210', '182':'211', '183':'213', '184':'214', '185':'215', '186':'216', '187':'217', '188':'218', '189':'219', '190':'221', '191':'222', '192':'223', '193':'224', '194':'225', '195':'226', '196':'227', '197':'228', '198':'229', '199':'230', '200':'231', '201':'232', '202':'233', '203':'234', '204':'235', '205':'236', '206':'237', '207':'238', '208':'239', '210':'242', '211':'243', '212':'244', '213':'245', '214':'246', '215':'247', '216':'248', '217':'249', '218':'250', '219':'252', '220':'253', '221':'254', '222':'255', '223':'256', '224':'258', '225':'259', '226':'261', '226A':'260', '227':'262', '228':'263', '229':'264', '230':'265', '231':'266', '232':'267', '233':'269', '233A':'268', '234':'270', '235':'271', '236':'272', '237':'273', '238':'274', '239':'275', '240':'276', '241':'277', '242':'278', '243':'279', '244':'281', '244A':'280', '245':'282', '246':'283', '247':'284', '248':'285', '249':'286', '250':'287', '251':'288', '252':'289', '253':'290', '254':'291', '255':'292', '255A':'302', '256':'294', '257':'295', '258':'296', '259':'297', '260':'298', '261':'299', '252':'300', '263':'301'}
+  URL: https://apps.legislature.ky.gov/Law/Constitution/Constitution/ViewConstitution?rsn={rsn}
 
 - name: Louisiana Statutes
   regex:
@@ -827,13 +836,25 @@
   URL: https://legislature.maine.gov/legis/statutes/{title}/title{title}sec{section}.html
 
 - name: Maine Constitution
-  regex: [*me_name, *const_art_sec_cl]
-  idForms: *const_art_sec_cl_ids
-  substitutions: *arabic_article_to_roman_article
+  regex:
+    - *me_name
+    - &const_art_pt_sec_cl ' ?Const(itution|\.) ?[Aa]rt(icle|\.) ?(?P<article>[\dIVXivx]{1,8})(,? [Pp](art|t\.) ?(?P<part>\d))?(,? ?((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?)?'
+  idForms: &const_art_pt_sec_cl_ids
+    - [*optional_id_at, '\b[Aa]rt(icle|\.) ?(?P<article>[\dIVXivx]{1,3})(,? [Pp](art|t\.) ?(?P<part>\d))?(,? ?((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.]*\w|\d|[IVXivx]{1,7}))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?)?']
+    - [*optional_id_at, '((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d|[IVXivx]{1,7}))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?']
+    - [*optional_id_at, '\b[Cc]l(ause|\.) ?(?P<clause>\d+)']
+  substitutions:
+    - token: article
+      outputToken: roman_article
+      useRegex: true
+      index: *arabic_to_roman
+    - token: part
+      index: {'1':'First', '2':'Second'}
   URL:
-    - https://ballotpedia.org/Article_{roman_article},_Maine_Constitution
+    - 'https://ballotpedia.org/Article_{roman_article}'
+    - '--Part_{part}'
+    - ',_Maine_Constitution'
     - '#Section_{section}'
-# need to add support for parts within articles
 
 - name: Maryland Code
   regex:
@@ -865,7 +886,6 @@
   URL:
     - https://ballotpedia.org/Article_{roman_article},_Maryland_Constitution
     - '#Section_{section}'
-# need to add support for declaration of rights
 
 - name: Massachusetts General Laws
   regex:
@@ -882,8 +902,38 @@
       joiner: '~'
   URL: https://malegislature.gov/GeneralLaws/GoTo?ChapterGoTo={chapter}&SectionGoTo={section}
 
-# add Massachusetts constitution here 
-# two parts; first has articles, second has chapters
+- name: Massachusetts Constitution
+  regex:
+    - '(Mass(achusetts|\.)|MA) Const(itution|\.),? '
+    - &mass_pt_ch_sec_art '[Pp](art|t\.) ?(?P<part>II?|1|2|[Tt]he ([Ff]irst|[Ss]econd))(,? [Cc](hapter|h?\.) ?(?P<chapter>\d+|[IVXivx]{1,7})(,? ((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>\d+|[IVXivx]{1,7}))?)?(,? [Aa]rt(icle|\.) ?(?P<article>\d+|[IVXivx]{1,7}))?'
+  defaults: {'chapter':'I', 'section':'I'}
+  substitutions:
+    - token: part
+      outputToken: isFirst
+      useRegex: true
+      allowUnmatched: true
+      index: {'1|I|.*irst':''}
+    - token: part
+      outputToken: isSecond
+      useRegex: true
+      allowUnmatched: true
+      index: {'2|II|.*econd':''}
+    - token: chapter
+      useRegex: true
+      index: *arabic_to_roman
+    - token: section
+      useRegex: true
+      index: *arabic_to_roman
+    - token: article
+      useRegex: true
+      index: *arabic_to_roman
+  idForms:
+    - [*optional_id_at, *mass_pt_ch_sec_art, *section]
+  URL:
+    - https://malegislature.gov/Laws/Constitution
+    - '{isFirst}#article{article}'
+    - '{isSecond}#chapter{chapter}Section{section}'
+    - '{isSecond}Article{article}'
 
 - name: Michigan Compiled Laws
   regex:
@@ -1001,7 +1051,7 @@
     - &nh_chapter_colon_section '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<chapter>\d+([-–][A-Za-z])?):(?P<section>\d+([-‑–][A-Za-z])?)'
     - *subsection
   idForms:
-    - [*optional_id_at, *mandatory_section_sign,  *nh_chapter_colon_section, *subsection]
+    - [*optional_id_at, *mandatory_section_sign, *nh_chapter_colon_section, *subsection]
     - [*id_at, '(Sections?|(&sect;|&#167|§){1,2}) ?(?P<section>\d+([-–][A-Za-z])?)', *subsection]
     - *subsection_id
   mutations:
@@ -1015,8 +1065,34 @@
       case: lower
   URL: https://www.lawserver.com/law/state/new-hampshire/nh-statutes/new_hampshire_revised_statutes_{chapter}_{section}
 
-# Add New Hampshire Constitution here
-# it's in three parts, with articles; ballotpedia probably not ideal
+- name: New Hampshire Constitution
+  regex:
+    - *nh_name
+    - ' ?Const(itution|\.),? ?[Pp](art|t\.) ?(?P<part>II?|1|2|([Tt]he )([Ff]irst|[Ss]econd)),? '
+    - &nh_const_art '[Aa]rt(icle|\.) ?(?P<article>\d+(-\w)?)'
+  substitutions:
+    - token: part
+      outputToken: isPart1
+      allowUnmatched: true
+      useRegex: true
+      index: {'I|1|The First':''}
+    - token: part
+      outputToken: isPart2
+      allowUnmatched: true
+      useRegex: true
+      index: {'II|2|The Second':''}
+    - token: article
+      outputToken: part2Section
+      useRegex: true
+      allowUnmatched: true
+      index: {'[1-8](-[ab])?':'Part_Second', '(9|2[0-4])(-[ab])?':'House_of_Representatives', '(2[5-9]|3\d|40)(-[ab])?':'Senate', '(4[1-9]|5\d)(-[ab])?':'Executive_Power_-_Governor', '6[0-6]':'Council', '(6[7-9]|70)':'Secretary', '7[12]':'County_Treasurer', '(7[3-9](-[ab])?|8[01])':'Judiciary_Power', '82':'Clerks_of_Courts', '83':'Encouragement_of_Literature,_Trade,_Etc.', '(8[4-9]|9\d|10[01])':'Oaths_and_Subscriptions_Exclusion_from_Offices,_Etc.'}
+  idForms: [[*optional_id_at, *nh_const_art]]
+  URL:
+    - 'https://ballotpedia.org/'
+    - '{isPart1}Part_First'
+    - '{isPart2}{part2Section}'
+    - ',_New_Hampshire_Constitution'
+    - '#Article_{article}'
 
 - name: New Jersey Statutes
   regex:
@@ -1031,13 +1107,21 @@
   URL: https://njlaw.rutgers.edu/collections/njstats/showsect.php?title={title}&chapter={chapter}&section={section}&actn=getsect
 
 - name: New Jersey Constitution
-  regex: ['(N\.? ?J\.?|New Jersey)', *const_art_sec_cl]
-  idForms: *const_art_sec_cl_ids
-  substitutions: *arabic_article_to_roman_article
+  regex:
+    - '(N\.? ?J\.?|New Jersey) ?Const(itution|\.),? ?'
+    - &nj_art_sec_or_para '[Aa]rt(icle|\.) ?(?P<article>[\dIVXivx]{1,8}),? ((&sect;|&#167|§|[Ss]ec(tion|t?\.)) ?(?P<section>[\dIVXivx]{1,8})|[Pp](ar(agraph|a?\.)) ?(?P<paragraph>\d+))'
+  idForms: [[*optional_id_at, *nj_art_sec_or_para]]
+  substitutions:
+    - token: article
+      useRegex: true
+      index: *arabic_to_roman
+    - token: section
+      useRegex: true
+      index: *arabic_to_roman
   URL:
-    - https://ballotpedia.org/Article_{roman_article},_New_Jersey_Constitution
+    - https://ballotpedia.org/Article_{article},_New_Jersey_Constitution
     - '#Section_{section}'
-# need to add support for paragraphs in lieu of sections (see article I)
+    - '#Paragraph_{paragraph}'
 
 - name: Nevada Revised Statutes
   regex:
@@ -1236,13 +1320,22 @@
   URL: https://www.oregonlaws.org/ors/{chapter}.{section}
 
 - name: Oregon Constitution
-  regex: [*or_name, *const_art_sec_cl]
-  idForms: *const_art_sec_cl_ids
-  substitutions: *arabic_article_to_roman_article
+  regex:
+    - *or_name
+    - ' ?Const(itution|\.) ?'
+    - &or_art '[Aa]rt(icle|\.) ?(?P<article>[IVXivx]{1,5}(-\w(\(\d\))?)?)'
+    - '(,? ?'
+    - &or_sec_cl '((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?'
+    - ')?'
+  idForms:
+    - [*optional_id_at, *or_art, '(,? ?', *or_sec_cl, ')?']
+    - [*optional_id_at, *or_sec_cl]
+  mutations:
+    - token: article
+      case: upper
   URL:
-    - https://ballotpedia.org/Article_{roman_article},_Oregon_Constitution
+    - https://ballotpedia.org/Article_{article},_Oregon_Constitution
     - '#Section_{section}'
-# need to add support for unusual article names like XI-A and XI-I(2)
 
 - name: Pennsylvania Code
   regex: ['(?P<title>\d+) ', &pa_name '(Pennsylvania|Pa\.|PA)', *rev_ann_code_stat, *ch_dot_sec, *subsection]
@@ -1408,6 +1501,47 @@
     - *subsection
   idForms: *id_sec_sub
   URL: https://www.lawserver.com/law/state/vermont/vt-statutes/vermont_statutes_title_{title}_{section}
+
+- name: Vermont Constitution
+  regex:
+    - *vt_name
+    - ' ?Const(itution|\.),? ?'
+    - &vt_chapter '[Cc](hapter|h?\.) ?(?P<chapter>[Ii]{1,2})'
+    - '(,? '
+    - &vt_article '([Aa]rt(icle|\.)|&sect;|&#167|§) ?(?P<article>\d+)(st|nd|th)?'
+    - ')?'
+  idForms:
+    - [*optional_id_at, *vt_chapter, '(,? ', *vt_article, ')?']
+    - [*optional_id_at, *vt_article]
+  defaults: {'chapter2section':'Chapter_II'}
+  mutations:
+    - token: chapter
+      case: upper
+  substitutions:
+    - token: chapter
+      outputToken: isChapterI
+      allowUnmatched: true
+      index: {'I':''}
+    - token: chapter
+      outputToken: isChapterII
+      allowUnmatched: true
+      index: {'II':''}
+    - token: article
+      outputToken: articleSuffix
+      useRegex: true
+      index: {'1':'st', '2':'nd', '3':'rd', '[4-9]|\d{2,}':'th'}
+    - token: article
+      outputToken: chapter2section
+      allowUnmatched: true
+      useRegex: true
+      index: {'[1-5]':'Delegation_and_Distribution_of_Powers', '[6-9]|1\d':'Legislative_Department', '2[0-7]':'Executive_Department', '2[89]|3\d|4[01]':'Judiciary_Department', '42':'Qualifications_of_Freemen_and_Freewomen', '4[3-9]|5[0-5]':'Elections;_Officers;_Terms_of_Office', '56':'Oath_of_Allegiance;_Oath_of_Office', '5[78]':'Impeachment', '59':'Militia', '6\d|7[01]':'General_Provisions', '7[23]':'Amendment_of_the_Constitution', '7[4-6]':'Temporary_Provisions'}
+  URL:
+    - https://ballotpedia.org/
+    - '{isChapterI}Chapter_I'
+    - '{isChapterII}{chapter2section}'
+    - ',_Vermont_Constitution'
+    - '{isChapterI}#Article_{article}{articleSuffix}'
+    - '{isChapterII}#Section_{article}'
 
 # add support for Vermont Constitution here
 # it's in two chapters; first has articles, second has sections

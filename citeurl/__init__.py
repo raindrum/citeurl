@@ -606,7 +606,7 @@ class Schema:
         """
         # Basic values
         self.name: str = name
-        self.regex: str = _join_if_list(regex)
+        self.regex: str = r'(\b|^)' + _join_if_list(regex)
         self.is_id: bool = is_id
         if URL:
             self.URL: str = URL if type(URL) is list else [URL]
@@ -770,7 +770,7 @@ class Schema:
                 token = self.joiner.join(parts)
             if self.case:
                 if self.case == 'upper':
-                    key = token.upper()
+                    token = token.upper()
                 elif self.case == 'lower':
                     token = token.lower()
             return token
