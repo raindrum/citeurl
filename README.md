@@ -33,9 +33,9 @@ More detailed documentation for each of these use-cases is available [here](http
 
 ## Credits
 
-These are the sites that CiteURL's default schemas predominantly link to:
+Many thanks to these websites, which CiteURL's default schemas frequently link to:
 
-- Harvard's [Caselaw Access Project](https://cite.case.law/) - for court case links
+- Harvard's [Caselaw Access Project](https://cite.case.law/) - for court cases
 - Cornell's [Legal Information Institute](https://www.law.cornell.edu/) - for the U.S. Code and many federal rules
-- [LawServer.com](https://www.lawserver.com/tools/laws) - for a large number of state statutes
 - [Ballotpedia](https://ballotpedia.org) - for the vast majority of state constitutions
+- [LawServer.com](https://www.lawserver.com/tools/laws) - for statutes in about a dozen states and territories whose websites don't have a compatible URL scheme
