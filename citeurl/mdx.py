@@ -6,7 +6,7 @@ from markdown.extensions import Extension
 from markdown.postprocessors import Postprocessor
 
 # internal imports
-from . import Citator
+from . import Citator, DEFAULT_ID_BREAKS
 
 class CitationPostprocessor(Postprocessor):
     def __init__(
@@ -14,19 +14,22 @@ class CitationPostprocessor(Postprocessor):
         citator,
         attributes: dict,
         link_detailed_ids: bool,
-        link_plain_ids: bool
+        link_plain_ids: bool,
+        break_id_on_regex: str
     ):
         super().__init__()
         self.citator = citator
         self.attributes = attributes
         self.link_detailed_ids = link_detailed_ids
         self.link_plain_ids = link_plain_ids
+        self.id_break_regex=break_id_on_regex
     def run(self, text):
         return self.citator.insert_links(
             text,
             attrs=self.attributes,
             link_detailed_ids=self.link_detailed_ids,
-            link_plain_ids=self.link_plain_ids
+            link_plain_ids=self.link_plain_ids,
+            id_break_regex=self.id_break_regex
         )
 
 class CiteURLExtension(Extension):
@@ -48,12 +51,19 @@ class CiteURLExtension(Extension):
             ],
             'link_plain_ids': [
                 False,
-                "Whether to link citations like 'Id.' - Defualt: False"
+                "Whether to link citations like 'Id.' - Default: False"
+            ],
+            'break_id_on_regex': [
+                DEFAULT_ID_BREAKS,
+                "Anywhere this string (parsed as regex) appears in the text, "
+                + "chains of citations like 'id.' will be interrupted. Note "
+                + "that this is based on the output HTML, *not* the original "
+                + f"Markdown text. - Default: {DEFAULT_ID_BREAKS}"
             ],
             'attributes': [
                 {'class': 'citation'},
                 ("A dictionary of attributes (besides href) that the inserted"
-                + " links should have. - Default: {'class': 'citation'}")
+                + " links should have. - Default: '{'class': 'citation'}'")
             ]
         }
         super(CiteURLExtension, self).__init__(**kwargs)
@@ -69,7 +79,8 @@ class CiteURLExtension(Extension):
                 citator,
                 self.config['attributes'][0],
                 self.config['link_detailed_ids'][0],
-                self.config['link_plain_ids'][0]
+                self.config['link_plain_ids'][0],
+                self.config['break_id_on_regex'][0],
             ),
             "CiteURL",
             1

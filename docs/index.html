@@ -85,7 +85,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
       <div class="wm-top-title">
         CiteURL<br>
         
-          <span class="wm-top-version">4.1.21</span>
+          <span class="wm-top-version">4.2.0</span>
         
       </div>
     </a>
@@ -179,6 +179,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <li><code>attributes</code>: A dictionary of HTML attributes to give each hyperlink that CiteURL inserts into the text. Defaults to <code>{'class': 'citation'}</code>.</li>
 <li><code>link_detailed_ids</code>: Whether to insert links for citations like <code>Id. at 305</code>. Defaults to <code>True</code>.</li>
 <li><code>link_plain_ids</code>: Whether to insert links for citations like <code>Id.</code>. Defaults to <code>False</code>.</li>
+<li><code>break_id_on_regex</code>: Anywhere this string (parsed as regex) appears in the text, chains of citations like <code>id.</code> will be interrupted. Note that this is based on the output HTML, <em>not</em> the original Markdown text. Defaults to <code>L\. ?Rev\.|J\. ?Law|\. ?([Cc]ode|[Cc]onst)</code></li>
 </ul>
 <h3 id="gnome-shell-search-provider">GNOME Shell Search Provider</h3>
 <p>If you use the GNOME desktop environment, you can install <a href="https://github.com/raindrum/gnome-citeurl-search-provider">my other project</a> to look up citations right from your desktop!</p>
@@ -284,5 +285,5 @@ for authority in authorities:
 </html>
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2021-03-11 06:50:20.500132+00:00
+Build Date UTC : 2021-03-12 19:35:12.676022+00:00
 -->

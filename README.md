@@ -25,11 +25,15 @@ python -m pip install citeurl
 
 ## Usage
 
-To run CiteURL from command prompt, use the `citeurl -h` command to see the list of options. CiteURL can also be used as an extension to [Python-Markdown](https://python-markdown.github.io/), or as a Python library.
+CiteURL provides a command-line tool called `citeurl`. You can pass text to CiteURL by opening a file with the `-i` option, or by piping text to the program, e.g. with `cat file.html | citeurl`.
 
-As mentioned above, a Javascript implementation of CiteURL's citation lookup features is available [on my website](https://raindrum.github.io/lawsearch). Linux users with the GNOME shell can also install [CiteURL as a search provider](https://github.com/raindrum/gnome-citeurl-search-provider) available directly from their desktop.
+By default, CiteURL uses its built-in schemas to insert hyperlinks into the text, and outputs the result to stdout. You can redirect the output to a file with the `-o` option, or open the result in a browser with `-b`.
 
-More detailed documentation for each of these use-cases is available [here](https://raindrum.github.io/citeurl/).
+To look up a single citation instead of processing a text, use `citeurl -l <citation>`. 
+
+For more options, run `citeurl -h`.
+
+Besides the command line tool, CiteURL can be loaded as a Python library or as an extension to [Python-Markdown](https://python-markdown.github.io/). Additionally, Linux users with the GNOME shell can install [CiteURL as a search provider](https://github.com/raindrum/gnome-citeurl-search-provider) available directly from their desktop. More documentation is available [here](https://raindrum.github.io/citeurl/).
 
 ## Credits
 
