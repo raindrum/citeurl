@@ -138,7 +138,10 @@ def main():
             for key, value in citation.tokens.items():
                 if not value:
                     continue
-                print(f'{key.title()}: '.ljust(tab_width) + value)
+                print(
+                    f"{key.replace('_', ' ').title()}: ".ljust(tab_width)
+                    + value
+                )
             print('URL: '.ljust(tab_width) + (citation.URL or 'Unavailable'))
             if args.browse:
                 webbrowser.open(citation.URL)

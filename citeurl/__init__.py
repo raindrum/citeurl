@@ -18,10 +18,11 @@ DEFAULT_ID_BREAKS = 'L\. ?Rev\.|J\. ?Law|\. ?([Cc]ode|[Cc]onst)'
 # these tokens can differ without being considered a different authority
 NON_AUTHORITY_TOKENS = [
     'subsection',
-    'pincite',
-    'clause',
     'subdivision',
+    'clause',
+    'pincite',
     'pincite_end',
+    'footnote',
 ]
 
 
