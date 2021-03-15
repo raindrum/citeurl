@@ -7,12 +7,12 @@
     - &title '(Title )?(?P<title>\d+) '
     - &usc (U\.?|United) ?(S\.?|States) ?(C\.?|Code)( ?[AS]\.?)?
     - &section ' ((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.]*\w|\d))'
-    - &subsection (?P<subsection>(\(\w+\))+)?
+    - &subsection '(((,? )?sub(sections?|divisions?|(sec|d(iv)?)?s?\.) ?)?(?P<subsection>(\(\w+\))+))?'
   broadRegex:
     - *title
     - *usc
     - *section
-    - &broadsub ( ?(?P<subsection>(\(\w+\))+|((\w{1,5}) ?)+))?
+    - &broadsub (((,? )?sub(sections?|divisions?|(sec|d(iv)?)?s?\.?) ?)? ?(?P<subsection>(\(\w+\))+|((\w{1,5}) ?)+))?
   idForms: &id_sec_sub
     - - &id_at '\b[Ii]d\.,?(<\/(i|em|u)>)?(,? at ?)? ?'
       - *section
@@ -159,7 +159,7 @@
 # where applicable (and implemented).
 
 - name: Immigration and Nationality Act
-  regex: [&ina '(Immigration ([Aa]nd|&) Nationality Act|I\.? ?N\.? ?A\.?)', *section, *subsection]
+  regex: [&ina '(Immigration ([Aa]nd|&) Nationality Act|I\.?N\.?A\.?|I\. N\. A\.)', *section, *subsection]
   broadRegex: [*ina, *section, *broadsub]
   idForms: *id_sec_sub
   mutations: *usc_sub
@@ -265,7 +265,7 @@
 
 - name: Americans With Disabilities Act
   regex:
-    - &ada (Americans [Ww]ith Disabilities Act|A\.? ?D\.? ?A\.?)
+    - &ada (Americans [Ww]ith Disabilities Act|A\. D\. A\.|A\.?D\.?A\.?)
     - *section
     - *subsection
   broadRegex: [*ada, *section, *broadsub]

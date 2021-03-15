@@ -1,3 +1,4 @@
 include LICENSE.md
 include README.md
 include citeurl/default-schemas.yaml
+include citeurl/citeurl.js

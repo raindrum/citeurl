@@ -1,7 +1,6 @@
 *.sh
 *.egg-info/
 **/__pycache__/*
-custom.yaml
 mkdocs.yml
 docs_md/
 build/

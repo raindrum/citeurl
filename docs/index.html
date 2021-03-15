@@ -85,7 +85,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
       <div class="wm-top-title">
         CiteURL<br>
         
-          <span class="wm-top-version">4.2.1</span>
+          <span class="wm-top-version">4.3.0</span>
         
       </div>
     </a>
@@ -154,7 +154,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <h2 id="frontends">Frontends</h2>
 <p>Most of the documentation on this site concerns CiteURL as a Python library you can use in your own projects. But there are a few built-in ways to use it as well. These interfaces are simpler, so their documentation is contained below:</p>
 <h3 id="lawsearch">LawSearch</h3>
-<p>If you want to try out the citation lookup features without installing anything, you can use <a href="https://raindrum.github.io/lawsearch">LawSearch</a>, a JavaScript implementation of CiteURL that I maintain on my website.</p>
+<p>If you want to try out the citation lookup features without installing anything, you can use <a href="https://raindrum.github.io/lawsearch">LawSearch</a>, which is <a href="#javascript-generator">a JavaScript implementation of CiteURL</a> that I maintain on my website.</p>
 <p>LawSearch is mainly meant for end users who just want to look up laws, but it's also helpful as a developer tool to understand the basic process CiteURL uses to generate URLs from citations. Whenever LawSearch is run, it describes the process step-by-step in the developer console.</p>
 <h3 id="command-line-interface">Command-Line Interface</h3>
 <p>Besides LawSearch, the next-simplest way to use CiteURL is via the <code>citeurl</code> command.</p>
@@ -171,6 +171,8 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <pre><code class="language-bash">citeurl -i input.html -a 10
 </code></pre>
 <p>And if you want to use a <a href="schema-yamls">your own set of citation schemas</a>, you can use the <code>-s</code> option, followed by the path to a YAML file. If you want to prevent loading CiteURL's default set of schemas, use <code>-n</code>.</p>
+<h3 id="javascript-generator">JavaScript Generator</h3>
+<p>Although CiteURL is primarily a Python program, its ability to look up the URL for a single citation has also been ported to JavaScript for use as a search engine. With the <code>citeurl-makejs</code> command, you can export a script that supports any given set of citation schemas, for embedding in a website. Run <code>citeurl-makejs -h</code> for more info.</p>
 <h3 id="markdown-extension">Markdown Extension</h3>
 <p>CiteURL can also be used as an extension to <a href="https://python-markdown.github.io/">Python-Markdown</a>. You can load the extension as <code>citeurl</code>, and it supports the following options:</p>
 <ul>
@@ -285,5 +287,5 @@ for authority in authorities:
 </html>
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2021-03-13 05:20:43.815835+00:00
+Build Date UTC : 2021-03-15 19:48:21.618582+00:00
 -->
