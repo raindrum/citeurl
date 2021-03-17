@@ -481,9 +481,9 @@ text.</p>
 <span class="sd">        citation format to the loaded schemas.</span>
 <span class="sd">    """</span>
     <span class="n">yaml_text</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
-    <span class="n">yaml_nodes</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">yaml_text</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">yaml_nodes</span><span class="p">:</span>
-        <span class="n">new_schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="o">**</span><span class="n">node</span><span class="p">)</span>
+    <span class="n">yaml_dict</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">yaml_text</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">yaml_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">new_schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="n">value</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">use_generic_id</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span><span class="p">:</span>
             <span class="n">new_schema</span><span class="o">.</span><span class="n">idForms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">schemas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_schema</span><span class="p">)</span>
@@ -500,7 +500,7 @@ text.</p>
 
       </h3>
 <div class="doc doc-contents ">
-<p>Get Convenience method to get the first citation from the first
+<p>Convenience method to get the first citation from the first
 matching schema, or None.</p>
 <p>This is meant for cases where false positives are not an issue,
 so it uses broadRegex and case-insensitive matching by default.</p>
@@ -556,7 +556,7 @@ if available, each schema's broadRegex.</p>
           <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Citation</span><span class="p">:</span>
     <span class="sd">"""</span>
-<span class="sd">    Get Convenience method to get the first citation from the first</span>
+<span class="sd">    Convenience method to get the first citation from the first</span>
 <span class="sd">    matching schema, or None.</span>
 
 <span class="sd">    This is meant for cases where false positives are not an issue,</span>
@@ -596,7 +596,7 @@ the Schema class directly.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="citeurl.Schema.__init__">
 
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">regex</span><span class="p">,</span> <span class="n">URL</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">broadRegex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">idForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">shortForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{},</span> <span class="n">mutations</span><span class="o">=</span><span class="p">[],</span> <span class="n">substitutions</span><span class="o">=</span><span class="p">[],</span> <span class="n">parent_citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">regex</span><span class="p">,</span> <span class="n">URL</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">broadRegex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">idForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">shortForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{},</span> <span class="n">operations</span><span class="o">=</span><span class="p">[],</span> <span class="n">parent_citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -646,8 +646,7 @@ used to generate the URL.</p>
 <p>The template by which to generate URLs from citation
 matches. Placeholders in {curly braces} will be replaced
 by the value of the token with the same name, after that
-token has been processed with mutations and
-substitutions.</p>
+token has been processed by the schema</p>
 <p>The URL template can be provided either as as a string
 or as a list of strings to concatenate. In the latter
 case, if a list item contains a placeholder for which
@@ -666,49 +665,38 @@ otherwise set by a regex capture group.</p>
 <td><code>{}</code></td>
 </tr>
 <tr>
-<td><code>mutations</code></td>
+<td><code>operations</code></td>
 <td><code>list</code></td>
 <td>
-<p>Dictionaries, each one representing a string
-manipulation that should be performed on a token before
-it is inserted into the URL template. Each mutation must
-contain a key called <code>token</code>, representing the token to
-affect.</p>
-<p>The supported mutations are <code>case</code>, <code>omit</code>, and the
-combination of 'splitter' and 'joiner'. 'Case' forces
-the token to the specified capitalization, either
-"upper" or "lower".</p>
-<p><code>omit</code> is a string, parsed as regex, all occurrences
-of which will be removed from the token.</p>
-<p><code>splitter</code> and <code>joiner</code> must be used together if at
-all. The former is a string, parsed as regex, which will
-split the token at each occurrence. Next, the 'joiner'
-string will be placed between the pieces.</p>
-</td>
-<td><code>[]</code></td>
-</tr>
-<tr>
-<td><code>substitutions</code></td>
-<td><code>list</code></td>
-<td>
-<p>A list of dictionaries, each one representing
-a lookup operation to modify the value of a token. Each
-dict must contain <code>token</code>, a string representing the
-input token for the lookup. It must also contain <code>index</code>,
-a dict of input values and their corresponding outputs.</p>
-<p>By default, the value of <code>token</code> will be changed to the
-value of the lookup. Alternatively, if you specify an
-'outputToken', that token will be set instead, leaving
-the input token unchanged. Note that 'outputToken' does
-not need to exist in the original regex.</p>
-<p>If the inputToken does not match a key in the index,
-the citation match fails, unless the substitution
-specifies that <code>allowUnmatched</code> is True, in which case a
-failed substitution simply won't change any values.</p>
-<p>You can also include <code>useRegex: true</code> to
-make the dictionary lookup use regex matching rather
-than normal string matching, but this feature is
-experimental and likely buggy.</p>
+<p>A list of operations to perform on the tokens,
+in sequence, to transform them from <code>captured_tokens</code> to
+<code>processed_tokens</code>, the tokens that are used for URL
+generation.</p>
+<p>Each operation must specify a <code>token</code> for its input. It
+will also be used as the output of the operation, unless
+<code>output</code> is specified. If the specified input token is
+not set, the operation will be skipped.</p>
+<p>The supported operations are <code>case</code>, <code>sub</code>, <code>lookup</code>,
+<code>optionalLookup</code>, <code>lpad</code>, and <code>numberFormat</code>.</p>
+<p>The <code>case</code> operation outputs the input token, set to the
+specified capitalization, either 'upper', 'lower', or
+'title'.</p>
+<p>The <code>sub</code> operation performs a regex substitution. It
+requires a list of two strings; the first is the regex
+to match in the input token, and the second is the text
+to replace each match with.</p>
+<p>The <code>lookup</code> operation tries to match the input against
+a series of dictionary keys (using case-insensitive
+regex), and set the output to the corresponding value.
+If the dictionary does not contain a matching key, the
+entire schema match will retroactively fail.
+<code>optionalLookup</code> works the same way, except that failed
+lookups will not cause the schema to fail, and will
+simply leave tokens unmodified.</p>
+<p>The <code>numberFormat</code> operation assumes that the input
+token is a number, either in digit form or Roman
+numerals. It outputs the same number, converted to the
+specified number format, either 'roman' or 'digit'.</p>
 </td>
 <td><code>[]</code></td>
 </tr>
@@ -774,8 +762,7 @@ only relevant for procedurally-generated schemas.</p>
     <span class="n">idForms</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">shortForms</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">defaults</span><span class="p">:</span> <span class="nb">dict</span><span class="o">=</span><span class="p">{},</span>
-    <span class="n">mutations</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">substitutions</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">operations</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">parent_citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">is_id</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">):</span>
@@ -797,8 +784,7 @@ only relevant for procedurally-generated schemas.</p>
 <span class="sd">        URL: The template by which to generate URLs from citation</span>
 <span class="sd">            matches. Placeholders in {curly braces} will be replaced</span>
 <span class="sd">            by the value of the token with the same name, after that</span>
-<span class="sd">            token has been processed with mutations and</span>
-<span class="sd">            substitutions.</span>
+<span class="sd">            token has been processed by the schema</span>
 
 <span class="sd">            The URL template can be provided either as as a string</span>
 <span class="sd">            or as a list of strings to concatenate. In the latter</span>
@@ -809,46 +795,41 @@ only relevant for procedurally-generated schemas.</p>
 <span class="sd">            values which should be set if the token's value is not</span>
 <span class="sd">            otherwise set by a regex capture group.</span>
 
-<span class="sd">        mutations: Dictionaries, each one representing a string</span>
-<span class="sd">            manipulation that should be performed on a token before</span>
-<span class="sd">            it is inserted into the URL template. Each mutation must</span>
-<span class="sd">            contain a key called `token`, representing the token to</span>
-<span class="sd">            affect.</span>
+<span class="sd">        operations: A list of operations to perform on the tokens,</span>
+<span class="sd">            in sequence, to transform them from `captured_tokens` to</span>
+<span class="sd">            `processed_tokens`, the tokens that are used for URL</span>
+<span class="sd">            generation.</span>
 
-<span class="sd">            The supported mutations are `case`, `omit`, and the</span>
-<span class="sd">            combination of 'splitter' and 'joiner'. 'Case' forces</span>
-<span class="sd">            the token to the specified capitalization, either</span>
-<span class="sd">            "upper" or "lower".</span>
+<span class="sd">            Each operation must specify a `token` for its input. It</span>
+<span class="sd">            will also be used as the output of the operation, unless</span>
+<span class="sd">            `output` is specified. If the specified input token is</span>
+<span class="sd">            not set, the operation will be skipped.</span>
 
-<span class="sd">            `omit` is a string, parsed as regex, all occurrences</span>
-<span class="sd">            of which will be removed from the token.</span>
+<span class="sd">            The supported operations are `case`, `sub`, `lookup`,</span>
+<span class="sd">            `optionalLookup`, `lpad`, and `numberFormat`.</span>
 
-<span class="sd">            `splitter` and `joiner` must be used together if at</span>
-<span class="sd">            all. The former is a string, parsed as regex, which will</span>
-<span class="sd">            split the token at each occurrence. Next, the 'joiner'</span>
-<span class="sd">            string will be placed between the pieces.</span>
+<span class="sd">            The `case` operation outputs the input token, set to the</span>
+<span class="sd">            specified capitalization, either 'upper', 'lower', or</span>
+<span class="sd">            'title'.</span>
 
-<span class="sd">        substitutions: A list of dictionaries, each one representing</span>
-<span class="sd">            a lookup operation to modify the value of a token. Each</span>
-<span class="sd">            dict must contain `token`, a string representing the</span>
-<span class="sd">            input token for the lookup. It must also contain `index`,</span>
-<span class="sd">            a dict of input values and their corresponding outputs.</span>
+<span class="sd">            The `sub` operation performs a regex substitution. It</span>
+<span class="sd">            requires a list of two strings; the first is the regex</span>
+<span class="sd">            to match in the input token, and the second is the text</span>
+<span class="sd">            to replace each match with.</span>
 
-<span class="sd">            By default, the value of `token` will be changed to the</span>
-<span class="sd">            value of the lookup. Alternatively, if you specify an</span>
-<span class="sd">            'outputToken', that token will be set instead, leaving</span>
-<span class="sd">            the input token unchanged. Note that 'outputToken' does</span>
-<span class="sd">            not need to exist in the original regex.</span>
+<span class="sd">            The `lookup` operation tries to match the input against</span>
+<span class="sd">            a series of dictionary keys (using case-insensitive</span>
+<span class="sd">            regex), and set the output to the corresponding value.</span>
+<span class="sd">            If the dictionary does not contain a matching key, the</span>
+<span class="sd">            entire schema match will retroactively fail.</span>
+<span class="sd">            `optionalLookup` works the same way, except that failed</span>
+<span class="sd">            lookups will not cause the schema to fail, and will</span>
+<span class="sd">            simply leave tokens unmodified.</span>
 
-<span class="sd">            If the inputToken does not match a key in the index,</span>
-<span class="sd">            the citation match fails, unless the substitution</span>
-<span class="sd">            specifies that `allowUnmatched` is True, in which case a</span>
-<span class="sd">            failed substitution simply won't change any values.</span>
-
-<span class="sd">            You can also include `useRegex: true` to</span>
-<span class="sd">            make the dictionary lookup use regex matching rather</span>
-<span class="sd">            than normal string matching, but this feature is</span>
-<span class="sd">            experimental and likely buggy.</span>
+<span class="sd">            The `numberFormat` operation assumes that the input</span>
+<span class="sd">            token is a number, either in digit form or Roman</span>
+<span class="sd">            numerals. It outputs the same number, converted to the</span>
+<span class="sd">            specified number format, either 'roman' or 'digit'.</span>
 
 <span class="sd">        shortForms: A list of regex templates to generate regexes</span>
 <span class="sd">            that recognize short-forms of a parent long-form</span>
@@ -889,17 +870,7 @@ only relevant for procedurally-generated schemas.</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">shortForms</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="n">_join_if_list</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">shortForms</span><span class="p">]</span>
     <span class="c1"># String operators</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">defaults</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mutations</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_Mutation</span><span class="p">(</span><span class="o">**</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">mutations</span><span class="p">]</span>
-    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mutations</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">mutations</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">substitutions</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_Substitution</span><span class="p">(</span><span class="o">**</span><span class="n">s</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">substitutions</span>
-        <span class="p">]</span>
-    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">substitutions</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">substitutions</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">operations</span>
 
     <span class="c1"># Extra data for shortform citations</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">parent_citation</span><span class="p">:</span> <span class="n">Citation</span> <span class="o">=</span> <span class="n">parent_citation</span>
@@ -1002,8 +973,8 @@ for citations. Defaults to (0,) to scan the entire text.</p>
     <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">citation</span> <span class="o">=</span> <span class="n">Citation</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="c1"># skip citations where substitution failed:</span>
-        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="c1"># skip citations where lookup failed:</span>
+        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">citation</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">citation</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">citation</span>
@@ -1167,7 +1138,7 @@ this includes tokens carried over from the parent citation.</p>
 <td><code>dict</code></td>
 <td>
 <p>Dictionary of tokens after they have been
-modified via mutations and substitutions.</p>
+modified via the schema's processes.</p>
 </td>
 </tr>
 <tr>
@@ -1277,7 +1248,7 @@ by means other than a Citator or Schema object.</p>
 authority, such that any citations with incompatible
 token values will not match it. Note that this uses
 processed_tokens (those which have been modified by
-the schema's mutations and substitutions).</p>
+the schema's operations).</p>
 </td>
 </tr>
 <tr>

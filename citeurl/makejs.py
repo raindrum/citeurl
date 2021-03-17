@@ -22,13 +22,13 @@ COPYRIGHT_MESSAGE = """
 // and is available at https://github.com/raindrum/citeurl.
 """
 
-HTML_FORM = """
-<form class="citeurl-form" onsubmit="handleSearch(event)">
-  <input type="search" placeholder="Enter citation..." name="q" id="q">
-  <input type="submit" value="Go"><br>
-  <label for="q" id="explainer" class="citeurl-explainer"></label>
-</form>
-"""
+HTML_FORM = (
+    '<form class="citeurl-form" onsubmit="handleSearch(event)">\n  '
+    + '<input type="search" placeholder="Enter citation..." name="q" id="q">'
+    + '<input type="submit" value="Go"><br>\n  '
+    + '<label for="q" id="explainer" class="citeurl-explainer"></label>\n'
+    + '</form>'
+)
 
 def makejs(
     citator: Citator,
@@ -63,29 +63,16 @@ def makejs(
         regex_source = (schema.broadRegex or schema.regex)
         json['regex'] = regex_source.replace('?P<', '?<')
         
-        # only add the relevant data from each mutation
-        if 'mutations' in schema.__dict__:
-            json['mutations'] = []
-        for mut in schema.mutations:
-            mutation = {}
-            for key in ['token', 'case', 'omit', 'splitter', 'joiner']:
-                if mut.__dict__[key]:
-                    mutation[key] = mut.__dict__[key]
-            json['mutations'].append(mutation)
-        
-        # only add the relevant data from each substitution
-        if 'substitutions' in schema.__dict__:
-            json['substitutions'] = []
-        for sub in schema.substitutions:
-            substitution = {}
-            for key in ['token', 'index']:
-                substitution[key] = sub.__dict__[key]
-            for key in ['useRegex', 'allowUnmatched']:
-                if sub.__dict__[key]:
-                    substitution[key] = True
-            if sub.outputToken != sub.token:
-                substitution['outputToken'] = sub.outputToken
-            json['substitutions'].append(substitution)
+        # only add the relevant information from each operation
+        if 'operations' in schema.__dict__:
+            json['operations'] = []
+        for operation in schema.operations:
+            json_op = {}
+            for key, value in operation.items():
+                if key == 'output' and value == 'token':
+                    continue
+                json_op[key] = value
+            json['operations'].append(json_op)
 
         json_schemas.append(json)
     

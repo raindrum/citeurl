@@ -25,6 +25,22 @@ NON_AUTHORITY_TOKENS = [
     'footnote',
 ]
 
+# for the number format operation
+_ROMAN_NUMERALS = [
+    (1000, 'M'),
+    ( 900, 'CM'),
+    ( 500, 'D'),
+    ( 400, 'CD'),
+    ( 100, 'C'),
+    (  90, 'XC'),
+    (  50, 'L'),
+    (  40, 'XL'),
+    (  10, 'X'),
+    (   9, 'IX'),
+    (   5, 'V'),
+    (   4, 'IV'),
+    (   1, 'I'),
+]
 
 class Citation:
     """
@@ -39,7 +55,7 @@ class Citation:
             this citation matched. For "id." and "shortform" citations,
             this includes tokens carried over from the parent citation.
         processed_tokens: Dictionary of tokens after they have been
-            modified via mutations and substitutions.
+            modified via the schema's processes.
         URL: The URL where a user can read this citation online
     """
     def __init__(
@@ -70,9 +86,8 @@ class Citation:
     
     def _get_url(self) -> str:
         """
-        Processes tokens through mutations and substitutions,
-        feeds the results into the schema's URL template, and
-        returns the resulting URL.
+        Processes tokens, feeds the results into the schema's
+        URL template, and returns the resulting URL.
         
         Returns:
             A generated URL pointing to where to find the citation,
@@ -131,8 +146,7 @@ class Citation:
                 regex=regex,
                 idForms=self.schema.idForms,
                 URL=self.schema.URL if hasattr(self.schema, 'URL') else None,
-                mutations=self.schema.mutations,
-                substitutions=self.schema.substitutions,
+                operations=self.schema.operations,
                 parent_citation=self,
                 is_id=is_id
             ))
@@ -175,7 +189,7 @@ class Authority:
             authority, such that any citations with incompatible
             token values will not match it. Note that this uses
             processed_tokens (those which have been modified by
-            the schema's mutations and substitutions).
+            the schema's operations).
         schema: The schema which found all the citations to this
             authority
         citations: The list of all the citations that refer to
@@ -348,9 +362,9 @@ class Citator:
             citation format to the loaded schemas.
         """
         yaml_text = Path(path).read_text()
-        yaml_nodes = safe_load(yaml_text)
-        for node in yaml_nodes:
-            new_schema = Schema(**node)
+        yaml_dict = safe_load(yaml_text)
+        for key, value in yaml_dict.items():
+            new_schema = Schema(name=key, **value)
             if use_generic_id and self.generic_id:
                 new_schema.idForms.append(self.generic_id)
             self.schemas.append(new_schema)
@@ -418,7 +432,7 @@ class Citator:
     
     def lookup(self, query: str, broad: bool=True) -> Citation:
         """
-        Get Convenience method to get the first citation from the first
+        Convenience method to get the first citation from the first
         matching schema, or None.
         
         This is meant for cases where false positives are not an issue,
@@ -502,8 +516,7 @@ class Schema:
         idForms: list=[],
         shortForms: list=[],
         defaults: dict={},
-        mutations: list=[],
-        substitutions: list=[],
+        operations: list[dict]=[],
         parent_citation=None,
         is_id=False
     ):
@@ -525,8 +538,7 @@ class Schema:
             URL: The template by which to generate URLs from citation
                 matches. Placeholders in {curly braces} will be replaced
                 by the value of the token with the same name, after that
-                token has been processed with mutations and
-                substitutions.
+                token has been processed by the schema
                 
                 The URL template can be provided either as as a string
                 or as a list of strings to concatenate. In the latter
@@ -537,46 +549,41 @@ class Schema:
                 values which should be set if the token's value is not
                 otherwise set by a regex capture group.
             
-            mutations: Dictionaries, each one representing a string
-                manipulation that should be performed on a token before
-                it is inserted into the URL template. Each mutation must
-                contain a key called `token`, representing the token to
-                affect.
+            operations: A list of operations to perform on the tokens,
+                in sequence, to transform them from `captured_tokens` to
+                `processed_tokens`, the tokens that are used for URL
+                generation.
                 
-                The supported mutations are `case`, `omit`, and the
-                combination of 'splitter' and 'joiner'. 'Case' forces
-                the token to the specified capitalization, either
-                "upper" or "lower".
+                Each operation must specify a `token` for its input. It
+                will also be used as the output of the operation, unless
+                `output` is specified. If the specified input token is
+                not set, the operation will be skipped.
                 
-                `omit` is a string, parsed as regex, all occurrences
-                of which will be removed from the token.
+                The supported operations are `case`, `sub`, `lookup`,
+                `optionalLookup`, `lpad`, and `numberFormat`.
                 
-                `splitter` and `joiner` must be used together if at
-                all. The former is a string, parsed as regex, which will
-                split the token at each occurrence. Next, the 'joiner'
-                string will be placed between the pieces.
-            
-            substitutions: A list of dictionaries, each one representing
-                a lookup operation to modify the value of a token. Each
-                dict must contain `token`, a string representing the
-                input token for the lookup. It must also contain `index`,
-                a dict of input values and their corresponding outputs.
+                The `case` operation outputs the input token, set to the
+                specified capitalization, either 'upper', 'lower', or
+                'title'.
                 
-                By default, the value of `token` will be changed to the
-                value of the lookup. Alternatively, if you specify an
-                'outputToken', that token will be set instead, leaving
-                the input token unchanged. Note that 'outputToken' does
-                not need to exist in the original regex.
+                The `sub` operation performs a regex substitution. It
+                requires a list of two strings; the first is the regex
+                to match in the input token, and the second is the text
+                to replace each match with.
                 
-                If the inputToken does not match a key in the index,
-                the citation match fails, unless the substitution
-                specifies that `allowUnmatched` is True, in which case a
-                failed substitution simply won't change any values.
+                The `lookup` operation tries to match the input against
+                a series of dictionary keys (using case-insensitive
+                regex), and set the output to the corresponding value.
+                If the dictionary does not contain a matching key, the
+                entire schema match will retroactively fail.
+                `optionalLookup` works the same way, except that failed
+                lookups will not cause the schema to fail, and will
+                simply leave tokens unmodified.
                 
-                You can also include `useRegex: true` to
-                make the dictionary lookup use regex matching rather
-                than normal string matching, but this feature is
-                experimental and likely buggy.
+                The `numberFormat` operation assumes that the input
+                token is a number, either in digit form or Roman
+                numerals. It outputs the same number, converted to the
+                specified number format, either 'roman' or 'digit'.
                 
             shortForms: A list of regex templates to generate regexes
                 that recognize short-forms of a parent long-form
@@ -617,17 +624,7 @@ class Schema:
         self.shortForms: list = [_join_if_list(r) for r in shortForms]
         # String operators
         self.defaults: dict = defaults
-        try:
-            self.mutations: list = [self._Mutation(**m) for m in mutations]
-        except TypeError:
-            self.mutations: list = mutations
-        try:
-            self.substitutions: list = [
-                self._Substitution(**s)
-                for s in substitutions
-            ]
-        except TypeError:
-            self.substitutions: list = substitutions
+        self.operations: list = operations
         
         # Extra data for shortform citations
         self.parent_citation: Citation = parent_citation
@@ -684,8 +681,8 @@ class Schema:
         for match in matches:
             try:
                 citation = Citation(match, self)
-            # skip citations where substitution failed:
-            except KeyError:
+            # skip citations where lookup failed:
+            except KeyError as e:
                 citation = None
             if citation:
                 yield citation
@@ -725,97 +722,97 @@ class Schema:
     def _process_tokens(self, tokens: dict):
         """
         Returns a copy of the given set of tokens, after applying the
-        schema's defaults, mutations, and substitutions.
+        schema's defaults and processing operations
         """
         processed_tokens = dict(tokens)
         for key, val in self.defaults.items():
             if key not in processed_tokens or processed_tokens[key] is None:
                 processed_tokens[key] = val
-        for mut in self.mutations:
-            input_value = processed_tokens.get(mut.token)
-            if input_value:
-                processed_tokens[mut.token] = mut._mutate(input_value)
-        for sub in self.substitutions:
-            processed_tokens = sub._substitute(processed_tokens)
-        return processed_tokens
-
-    class _Mutation:
-        """
-        Text filters to modify a token in place. See Schema
-        documentation for more info.
-        """ 
-        def __init__(self,
-            token: str,
-            case: str=None,
-            omit: str=None,
-            splitter: str=None,
-            joiner: str=None
-        ):
-            self.token = token
-            self.case = case
-            self.omit = omit
-            self.splitter = splitter
-            self.joiner = joiner
-            if splitter and not joiner:
-                raise SyntaxError(
-                    ("CiteURL schema mutation affecting token '%s' "
-                    + "contains a splitter but no joiner.") % token
-                )
-    
-        def _mutate(self, token: str):
-            if self.omit:
-                token = re.sub(re.compile(self.omit), '', token)
-            if self.splitter and self.joiner:
-                parts = re.split(re.compile(self.splitter), token)
-                parts = list(filter(None, parts))
-                token = self.joiner.join(parts)
-            if self.case:
-                if self.case == 'upper':
-                    token = token.upper()
-                elif self.case == 'lower':
-                    token = token.lower()
-            return token
-    
-    class _Substitution:
-        """
-        A lookup tool to modify a token based on a dictionary lookup.
-        See Schema documentation for more info.
-        """
-        def __init__(self,
-            token: str,
-            index: dict,
-            outputToken: str=None,
-            useRegex: bool=False,
-            allowUnmatched: bool=False
-        ):
-            self.token: str = token
-            self.outputToken: str = outputToken or token
-            self.index: str = index
-            self.useRegex: bool = useRegex
-            self.allowUnmatched: bool = allowUnmatched
         
-        def _substitute(self, tokens: dict):
-            # skip substitution if input token is unset
-            input_val = tokens[self.token] if self.token in tokens else None
-            if not input_val:
-                return tokens
-            # perform dict or regex lookup
-            output_val = None
-            if not self.useRegex:
-                output_val = self.index.get(input_val)
+        # perform each operation in series
+        for operation in self.operations:
+            # skip any operation that requires a nonexistent token
+            if processed_tokens[operation['token']] is None:
+                continue
+            
+            input_value = processed_tokens[operation['token']]
+            
+            if 'output' in operation:
+                output = operation['output']
             else:
-                for regex, value in self.index.items():
-                    if re.fullmatch(regex, input_val, flags=re.I):
+                output = operation['token']
+            
+            # handle case modification
+            if 'case' in operation:
+                case = operation['case']
+                if case == 'upper':
+                    processed_tokens[output] = input_value.upper()
+                elif case == 'lower':
+                    processed_tokens[output] = input_value.lower()
+                elif case == 'title':
+                    processed_tokens[output] = input_value.title()
+            
+            # handle regex substitution
+            if 'sub' in operation:
+                processed_tokens[output] = re.sub(
+                    operation['sub'][0],
+                    operation['sub'][1],
+                    input_value,
+                )
+            
+            # handle lookups, optional and otherwise
+            def regex_lookup(op: str):
+                output_val = None
+                for regex, value in operation[op].items():
+                    if re.fullmatch(regex, input_value, flags=re.I):
                         output_val = value
                         break
-            # modify token dict, throw error, or return unmodified
-            if output_val is not None:
-                tokens[self.outputToken] = output_val
-            elif not self.allowUnmatched:
-                raise KeyError(
-                    "%s '%s' is out of index" % (self.token, input_val)
-                )
-            return tokens
+                return output_val
+            for op in ['lookup', 'optionalLookup']:
+                if op not in operation:
+                    continue
+                output_val = regex_lookup(op)
+                if output_val is not None:
+                    processed_tokens[output] = output_val
+                elif op != 'optionalLookup':
+                    raise KeyError(
+                        f"lookup failed for {operation['token']}"
+                        + " '{input_value}'"
+                    )
+
+            # change between digits and roman numerals
+            if 'numberFormat' in operation:
+                if operation['numberFormat'] == 'roman':
+                    # convert to roman numerals if necessary
+                    try:
+                        number = int(input_value)
+                        # credit to https://stackoverflow.com/a/47713392
+                        result = ''
+                        for (arabic, roman) in _ROMAN_NUMERALS:
+                            (factor, number) = divmod(number, arabic)
+                            result += roman * factor
+                        processed_tokens[output] = result
+                    except ValueError:
+                        processed_tokens[output] = input_value
+                
+                elif operation['numberFormat'] == 'digit':
+                    # convert to digits if necessary
+                    if re.fullmatch('[MDCLXVI]+', input_value, flags=re.I):
+                        # https://codereview.stackexchange.com/a/141413
+                        translation = {v:k for k,v in _ROMAN_NUMERALS}
+                        values = [translation[r] for r in input_value.upper()]
+                        processed_tokens[output] = str(sum(
+                            val if val >= next_val else -val
+                            for val, next_val in zip(values[:-1], values[1:])
+                        ) + values[-1])
+                    else:
+                        processed_tokens[output] = input_value
+            
+            # left pad with zeros
+            if 'lpad' in operation:
+                processed_tokens[output] = input_value.zfill(operation['lpad'])
+        
+        return processed_tokens
 
 
 def insert_links(

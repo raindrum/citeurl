@@ -51,8 +51,7 @@ function handleQuery(query) {
 function getUrlForQuery(query) {
   let match = getMatch(query);
   handleDefaults(match);
-  handleMutations(match);
-  handleSubstitutions(match);
+  processTokens(match);
   updateUrlParts(match);
   return buildUrl(match);
 }
@@ -61,7 +60,7 @@ function getUrlForQuery(query) {
 // and return the tokens and schema of the first match
 const MATCH_ERROR = "Sorry, I couldn't recognize that citation."
 function getMatch(query) {
-  for (var i = 0; i < schemas.length; i++) {
+  for (var i in schemas) {
     var schema = schemas[i];
     var match = query.match(new RegExp(schema['regex'], 'i'));
     if (match) {
@@ -102,116 +101,138 @@ function handleDefaults(match) {
   }
 }
 
-// for each mutation specified by the schema, modify
-// the relevant token in place
-function handleMutations(match) {
+// for each token processing operation in the schema,
+// modify the tokens accordingly
+function processTokens(match) {
   let {schema, tokens} = match;
-  for (var m in schema.mutations) {
-    let mutation = schema.mutations[m];
-    if (typeof tokens[mutation['token']] === 'undefined') {
+  for (var o in schema.operations) {
+    var operation = schema.operations[o];
+    var inputValue = tokens[operation['token']];
+    
+    // skip tokens that were not set
+    if (inputValue === undefined) {
       continue;
     }
-    let token = tokens[mutation['token']];
-    if (!token) {
-      continue;
-    }
-    if ('omit' in mutation) {
-      let omission = new RegExp(mutation['omit'], 'g');
-      token = token.replace(omission, '');
-    }
-    if (('splitter' in mutation) & ('joiner' in mutation)) {
-      let splitter = new RegExp(mutation['splitter'], 'g');
-      let split_token = token.split(splitter).filter(Boolean);
-      token = split_token.join(mutation['joiner']);
-    }
-    if ('case' in mutation) {
-      if (mutation['case'] == 'upper') {
-        token = token.toUpperCase();
-      }
-      else if (mutation['case'] == 'lower') {
-        token = token.toLowerCase();
-      }
-    }
-    console.log(
-      'performed string mutation to turn ' + mutation['token'] + ' "'
-      + tokens[mutation['token']] + '" into "' + token + '"'
-    );
-    tokens[mutation['token']] = token;
-  }
-  console.log(' ');
-}
-
-// for each substitution specified by the schema, look up the token in an
-// index, and set it (or the outputToken) to the corresponding value.
-// Optionally use regex matching for the index lookup. Throw an error If
-// a token is out of index, unless allowUnmatched is set, in which case
-// leave it unmodified.
-const SUBSTITUTION_ERROR = "Sorry, I can't find that {token} in the {schema}."
-function handleSubstitutions(match) {
-  let {schema, tokens} = match;
-  for (var s in schema.substitutions) {
-  let sub = schema.substitutions[s];
-  if (tokens[sub['token']] === undefined) {
-    continue;
-  }
-  let outputToken;
-  if ('outputToken' in sub) {
-    outputToken = sub['outputToken'];
-  }
-  else {
-    outputToken = sub['token'];
-  }
-  let newToken;
-  if (sub['useRegex']) {
-    for (var token in sub['index']) {
-      var regexStr = '^(' + token + ')$';
-      if (tokens[sub['token']].match(new RegExp(regexStr, 'i'))) {
-        newToken = sub['index'][token];
-        break;
-      }
-    }
-  }
-  else {
-    newToken = sub['index'][tokens[sub['token']]];
-    if (newToken === undefined) {
-      newToken = sub['index'][tokens[sub['token']].toUpperCase()];
-    }
-    if (newToken === undefined) {
-      newToken = sub['index'][tokens[sub['token']].toLowerCase()];
-    }
-  }
-  if (newToken === undefined) {
-    let matchPattern;
-    if (sub['useRegex']) {
-      matchPattern = 'regex "' + regexStr + '"';
+    
+    // determine output token
+    if ('output' in operation) {
+      output = operation['output'];
     }
     else {
-      matchPattern = 'any value in the index';
+      output = operation['token'];
     }
-    console.log(
-      'tried looking up ' + '"' + tokens[sub['token']] +'" in a table, '
-      + 'but could not find a corresponding value'
-    );
-    if (('allowUnmatched' in sub) & sub['allowUnmatched']) {
-      console.log("that's fine, since that lookup is optional");
-      continue;
+    
+    // handle case modification
+    if ('case' in operation) {
+      if (operation['case'] == 'upper') {
+        tokens[output] = inputValue.toUpperCase();
+      }
+      else if (operation['case'] == 'lower') {
+        tokens[output] = inputValue.toLowerCase();
+      }
+      else if (operation['case'] == 'title') {
+        tokens[output] = inputValue.replace(
+          /\w\S*/g,
+          function (txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+          }
+        );
+      }
     }
-    else {
-      console.log("since that lookup was mandatory, no URL can be built");
-      error_text = SUBSTITUTION_ERROR.replace('{schema}', schema.name);
-      error_text = error_text.replace('{token}', sub['token']);
-      throw Error(error_text);
+    
+    // handle regex substitution
+    if ('sub' in operation) {
+      let regex = new RegExp(operation['sub'][0], 'ig');
+      let outputValue = inputValue.replace(regex, operation['sub'][1]);
+      tokens[output] = outputValue;
+      console.log(
+        'replaced all instances of regex "' + operation['sub'][0] + '" in '
+        + 'token "' + operation['token'] + '" with "' + operation['sub'][1]
+        + '" to set token "${output}" to "${outputValue}".'
+      );
+    }
+    
+    // handle regex lookups
+    let lookupTypes = ['lookup', 'optionalLookup'];
+    for (var t in lookupTypes) {
+      if (lookupTypes[t] in operation) {
+        let outputValue;
+        
+        console.log(tokens[operation['token']]);
+        
+        for (var key in operation[lookupTypes[t]]) {
+          let regexStr = '^(' + key + ')$';
+          if (tokens[operation['token']].match(new RegExp(regexStr, 'i'))) {
+            outputValue = operation[lookupTypes[t]][key];
+            break;
+          }
+        }
+        if (outputValue !== undefined) {
+          tokens[output] = outputValue;
+        }
+        else if (lookupTypes[t] == 'optionalLookup') {
+          console.log(
+            'tried to look up token "' + operation['token'] + '" in an index,'
+            + 'but failed, so token "' + output + '" will not be modified.'
+          );
+        }
+        else {
+          throw Error(
+            "Sorry, I can't find that" + operation['token'] + " in the " + schema
+          );
+        }
+      }
+    }
+    
+    // change between digits and roman numerals
+    // this method is lazy and only goes up to 40
+    if ('numberFormat' in operation) {
+      let numerals = [
+        ['I', '1'], ['II', '2'], ['III', '3'], ['IV', '4'], ['V', '5'],
+        ['VI', '6'], ['VII', '7'], ['VIII', '8'], ['IX', '9'], ['X', '10'],
+        ['XI', '11'], ['XII', '12'], ['XIII', '13'], ['XIV', '14'],
+        ['XV', '15'], ['XVI', '16'], ['XVII', '17'], ['XVIII', '18'],
+        ['XIX', '19'], ['XX', '20'], ['XXI', '21'], ['XXII', '22'],
+        ['XXIII', '23'], ['XXIV', '24'], ['XXV', '25'], ['XXVI', '26'], 
+        ['XXVII', '27'], ['XXVIII', '28'], ['XXIX', '29'], ['XXX', '30'],
+        ['XXXI', '31'], ['XXXII', '32'], ['XXXIII', '33'], ['XXXIV', '34'],
+        ['XXXV', '35'], ['XXXVI', '36'], ['XXXVII', '37'], ['XXXVIII', '38'],
+        ['XXXIX', '39'], ['XL', '40']
+      ];
+      // determine which format is used to look up the other
+      let key, value;
+      if (operation['numberFormat'] == 'roman') {
+        key = 1;
+        value = 0;
+      }
+      else if (operation['numberFormat'] == 'digit') {
+        key = 0;
+        value = 1;
+      }
+      // perform the appropriate lookup, outputting the input value
+      // unchanged if the lookup fails
+      tokens[output] = inputValue;
+      for (var pair in numerals) {
+        if (numerals[pair][key].match(inputValue.toUpperCase())) {
+          tokens[output] = numerals[pair][value];
+          break;
+        }
+      }
+    }
+    
+    // left pad with zeros
+    if ('lpad' in operation) {
+      let outputValue = inputValue;
+      while (outputValue.length < operation['lpad']) {
+        outputValue = '0' + outputValue;
+      }
+      tokens[output] = outputValue
+      console.log(
+        'added zeros to the beginning of ' + operation['token']
+        + 'until it was ' + String(operation['lpad']) + 'characters long'
+      );
     }
   }
-  else {
-    console.log(
-      'looked up ' + sub['token'] + ' "' + tokens[sub['token']] 
-      + '" in a table to set ' + outputToken + ' to "' + newToken + '"'
-    );
-    tokens[outputToken] = newToken;
-  }
-  }
-  console.log(' ');
 }
 
 // go through the pieces of the schema's URL template, and replace any
@@ -250,7 +271,7 @@ function buildUrl(match) {
       console.log('added "' + part + '"');
     }
     else {
-      console.log('omitted "'+part+'" because it has a placeholder');
+      console.log('omitted "'+part+'" because it still has a placeholder');
     }
   }
   console.log('finished building URL: ' + url);
