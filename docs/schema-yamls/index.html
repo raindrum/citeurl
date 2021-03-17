@@ -80,7 +80,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <p>Schemas <a href="classes/#citeurl.Schema.__init__">can be created at runtime</a>, but it is more practical to write a list of them in a YAML file, and load them when instantiating a <a href="classes#citator">Citator</a>. As such, all of <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/default-schemas.yaml">CiteURL's built-in schemas</a>, and the schemas described on this page, are in YAML format.</p>
 <p>Before you proceed, make sure you're fairly familiar with <a href="https://docs.python.org/3/howto/regex.html">Python Regular Expressions</a>, because schemas rely on them heavily. You'll also need some basic knowledge of <a href="https://www.w3schools.io/file/yaml-introduction/">YAML</a>.</p>
 <h2 id="the-basic-schema-format">The Basic Schema Format</h2>
-<p>Here is a simplified example of a schema that you would:</p>
+<p>Here is a simplified example of a schema that you might write to recognize citations to the U.S. Code:</p>
 <pre><code class="language-yaml">United States Code:
   regex: (?P&lt;title&gt;\d+) USC § (?P&lt;section&gt;\d+)
   URL: https://www.law.cornell.edu/uscode/text/{title}/{section}
@@ -159,7 +159,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
     - {volume} {reporter} at (?P&lt;pincite&gt;\d+)
 </code></pre>
 <p>This schema will recognize long-form citations like 372 U.S. 335 (optionally with a pincite citation afterwards). After that long-form citation is recognized, it will generate the regex <code>372 U\.S\. at (?P&lt;pincite&gt;\d+)</code>, to recognize later citations to different pincites in the same case.</p>
-<p>To be precise, placeholders are replaced by the text <em>as originally matched</em> in the original regex capture group, before any <a href="#token-processing">operations</a> are applied. This is normally the desired behavior, since mutations often turn a token into something that would never be recognized. An exception applies where the placeholder refers to a token that only exists after operations are applied. In those cases, the processed token is used.</p>
+<p>To be precise, placeholders are replaced by the text <em>as originally matched</em> in the original regex capture group, before any <a href="#token-processing">operations</a> are applied. This is normally the desired behavior, since operations often turn a token into something that would never be recognized. An exception applies where the placeholder refers to a token that only exists after operations are applied. In those cases, the processed token is used.</p>
 <p>This exception is useful in a few situations. For instance, a California court opinion might reference "California Civil Code § 1946.2" once early on, but then shift to a format like "CIV § 1946.2" in later citations. This poses a problem because the new form drops reference to California, so it's too generic to be its own long-form citation, while at the same time it doesn't match the "Civil Code" token, either. But this can be solved by using a substitution to recognize "Civil Code" and, from it, generate a new token "CIV", then generating a short citation form from that:</p>
 <pre><code class="language-yaml">California Codes:
   regex: California (?P&lt;code&gt;Civil Code|Penal Code) § (?P&lt;section&gt;\d+)
