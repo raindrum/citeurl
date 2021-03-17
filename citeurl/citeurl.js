@@ -229,7 +229,7 @@ function processTokens(match) {
       tokens[output] = outputValue
       console.log(
         'added zeros to the beginning of ' + operation['token']
-        + 'until it was ' + String(operation['lpad']) + 'characters long'
+        + ' until it was ' + String(operation['lpad']) + ' characters long'
       );
     }
   }
