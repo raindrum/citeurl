@@ -105,6 +105,10 @@ function handleDefaults(match) {
 // modify the tokens accordingly
 function processTokens(match) {
   let {schema, tokens} = match;
+  let appliedAnOperation = false;
+  if (!('operations' in schema)) {
+    return;
+  }
   for (var o in schema.operations) {
     var operation = schema.operations[o];
     var inputValue = tokens[operation['token']];
@@ -112,6 +116,9 @@ function processTokens(match) {
     // skip tokens that were not set
     if (inputValue === undefined) {
       continue;
+    }
+    else {
+      appliedAnOperation = true;
     }
     
     // determine output token
@@ -232,6 +239,9 @@ function processTokens(match) {
         + ' until it was ' + String(operation['lpad']) + ' characters long'
       );
     }
+  }
+  if (appliedAnOperation) {
+    console.log(' ');
   }
 }
 

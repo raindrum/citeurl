@@ -64,7 +64,7 @@ def makejs(
         json['regex'] = regex_source.replace('?P<', '?<')
         
         # only add the relevant information from each operation
-        if 'operations' in schema.__dict__:
+        if schema.operations:
             json['operations'] = []
         for operation in schema.operations:
             json_op = {}
