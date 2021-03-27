@@ -106,7 +106,7 @@ Code of Federal Regulations:
 Federal Rules of Civil Procedure:
   regex:
     - &frcp '(F\.? ?R\.? ?C\.? ?P\.?|Fed\.? ?R(\.?|ule) ?Civ\.? ?Pr?o?c?\.?|Federal Rules? of Civil Procedure)'
-    - &rule ' ?(Rule )?(?P<rule>\d+[a-z]?)'
+    - &rule ' ?(Rule )?(?P<rule>\d+(\.\d+)?[a-z]?)'
     - *subsection
   broadRegex: [*frcp, *rule, *broadsub]
   idForms: &id_rule_sub
@@ -1117,7 +1117,7 @@ Consolidated Laws of New York:
   regex:
     - &ny_name '(New York|N\.? ?Y\.?)'
     - ' ?(?P<chapter>.{2,40}?)( Law)?'
-    - *section
+    - ' ((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.-]*\w|\d))'
     - *subsection
   idForms: *id_sec_sub
   shortForms:
@@ -1127,6 +1127,8 @@ Consolidated Laws of New York:
     - token: chapter
       output: chapterAcronym
       lookup: {'Abandoned Property|ABP':'ABP', 'Agric(ulture|\.) (and|&) M(arkets|kts)|AGM|A&M', 'Alc(oholic|o?\.) Bev(erage|\.) Cont(rol|\.)|ABC':'ABC', 'Alt(ernative\.) C(ounty|ty\.) Gov(ernment|.t)|ACG':'ACG', 'Arts (and|&) Cult(ural|\.) Aff(airs|\.)|ACA':'ACA', 'Banking|BNK':'BNK', 'Ben(evolent|\.) Ord(ers|\.)|BVO':'BVO', 'Bus(iness|\.) Corp(orations?|s?)|BSC|BCL':'BSC', 'Canal|CAL':'CAL', 'Civil Practice Law (and|&) Rules|CVP|CPLR|C\. ?P\. ?L\. ?R':'CVP', 'Civ(il|\.) Serv(ice|\.)|CIV':'CIV', 'Coop(erative|\.) Corp(orations|s?)|CCO':'CCO', 'Correct(ion|\.)|COR':'COR', 'County|CNT':'CNT', 'Crim(inal|\.) Pro(cedure|c?)|CPL':'CPL', 'Debt(or|\.) (and|&) Cred(itor|\.)|DCD':'DCD', 'Dom(estic|\.) Rel(ations|\.)|DOM':'DOM', 'Econ(omic|\.) Dev(elopment|\.)|COM':'COM', 'Educ(ation|\.)|EDN':'EDN', 'Elder|ELD':'ELD', 'Elec(tion|\.)|ELN':'ELN', 'Em(inent|\.) Dom(ain|\.) Proc(edure|\.)|EDP':'EDP', 'Emp(loyer(s''?)?|l''rs) Liab(ility|\.)|EML':'EML', 'Energy|ENG':'ENG', 'Env(ironmental|(tl)?\.) Conserv(ation|\.)|ENV':'ENV', 'Est(ates,|\.) Powers (and|&) Trusts|EPT':'EPT', 'Exec(utive|\.)|EXC':'EXC', 'Fin(ancial|\.) Serv(ices|s?)|FIS':'FIS', 'Gen(eral|\.) Associations|GAS':'GAS', 'Gen(eral|\.) Bus(iness|\.)|GBS':'GBS', 'Gen(eral|\.) City|GCT':'GCT', 'Gen(eral|\.) Constr(uction|\.)|GCN':'GCN', 'Gen(eral|\.) Mun(icipal|\.)|GMU':'GMU', 'Gen(eral|\.) Oblig(ations|\.)|GOB':'GOB', 'High(way|\.)|HAY':'HAY', 'Indian|IND':'IND', 'Jud(iciary|\.)|JUD':'JUD', 'Legis(lative|\.)|LEG':'LEG', 'Lien|LIE':'LIE', 'L(imited|td\.) Liab(ility|\.) Co(mpany|\.)|LLC':'LLC', 'Local Fin(ance|\.)|LFN':'LFN', 'Mental Hyg(iene|\.)|MHY':'MHY', 'Mil(itary|\.)|MIL':'MIL', 'Mult(iple|\.) Dwell(ing|\.)|MDW':'MDW', 'Mult(iple|\.) Resid(ence|\.)|MRE':'MRE', 'Mun(icipal|\.) Home Rule|MHR':'MHR', 'Mun(icipal|i?\.) Housing Authorities|MHA':'MHA', 'Nav(igation|\.)|NAV':'NAV', '(State )?Print(ing|\.)? (and|&) Pub(lic|\.) Doc(uments|s?)|PPD':'PPD', 'Parks,? Rec(reation|\.) (and|&) Hist(oric|\.) Preserv(ation|\.)|PAR':'PAR', "P(artnership|'ship)|PTR":'PTR', 'Penal|PEN':'PEN', 'Pers(onal|\.) Prop(erty|\.)|PEP':'PEP', 'Priv(ate|\.) Hous(ing|\.) Fin(ance|\.)|PVH':'PVH', 'Pub(lic|\.) Auth(orities|\.)|PBA':'PBA', 'Pub(lic|\.) Health|PBH':'PBH', 'Pub(lic|\.) Housing|PBG':'PBG', 'Pub(lic|\.) Off(icers|\.)|PBO':'PBO', 'Rac(ing,|\.) Pari-Mut(uel|\.) Wag(ering|\.) (and|&) Breed(ing|\.)|PML':'PML', 'Railroad|R\.R\.|RRD':'RRD', 'Rapid Trans(it|\.)|RAT':'RAT', 'Real Prop(erty|\.) Act(ions|s\.)( (and|&) Proceedings)?|RPA':'RPA', 'Real Prop(erty|\.) Tax|RPT':'RPT', 'Real Prop(erty|\.)|RPP':'RPP', 'Relig(ious|\.) Corp(orations|s?\.)|RCO':'RCO', 'Retire(ment|\.) (and|&) Soc(ial|\.) Sec(urity|\.)|RSS':'RSS', 'Rural Elec(tric|\.) Coop(eratives?|s?\.)|REL':'REL', 'Second Class Cities|SCC':'SCC', 'Soil (and|&) Water Conserv(ation|\.) Dist(ricts|s?\.)|SWC':'SWC', 'State Administrative Procedure Act|A\.P\.A\.|SAP':'SAP', 'State Fin(ance|\.)|STF':'STF', 'State|STL':'STL', 'Statute of Local Gov(ernments|s?\.)|SLG':'SLG', 'Town|TWN':'TWN', 'Trans(portation|p?\.) Corp(orations|s?\.)|TCP':'TCP', 'Trans(portation|p?\.)|TRA':'TRA', 'Uniform Commercial Code|U\.?C\.?C\.?':'UCC', 'Vill(age|\.)|VIL':'VIL', 'Vol(unteer|\.) Ambul(ance|\.) Workers''? Benefit|VAW':'VAW', 'Vol(unteer|\.) Fire(fighters''?|\.) Ben(efit|\.)|VOL':'VOL'}
+    - token: section
+      case: upper
   URL: https://www.nysenate.gov/legislation/laws/{chapterAcronym}/{section}
 
 New York Constitution:
@@ -1449,11 +1451,10 @@ Vermont Constitution:
       optionalLookup: {'I':''}
     - token: chapter
       output: isChapterII
-      allowUnmatched: true
       optionalLookup: {'II':''}
     - token: article
       output: articleSuffix
-      lookup: {'1':'st', '2':'nd', '3':'rd', '[4-9]|\d{2,}':'th'}
+      lookup: {'(\d*[02-9])?1':'st', '(\d*[02-9])?2':'nd', '(\d*[02-9])?3':'rd', '(\d*[02-9])?[4-9]|\d*1\d':'th'}
     - token: article
       output: chapter2section
       optionalLookup: {'[1-5]':'Delegation_and_Distribution_of_Powers', '[6-9]|1\d':'Legislative_Department', '2[0-7]':'Executive_Department', '2[89]|3\d|4[01]':'Judiciary_Department', '42':'Qualifications_of_Freemen_and_Freewomen', '4[3-9]|5[0-5]':'Elections;_Officers;_Terms_of_Office', '56':'Oath_of_Allegiance;_Oath_of_Office', '5[78]':'Impeachment', '59':'Militia', '6\d|7[01]':'General_Provisions', '7[23]':'Amendment_of_the_Constitution', '7[4-6]':'Temporary_Provisions'}

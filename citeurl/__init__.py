@@ -111,7 +111,7 @@ class Citation:
         if self.URL:
             attrs['href'] = self.URL
         else:
-            del attrs['href'] # why is this necessary?
+            del attrs['href']
         attr_str = ''
         for key, value in attrs.items():
             attr_str += ' %s="%s"' % (key, value)

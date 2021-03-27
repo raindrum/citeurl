@@ -8,6 +8,9 @@ from markdown.postprocessors import Postprocessor
 # internal imports
 from . import Citator, DEFAULT_ID_BREAKS
 
+# store citator in a global variable so it isn't remade each document
+CITATOR: Citator = None
+
 class CitationPostprocessor(Postprocessor):
     def __init__(
         self,
@@ -69,14 +72,15 @@ class CiteURLExtension(Extension):
         super(CiteURLExtension, self).__init__(**kwargs)
     
     def extendMarkdown(self, md):
-        custom_schemas = self.config['custom_schemas'][0] or []
-        citator = Citator(
-            yaml_paths=custom_schemas,
-            defaults=self.config['use_defaults'][0]
-        )
+        global CITATOR
+        if not CITATOR:
+            CITATOR = Citator(
+                yaml_paths = self.config['custom_schemas'][0] or [],
+                defaults = self.config['use_defaults'][0]
+            )
         md.postprocessors.register(
             CitationPostprocessor(
-                citator,
+                CITATOR,
                 self.config['attributes'][0],
                 self.config['link_detailed_ids'][0],
                 self.config['link_plain_ids'][0],
@@ -85,6 +89,9 @@ class CiteURLExtension(Extension):
             "CiteURL",
             1
         )
+    
+    def reset(self):
+        pass
 
 def makeExtension(**kwargs):
     return CiteURLExtension(**kwargs)
