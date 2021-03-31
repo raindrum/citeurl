@@ -89,9 +89,6 @@ class CiteURLExtension(Extension):
             "CiteURL",
             1
         )
-    
-    def reset(self):
-        pass
 
 def makeExtension(**kwargs):
     return CiteURLExtension(**kwargs)

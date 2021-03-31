@@ -819,21 +819,20 @@ Maine Constitution:
 Maryland Code:
   regex:
     - &md_name M(aryland|d\.|D)
-    - *rev_ann_code_stat
-    - '(?P<article>(Ac|Al|[BCEFHILNPRST]).{4,38}?) '
+    - ' (?P<article>(Ac|Al|[BCEFHILNPRST]).{4,38}?) (Code( Ann(otated|\.))? )?'
     - &md_title_dash_section '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<title>\d+[A-Z]?)[-‑–](?P<section>[\dA-Z\-–.]*[\dA-Z])'
     - *subsection
   idForms:
     - [*id_at, *mandatory_section_sign, *md_title_dash_section, *subsection]
     - [*optional_id_at, *mandatory_section_sign, *md_title_dash_section, *subsection]
     - *subsection_id
-  shortForms: [['{article}', *md_title_dash_section, *subsection]]
+  shortForms: [['{article} (Code( Ann(otated|\.))?)?', *md_title_dash_section, *subsection]]
   operations:
     - token: section
-      lookup: ['–', '-']
+      sub: ['–', '-']
     - token: article
       output: articleCode
-      lookup: {'Acric(ulture|\.)':'gag', 'Alco(holic|\.) ?Bev(erages|s?\.)':'gab', 'Bus(iness|\.) ?Occ(upations|\.) ?(and|&) ?Prof(essions|s?\.)':'gbo', 'Bus(iness|\.) ?Reg(ulation|\.)':'gbr', 'Com(mercial|\.) ?Law':'gcl', 'Corp(orations|s\.) ?(and|&) Ass(ociations|''ns)':'gca', 'Corr(ectional|\.) ?Serv(ices|s\.)':'gcs', 'C(ourts|ts\.) ?(and|&) ?Jud(icial|\.) ?Proc(eedings|\.)':'gcj', 'Crim(inal|\.) ?Law':'gcr', 'Crim(inal|\.) ?Proc(edure|\.)':'gcp', 'Econ(omic|\.) ?Dev(elopment|\.)':'gec', 'Educ(ation|\.)':'ged', 'Elec(tion|\.) ?Law':'gel', 'Envir(onment|\.)':'gen', 'Est(ates|\.) ?(and|&) ?Trusts':'get', 'Fam(ily|\.) ?Law':'gfl', 'Fin(ancial|\.) Inst(itutions|\.)':'gfi', 'Health ?[-–] ?Gen(eral|\.)':'ggp', 'Health Occ(upations|\.)':'gho', 'Hous(ing|\.) ?(and|&) ?C(ommunity|mty\.) ?Dev(elopment|''t|\.)':'ghs', 'Hum(an|\.) ?Serv(ices|s\.)':'ghu', 'Ins(urance|\.)':'gin', 'Lab(or|\.) ?(and|&) ?Empl(oyment|\.)':'gle', 'Land Use':'glu', 'Local Gov(ernment|''t)':'glg', 'Nat(ural|\.) ?Res(ources|\.)':'gnr', 'Pub(lic|\.) ?Safety':'gps', 'Pub(lic|\.) ?Util(ity|\.)':'gpu', 'Real Prop(erty|\.)':'grp', 'State Fin(ance|\.) (and|&) Proc(urement|\.)':'gsf', 'State Gov(ernment|''t)':'gsg', 'State Pers(onnel|\.) (and|&) Pens(ions|\.)':'gsp', 'Tax ?[-–] ?Gen(eral|\.)':'gtg', 'Tax ?[-–] ?Prop(erty|\.)':'gtp', 'Transp(ortation|\.)':'gtr'}
+      lookup: {'Acric(ulture|\.)':'gag', 'Alco(holic|\.) ?Bev(erages|s?\.)':'gab', 'Bus(iness|\.) ?Occ(upations|\.) ?(and|&) ?Prof(essions|s?\.)':'gbo', 'Bus(iness|\.) ?Reg(ulation|\.)':'gbr', 'Com(mercial|\.) ?Law':'gcl', 'Corp(orations|s\.) ?(and|&) Ass(ociations|''ns)':'gca', 'Corr(ectional|\.) ?Serv(ices|s\.)':'gcs', 'C(ourts|ts\.) ?(and|&) ?Jud(icial|\.) ?Proc(eedings|\.)':'gcj', 'Crim(inal|\.) ?Law':'gcr', 'Crim(inal|\.) ?Proc(edure|\.)':'gcp', 'Econ(omic|\.) ?Dev(elopment|\.)':'gec', 'Educ(ation|\.)':'ged', 'Elec(tion|\.) ?Law':'gel', 'Envir(onment|\.)':'gen', 'Est(ates|\.) ?(and|&) ?Trusts':'get', 'Fam(ily|\.) ?Law':'gfl', 'Fin(ancial|\.) Inst(itutions|\.)':'gfi', 'Health ?[-–] ?Gen(eral|\.)':'ggp', 'Health Occ(upations|\.)':'gho', 'Hous(ing|\.) ?(and|&) ?C(ommunity|mty\.) ?Dev(elopment|''t|\.)':'ghs', 'Hum(an|\.) ?Serv(ices|s\.)':'ghu', 'Ins(urance|\.)':'gin', 'Lab(or|\.) ?(and|&) ?Empl(oyment|\.)':'gle', 'Land Use':'glu', 'Local Gov(ernment|''t)':'glg', 'Nat(ural|\.) ?Res(ources|\.)':'gnr', 'Pub(lic|\.) ?Saf(ety|\.)':'gps', 'Pub(lic|\.) ?Util(ity|\.)':'gpu', 'Real Prop(erty|\.)':'grp', 'State Fin(ance|\.) (and|&) Proc(urement|\.)':'gsf', 'State Gov(ernment|''t)':'gsg', 'State Pers(onnel|\.) (and|&) Pens(ions|\.)':'gsp', 'Tax ?[-–] ?Gen(eral|\.)':'gtg', 'Tax ?[-–] ?Prop(erty|\.)':'gtp', 'Transp(ortation|\.)':'gtr'}
   URL: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article={articleCode}&section={title}-{section}
 
 Maryland Constitution:
