@@ -1140,7 +1140,7 @@ New York Constitution:
 
 North Carolina General Statutes:
   regex:
-    - '((North Carolina|N\.? ?C\.?) ?Gen(eral|\.) ?Stat(utes|s?\.)|N\.? ?C\.? ?G\.? ?S\.?) '
+    - '((North Carolina|N\.? ?C\.?) ?Gen(eral|\.) ?Stat(utes|s?\.?)|N\.? ?C\.? ?G\.? ?S\.?) '
     - *chapter_dash_section
     - *subsection
   idForms: *chapter_dash_section_id
@@ -1389,7 +1389,7 @@ Texas Codes:
   operations:
     - token: code
       output: codeAcronym
-      lookup: {'Agric(ulture|\.)|AGC?':'AG', 'Alc(oholic|o?\.) Bev(erage|\.)|ABC?':'AB', 'Aux(iliary|\.) Water Laws|A?WL':'WL', 'Bus(iness|\.) (and|&) Com(merce|m?\.)|B&C|BCC?':'BC', 'Bus(iness|\.) Org(anizations|s\.)|BOC?':'BO', 'Civ(il|\.) Prac(tice|\.) (and|&) Rem(edies|s?\.)|CPR?C?':'CP', 'Code( of)? Crim(inal|\.) ?Pro(cedure|c?\.)|CCrP|CRC?':'CR', 'Educ(ation|\.)|EDC?':'ED', 'Elec(tion|\.)|ELC?':'EL', 'Est(ates|\.)|ESC?':'ES', 'Fam(ily|\.)|FAC?|FAM':'FA', 'Fin(ance|\.)|FIC?|FIN':'FI', 'Gov(ernment|(''?t)?\.?)?|GO?VC?':'GV', 'Health (and|&) Safety|H&?SC?':'HS', 'Hum(an|\.) Res(ources|\.)|HRC?':'HR', 'Ins(urance|\.)|INC?':'IN', 'Labor|LA':'LA', 'Local Gov(ernment|''t)|LGC?':'LG', 'Nat(ural|\.) Res(ources|\.)|NRC?':'NR', 'Occ(upations|\.)|OC':'OC', 'Parks (and|&) Wild(life|\.)|PWC?':'PW', 'Penal|PEN?|PC':'PE', 'Prop(erty|\.)|PR|PC':'PR', 'Special Dist(rict|\.) Local Laws|Spec\. Dists\.|SDC?':'SD', 'Tax|TX?C':'TX', 'Trans(portation|p?\.)|TNC?':'TN', 'Util(ities|\.)|UTC?':'UT', 'Water|WAC?':'WA', 'Vernon''s Civ(il|\.) Stat(utes|s?\.)':'VC'}
+      lookup: {'Agric(ulture|\.)|AGC?':'AG', 'Alc(oholic|o?\.) Bev(erage|\.)|ABC?':'AL', 'Aux(iliary|\.) Water Laws|A?WL':'WL', 'Bus(iness|\.) (and|&) Com(merce|m?\.)|B&C|BCC?':'BC', 'Bus(iness|\.) Org(anizations|s\.)|BOC?':'BO', 'Civ(il|\.) Prac(tice|\.) (and|&) Rem(edies|s?\.)|CPR?C?':'CP', 'Code( of)? Crim(inal|\.) ?Pro(cedure|c?\.)|CCrP|CRC?':'CR', 'Educ(ation|\.)|EDC?':'ED', 'Elec(tion|\.)|ELC?':'EL', 'Est(ates|\.)|ESC?':'ES', 'Fam(ily|\.)|FAC?|FAM':'FA', 'Fin(ance|\.)|FIC?|FIN':'FI', 'Gov(ernment|(''?t)?\.?)?|GO?VC?':'GV', 'Health (and|&) Safety|H&?SC?':'HS', 'Hum(an|\.) Res(ources|\.)|HRC?':'HR', 'Ins(urance|\.)|INC?':'IN', 'Labor|LA':'LA', 'Local Gov(ernment|''t)|LGC?':'LG', 'Nat(ural|\.) Res(ources|\.)|NRC?':'NR', 'Occ(upations|\.)|OC':'OC', 'Parks (and|&) Wild(life|\.)|PWC?':'PW', 'Penal|PEN?|PC':'PE', 'Prop(erty|\.)|PR|PC':'PR', 'Special Dist(rict|\.) Local Laws|Spec\. Dists\.|SDC?':'SD', 'Tax|TX?C':'TX', 'Trans(portation|p?\.)|TNC?':'TN', 'Util(ities|\.)|UTC?':'UT', 'Water|WAC?':'WA', 'Vernon''s Civ(il|\.) Stat(utes|s?\.)':'VC'}
   URL: https://statutes.capitol.texas.gov/Docs/{codeAcronym}/htm/{codeAcronym}.{chapter}.htm#{chapter}.{section}
 
 Texas Constitution:
