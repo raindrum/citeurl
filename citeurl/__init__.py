@@ -58,11 +58,7 @@ class Citation:
             modified via the schema's processes.
         URL: The URL where a user can read this citation online
     """
-    def __init__(
-        self,
-        match: re.Match,
-        schema
-    ):
+    def __init__(self, match: re.Match, schema):
         """
         For internal use. There should be no need to create citations
         by means other than a Citator or Schema object.
@@ -143,7 +139,7 @@ class Citation:
                 regex = regex.replace('{%s}' % key, value)
             schemas.append(Schema(
                 name=self.schema.name,
-                regex=regex,
+                regexes=[regex],
                 idForms=self.schema.idForms,
                 URL=self.schema.URL if hasattr(self.schema, 'URL') else None,
                 operations=self.schema.operations,
@@ -363,8 +359,29 @@ class Citator:
         """
         yaml_text = Path(path).read_text()
         yaml_dict = safe_load(yaml_text)
-        for key, value in yaml_dict.items():
-            new_schema = Schema(name=key, **value)
+        
+        # read each item in the YAML into a new schema
+        for schema_name, schema_data in yaml_dict.items():
+            # if regex is specified in singular form, convert it to a
+            # list with one item, for sake of consistency with multiple-
+            # regex schemas.
+            for key in ['regex', 'broadRegex']:
+                if key in schema_data:
+                  schema_data[key + 'es'] = [schema_data.pop(key)]
+            
+            # unrelated: if an individual regex is given as a list of
+            # strings (convenient for reusing YAML anchors), concatenate
+            # it to one string.
+            for key in ['regexes', 'broadRegexes', 'idForms', 'shortForms']:
+                if key not in schema_data:
+                    continue
+                for i, regex in enumerate(schema_data[key]):
+                    if type(regex) is list:
+                        schema_data[key][i] = ''.join(regex)
+                        
+            # make the schema and add it to the citator, adding the
+            # generic id-form citation if applicable
+            new_schema = Schema(name=schema_name, **schema_data)
             if use_generic_id and self.generic_id:
                 new_schema.idForms.append(self.generic_id)
             self.schemas.append(new_schema)
@@ -510,11 +527,11 @@ class Schema:
     """
     def __init__(self,
         name: str,
-        regex,
+        regexes: list[str],
         URL=None,
-        broadRegex=None,
-        idForms: list=[],
-        shortForms: list=[],
+        broadRegexes: list[str]=None,
+        idForms: list[str]=[],
+        shortForms: list[str]=[],
         defaults: dict={},
         operations: list[dict]=[],
         parent_citation=None,
@@ -528,12 +545,10 @@ class Schema:
         Arguments:
             name: The name of this schema
             
-            regex: The pattern to recognize citations. Can be either
-                a string, or a list of strings. In the latter case, they
-                will be concatenated (without any separator) to form one
-                string. In any case, the regex should include one or
-                more named capture groups (i.e. "tokens") that will be
-                used to generate the URL.
+            regexes: A list of one or more regexes that this schema will
+                match. Each regex should be provided as a string, and
+                should include one or more named capture groups
+                (i.e. "tokens") that will be used to generate the URL.
             
             URL: The template by which to generate URLs from citation
                 matches. Placeholders in {curly braces} will be replaced
@@ -596,9 +611,6 @@ class Schema:
                 at (?P<pincite>\d+)`, it will generate the following
                 regex: `372 U.S. at (?P<pincite>\d+)`.
                 
-                Like the regex parameter, each shortform can
-                be given either as a string or as a list of strings.
-                
             idForms: Think "id.", not ID. Identical to shortForms,
                 except that these regexes will only match until the
                 next different citation or other interruption.
@@ -614,20 +626,31 @@ class Schema:
         """
         # Basic values
         self.name: str = name
-        self.regex: str = r'(\b|^)' + _join_if_list(regex)
+        self.regexes: str = regexes
         self.is_id: bool = is_id
         if URL:
             self.URL: str = URL if type(URL) is list else [URL]
         # Supplemental regexes
-        self.broadRegex: str=_join_if_list(broadRegex) if broadRegex else None
-        self.idForms: list = [_join_if_list(r) for r in idForms]
-        self.shortForms: list = [_join_if_list(r) for r in shortForms]
+        self.broadRegexes: str = broadRegexes
+        self.idForms: list = idForms
+        self.shortForms: list = shortForms
         # String operators
         self.defaults: dict = defaults
         self.operations: list = operations
         
         # Extra data for shortform citations
         self.parent_citation: Citation = parent_citation
+        
+        # hack: prevent all regexes from matching mid-word
+        for key in ['regexes', 'broadRegexes', 'idForms', 'shortForms']:
+            regex_list = self.__dict__[key]
+            if not regex_list:
+                continue
+            regex_list = list(map(lambda x: r'(\b|^)' + x, regex_list))
+        
+        # dictionaries of compiled regexes
+        self._compiled_regexes: dict = {}
+        self._compiled_broadRegexes: dict = {}
         
     def __str__(self):
         return self.name
@@ -677,7 +700,10 @@ class Schema:
             Generator that yields each citation the schema finds in the
                 text, or None.
         """
-        matches = self._compiled_re(broad).finditer(text, *span)
+        matches = []
+        for index in range(len(self.regexes)):
+            matches += self._compiled_re(index, broad).finditer(text, *span)
+            
         for match in matches:
             try:
                 citation = Citation(match, self)
@@ -688,23 +714,27 @@ class Schema:
                 yield citation
         return None
     
-    def _compiled_re(self, broad: bool = False) -> re.Pattern:
+    def _compiled_re(self, index: int = 0, broad: bool = False) -> re.Pattern:
         """
-        Gets the compiled broad or regular regex pattern, for the
-        schema, first compiling it if necessary.
+        Gets the compiled broad or regular regex pattern for the
+        given numbered regex, first compiling it if necessary.
         """
         if broad:
-            attr='_compiled_broadRegex'
-            regex_source = self.broadRegex or self.regex
-            kwargs={'flags':re.I}
+            compiled = self.__dict__['_compiled_broadRegexes']
+            regex_source = (
+                self.broadRegexes if self.broadRegexes
+                and len(self.broadRegexes) > index
+                else self.regexes
+            )
+            kwargs = {'flags':re.I}
         else:
-            attr='_compiled_regex'
-            regex_source = self.regex
-            kwargs={}
+            compiled = self.__dict__['_compiled_regexes']
+            regex_source = self.regexes
+            kwargs= {}
         # only compile regex if it's not already present
-        if not hasattr(self, attr):
+        if index not in compiled:
             try:
-                self.__dict__[attr] = re.compile(regex_source, **kwargs)
+                compiled[index] = re.compile(regex_source[index], **kwargs)
             except re.error as e:
                 if not self.parent_citation:
                     raise SyntaxError(
@@ -717,7 +747,7 @@ class Schema:
                         + " shortForms or idForms: %s")
                         % (self.parent_citation.schema.name, e)
                     )
-        return self.__dict__[attr]
+        return compiled[index]
 
     def _process_tokens(self, tokens: dict):
         """

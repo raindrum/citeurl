@@ -3,11 +3,12 @@
 ####################################################  
 
 United States Code:
-  regex:
-    - &title '(Title )?(?P<title>\d+) '
-    - &usc (U\.?|United) ?(S\.?|States) ?(C\.?|Code)( ?[AS]\.?)?
-    - &section ' ((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.]*\w|\d))'
-    - &subsection '(((,? )?sub(sections?|divisions?|(sec|d(iv)?)?s?\.) ?)?(?P<subsection>(\(\w+\))+))?'
+  regexes:
+    - - &title '([Tt]itle )?(?P<title>\d+) '
+      - &usc (U\.?|United) ?(S\.?|States) ?(C\.?|Code)( ?[AS]\.?)?
+      - &section ' ((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.]*\w|\d))'
+      - &subsection '(((,? )?sub(sections?|divisions?|(sec|d(iv)?)?s?\.) ?)?(?P<subsection>(\(\w+\))+))?'
+    - ['Section', *section, *subsection, ' of ', *title, 'of the ', *usc]
   broadRegex:
     - *title
     - *usc

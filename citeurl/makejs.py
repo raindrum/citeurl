@@ -60,9 +60,17 @@ def makejs(
         # some parts of a schema can be copied over easily
         for key in ['name', 'defaults', 'URL']:
             json[key] = schema.__dict__[key]
-        regex_source = (schema.broadRegex or schema.regex)
-        json['regex'] = regex_source.replace('?P<', '?<')
-        
+        if schema.broadRegexes:
+            if len(schema.broadRegexes) < len(schema.regexes):
+                regexes_source = schema.broadRegexes + schema.regexes
+            else:
+                regexes_source = schema.broadRegexes
+        else:
+            regexes_source = schema.regexes
+        json['regexes'] = list(map(
+            lambda x: x.replace('?P<', '?<'),
+            regexes_source
+        ))
         # only add the relevant information from each operation
         if schema.operations:
             json['operations'] = []

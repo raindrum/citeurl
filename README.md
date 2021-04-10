@@ -9,11 +9,7 @@ CiteURL is an extensible tool to process legal citations in text and generate li
 - the U.S. Constitution and all state constitutions
 - codified laws for every state and territory except Arkansas, Georgia, Guam, and Puerto Rico
 
-The full list is available [here](https://github.com/raindrum/citeurl/blob/main/citeurl/default-schemas.yaml). You can also customize CiteURL to support more bodies of law by [writing your own citation schemas](https://raindrum.github.io/citeurl/#schema-yamls/) in YAML format.
-
-In addition to longform citations, CiteURL can recognize subsequent shortform citations that appear. And in addition to generating hyperlinks, it can tally up all of the times that a text cites a particular authority.
-
-If you want to try out the citation lookup features without installing anything, you can use [LawSearch](https://raindrum.github.io/lawsearch), a JavaScript implementation of CiteURL I maintain on my website.
+If you want to try out CiteURL's citation lookup features without installing anything, you can use [LawSearch](https://raindrum.github.io/lawsearch), a JavaScript implementation of CiteURL I maintain on my website. For more information, see the [CiteURL documentation](https://raindrum.github.io/citeurl/).
 
 ## Installation
 
@@ -25,15 +21,11 @@ python -m pip install citeurl
 
 ## Usage
 
-CiteURL provides a command-line tool called `citeurl`. You can pass text to CiteURL by opening a file with the `-i` option, or by piping text to the program, e.g. with `cat file.html | citeurl`.
+CiteURL provides a command-line tool called `citeurl`. You can pass text to CiteURL by opening a file with the `-i` option, or by piping text to the program, e.g. with `cat file.html | citeurl`. By default, CiteURL uses its built-in schemas to insert hyperlinks into the text, and outputs the result to stdout. You can redirect the output to a file with the `-o` option, or open the result in a browser with `-b`. To look up a single citation instead of processing a text, use `citeurl -l <citation>`. For more options, run `citeurl -h`.
 
-By default, CiteURL uses its built-in schemas to insert hyperlinks into the text, and outputs the result to stdout. You can redirect the output to a file with the `-o` option, or open the result in a browser with `-b`.
+Besides the command line tool, CiteURL can be loaded as a Python library or as an extension to [Python-Markdown](https://python-markdown.github.io/). It is also possible to generate custom JavaScript implementations of CiteURL using the `citeurl-makejs` command. Additionally, Linux users with the GNOME shell can install [CiteURL as a search provider](https://github.com/raindrum/gnome-citeurl-search-provider) available directly from their desktop.
 
-To look up a single citation instead of processing a text, use `citeurl -l <citation>`. 
-
-For more options, run `citeurl -h`.
-
-Besides the command line tool, CiteURL can be loaded as a Python library or as an extension to [Python-Markdown](https://python-markdown.github.io/). Additionally, Linux users with the GNOME shell can install [CiteURL as a search provider](https://github.com/raindrum/gnome-citeurl-search-provider) available directly from their desktop. More documentation is available [here](https://raindrum.github.io/citeurl/).
+More documentation is available [here](https://raindrum.github.io/citeurl/).
 
 ## Credits
 

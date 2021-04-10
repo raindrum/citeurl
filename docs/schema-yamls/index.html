@@ -36,8 +36,7 @@
               {title: "The Basic Schema Format", url: "#the-basic-schema-format" },
               {title: "Token Processing", url: "#token-processing" },
               {title: "Recognizing Shortform Citations", url: "#recognizing-shortform-citations" },
-              {title: "broadRegex", url: "#broadregex" },
-              {title: "defaults", url: "#defaults" },
+              {title: "Miscellaneous Keys", url: "#miscellaneous-keys" },
           ]},
         ];
 
@@ -85,13 +84,33 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
   regex: (?P&lt;title&gt;\d+) USC § (?P&lt;section&gt;\d+)
   URL: https://www.law.cornell.edu/uscode/text/{title}/{section}
 </code></pre>
-<p>This schema recognizes any series of one or more digits, followed by " USC § ", followed by another series of digits. It knows that the first string of digits is something called a "title" and the second is a "section". We will call these stored values <code>tokens</code>. Finally, the schema contains a template to generate a URL based on the recognized citation. It does this by replacing the placeholders in {curly braces} with the values from the captured tokens.</p>
-<p>In the example above, the regex is provided as a single string. However, any regex can be provided as either as a string or a list of strings. In the latter case, they will be concatenated to create the actual regex. There is no functional difference between using strings and lists, except that providing them in list form allows you to reuse common regex parts using <a href="https://medium.com/@kinghuang/docker-compose-anchors-aliases-extensions-a1e4105d70bd">YAML anchors</a>.</p>
-<p>URLs can also be specified in list form, but this serves a functional role: If a list item contains a placeholder for which no value is set, that whole list item will be omitted from the final URL.</p>
+<p>This schema recognizes any series of one or more digits, followed by " USC § ", followed by another series of digits. It knows that the first string of digits is something called a "title" and the second is a "section". We will call these stored values <code>tokens</code>. Finally, the schema contains a template to generate a URL based on the recognized citation. It does this by replacing the placeholders (i.e. the parts in curly braces) with the values from the captured tokens.</p>
+<h3 id="regex-complications">Regex Complications</h3>
+<p>In the example above, the regex is provided as a single string. This is perfectly valid, but schemas' regexes can be much more complicated than this, for two reasons:</p>
+<ol>
+<li>A regex can be provided either as a string (as shown above), <em>or</em> as a list of strings. In the latter case, they will be concatenated (with no spaces) to create the actual regex. There is no functional difference between using strings and lists, except that providing them in list form allows you to reuse common regex parts using <a href="https://medium.com/@kinghuang/docker-compose-anchors-aliases-extensions-a1e4105d70bd">YAML anchors</a>.</li>
+<li>Independent of the first reason, it is possible to give a schema <em>multiple</em> regexes to match, by using the <code>regexes</code> key instead of <code>regex</code>. Normally, this will not be necessary, because the usual solution is to just write one regex to recognize multiple citation formats. However, regexes are limited in that capture groups cannot be rearranged.</li>
+</ol>
+<p>The example schema above can be rewritten to take advantage of these two features, like so:</p>
+<pre><code class="language-yaml">United States Code
+  regexes:
+    - [&amp;title '(?P&lt;title&gt;\d+)', ' USC ', &amp;section '(Section|§) (?P&lt;section&gt;\d+)']
+    - [*section, ' of Title ', *title, ' of the United States Code']
+  URL: https://www.law.cornell.edu/uscode/text/{title}/{section}
+</code></pre>
+<p>The above schema looks unwieldy, and it is; it is a list of lists. However, it provides two advantages over the first schema: First, it is possible to recognize both "42 USC § 1983" and "Section 1983 of Title 42 of the United States Code," which would be impossible with a single regex, since <code>title</code> and <code>section</code> are in a different order. Second, by using YAML anchors it is possible to reuse common pieces of regex, like <code>*section</code>, which can recognize either the word "Section" or a section sign ("§"). This can make it much easier to write and maintain large libraries of schemas.</p>
+<h3 id="url-complications">URL Complications</h3>
+<p>Another important feature is that a schema's URL, like its regex(es), can be specified as a list of strings to concatenate. However, this serves a functional purpose: If a list item contains a placeholder for which no value is set, that whole list item will be omitted from the final URL. For instance, the schema below can generate anchor links to subsections of the U.S. Code, but if no subsection is provided, it simply links to the overall page for the section itself:</p>
+<pre><code class="language-yaml">United States Code
+  regex: (?P&lt;title&gt;\d+) USC § (?P&lt;section&gt;\d+)( \((?P&lt;subsection&gt;[a-z])\)?
+  URL:
+    - 'https://www.law.cornell.edu/uscode/text/{title}/{section}''
+    - '#{subsection}'
+</code></pre>
 <h2 id="token-processing">Token Processing</h2>
 <p>In many cases, the tokens matched in a citation won't directly correspond with the values that need to be inserted into the URL placeholder. For example, your schema might detect a court reporter called "F. App'x." or "Pa. D. &amp; C.4th", but <a href="https://case.law/">Case.Law</a>'s URL scheme needs those reporters to be called "<a href="https://cite.case.law/f-appx/">f-appx</a>" and "<a href="https://cite.case.law/pa-d-c4th/">pa-d-c4th</a>", respectively.</p>
 <p>To solve this problem, CiteURL schemas can specify <code>operations</code> that will be performed on the dictionary of matched tokens to turn them into a new dictionary (i.e. <code>processed_tokens</code>) before using it to populate the URL.</p>
-<p>This example schema solves the problem by converting the <code>reporter</code> token to lowercase, deleting some common special characters from it, then replacing spaces with dashes:</p>
+<p>This example schema solves the problem by converting the <code>reporter</code> token to lowercase, deleting some common special characters from it, and then replacing spaces with dashes:</p>
 <pre><code class="language-yaml">Caselaw Access Project (Simplified):
   regex: (?P&lt;volume&gt;\d+) (?P&lt;reporter&gt;(\D|\d(d|th|rd))+?) (?P&lt;page&gt;\d+)
   operations:
@@ -103,7 +122,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
       sub: [' ', '-']
   URL: https://cite.case.law/{reporter}/{volume}/{page}
 </code></pre>
-<p>As shown above, a schema's <code>operations</code> value is a list of operations that will be performed in sequence. Each operation is a dictionary that must specify a <code>token</code> to process, and the kind of operation to perform. Operations process a token in place by default, but if an <code>output</code> is specified, that token will be modified instead. Note that there is no need for the <code>output</code> token to exist prior to the operation.</p>
+<p>As shown above, a schema's <code>operations</code> value is a list of operations that will be performed in sequence. Each operation is a dictionary that must specify a <code>token</code> to process, and the kind of operation to perform. Operations process a token in place by default, but if an <code>output</code> is specified, that token will be set or modified instead.</p>
 <p>The above example shows two kinds of operation: case modification (<code>case</code>), and regex substitution (<code>sub</code>), but CiteURL supports others as well:</p>
 <table>
 <thead>
@@ -141,7 +160,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </tr>
 <tr>
 <td><code>numberFormat</code></td>
-<td>assumes that the token is an integer, and converts it to digits (e.g. '14') or roman numerals ('XIV'), irrespective of which format it was originally in</td>
+<td>assumes that the token is an integer in digit or roman numeral form, and converts it to the specified form, irrespective of which format it was originally in. The outputted roman numerals are capitalized.</td>
 <td><code>roman</code> or <code>digit</code></td>
 </tr>
 </tbody>
@@ -183,15 +202,17 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
   shortForms:
     - ['{volume} {reporter} at ', *pin]
 </code></pre>
-<h2 id="broadregex">broadRegex</h2>
-<p><code>broadRegex</code> is an optional alternative regex which, if present, will be used instead of <code>regex</code> in methods like <a href="classes/#citeurl.Schema.lookup">lookup()</a>, where convenience is more important than avoiding false positives.</p>
-<p>CiteURL's default schemas mainly use it to provide more permissive detection of federal law subsections, so <a href="https://raindrum.github.io/lawsearch">Law Search</a> users can write things like "nlra 8 b 4" instead of "nlra 8(b)(4)."</p>
-<h2 id="defaults">defaults</h2>
-<p><code>defaults</code> is a dictionary of tokens whose values will be set to specified values, if they are not set by the regex. Defaults are applied prior to <a href="#token-processing">operations</a>.</p>
+<h2 id="miscellaneous-keys">Miscellaneous Keys</h2>
+<h3 id="defaults">defaults</h3>
+<p><code>defaults</code> is a dictionary of tokens whose values will be set to specified values, if they are not set by the regex. Defaults are applied prior to any <a href="#token-processing">operations</a>.</p>
 <pre><code class="language-yaml">Example Schema:
   regex: If no number here, assume 3:( (?P&lt;number&gt;\d+))?
   defaults: {'number': '3'}
 </code></pre>
+<h3 id="broadregex">broadRegex</h3>
+<p><code>broadRegex</code> is an optional alternative regex which, if present, will be used instead of <code>regex</code> in methods like <a href="classes/#citeurl.Schema.lookup">lookup()</a>, where convenience is more important than avoiding false positives.</p>
+<p>CiteURL's default schemas mainly use it to provide more permissive detection of federal law subsections, so <a href="https://raindrum.github.io/lawsearch">Law Search</a> users can write things like "nlra 8 b 4" instead of "nlra 8(b)(4)."</p>
+<p>Like the <code>regexes</code> key, you can use <code>broadRegexes</code> instead of <code>broadRegex</code> if you want to provide a list of multiple regexes. </p>
 
   <br>
     

@@ -62,7 +62,13 @@ const MATCH_ERROR = "Sorry, I couldn't recognize that citation."
 function getMatch(query) {
   for (var i in schemas) {
     var schema = schemas[i];
-    var match = query.match(new RegExp(schema['regex'], 'i'));
+    var match = false;
+    for (var r in schema['regexes']) {
+      match = query.match(new RegExp(schema['regexes'][r], 'i'));
+      if (match) {
+        break;
+      }
+    }
     if (match) {
       console.log(
         '"' + query + '" matched regex for ' + schema['name']
@@ -191,8 +197,9 @@ function processTokens(match) {
       }
     }
     
-    // change between digits and roman numerals
-    // this method is lazy and only goes up to 40
+    // Bidirectional conversion between digits and roman numerals. This method
+    // is lazy and only goes up to 100, but if you need it to go higher, you
+    // can just add more numeral-digit pairs to the list.
     if ('numberFormat' in operation) {
       let numerals = [
         ['I', '1'], ['II', '2'], ['III', '3'], ['IV', '4'], ['V', '5'],
@@ -204,9 +211,24 @@ function processTokens(match) {
         ['XXVII', '27'], ['XXVIII', '28'], ['XXIX', '29'], ['XXX', '30'],
         ['XXXI', '31'], ['XXXII', '32'], ['XXXIII', '33'], ['XXXIV', '34'],
         ['XXXV', '35'], ['XXXVI', '36'], ['XXXVII', '37'], ['XXXVIII', '38'],
-        ['XXXIX', '39'], ['XL', '40']
+        ['XXXIX', '39'], ['XL', '40'], ['XLI', '41'], ['XLII', '42'],
+        ['XLIII', '43'], ['XLIV', '44'], ['XLV', '45'], ['XLVI', '46'],
+        ['XLVII', '47'], ['XLVIII', '48'], ['XLIX', '49'], ['L', '50'],
+        ['LI', '51'], ['LII', '52'], ['LIII', '53'], ['LIV', '54'],
+        ['LV', '55'], ['LVI', '56'], ['LVII', '57'], ['LVIII', '58'],
+        ['LIX', '59'], ['LX', '60'], ['LXI', '61'], ['LXII', '62'],
+        ['LXIII', '63'], ['LXIV', '64'], ['LXV', '65'], ['LXVI', '66'],
+        ['LXVII', '67'], ['LXVIII', '68'], ['LXIX', '69'], ['LXX', '70'],
+        ['LXXI', '71'], ['LXXII', '72'], ['LXXIII', '73'], ['LXXIV', '74'],
+        ['LXXV', '75'], ['LXXVI', '76'], ['LXXVII', '77'], ['LXXVIII', '78'],
+        ['LXXIX', '79'], ['LXXX', '80'], ['LXXXI', '81'], ['LXXXII', '82'],
+        ['LXXXIII', '83'], ['LXXXIV', '84'], ['LXXXV', '85'],
+        ['LXXXVI', '86'], ['LXXXVII', '87'], ['LXXXVIII', '88'],
+        ['LXXXIX', '89'], ['XC', '90'], ['XCI', '91'], ['XCII', '92'],
+        ['XCIII', '93'], ['XCIV', '94'], ['XCV', '95'], ['XCVI', '96'],
+        ['XCVII', '97'], ['XCVIII', '98'], ['XCIX', '99'], ['C', '100']
       ];
-      // determine which format is used to look up the other
+      // determine which format is being used to look up the other
       let key, value;
       if (operation['numberFormat'] == 'roman') {
         key = 1;

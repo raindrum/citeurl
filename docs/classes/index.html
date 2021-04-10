@@ -482,8 +482,29 @@ text.</p>
 <span class="sd">    """</span>
     <span class="n">yaml_text</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
     <span class="n">yaml_dict</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">yaml_text</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">yaml_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">new_schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="c1"># read each item in the YAML into a new schema</span>
+    <span class="k">for</span> <span class="n">schema_name</span><span class="p">,</span> <span class="n">schema_data</span> <span class="ow">in</span> <span class="n">yaml_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># if regex is specified in singular form, convert it to a</span>
+        <span class="c1"># list with one item, for sake of consistency with multiple-</span>
+        <span class="c1"># regex schemas.</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'regex'</span><span class="p">,</span> <span class="s1">'broadRegex'</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">schema_data</span><span class="p">:</span>
+              <span class="n">schema_data</span><span class="p">[</span><span class="n">key</span> <span class="o">+</span> <span class="s1">'es'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">schema_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
+
+        <span class="c1"># unrelated: if an individual regex is given as a list of</span>
+        <span class="c1"># strings (convenient for reusing YAML anchors), concatenate</span>
+        <span class="c1"># it to one string.</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'regexes'</span><span class="p">,</span> <span class="s1">'broadRegexes'</span><span class="p">,</span> <span class="s1">'idForms'</span><span class="p">,</span> <span class="s1">'shortForms'</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">schema_data</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">regex</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">schema_data</span><span class="p">[</span><span class="n">key</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">regex</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+                    <span class="n">schema_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">regex</span><span class="p">)</span>
+
+        <span class="c1"># make the schema and add it to the citator, adding the</span>
+        <span class="c1"># generic id-form citation if applicable</span>
+        <span class="n">new_schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">schema_name</span><span class="p">,</span> <span class="o">**</span><span class="n">schema_data</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">use_generic_id</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span><span class="p">:</span>
             <span class="n">new_schema</span><span class="o">.</span><span class="n">idForms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">schemas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_schema</span><span class="p">)</span>
@@ -596,7 +617,7 @@ the Schema class directly.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="citeurl.Schema.__init__">
 
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">regex</span><span class="p">,</span> <span class="n">URL</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">broadRegex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">idForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">shortForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{},</span> <span class="n">operations</span><span class="o">=</span><span class="p">[],</span> <span class="n">parent_citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">regexes</span><span class="p">,</span> <span class="n">URL</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">broadRegexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">idForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">shortForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{},</span> <span class="n">operations</span><span class="o">=</span><span class="p">[],</span> <span class="n">parent_citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -627,15 +648,13 @@ run directly if needed.</p>
 <td><em>required</em></td>
 </tr>
 <tr>
-<td><code>regex</code></td>
-<td><code></code></td>
+<td><code>regexes</code></td>
+<td><code>list</code></td>
 <td>
-<p>The pattern to recognize citations. Can be either
-a string, or a list of strings. In the latter case, they
-will be concatenated (without any separator) to form one
-string. In any case, the regex should include one or
-more named capture groups (i.e. "tokens") that will be
-used to generate the URL.</p>
+<p>A list of one or more regexes that this schema will
+match. Each regex should be provided as a string, and
+should include one or more named capture groups
+(i.e. "tokens") that will be used to generate the URL.</p>
 </td>
 <td><em>required</em></td>
 </tr>
@@ -713,8 +732,6 @@ citation. So if a schema detects a longform citation to
 "372 U.S. 335" and has a shortform <code>{volume} {reporter}
 at (?P&lt;pincite&gt;\d+)</code>, it will generate the following
 regex: <code>372 U.S. at (?P&lt;pincite&gt;\d+)</code>.</p>
-<p>Like the regex parameter, each shortform can
-be given either as a string or as a list of strings.</p>
 </td>
 <td><code>[]</code></td>
 </tr>
@@ -756,11 +773,11 @@ only relevant for procedurally-generated schemas.</p>
           <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">regex</span><span class="p">,</span>
+    <span class="n">regexes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">URL</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">broadRegex</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">idForms</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">shortForms</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">broadRegexes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">idForms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">shortForms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">defaults</span><span class="p">:</span> <span class="nb">dict</span><span class="o">=</span><span class="p">{},</span>
     <span class="n">operations</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">parent_citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -774,12 +791,10 @@ only relevant for procedurally-generated schemas.</p>
 <span class="sd">    Arguments:</span>
 <span class="sd">        name: The name of this schema</span>
 
-<span class="sd">        regex: The pattern to recognize citations. Can be either</span>
-<span class="sd">            a string, or a list of strings. In the latter case, they</span>
-<span class="sd">            will be concatenated (without any separator) to form one</span>
-<span class="sd">            string. In any case, the regex should include one or</span>
-<span class="sd">            more named capture groups (i.e. "tokens") that will be</span>
-<span class="sd">            used to generate the URL.</span>
+<span class="sd">        regexes: A list of one or more regexes that this schema will</span>
+<span class="sd">            match. Each regex should be provided as a string, and</span>
+<span class="sd">            should include one or more named capture groups</span>
+<span class="sd">            (i.e. "tokens") that will be used to generate the URL.</span>
 
 <span class="sd">        URL: The template by which to generate URLs from citation</span>
 <span class="sd">            matches. Placeholders in {curly braces} will be replaced</span>
@@ -842,9 +857,6 @@ only relevant for procedurally-generated schemas.</p>
 <span class="sd">            at (?P&lt;pincite&gt;\d+)`, it will generate the following</span>
 <span class="sd">            regex: `372 U.S. at (?P&lt;pincite&gt;\d+)`.</span>
 
-<span class="sd">            Like the regex parameter, each shortform can</span>
-<span class="sd">            be given either as a string or as a list of strings.</span>
-
 <span class="sd">        idForms: Think "id.", not ID. Identical to shortForms,</span>
 <span class="sd">            except that these regexes will only match until the</span>
 <span class="sd">            next different citation or other interruption.</span>
@@ -860,20 +872,31 @@ only relevant for procedurally-generated schemas.</p>
 <span class="sd">    """</span>
     <span class="c1"># Basic values</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">name</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'(\b|^)'</span> <span class="o">+</span> <span class="n">_join_if_list</span><span class="p">(</span><span class="n">regex</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">regexes</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">regexes</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">is_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">is_id</span>
     <span class="k">if</span> <span class="n">URL</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">URL</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span> <span class="k">else</span> <span class="p">[</span><span class="n">URL</span><span class="p">]</span>
     <span class="c1"># Supplemental regexes</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">broadRegex</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">_join_if_list</span><span class="p">(</span><span class="n">broadRegex</span><span class="p">)</span> <span class="k">if</span> <span class="n">broadRegex</span> <span class="k">else</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">idForms</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="n">_join_if_list</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">idForms</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">shortForms</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="n">_join_if_list</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">shortForms</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">broadRegexes</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">broadRegexes</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">idForms</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">idForms</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">shortForms</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">shortForms</span>
     <span class="c1"># String operators</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">defaults</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">operations</span>
 
     <span class="c1"># Extra data for shortform citations</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">parent_citation</span><span class="p">:</span> <span class="n">Citation</span> <span class="o">=</span> <span class="n">parent_citation</span>
+
+    <span class="c1"># hack: prevent all regexes from matching mid-word</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'regexes'</span><span class="p">,</span> <span class="s1">'broadRegexes'</span><span class="p">,</span> <span class="s1">'idForms'</span><span class="p">,</span> <span class="s1">'shortForms'</span><span class="p">]:</span>
+        <span class="n">regex_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">regex_list</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">regex_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">r</span><span class="s1">'(\b|^)'</span> <span class="o">+</span> <span class="n">x</span><span class="p">,</span> <span class="n">regex_list</span><span class="p">))</span>
+
+    <span class="c1"># dictionaries of compiled regexes</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_regexes</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_broadRegexes</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
 </code></pre>
 </div>
 </details>
@@ -969,7 +992,10 @@ for citations. Defaults to (0,) to scan the entire text.</p>
 <span class="sd">        Generator that yields each citation the schema finds in the</span>
 <span class="sd">            text, or None.</span>
 <span class="sd">    """</span>
-    <span class="n">matches</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_re</span><span class="p">(</span><span class="n">broad</span><span class="p">)</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="n">span</span><span class="p">)</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regexes</span><span class="p">)):</span>
+        <span class="n">matches</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_re</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">broad</span><span class="p">)</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="n">span</span><span class="p">)</span>
+
     <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">citation</span> <span class="o">=</span> <span class="n">Citation</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
@@ -1167,11 +1193,7 @@ by means other than a Citator or Schema object.</p>
 <details class="quote">
           <summary>Source code in <code>citeurl/__init__.py</code></summary>
           <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">match</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">Match</span><span class="p">,</span>
-    <span class="n">schema</span>
-<span class="p">):</span>
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">match</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">Match</span><span class="p">,</span> <span class="n">schema</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    For internal use. There should be no need to create citations</span>
 <span class="sd">    by means other than a Citator or Schema object.</span>
