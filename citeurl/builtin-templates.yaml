@@ -9,11 +9,6 @@ United States Code:
       - &section ' ((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.]*\w|\d))'
       - &subsection '(((,? )?sub(sections?|divisions?|(sec|d(iv)?)?s?\.) ?)?(?P<subsection>(\(\w+\))+))?'
     - ['[Ss]ection', *section, *subsection, ' of ', *title, 'of the ', *usc]
-  broadRegex:
-    - *title
-    - *usc
-    - *section
-    - &broadsub (((,? )?sub(sections?|divisions?|(sec|d(iv)?)?s?\.?) ?)? ?(?P<subsection>(\(\w+\))+|((\w{1,5}) ?)+))?
   idForms: &id_sec_sub
     - - &id_at '\b[Ii]d\.,?(<\/(i|em|u)>)?(,? at ?)? ?'
       - *section
@@ -52,16 +47,31 @@ United States Constitution:
       - *us_const_sec
       - (
       - *us_const_clause
-      - ')?)? of the '
+      - ')?)? (of|to) the '
       - *us_const
+    - - &us_const_sec2 '(((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>\d+|[IVXivx]{1,7})('
+      - *us_const_clause
+      - ')? of )?'
+      - &the_us_const_amdt '([Tt]he )?(?P<amendment>\d{1,2}(st|nd|rd|th)|([Tt]wenty(-| )?)?([Ff]irst|[Ss]econd|[Tt]hird|[Ff]ourth|[Ff]ifth|[Ss]ixth|[Ss]eventh|[Ee]ighth|[Nn]inth)|[Tt]enth|[Ee]leventh|[Tt]welfth|([Tt]hir|[Ff]our|[Ff]if|[Ss]ix|[Ss]even|[Ee]igh|[Nn]ine)teenth|[Tt]wentieth) [Aa]m(endment|dt?\.|end\.)'
+      - ' (of|to) the '
+      - *us_const
+  broadRegexes:
+    - ['(^|', *us_const, ')', *us_const_art_am, '(', *us_const_sec, '(', *us_const_clause, ')?)?']
+    - [*us_const_sec2, *us_const_clause, ')? of )?', *the_us_const_amdt]
   idForms:
     - [*id_at, *us_const_art_am, '(', *us_const_sec, '(', *us_const_clause, ')?)?']
     - [*id_at, *us_const_sec, '(', *us_const_clause, ')?']
     - [*id_at, *us_const_clause]
-  shortForms: [[*us_const_art_am, '(', *us_const_sec, '(', *us_const_clause, ')?)?']]
+  shortForms: 
+    - [*us_const_art_am, '(', *us_const_sec, '(', *us_const_clause, ')?)?']
+    - *the_us_const_amdt
   operations:
     - token: article
-      optionalLookup: {'one':'1', 'two':'2', 'three':'3', 'four':'4', 'five':'5', 'six':'6', 'seven':'7'} 
+      optionalLookup: {'one':'1', 'two':'2', 'three':'3', 'four':'4', 'five':'5', 'six':'6', 'seven':'7'}
+    - token: amendment
+      sub: ['(st|nd|rd|th)$', '']
+    - token: amendment
+      optionalLookup: {'fir': '1', 'seco': '2', 'thi': '3', 'four': '4', 'fif': '5', 'six': '6', 'seven': '7', 'eigh': '8', 'nin': '9', 'ten': '10', 'eleven': '11', 'twelf': '12', 'thirteen': '13', 'fourteen': '14', 'fifteen': '15', 'sixteen': '16', 'seventeen': '17', 'eighteen': '18', 'nineteen': '19', 'twentie': '20', 'twenty(- )?fir': '21', 'twenty(- )?seco': '22', 'twenty(- )?thi': '23', 'twenty(- )?four': '24', 'twenty(- )?fif': '25', 'twenty(- )?six': '26', 'twenty(- )?seven': '21', 'twenty(- )?eigh': '28', 'twenty(- )?nin': '29'}
     - token: article
       numberFormat: roman
       output: article_roman
@@ -101,7 +111,6 @@ Code of Federal Regulations:
     - *section
     - *subsection
   idForms: *id_sec_sub
-  broadRegex: [*title, *cfr, *section, *broadsub]
   URL: &cfr_url
     - https://ecfr.federalregister.gov/cfr-reference?cfr%5Bdate%5D=current&cfr%5Breference%5D={title} CFR {section}
     - '#p-{section}{subsection}'
@@ -118,7 +127,6 @@ Federal Rules of Civil Procedure:
     - &frcp '(F\.? ?R\.? ?C\.? ?P\.?|Fed\.? ?R(\.?|ule) ?Civ\.? ?Pr?o?c?\.?|Federal Rules? of Civil Procedure)'
     - &rule ' ?(Rule )?(?P<rule>\d+(\.\d+)?[a-z]?)'
     - *subsection
-  broadRegex: [*frcp, *rule, *broadsub]
   idForms: &id_rule_sub
     - [*id_at, *rule, *subsection]
     - *subsection_id
@@ -137,7 +145,6 @@ Federal Rules of Appellate Procedure:
 Federal Rules of Criminal Procedure:
   regex: [&frcrp '(F\.? ?R\.? ?Cr\.? ?P\.?|Fed\.? ?R(\.?|ule) ?Crim\.? ?Pr?o?c?\.?|Federal Rules? of Criminal Procedure)', *rule, *subsection]
   idForms: *id_rule_sub
-  broadRegex: [*frcrp, *rule, *broadsub]
   operations: *usc_sub
   URL:
     - https://www.law.cornell.edu/rules/frcrmp
@@ -161,7 +168,6 @@ Federal Rules of Evidence:
 
 Immigration and Nationality Act:
   regex: [&ina '(Immigration ([Aa]nd|&) Nationality Act|I\.?N\.?A\.?|I\. N\. A\.)', *section, *subsection]
-  broadRegex: [*ina, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {title: '8'}
   operations:
@@ -176,7 +182,6 @@ Internal Revenue Code:
     - &irc '(Internal Revenue Code|I\.? ?R\.? ?C\.?)'
     - *section
     - *subsection
-  broadRegex: [*irc, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {'title': '26'}
   operations: *usc_sub
@@ -184,7 +189,6 @@ Internal Revenue Code:
 
 Treasury Regulations:
   regex: [&treasreg 'Treas(ury|\.?) ?Reg(ulations?|\.?)', *section, *subsection]
-  broadRegex: [*treasreg, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {'title': '26'}
   operations: *usc_sub
@@ -195,7 +199,6 @@ National Labor Relations Act:
     - &nlra (Natioanal Labor Relations Act|N\.? ?L\.? ?R\.? ?A\.?)
     - *section
     - *subsection
-  broadRegex: [*nlra, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {'title': '29'}
   operations:
@@ -215,7 +218,6 @@ National Labor Relations Board Slip Opinions:
 
 Endangered Species Act:
   regex: [&esa '(Endangered Species Act|E\.? ?S\.? ?A\.?)', *section, *subsection]
-  broadRegex: [*esa, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {'title': '16'}
   operations: *usc_sub
@@ -231,7 +233,6 @@ Clean Air Act:
     - &caa (C\.? ?A\.? ?A\.?|Clean Air Act)
     - *section
     - *subsection
-  broadRegex: [*caa, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {'title': '42'}
   operations: *usc_sub
@@ -245,7 +246,6 @@ Clean Water Act:
     - &cwa (Clean Water Act|C\.? ?W\.? ?A\.?)
     - *section
     - *subsection
-  broadRegex: [*cwa, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {'title': '33'}
   operations:
@@ -260,7 +260,6 @@ Fair Housing Act:
     - &fha (Fair Housing Act|F\.? ?h\.? ?A\.?)
     - *section
     - *subsection
-  broadRegex: [*fha, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {'title': '42'}
   operations: *usc_sub
@@ -276,7 +275,6 @@ Americans With Disabilities Act:
     - &ada (Americans [Ww]ith Disabilities Act|A\. D\. A\.|A\.?D\.?A\.?)
     - *section
     - *subsection
-  broadRegex: [*ada, *section, *broadsub]
   idForms: *id_sec_sub
   defaults: {'title': '42'}
   operations:
@@ -294,7 +292,6 @@ Uniform Commercial Code:
   regex:
     - &ucc '(Uniform Commercial Code|U\.? ?C\.? ?C\.?)( ?§)? (?P<article>\d[a-z]?)[-‑–](?P<section>\d+)'
     - *subsection
-  broadRegex: [*ucc, *broadsub]
   operations: *usc_sub
   URL:
     - https://www.law.cornell.edu/ucc/{article}/{article}-{section}

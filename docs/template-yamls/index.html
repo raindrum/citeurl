@@ -11,7 +11,7 @@
     
     <link rel="shortcut icon" href="../img/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>Writing Your Own Schemas - CiteURL</title>
+    <title>Writing Your Own Templates - CiteURL</title>
     <link href="../css/bootstrap-3.3.7.min.css" rel="stylesheet">
     <link href="../css/font-awesome-4.7.0.css" rel="stylesheet">
     <link href="../css/base.css" rel="stylesheet">
@@ -32,8 +32,8 @@
       var is_top_frame = false;
         
         var pageToc = [
-          {title: "Writing Your Own Schemas", url: "#_top", children: [
-              {title: "The Basic Schema Format", url: "#the-basic-schema-format" },
+          {title: "Writing Your Own Templates", url: "#_top", children: [
+              {title: "The Basic Template Format", url: "#the-basic-template-format" },
               {title: "Token Processing", url: "#token-processing" },
               {title: "Recognizing Shortform Citations", url: "#recognizing-shortform-citations" },
               {title: "Miscellaneous Keys", url: "#miscellaneous-keys" },
@@ -74,33 +74,34 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 
     
 
-    <h1 id="writing-your-own-schemas">Writing Your Own Schemas</h1>
-<p>CiteURL supports a number of citation formats out-of-the box, and I try to add more when I can. However, it will never support every possible kind of citation, and you might want to treat certain citations differently than CiteURL does by default.</p>
-<p>Schemas <a href="classes/#citeurl.Schema.__init__">can be created at runtime</a>, but it is more practical to write a list of them in a YAML file, and load them when instantiating a <a href="classes#citator">Citator</a>. As such, all of <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/default-schemas.yaml">CiteURL's built-in schemas</a>, and the schemas described on this page, are in YAML format.</p>
-<p>Before you proceed, make sure you're fairly familiar with <a href="https://docs.python.org/3/howto/regex.html">Python Regular Expressions</a>, because schemas rely on them heavily. You'll also need some basic knowledge of <a href="https://www.w3schools.io/file/yaml-introduction/">YAML</a>.</p>
-<h2 id="the-basic-schema-format">The Basic Schema Format</h2>
-<p>Here is a simplified example of a schema that you might write to recognize citations to the U.S. Code:</p>
+    <h1 id="writing-your-own-templates">Writing Your Own Templates</h1>
+<p>CiteURL supports a number of citation formats out-of-the box, and I try to add more when I can. However, it will never support every possible kind of citation, and you might want to treat certain citations differently than CiteURL's built-in templates do.</p>
+<p>Templates <a href="classes/#citeurl.Template.__init__">can be created at runtime</a>, but it is often more practical to write a list of them in a YAML file, and load them when instantiating a <a href="classes#citator">Citator</a>. As such, all of <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml">CiteURL's built-in templates</a>, and the templates described on this page, are in YAML format.</p>
+<p>Before you proceed, make sure you're fairly familiar with <a href="https://docs.python.org/3/howto/regex.html">Python Regular Expressions</a>, because the templates rely on them heavily. You'll also need some basic knowledge of <a href="https://www.w3schools.io/file/yaml-introduction/">YAML</a>.</p>
+<h2 id="the-basic-template-format">The Basic Template Format</h2>
+<p>Here is a simplified example of a template that you might write to recognize citations to the U.S. Code:</p>
 <pre><code class="language-yaml">United States Code:
   regex: (?P&lt;title&gt;\d+) USC § (?P&lt;section&gt;\d+)
   URL: https://www.law.cornell.edu/uscode/text/{title}/{section}
 </code></pre>
-<p>This schema recognizes any series of one or more digits, followed by " USC § ", followed by another series of digits. It knows that the first string of digits is something called a "title" and the second is a "section". We will call these stored values <code>tokens</code>. Finally, the schema contains a template to generate a URL based on the recognized citation. It does this by replacing the placeholders (i.e. the parts in curly braces) with the values from the captured tokens.</p>
+<p>This citation template recognizes any series of one or more digits, followed by " USC § ", followed by another series of digits. It knows that the first string of digits is something called a "title" and the second is a "section". We will call these stored values <code>tokens</code>.</p>
+<p>Finally, the template also has a pattern to generate a URL based on the recognized citation. It does this by replacing the placeholders (i.e. the parts in curly braces) with the values from the captured tokens. Although this template does not have any, it could also define <a href="#token-processing">operations</a> to perform on the captured tokens before inserting them into the URL.</p>
 <h3 id="regex-complications">Regex Complications</h3>
-<p>In the example above, the regex is provided as a single string. This is perfectly valid, but schemas' regexes can be much more complicated than this, for two reasons:</p>
+<p>In the example above, the regex is provided as a single string. This is perfectly valid, but templates' regexes can be much more complicated than this, for two reasons:</p>
 <ol>
 <li>A regex can be provided either as a string (as shown above), <em>or</em> as a list of strings. In the latter case, they will be concatenated (with no spaces) to create the actual regex. There is no functional difference between using strings and lists, except that providing them in list form allows you to reuse common regex parts using <a href="https://medium.com/@kinghuang/docker-compose-anchors-aliases-extensions-a1e4105d70bd">YAML anchors</a>.</li>
-<li>Independent of the first reason, it is possible to give a schema <em>multiple</em> regexes to match, by using the <code>regexes</code> key instead of <code>regex</code>. Normally, this will not be necessary, because the usual solution is to just write one regex to recognize multiple citation formats. However, regexes are limited in that capture groups cannot be rearranged.</li>
+<li>Independent of the first reason, it is possible to give a template <em>multiple</em> regexes to match, by using the <code>regexes</code> key instead of <code>regex</code>. Normally, this will not be necessary, because the usual solution is to just write one regex to recognize multiple citation formats. However, regexes are limited in that capture groups cannot be rearranged.</li>
 </ol>
-<p>The example schema above can be rewritten to take advantage of these two features, like so:</p>
+<p>The example template above can be rewritten to take advantage of these two features, like so:</p>
 <pre><code class="language-yaml">United States Code
   regexes:
     - [&amp;title '(?P&lt;title&gt;\d+)', ' USC ', &amp;section '(Section|§) (?P&lt;section&gt;\d+)']
     - [*section, ' of Title ', *title, ' of the United States Code']
   URL: https://www.law.cornell.edu/uscode/text/{title}/{section}
 </code></pre>
-<p>The above schema looks unwieldy, and it is; it is a list of lists. However, it provides two advantages over the first schema: First, it is possible to recognize both "42 USC § 1983" and "Section 1983 of Title 42 of the United States Code," which would be impossible with a single regex, since <code>title</code> and <code>section</code> are in a different order. Second, by using YAML anchors it is possible to reuse common pieces of regex, like <code>*section</code>, which can recognize either the word "Section" or a section sign ("§"). This can make it much easier to write and maintain large libraries of schemas.</p>
+<p>The above template looks unwieldy, and it is; it is a list of lists. However, it provides two advantages over the first template: First, it is possible to recognize both "42 USC § 1983" and "Section 1983 of Title 42 of the United States Code," which would be impossible with a single regex, since <code>title</code> and <code>section</code> are in a different order. Second, by using YAML anchors it is possible to reuse common pieces of regex, like <code>*section</code>, which can recognize either the word "Section" or a section sign ("§"). This can make it much easier to write and maintain large libraries of templates.</p>
 <h3 id="url-complications">URL Complications</h3>
-<p>Another important feature is that a schema's URL, like its regex(es), can be specified as a list of strings to concatenate. However, this serves a functional purpose: If a list item contains a placeholder for which no value is set, that whole list item will be omitted from the final URL. For instance, the schema below can generate anchor links to subsections of the U.S. Code, but if no subsection is provided, it simply links to the overall page for the section itself:</p>
+<p>Another important feature is that a template's URL, like its regex(es), can be specified as a list of strings to concatenate. However, this serves a functional purpose: If a list item contains a placeholder for which no value is set, that whole list item will be omitted from the final URL. For instance, the template below can generate anchor links to subsections of the U.S. Code, but if no subsection is provided, it simply links to the overall page for the section itself:</p>
 <pre><code class="language-yaml">United States Code
   regex: (?P&lt;title&gt;\d+) USC § (?P&lt;section&gt;\d+)( \((?P&lt;subsection&gt;[a-z])\)?
   URL:
@@ -108,9 +109,9 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
     - '#{subsection}'
 </code></pre>
 <h2 id="token-processing">Token Processing</h2>
-<p>In many cases, the tokens matched in a citation won't directly correspond with the values that need to be inserted into the URL placeholder. For example, your schema might detect a court reporter called "F. App'x." or "Pa. D. &amp; C.4th", but <a href="https://case.law/">Case.Law</a>'s URL scheme needs those reporters to be called "<a href="https://cite.case.law/f-appx/">f-appx</a>" and "<a href="https://cite.case.law/pa-d-c4th/">pa-d-c4th</a>", respectively.</p>
-<p>To solve this problem, CiteURL schemas can specify <code>operations</code> that will be performed on the dictionary of matched tokens to turn them into a new dictionary (i.e. <code>processed_tokens</code>) before using it to populate the URL.</p>
-<p>This example schema solves the problem by converting the <code>reporter</code> token to lowercase, deleting some common special characters from it, and then replacing spaces with dashes:</p>
+<p>In many cases, the tokens matched in a citation won't directly correspond with the values that need to be inserted into the URL placeholder. For example, your template might detect a court reporter called "F. App'x." or "Pa. D. &amp; C.4th", but <a href="https://case.law/">Case.Law</a>'s URL scheme needs those reporters to be called "<a href="https://cite.case.law/f-appx/">f-appx</a>" and "<a href="https://cite.case.law/pa-d-c4th/">pa-d-c4th</a>", respectively.</p>
+<p>To solve this problem, CiteURL templates can specify <code>operations</code> that will be performed on the dictionary of matched tokens to turn them into a new dictionary (i.e. <code>processed_tokens</code>) before using it to populate the URL.</p>
+<p>This example template solves the problem by converting the <code>reporter</code> token to lowercase, deleting some common special characters from it, and then replacing spaces with dashes:</p>
 <pre><code class="language-yaml">Caselaw Access Project (Simplified):
   regex: (?P&lt;volume&gt;\d+) (?P&lt;reporter&gt;(\D|\d(d|th|rd))+?) (?P&lt;page&gt;\d+)
   operations:
@@ -122,7 +123,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
       sub: [' ', '-']
   URL: https://cite.case.law/{reporter}/{volume}/{page}
 </code></pre>
-<p>As shown above, a schema's <code>operations</code> value is a list of operations that will be performed in sequence. Each operation is a dictionary that must specify a <code>token</code> to process, and the kind of operation to perform. Operations process a token in place by default, but if an <code>output</code> is specified, that token will be set or modified instead.</p>
+<p>As shown above, a template's <code>operations</code> value is a list of operations that will be performed in sequence. Each operation is a dictionary that must specify a <code>token</code> to process, and the kind of operation to perform. Operations process a token in place by default, but if an <code>output</code> is specified, that token will be set or modified instead.</p>
 <p>The above example shows two kinds of operation: case modification (<code>case</code>), and regex substitution (<code>sub</code>), but CiteURL supports others as well:</p>
 <table>
 <thead>
@@ -145,7 +146,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </tr>
 <tr>
 <td><code>lookup</code></td>
-<td>uses case-insensitive regex matching to check the token against each pattern until it fully matches, in which case it outputs the corresponding replacement string. If no pattern is matched, it causes the entire schema match to retroactively fail.</td>
+<td>uses case-insensitive regex matching to check the token against each pattern until it fully matches, in which case it outputs the corresponding replacement string. If no pattern is matched, it causes the entire template match to retroactively fail.</td>
 <td><code>{PATTERN: REPL, PATTERN: REPL ...}</code></td>
 </tr>
 <tr>
@@ -168,8 +169,8 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <p>One final note: If an operation's input token has not been set (as distinct from being set to an empty string), the operation will be skipped.</p>
 <h2 id="recognizing-shortform-citations">Recognizing Shortform Citations</h2>
 <p>Often, once a particular authority is cited once, subsequent references to it will take a shorter, more contextual format. For example, if a text cites <em>United States v. An Article Consisting of Boxes of Clacker Balls</em>, 413 F. Supp. 1281 (1976), then immediately cites a specific page of it, the citation might look something like "<em>Id</em>. at 1284." Later, once another authority has been cited, the same citation might be referred back to with a citation like "413 F. Supp. at 1289."</p>
-<p>To address this, CiteURL can essentially generate new schemas on the fly, whenever it detects a citation. These schemas can be of two forms: <code>shortForms</code> and <code>idForms</code>. In each case, the schema is only applied to text after the original long-form citation. The difference is that <code>shortForms</code> are applied to <em>all</em> of the remaining text, whereas <code>idForms</code> are only matched against the text in between one citation and the next. The <a href="classes/#citator">Citator.list_citations()</a> function also accepts an interruption regex, all occurrences of which will break chains of "id." citations.</p>
-<p>Like URL templates, <code>idForms</code> and <code>shortForms</code> may contain placeholders in curly braces. These placeholders will be replaced with the corresponding token matched in the long-form citation, so that you can ensure that they only match citations where those tokens are unchanged. For instance, you could write a schema to recognize court cases:</p>
+<p>To address this, CiteURL can essentially generate new templates on the fly, whenever it detects a citation. These templates can be of two forms: <code>shortForms</code> and <code>idForms</code>. In each case, the template is only applied to text after the original long-form citation. The difference is that <code>shortForms</code> are applied to <em>all</em> of the remaining text, whereas <code>idForms</code> are only matched against the text in between one citation and the next. The <a href="classes/#citator">Citator.list_citations()</a> function also accepts an interruption regex, all occurrences of which will break chains of "id." citations.</p>
+<p>Like URL templates, <code>idForms</code> and <code>shortForms</code> may contain placeholders in curly braces. These placeholders will be replaced with the corresponding token matched in the long-form citation, so that you can ensure that they only match citations where those tokens are unchanged. For instance, you could write a template to recognize court cases:</p>
 <pre><code class="language-yaml">Caselaw Access Project (Simplified):
   regex: (?P&lt;volume&gt;\d+) (?P&lt;reporter&gt;(\D|\d(d|th|rd))+?) (?P&lt;page&gt;\d+)(, (?P&lt;pincite&gt;\d+))?
   idForms:
@@ -177,7 +178,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
   shortForms:
     - {volume} {reporter} at (?P&lt;pincite&gt;\d+)
 </code></pre>
-<p>This schema will recognize long-form citations like 372 U.S. 335 (optionally with a pincite citation afterwards). After that long-form citation is recognized, it will generate the regex <code>372 U\.S\. at (?P&lt;pincite&gt;\d+)</code>, to recognize later citations to different pincites in the same case.</p>
+<p>This template will recognize long-form citations like 372 U.S. 335 (optionally with a pincite citation afterwards). After that long-form citation is recognized, it will generate the regex <code>372 U\.S\. at (?P&lt;pincite&gt;\d+)</code>, to recognize later citations to different pincites in the same case.</p>
 <p>To be precise, placeholders are replaced by the text <em>as originally matched</em> in the original regex capture group, before any <a href="#token-processing">operations</a> are applied. This is normally the desired behavior, since operations often turn a token into something that would never be recognized. An exception applies where the placeholder refers to a token that only exists after operations are applied. In those cases, the processed token is used.</p>
 <p>This exception is useful in a few situations. For instance, a California court opinion might reference "California Civil Code § 1946.2" once early on, but then shift to a format like "CIV § 1946.2" in later citations. This poses a problem because the new form drops reference to California, so it's too generic to be its own long-form citation, while at the same time it doesn't match the "Civil Code" token, either. But this can be solved by using a substitution to recognize "Civil Code" and, from it, generate a new token "CIV", then generating a short citation form from that:</p>
 <pre><code class="language-yaml">California Codes:
@@ -190,8 +191,8 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
     - {abbreviatedCode} § (?P&lt;section&gt;\d+)
     - {code} § (?P&lt;section&gt;\d+)
 </code></pre>
-<p>Using the example schema above, CiteURL will be able to recognize a longform citation to "California Civil Code § 1946.2", and then recognize subsequent citations <em>either</em> to "Civil Code" sections <em>or</em> "CIV" sections.</p>
-<p>One last note: Unlike a schema's <code>regex</code>, <code>shortForms</code> and <code>idForms</code> are inherently lists, since they are designed to allow multiple alternative regexes. However, like the <code>regex</code> entry, individual list items can optionally be lists of strings, to accommodate YAML anchors. For instance, the following schema is functionally identical to the Caselaw Access Project example above; the only difference is that I structured it so that I would only need to write <code>(?P&lt;pincite&gt;\d+)</code> once:</p>
+<p>Using the example template above, CiteURL will be able to recognize a longform citation to "California Civil Code § 1946.2", and then recognize subsequent citations <em>either</em> to "Civil Code" sections <em>or</em> "CIV" sections.</p>
+<p>One last note: Unlike a template's <code>regex</code>, <code>shortForms</code> and <code>idForms</code> are inherently lists, since they are designed to allow multiple alternative regexes. However, like the <code>regex</code> entry, individual list items can optionally be lists of strings, to accommodate YAML anchors. For instance, the following template is functionally identical to the Caselaw Access Project example above; the only difference is that I structured it so that I would only need to write <code>(?P&lt;pincite&gt;\d+)</code> once:</p>
 <pre><code class="language-yaml">Caselaw Access Project (Simplified):
   regex:
     - '(?P&lt;volume&gt;\d+) (?P&lt;reporter&gt;(\D|\d(d|th|rd))+?) (?P&lt;page&gt;\d+)(, '
@@ -204,15 +205,15 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </code></pre>
 <h2 id="miscellaneous-keys">Miscellaneous Keys</h2>
 <h3 id="defaults">defaults</h3>
-<p><code>defaults</code> is a dictionary of tokens whose values will be set to specified values, if they are not set by the regex. Defaults are applied prior to any <a href="#token-processing">operations</a>.</p>
-<pre><code class="language-yaml">Example Schema:
-  regex: If no number here, assume 3:( (?P&lt;number&gt;\d+))?
-  defaults: {'number': '3'}
+<p><code>defaults</code> is a dictionary of tokens whose values will be set to specified values, if they are not set by a named capture group in the matched regex. Defaults are applied prior to any <a href="#token-processing">operations</a>.</p>
+<p>For instance, the template below will match citations like "29 USC § 157" as well as citations like "§ 1983", but in the latter case, it assumes that the title is '42' by default.</p>
+<pre><code class="language-yaml">U.S. Code, but especially Title 42:
+  regex: ((?P&lt;title&gt;\d+) USC )?§ (?P&lt;section&gt;\d+)
+  defaults: {'title': '42'}
 </code></pre>
 <h3 id="broadregex">broadRegex</h3>
-<p><code>broadRegex</code> is an optional alternative regex which, if present, will be used instead of <code>regex</code> in methods like <a href="classes/#citeurl.Schema.lookup">lookup()</a>, where convenience is more important than avoiding false positives.</p>
-<p>CiteURL's default schemas mainly use it to provide more permissive detection of federal law subsections, so <a href="https://raindrum.github.io/lawsearch">Law Search</a> users can write things like "nlra 8 b 4" instead of "nlra 8(b)(4)."</p>
-<p>Like the <code>regexes</code> key, you can use <code>broadRegexes</code> instead of <code>broadRegex</code> if you want to provide a list of multiple regexes. </p>
+<p><code>broadRegex</code> and <code>broadRegexes</code> are identical in format to the <code>regex</code> and <code>regexes</code> keys. They allow you to specify extra regexes that will be used, in addition to the normal regex(es), in contexts like search engines where user convenience is more important than avoiding false positives. </p>
+<p>BroadRegexes are used by default in the <a href="classes/#citeurl.Template.lookup">lookup()</a> method, as well as in JavaScript implementations generated through the <code>citeurl-makejs</code> command.</p>
 
   <br>
     

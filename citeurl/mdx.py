@@ -39,14 +39,14 @@ class CiteURLExtension(Extension):
     """Detects legal citations and inserts relevant hyperlinks."""
     def __init__(self, **kwargs):
         self.config = {
-            'custom_schemas': [
+            'custom_templates': [
                 [],
                 'List of paths to YAML files containing additional citation'
-                + 'schemas to load. - Default: []',
+                + 'templates to load. - Default: []',
             ],
             'use_defaults': [
                 True,
-                "Load CiteURL's default citation schemas? - Default: True"
+                "Load CiteURL's default citation templates? - Default: True"
             ],
             'link_detailed_ids': [
                 True,
@@ -75,7 +75,7 @@ class CiteURLExtension(Extension):
         global CITATOR
         if not CITATOR:
             CITATOR = Citator(
-                yaml_paths = self.config['custom_schemas'][0] or [],
+                yaml_paths = self.config['custom_templates'][0] or [],
                 defaults = self.config['use_defaults'][0]
             )
         md.postprocessors.register(

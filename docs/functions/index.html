@@ -61,12 +61,12 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
   <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
     
     <div class="wm-article-nav pull-right">
-      <a href="../schema-yamls/" class="btn btn-xs btn-default pull-right">
+      <a href="../template-yamls/" class="btn btn-xs btn-default pull-right">
         Next
         <i class="fa fa-chevron-right" aria-hidden="true"></i>
       </a>
-      <a href="../schema-yamls/" class="btn btn-xs btn-link">
-        Writing Your Own Schemas
+      <a href="../template-yamls/" class="btn btn-xs btn-link">
+        Writing Your Own Templates
       </a>
     </div>
     
@@ -206,8 +206,8 @@ do not have an associated URL</p>
     <span class="k">for</span> <span class="n">citation</span> <span class="ow">in</span> <span class="n">citations</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">citation</span><span class="o">.</span><span class="n">URL</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">url_optional</span><span class="p">:</span>
             <span class="k">continue</span>
-        <span class="k">if</span> <span class="n">citation</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">is_id</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">citation</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">_compiled_re</span><span class="p">()</span><span class="o">.</span><span class="n">groupindex</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">citation</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">is_id</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">citation</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">_compiled_re</span><span class="p">()</span><span class="o">.</span><span class="n">groupindex</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">link_detailed_ids</span><span class="p">:</span>
                     <span class="k">continue</span>
             <span class="k">elif</span> <span class="ow">not</span> <span class="n">link_plain_ids</span><span class="p">:</span>
@@ -330,12 +330,12 @@ that refer to each, from most to least.</p>
   <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
     
     <div class="wm-article-nav pull-right">
-      <a href="../schema-yamls/" class="btn btn-xs btn-default pull-right">
+      <a href="../template-yamls/" class="btn btn-xs btn-default pull-right">
         Next
         <i class="fa fa-chevron-right" aria-hidden="true"></i>
       </a>
-      <a href="../schema-yamls/" class="btn btn-xs btn-link">
-        Writing Your Own Schemas
+      <a href="../template-yamls/" class="btn btn-xs btn-link">
+        Writing Your Own Templates
       </a>
     </div>
     

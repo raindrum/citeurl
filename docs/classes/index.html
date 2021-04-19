@@ -34,7 +34,7 @@
         var pageToc = [
           {title: "Classes", url: "#_top", children: [
               {title: "Citator", url: "#citator" },
-              {title: "Schema", url: "#schema" },
+              {title: "Template", url: "#template" },
               {title: "Citation", url: "#citation" },
               {title: "Authority", url: "#authority" },
           ]},
@@ -90,7 +90,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <h3 class="hidden-toc" id="citeurl.Citator" style="visibility: hidden; position: absolute;">
         </h3>
 <div class="doc doc-contents first">
-<p>CiteURL's main feature: a collection of schemas, and the tools
+<p>CiteURL's main feature: a collection of templates, and the tools
 to apply them to text, to find all kinds of citations in a text.</p>
 <p><strong>Attributes:</strong></p>
 <table>
@@ -103,10 +103,10 @@ to apply them to text, to find all kinds of citations in a text.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>schemas</code></td>
+<td><code>templates</code></td>
 <td><code>list</code></td>
 <td>
-<p>A list of schema objects that this citator will try to
+<p>A list of template objects that this citator will try to
 match against.</p>
 </td>
 </tr>
@@ -115,7 +115,7 @@ match against.</p>
 <td><code>str</code></td>
 <td>
 <p>A common regex the citator will append to each
-schema when it is loaded, to recognize a simple citation to
+template when it is loaded, to recognize a simple citation to
 the most-recently cited source.</p>
 </td>
 </tr>
@@ -134,7 +134,7 @@ the most-recently cited source.</p>
       </h3>
 <div class="doc doc-contents ">
 <p>Calls load_yaml one or more times, to load the citator with
-schemas.</p>
+templates.</p>
 <p><strong>Parameters:</strong></p>
 <table>
 <thead>
@@ -150,7 +150,7 @@ schemas.</p>
 <td><code>defaults</code></td>
 <td><code>bool</code></td>
 <td>
-<p>Whether to load CiteURL's default schemas</p>
+<p>Whether to load CiteURL's default templates</p>
 </td>
 <td><code>True</code></td>
 </tr>
@@ -158,7 +158,7 @@ schemas.</p>
 <td><code>yaml_paths</code></td>
 <td><code>list</code></td>
 <td>
-<p>paths to additional YAML files with schemas that
+<p>paths to additional YAML files with templates that
 should be loaded to supplement or replace the defaults.</p>
 </td>
 <td><code>[]</code></td>
@@ -167,7 +167,7 @@ should be loaded to supplement or replace the defaults.</p>
 <td><code>generic_id</code></td>
 <td><code>str</code></td>
 <td>
-<p>a common regex to append to all schemas, to
+<p>a common regex to append to all templates, to
 recognize a simple citation to the most-recently cited
 source. Detects "id." or "ibid." by default. To
 disable, set to None.</p>
@@ -187,19 +187,19 @@ disable, set to None.</p>
 <span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Calls load_yaml one or more times, to load the citator with</span>
-<span class="sd">    schemas.</span>
+<span class="sd">    templates.</span>
 
 <span class="sd">    Arguments:</span>
-<span class="sd">        defaults: Whether to load CiteURL's default schemas</span>
-<span class="sd">        yaml_paths: paths to additional YAML files with schemas that</span>
+<span class="sd">        defaults: Whether to load CiteURL's default templates</span>
+<span class="sd">        yaml_paths: paths to additional YAML files with templates that</span>
 <span class="sd">            should be loaded to supplement or replace the defaults.</span>
-<span class="sd">        generic_id: a common regex to append to all schemas, to</span>
+<span class="sd">        generic_id: a common regex to append to all templates, to</span>
 <span class="sd">            recognize a simple citation to the most-recently cited</span>
 <span class="sd">            source. Detects "id." or "ibid." by default. To</span>
 <span class="sd">            disable, set to None.</span>
 <span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">generic_id</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">schemas</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">defaults</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">DEFAULT_YAML_PATH</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">yaml_paths</span><span class="p">:</span>
@@ -389,8 +389,8 @@ text.</p>
 <span class="sd">    """</span>
     <span class="c1"># First, get full citations:</span>
     <span class="n">citations</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">schema</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schemas</span><span class="p">:</span>
-        <span class="n">citations</span> <span class="o">+=</span> <span class="n">schema</span><span class="o">.</span><span class="n">get_citations</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="p">:</span>
+        <span class="n">citations</span> <span class="o">+=</span> <span class="n">template</span><span class="o">.</span><span class="n">get_citations</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
     <span class="n">shortform_cites</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1"># Then, add shortforms</span>
     <span class="k">for</span> <span class="n">citation</span> <span class="ow">in</span> <span class="n">citations</span><span class="p">:</span>
@@ -438,7 +438,7 @@ text.</p>
 
       </h3>
 <div class="doc doc-contents ">
-<p>Import schemas from the specified YAML file into the citator.</p>
+<p>Import templates from the specified YAML file into the citator.</p>
 <p><strong>Parameters:</strong></p>
 <table>
 <thead>
@@ -473,41 +473,41 @@ text.</p>
           <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use_generic_id</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">"""</span>
-<span class="sd">    Import schemas from the specified YAML file into the citator.</span>
+<span class="sd">    Import templates from the specified YAML file into the citator.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        path: path to the YAML file to load</span>
 <span class="sd">        use_generic_id: Whether to append the citator's generic_id</span>
-<span class="sd">        citation format to the loaded schemas.</span>
+<span class="sd">        citation format to the loaded templates.</span>
 <span class="sd">    """</span>
     <span class="n">yaml_text</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
     <span class="n">yaml_dict</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">yaml_text</span><span class="p">)</span>
 
-    <span class="c1"># read each item in the YAML into a new schema</span>
-    <span class="k">for</span> <span class="n">schema_name</span><span class="p">,</span> <span class="n">schema_data</span> <span class="ow">in</span> <span class="n">yaml_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="c1"># read each item in the YAML into a new template</span>
+    <span class="k">for</span> <span class="n">template_name</span><span class="p">,</span> <span class="n">template_data</span> <span class="ow">in</span> <span class="n">yaml_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="c1"># if regex is specified in singular form, convert it to a</span>
         <span class="c1"># list with one item, for sake of consistency with multiple-</span>
-        <span class="c1"># regex schemas.</span>
+        <span class="c1"># regex templates.</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'regex'</span><span class="p">,</span> <span class="s1">'broadRegex'</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">schema_data</span><span class="p">:</span>
-              <span class="n">schema_data</span><span class="p">[</span><span class="n">key</span> <span class="o">+</span> <span class="s1">'es'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">schema_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">template_data</span><span class="p">:</span>
+              <span class="n">template_data</span><span class="p">[</span><span class="n">key</span> <span class="o">+</span> <span class="s1">'es'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">template_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
 
         <span class="c1"># unrelated: if an individual regex is given as a list of</span>
         <span class="c1"># strings (convenient for reusing YAML anchors), concatenate</span>
         <span class="c1"># it to one string.</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'regexes'</span><span class="p">,</span> <span class="s1">'broadRegexes'</span><span class="p">,</span> <span class="s1">'idForms'</span><span class="p">,</span> <span class="s1">'shortForms'</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">schema_data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">template_data</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">regex</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">schema_data</span><span class="p">[</span><span class="n">key</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">regex</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">template_data</span><span class="p">[</span><span class="n">key</span><span class="p">]):</span>
                 <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">regex</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
-                    <span class="n">schema_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">regex</span><span class="p">)</span>
+                    <span class="n">template_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">regex</span><span class="p">)</span>
 
-        <span class="c1"># make the schema and add it to the citator, adding the</span>
+        <span class="c1"># make the template and add it to the citator, adding the</span>
         <span class="c1"># generic id-form citation if applicable</span>
-        <span class="n">new_schema</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">schema_name</span><span class="p">,</span> <span class="o">**</span><span class="n">schema_data</span><span class="p">)</span>
+        <span class="n">new_template</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">template_name</span><span class="p">,</span> <span class="o">**</span><span class="n">template_data</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">use_generic_id</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span><span class="p">:</span>
-            <span class="n">new_schema</span><span class="o">.</span><span class="n">idForms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">schemas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_schema</span><span class="p">)</span>
+            <span class="n">new_template</span><span class="o">.</span><span class="n">idForms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_template</span><span class="p">)</span>
 </code></pre>
 </div>
 </details>
@@ -522,7 +522,7 @@ text.</p>
       </h3>
 <div class="doc doc-contents ">
 <p>Convenience method to get the first citation from the first
-matching schema, or None.</p>
+matching template, or None.</p>
 <p>This is meant for cases where false positives are not an issue,
 so it uses broadRegex and case-insensitive matching by default.</p>
 <p><strong>Parameters:</strong></p>
@@ -541,7 +541,7 @@ so it uses broadRegex and case-insensitive matching by default.</p>
 <td><code>bool</code></td>
 <td>
 <p>Whether to use case-insensitive regex matching and,
-if available, each schema's broadRegex.</p>
+if available, each template's broadRegex.</p>
 </td>
 <td><code>True</code></td>
 </tr>
@@ -578,20 +578,20 @@ if available, each schema's broadRegex.</p>
 <pre><span></span><code><span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Citation</span><span class="p">:</span>
     <span class="sd">"""</span>
 <span class="sd">    Convenience method to get the first citation from the first</span>
-<span class="sd">    matching schema, or None.</span>
+<span class="sd">    matching template, or None.</span>
 
 <span class="sd">    This is meant for cases where false positives are not an issue,</span>
 <span class="sd">    so it uses broadRegex and case-insensitive matching by default.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        broad: Whether to use case-insensitive regex matching and,</span>
-<span class="sd">            if available, each schema's broadRegex.</span>
+<span class="sd">            if available, each template's broadRegex.</span>
 <span class="sd">        query: The text to scan for a citation</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        A single citation object, or None</span>
 <span class="sd">    """</span>
-    <span class="k">for</span> <span class="n">schema</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">schemas</span><span class="p">:</span>
-        <span class="n">citation</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">get_citations</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="n">broad</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="p">:</span>
+        <span class="n">citation</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">get_citations</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="n">broad</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">citation</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">citation</span>
     <span class="k">return</span> <span class="kc">None</span>
@@ -603,21 +603,21 @@ if available, each schema's broadRegex.</p>
 </div>
 </div>
 </div>
-<h2 id="schema">Schema</h2>
+<h2 id="template">Template</h2>
 <div class="doc doc-object doc-class">
-<h3 class="hidden-toc" id="citeurl.Schema" style="visibility: hidden; position: absolute;">
+<h3 class="hidden-toc" id="citeurl.Template" style="visibility: hidden; position: absolute;">
         </h3>
 <div class="doc doc-contents first">
 <p>A pattern to recognize a single kind of citation and generate
 URLs from matches.</p>
 <p>In most cases, it is more useful to use the Citator class to load
-schemas from YAML files and apply them en masse, rather than use
-the Schema class directly.</p>
+templates from YAML files and apply them en masse, rather than use
+the Template class directly.</p>
 <div class="doc doc-children">
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Schema.__init__">
+<h3 class="doc doc-heading" id="citeurl.Template.__init__">
 
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">regexes</span><span class="p">,</span> <span class="n">URL</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">broadRegexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">idForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">shortForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{},</span> <span class="n">operations</span><span class="o">=</span><span class="p">[],</span> <span class="n">parent_citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">regexes</span><span class="p">,</span> <span class="n">URL</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">broadRegexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">idForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">shortForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{},</span> <span class="n">operations</span><span class="o">=</span><span class="p">[],</span> <span class="n">parent_citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_is_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -625,8 +625,8 @@ the Schema class directly.</p>
 
       </h3>
 <div class="doc doc-contents ">
-<p>Schema constructor. Primarily meant for use in loading YAML
-files and dynamically generating shortform schemas, but can be
+<p>Template constructor. Primarily meant for use in loading YAML
+files and dynamically generating shortform templates, but can be
 run directly if needed.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -643,7 +643,7 @@ run directly if needed.</p>
 <td><code>name</code></td>
 <td><code>str</code></td>
 <td>
-<p>The name of this schema</p>
+<p>The name of this template</p>
 </td>
 <td><em>required</em></td>
 </tr>
@@ -651,7 +651,7 @@ run directly if needed.</p>
 <td><code>regexes</code></td>
 <td><code>list</code></td>
 <td>
-<p>A list of one or more regexes that this schema will
+<p>A list of one or more regexes that this template will
 match. Each regex should be provided as a string, and
 should include one or more named capture groups
 (i.e. "tokens") that will be used to generate the URL.</p>
@@ -665,7 +665,7 @@ should include one or more named capture groups
 <p>The template by which to generate URLs from citation
 matches. Placeholders in {curly braces} will be replaced
 by the value of the token with the same name, after that
-token has been processed by the schema</p>
+token has been processed by the template</p>
 <p>The URL template can be provided either as as a string
 or as a list of strings to concatenate. In the latter
 case, if a list item contains a placeholder for which
@@ -708,9 +708,9 @@ to replace each match with.</p>
 a series of dictionary keys (using case-insensitive
 regex), and set the output to the corresponding value.
 If the dictionary does not contain a matching key, the
-entire schema match will retroactively fail.
+entire template match will retroactively fail.
 <code>optionalLookup</code> works the same way, except that failed
-lookups will not cause the schema to fail, and will
+lookups will not cause the template to fail, and will
 simply leave tokens unmodified.</p>
 <p>The <code>numberFormat</code> operation assumes that the input
 token is a number, either in digit form or Roman
@@ -728,7 +728,7 @@ that recognize short-forms of a parent long-form
 citation that has appeared earlier in the text.</p>
 <p>Any named section in {curly braces} will be replaced by
 the value of the corresponding token from the parent
-citation. So if a schema detects a longform citation to
+citation. So if a template detects a longform citation to
 "372 U.S. 335" and has a shortform <code>{volume} {reporter}
 at (?P&lt;pincite&gt;\d+)</code>, it will generate the following
 regex: <code>372 U.S. at (?P&lt;pincite&gt;\d+)</code>.</p>
@@ -749,22 +749,12 @@ next different citation or other interruption.</p>
 <td><code>parent_citation</code></td>
 <td><code></code></td>
 <td>
-<p>The citation, if any, that this schema
+<p>The citation, if any, that this template
 was created as a shortform of. This argument is
-for dynamically-generated schemas, and there is usually
+for dynamically-generated templates, and there is usually
 no need to use it manually.</p>
 </td>
 <td><code>None</code></td>
-</tr>
-<tr>
-<td><code>is_id</code></td>
-<td><code></code></td>
-<td>
-<p>Whether this schema represents an immediate repeat
-shortform citation like "id." or "id. at 30". Really
-only relevant for procedurally-generated schemas.</p>
-</td>
-<td><code>False</code></td>
 </tr>
 </tbody>
 </table>
@@ -781,17 +771,17 @@ only relevant for procedurally-generated schemas.</p>
     <span class="n">defaults</span><span class="p">:</span> <span class="nb">dict</span><span class="o">=</span><span class="p">{},</span>
     <span class="n">operations</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">parent_citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">is_id</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">_is_id</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">):</span>
     <span class="sd">"""</span>
-<span class="sd">    Schema constructor. Primarily meant for use in loading YAML</span>
-<span class="sd">    files and dynamically generating shortform schemas, but can be</span>
+<span class="sd">    Template constructor. Primarily meant for use in loading YAML</span>
+<span class="sd">    files and dynamically generating shortform templates, but can be</span>
 <span class="sd">    run directly if needed.</span>
 
 <span class="sd">    Arguments:</span>
-<span class="sd">        name: The name of this schema</span>
+<span class="sd">        name: The name of this template</span>
 
-<span class="sd">        regexes: A list of one or more regexes that this schema will</span>
+<span class="sd">        regexes: A list of one or more regexes that this template will</span>
 <span class="sd">            match. Each regex should be provided as a string, and</span>
 <span class="sd">            should include one or more named capture groups</span>
 <span class="sd">            (i.e. "tokens") that will be used to generate the URL.</span>
@@ -799,7 +789,7 @@ only relevant for procedurally-generated schemas.</p>
 <span class="sd">        URL: The template by which to generate URLs from citation</span>
 <span class="sd">            matches. Placeholders in {curly braces} will be replaced</span>
 <span class="sd">            by the value of the token with the same name, after that</span>
-<span class="sd">            token has been processed by the schema</span>
+<span class="sd">            token has been processed by the template</span>
 
 <span class="sd">            The URL template can be provided either as as a string</span>
 <span class="sd">            or as a list of strings to concatenate. In the latter</span>
@@ -836,9 +826,9 @@ only relevant for procedurally-generated schemas.</p>
 <span class="sd">            a series of dictionary keys (using case-insensitive</span>
 <span class="sd">            regex), and set the output to the corresponding value.</span>
 <span class="sd">            If the dictionary does not contain a matching key, the</span>
-<span class="sd">            entire schema match will retroactively fail.</span>
+<span class="sd">            entire template match will retroactively fail.</span>
 <span class="sd">            `optionalLookup` works the same way, except that failed</span>
-<span class="sd">            lookups will not cause the schema to fail, and will</span>
+<span class="sd">            lookups will not cause the template to fail, and will</span>
 <span class="sd">            simply leave tokens unmodified.</span>
 
 <span class="sd">            The `numberFormat` operation assumes that the input</span>
@@ -852,7 +842,7 @@ only relevant for procedurally-generated schemas.</p>
 
 <span class="sd">            Any named section in {curly braces} will be replaced by</span>
 <span class="sd">            the value of the corresponding token from the parent</span>
-<span class="sd">            citation. So if a schema detects a longform citation to</span>
+<span class="sd">            citation. So if a template detects a longform citation to</span>
 <span class="sd">            "372 U.S. 335" and has a shortform `{volume} {reporter}</span>
 <span class="sd">            at (?P&lt;pincite&gt;\d+)`, it will generate the following</span>
 <span class="sd">            regex: `372 U.S. at (?P&lt;pincite&gt;\d+)`.</span>
@@ -861,19 +851,15 @@ only relevant for procedurally-generated schemas.</p>
 <span class="sd">            except that these regexes will only match until the</span>
 <span class="sd">            next different citation or other interruption.</span>
 
-<span class="sd">        parent_citation: The citation, if any, that this schema</span>
+<span class="sd">        parent_citation: The citation, if any, that this template</span>
 <span class="sd">            was created as a shortform of. This argument is</span>
-<span class="sd">            for dynamically-generated schemas, and there is usually</span>
+<span class="sd">            for dynamically-generated templates, and there is usually</span>
 <span class="sd">            no need to use it manually.</span>
-
-<span class="sd">        is_id: Whether this schema represents an immediate repeat</span>
-<span class="sd">            shortform citation like "id." or "id. at 30". Really</span>
-<span class="sd">            only relevant for procedurally-generated schemas.</span>
 <span class="sd">    """</span>
     <span class="c1"># Basic values</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">name</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">regexes</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">regexes</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">is_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">is_id</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">is_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">_is_id</span>
     <span class="k">if</span> <span class="n">URL</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">URL</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span> <span class="k">else</span> <span class="p">[</span><span class="n">URL</span><span class="p">]</span>
     <span class="c1"># Supplemental regexes</span>
@@ -903,14 +889,14 @@ only relevant for procedurally-generated schemas.</p>
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Schema.get_citations">
+<h3 class="doc doc-heading" id="citeurl.Template.get_citations">
 
 <code class="highlight language-python"><span class="n">get_citations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span></code>
 
 
       </h3>
 <div class="doc doc-contents ">
-<p>Generator to return all citations the schema finds in text.</p>
+<p>Generator to return all citations the template finds in text.</p>
 <p><strong>Parameters:</strong></p>
 <table>
 <thead>
@@ -935,7 +921,7 @@ only relevant for procedurally-generated schemas.</p>
 <td><code>bool</code></td>
 <td>
 <p>Whether to use case-insensitive regex matching and,
-if available, the schema's broadRegex.</p>
+if available, the template's broadRegex.</p>
 </td>
 <td><code>False</code></td>
 </tr>
@@ -963,7 +949,7 @@ for citations. Defaults to (0,) to scan the entire text.</p>
 <tr>
 <td><code>Iterable</code></td>
 <td>
-<p>Generator that yields each citation the schema finds in the
+<p>Generator that yields each citation the template finds in the
     text, or None.</p>
 </td>
 </tr>
@@ -979,21 +965,25 @@ for citations. Defaults to (0,) to scan the entire text.</p>
     <span class="n">span</span><span class="p">:</span> <span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,)</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">:</span>
     <span class="sd">"""</span>
-<span class="sd">    Generator to return all citations the schema finds in text.</span>
+<span class="sd">    Generator to return all citations the template finds in text.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        text: The text to scan for a citation</span>
 <span class="sd">        broad: Whether to use case-insensitive regex matching and,</span>
-<span class="sd">            if available, the schema's broadRegex.</span>
+<span class="sd">            if available, the template's broadRegex.</span>
 <span class="sd">        span: A tuple of one or two values determining</span>
 <span class="sd">            the start and end index of where in the text to search</span>
 <span class="sd">            for citations. Defaults to (0,) to scan the entire text.</span>
 <span class="sd">    Returns:</span>
-<span class="sd">        Generator that yields each citation the schema finds in the</span>
+<span class="sd">        Generator that yields each citation the template finds in the</span>
 <span class="sd">            text, or None.</span>
 <span class="sd">    """</span>
     <span class="n">matches</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regexes</span><span class="p">)):</span>
+    <span class="n">regex_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regexes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">broad</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">broadRegexes</span><span class="p">:</span>
+        <span class="n">regex_count</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">broadRegexes</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">regex_count</span><span class="p">):</span>
+        <span class="c1">#print(f'scanning regex {index} for template {self}')</span>
         <span class="n">matches</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_re</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">broad</span><span class="p">)</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="o">*</span><span class="n">span</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
@@ -1011,7 +1001,7 @@ for citations. Defaults to (0,) to scan the entire text.</p>
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Schema.lookup">
+<h3 class="doc doc-heading" id="citeurl.Template.lookup">
 
 <code class="highlight language-python"><span class="n">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span></code>
 
@@ -1043,7 +1033,7 @@ for citations. Defaults to (0,) to scan the entire text.</p>
 <td><code>bool</code></td>
 <td>
 <p>Whether to use case-insensitive regex matching
-and, if available, the schema's broadRegex.</p>
+and, if available, the template's broadRegex.</p>
 </td>
 <td><code>True</code></td>
 </tr>
@@ -1071,7 +1061,7 @@ for citations. Defaults to (0,) to scan the entire text.</p>
 <tr>
 <td><code>Citation</code></td>
 <td>
-<p>The first citation this schema finds in the scanned text,
+<p>The first citation this template finds in the scanned text,
 or None.</p>
 </td>
 </tr>
@@ -1092,12 +1082,12 @@ or None.</p>
 <span class="sd">    Arguments:</span>
 <span class="sd">        text: The text to scan for a citation.</span>
 <span class="sd">        broad: Whether to use case-insensitive regex matching</span>
-<span class="sd">            and, if available, the schema's broadRegex.</span>
+<span class="sd">            and, if available, the template's broadRegex.</span>
 <span class="sd">        span: A tuple of one or two values determining</span>
 <span class="sd">            the start and end index of where in the text to search</span>
 <span class="sd">            for citations. Defaults to (0,) to scan the entire text.</span>
 <span class="sd">    Returns:</span>
-<span class="sd">        The first citation this schema finds in the scanned text,</span>
+<span class="sd">        The first citation this template finds in the scanned text,</span>
 <span class="sd">        or None.</span>
 <span class="sd">    """</span>
     <span class="k">try</span><span class="p">:</span>
@@ -1144,10 +1134,10 @@ source text.</p>
 </td>
 </tr>
 <tr>
-<td><code>schema</code></td>
-<td><code>Schema</code></td>
+<td><code>template</code></td>
+<td><code>Template</code></td>
 <td>
-<p>The schema which recognized this citation</p>
+<p>The template which recognized this citation</p>
 </td>
 </tr>
 <tr>
@@ -1164,7 +1154,7 @@ this includes tokens carried over from the parent citation.</p>
 <td><code>dict</code></td>
 <td>
 <p>Dictionary of tokens after they have been
-modified via the schema's processes.</p>
+modified via the template's processes.</p>
 </td>
 </tr>
 <tr>
@@ -1180,7 +1170,7 @@ modified via the schema's processes.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="citeurl.Citation.__init__">
 
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">match</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">match</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -1189,27 +1179,27 @@ modified via the schema's processes.</p>
       </h3>
 <div class="doc doc-contents ">
 <p>For internal use. There should be no need to create citations
-by means other than a Citator or Schema object.</p>
+by means other than a Citator or Template object.</p>
 <details class="quote">
           <summary>Source code in <code>citeurl/__init__.py</code></summary>
           <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">match</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">Match</span><span class="p">,</span> <span class="n">schema</span><span class="p">):</span>
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">match</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">Match</span><span class="p">,</span> <span class="n">template</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    For internal use. There should be no need to create citations</span>
-<span class="sd">    by means other than a Citator or Schema object.</span>
+<span class="sd">    by means other than a Citator or Template object.</span>
 <span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">span</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">span</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span> <span class="n">Schema</span> <span class="o">=</span> <span class="n">schema</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">:</span> <span class="n">Template</span> <span class="o">=</span> <span class="n">template</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="c1"># idForm and shortForm citations get values from parent citation</span>
     <span class="c1"># except where their regexes include space for those values</span>
-    <span class="k">if</span> <span class="n">schema</span><span class="o">.</span><span class="n">parent_citation</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">parent_citation</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">template</span><span class="o">.</span><span class="n">parent_citation</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">parent_citation</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">processed_tokens</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">_process_tokens</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">processed_tokens</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">_process_tokens</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_url</span><span class="p">()</span>
 </code></pre>
 </div>
@@ -1270,14 +1260,14 @@ by means other than a Citator or Schema object.</p>
 authority, such that any citations with incompatible
 token values will not match it. Note that this uses
 processed_tokens (those which have been modified by
-the schema's operations).</p>
+the template's operations).</p>
 </td>
 </tr>
 <tr>
-<td><code>schema</code></td>
-<td><code>Schema</code></td>
+<td><code>template</code></td>
+<td><code>Template</code></td>
 <td>
-<p>The schema which found all the citations to this
+<p>The template which found all the citations to this
 authority</p>
 </td>
 </tr>
@@ -1379,10 +1369,10 @@ differ among citations to the same authority</p>
 <span class="sd">            differ among citations to the same authority</span>
 <span class="sd">    """</span>
     <span class="n">long_cite</span> <span class="o">=</span> <span class="n">first_cite</span><span class="o">.</span><span class="n">_original_cite</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span> <span class="n">Schema</span> <span class="o">=</span> <span class="n">long_cite</span><span class="o">.</span><span class="n">schema</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">:</span> <span class="n">Template</span> <span class="o">=</span> <span class="n">long_cite</span><span class="o">.</span><span class="n">template</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">citations</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_cite</span><span class="p">]</span>
     <span class="c1"># List the token values that distinguish this authority from</span>
-    <span class="c1"># others in the same schema. This uses processed tokens, not</span>
+    <span class="c1"># others in the same template. This uses processed tokens, not</span>
     <span class="c1"># raw, so that a citation to "50 U.S. 5" will match</span>
     <span class="c1"># a citation to "50 U. S. 5", etc.</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1417,14 +1407,14 @@ differ among citations to the same authority</p>
 
       </h3>
 <div class="doc doc-contents ">
-<p>Adds the citation to this schema's list of citations. Also,
+<p>Adds the citation to this template's list of citations. Also,
 adds the <code>authority</code> tag to the citation, referring back to this
 authority.</p>
 <details class="quote">
           <summary>Source code in <code>citeurl/__init__.py</code></summary>
           <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">include</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citation</span><span class="p">):</span>
-    <span class="sd">"""Adds the citation to this schema's list of citations. Also,</span>
+    <span class="sd">"""Adds the citation to this template's list of citations. Also,</span>
 <span class="sd">    adds the `authority` tag to the citation, referring back to this</span>
 <span class="sd">    authority."""</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">citations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">citation</span><span class="p">)</span>
@@ -1442,17 +1432,17 @@ authority.</p>
 
       </h3>
 <div class="doc doc-contents ">
-<p>Checks whether a given citation matches the schema and defining
+<p>Checks whether a given citation matches the template and defining
 tokens of this authority.</p>
 <details class="quote">
           <summary>Source code in <code>citeurl/__init__.py</code></summary>
           <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">"""</span>
-<span class="sd">    Checks whether a given citation matches the schema and defining</span>
+<span class="sd">    Checks whether a given citation matches the template and defining</span>
 <span class="sd">    tokens of this authority.</span>
 <span class="sd">    """</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">citation</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">citation</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">citation</span><span class="o">.</span><span class="n">processed_tokens</span>

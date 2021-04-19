@@ -21,7 +21,7 @@ python -m pip install citeurl
 
 ## Usage
 
-CiteURL provides a command-line tool called `citeurl`. You can pass text to CiteURL by opening a file with the `-i` option, or by piping text to the program, e.g. with `cat file.html | citeurl`. By default, CiteURL uses its built-in schemas to insert hyperlinks into the text, and outputs the result to stdout. You can redirect the output to a file with the `-o` option, or open the result in a browser with `-b`. To look up a single citation instead of processing a text, use `citeurl -l <citation>`. For more options, run `citeurl -h`.
+CiteURL provides a command-line tool called `citeurl`. You can pass text to CiteURL by opening a file with the `-i` option, or by piping text to the program, e.g. with `cat file.html | citeurl`. By default, CiteURL uses its built-in templates to insert hyperlinks into the text, and outputs the result to stdout. You can redirect the output to a file with the `-o` option, or open the result in a browser with `-b`. To look up a single citation instead of processing a text, use `citeurl -l <citation>`. For more options, run `citeurl -h`.
 
 Besides the command line tool, CiteURL can be loaded as a Python library or as an extension to [Python-Markdown](https://python-markdown.github.io/). It is also possible to generate custom JavaScript implementations of CiteURL using the `citeurl-makejs` command. Additionally, Linux users with the GNOME shell can install [CiteURL as a search provider](https://github.com/raindrum/gnome-citeurl-search-provider) available directly from their desktop.
 
@@ -29,7 +29,7 @@ More documentation is available [here](https://raindrum.github.io/citeurl/).
 
 ## Credits
 
-Many thanks to these websites, which CiteURL's default schemas frequently link to:
+Many thanks to these websites, which CiteURL's default templates frequently link to:
 
 - Harvard's [Caselaw Access Project](https://cite.case.law/) - for court cases
 - Cornell's [Legal Information Institute](https://www.law.cornell.edu/) - for the U.S. Code and many federal rules

@@ -56,22 +56,22 @@ function getUrlForQuery(query) {
   return buildUrl(match);
 }
 
-// check the query against each schema one-by-one,
-// and return the tokens and schema of the first match
+// check the query against each template one-by-one,
+// and return the tokens and template of the first match
 const MATCH_ERROR = "Sorry, I couldn't recognize that citation."
 function getMatch(query) {
-  for (var i in schemas) {
-    var schema = schemas[i];
+  for (var i in templates) {
+    var template = templates[i];
     var match = false;
-    for (var r in schema['regexes']) {
-      match = query.match(new RegExp(schema['regexes'][r], 'i'));
+    for (var r in template['regexes']) {
+      match = query.match(new RegExp(template['regexes'][r], 'i'));
       if (match) {
         break;
       }
     }
     if (match) {
       console.log(
-        '"' + query + '" matched regex for ' + schema['name']
+        '"' + query + '" matched regex for ' + template['name']
         + ', and these tokens were found:'
       );
       for (var group in match.groups) {
@@ -80,43 +80,43 @@ function getMatch(query) {
       console.log(' ');
       return {
         tokens: match.groups,
-        schema: schema
+        template: template
       };
     }
   }
   console.log(
-    '"' + query + '" did not match the regex for any schema. Check the '
-    + 'page source to see the schemas and their regexes.'
+    '"' + query + '" did not match the regex for any template. Check the '
+    + 'page source to see the templates and their regexes.'
   );
   throw Error(MATCH_ERROR);
 }
 
-// for each default token value specified by the schema,
+// for each default token value specified by the template,
 // apply it to the relevant token if that token was not set
 function handleDefaults(match) {
-  let {schema, tokens} = match;
-  for (var d in schema.defaults) {
+  let {template, tokens} = match;
+  for (var d in template.defaults) {
     if (!tokens[d]) {
       console.log(
         d + ' was not specified, so it will be set to "'
-        + schema.defaults[d] + '" by default'
+        + template.defaults[d] + '" by default'
       );
-      tokens[d] = schema.defaults[d];
+      tokens[d] = template.defaults[d];
       console.log(' ');
     }
   }
 }
 
-// for each token processing operation in the schema,
+// for each token processing operation in the template,
 // modify the tokens accordingly
 function processTokens(match) {
-  let {schema, tokens} = match;
+  let {template, tokens} = match;
   let appliedAnOperation = false;
-  if (!('operations' in schema)) {
+  if (!('operations' in template)) {
     return;
   }
-  for (var o in schema.operations) {
-    var operation = schema.operations[o];
+  for (var o in template.operations) {
+    var operation = template.operations[o];
     var inputValue = tokens[operation['token']];
     
     // skip tokens that were not set
@@ -191,7 +191,7 @@ function processTokens(match) {
         }
         else {
           throw Error(
-            "Sorry, I can't find that" + operation['token'] + " in the " + schema
+            "Sorry, I can't find that" + operation['token'] + " in the " + template
           );
         }
       }
@@ -267,23 +267,23 @@ function processTokens(match) {
   }
 }
 
-// go through the pieces of the schema's URL template, and replace any
+// go through the pieces of the template's URL template, and replace any
 // section in curly braces with the value of the fully-processed token
 // of the same name, Leave placeholders unchanged if they reference
 // undefined tokens.
 function updateUrlParts(match) {
-  let {schema, tokens} = match;
+  let {template, tokens} = match;
   console.log("replacing placeholders in each part of the URL template...");
-  for (var part in schema.URL) {
-    console.log('before: "' + schema.URL[part] + '"');
+  for (var part in template.URL) {
+    console.log('before: "' + template.URL[part] + '"');
     for (var k in tokens) {
       if (typeof tokens[k] === 'undefined') {
         continue;
       }
       let placeholder = new RegExp("\\{" + k + "\\}", 'g');
-      schema.URL[part] = schema.URL[part].replace(placeholder, tokens[k]);
+      template.URL[part] = template.URL[part].replace(placeholder, tokens[k]);
     }
-    console.log('after:  "' + schema.URL[part] + '"');
+    console.log('after:  "' + template.URL[part] + '"');
   }
   console.log(' ');
 }
@@ -292,12 +292,12 @@ function updateUrlParts(match) {
 // concatenate the parts to make a full URL. Omit any part that
 // still contains a placeholder
 function buildUrl(match) {
-  let {schema, tokens} = match;
+  let {template, tokens} = match;
   let url = '';
   let missingPlaceholder = new RegExp("\\{.+\\}");
   console.log('building URL from parts...');
-  for (p in schema.URL) {
-  let part = schema.URL[p];
+  for (p in template.URL) {
+  let part = template.URL[p];
     if (!part.match(missingPlaceholder)) {
       url += part;
       console.log('added "' + part + '"');

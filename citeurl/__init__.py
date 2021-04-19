@@ -6,10 +6,10 @@ from typing import Iterable
 # external imports
 from yaml import safe_load
 
-# file with all the schemas to load by default
-DEFAULT_YAML_PATH = Path(__file__).parent.absolute() / 'default-schemas.yaml'
+# file with all the templates to load by default
+DEFAULT_YAML_PATH = Path(__file__).parent.absolute() / 'builtin-templates.yaml'
 
-# regex for "Id."-type citations that will be recognized for all schemas
+# regex for "Id."-type citations that will be recognized for all templates
 GENERIC_ID = r"\b(Ib)?[Ii]d\.(<\/(i|em|u)>)?"
 
 # regex to break chains of "Id."-type citations
@@ -50,31 +50,31 @@ class Citation:
         text: The text of the citation itself, like "42 USC § 1988(b)"
         span: The beginning and end positions of this citation in the
             source text.
-        schema: The schema which recognized this citation
+        template: The template which recognized this citation
         tokens: Dictionary of the named capture groups from the regex
             this citation matched. For "id." and "shortform" citations,
             this includes tokens carried over from the parent citation.
         processed_tokens: Dictionary of tokens after they have been
-            modified via the schema's processes.
+            modified via the template's processes.
         URL: The URL where a user can read this citation online
     """
-    def __init__(self, match: re.Match, schema):
+    def __init__(self, match: re.Match, template):
         """
         For internal use. There should be no need to create citations
-        by means other than a Citator or Schema object.
+        by means other than a Citator or Template object.
         """
         self.span: tuple = match.span()
-        self.schema: Schema = schema
+        self.template: Template = template
         self.text: str = match.group(0)
         # idForm and shortForm citations get values from parent citation
         # except where their regexes include space for those values
-        if schema.parent_citation:
-            self.tokens: dict = dict(schema.parent_citation.tokens)
+        if template.parent_citation:
+            self.tokens: dict = dict(template.parent_citation.tokens)
             for key, val in match.groupdict().items():
                 self.tokens[key] = val
         else:
             self.tokens: dict = match.groupdict()
-        self.processed_tokens: dict = self.schema._process_tokens(self.tokens)
+        self.processed_tokens: dict = self.template._process_tokens(self.tokens)
         self.URL: str = self._get_url()
     
     def __str__(self):
@@ -82,18 +82,18 @@ class Citation:
     
     def _get_url(self) -> str:
         """
-        Processes tokens, feeds the results into the schema's
+        Processes tokens, feeds the results into the template's
         URL template, and returns the resulting URL.
         
         Returns:
             A generated URL pointing to where to find the citation,
             or None.
         """
-        if not hasattr(self.schema, 'URL'):
+        if not hasattr(self.template, 'URL'):
             return None
         # Process matched tokens (i.e. named regex capture groups)
         URL = """"""
-        for part in self.schema.URL:
+        for part in self.template.URL:
             for key, value in self.processed_tokens.items():
                 if value is None: continue
                 part = part.replace('{%s}' % key, value)
@@ -119,15 +119,15 @@ class Citation:
         of. Returns self if this *is* the longform.
         """
         parent = self
-        while parent.schema.parent_citation:
-            parent = parent.schema.parent_citation
+        while parent.template.parent_citation:
+            parent = parent.template.parent_citation
         return parent
     
-    def _child_schemas(self, is_id: bool):
-        schemas = []
+    def _child_templates(self, is_id: bool):
+        templates = []
         regex_templates = (
-            self.schema.idForms if is_id
-            else self.schema.shortForms
+            self.template.idForms if is_id
+            else self.template.shortForms
         )
         # make a dictionary of the original tokens, or unique processed tokens
         template_fillers = {**self.processed_tokens, **self.tokens}
@@ -137,25 +137,25 @@ class Citation:
             for key, value in template_fillers.items():
                 if not value: continue
                 regex = regex.replace('{%s}' % key, value)
-            schemas.append(Schema(
-                name=self.schema.name,
+            templates.append(Template(
+                name=self.template.name,
                 regexes=[regex],
-                idForms=self.schema.idForms,
-                URL=self.schema.URL if hasattr(self.schema, 'URL') else None,
-                operations=self.schema.operations,
+                idForms=self.template.idForms,
+                URL=self.template.URL if hasattr(self.template, 'URL') else None,
+                operations=self.template.operations,
                 parent_citation=self,
-                is_id=is_id
+                _is_id=is_id
             ))
-        return schemas
+        return templates
     
     def _get_shortform_citations(self, text: str):
-        schemas = self._child_schemas(False)
-        for schema in schemas:
-            for citation in schema.get_citations(text, span=(self.span[1], )):
+        templates = self._child_templates(False)
+        for template in templates:
+            for citation in template.get_citations(text, span=(self.span[1], )):
                 yield citation
             
     def _get_id_citations(self, text: str, end_point: int=None):
-        schemas = self._child_schemas(True)
+        templates = self._child_templates(True)
         id_citations = []
         scan_cites = [self]
         while len(scan_cites) > 0:
@@ -165,8 +165,8 @@ class Citation:
             else:
                 span = (citation.span[1],)
             potential_ids = []
-            for schema in citation._child_schemas(True):
-                match = schema.lookup(text, broad=False, span=span)
+            for template in citation._child_templates(True):
+                match = template.lookup(text, broad=False, span=span)
                 if match:
                     potential_ids.append(match)
             if potential_ids:
@@ -185,8 +185,8 @@ class Authority:
             authority, such that any citations with incompatible
             token values will not match it. Note that this uses
             processed_tokens (those which have been modified by
-            the schema's operations).
-        schema: The schema which found all the citations to this
+            the template's operations).
+        template: The template which found all the citations to this
             authority
         citations: The list of all the citations that refer to
             this authority.
@@ -213,10 +213,10 @@ class Authority:
                 differ among citations to the same authority
         """
         long_cite = first_cite._original_cite()
-        self.schema: Schema = long_cite.schema
+        self.template: Template = long_cite.template
         self.citations: list = [first_cite]
         # List the token values that distinguish this authority from
-        # others in the same schema. This uses processed tokens, not
+        # others in the same template. This uses processed tokens, not
         # raw, so that a citation to "50 U.S. 5" will match
         # a citation to "50 U. S. 5", etc.
         self.defining_tokens: dict = {}
@@ -240,7 +240,7 @@ class Authority:
         first_cite.authority = self
     
     def include(self, citation):
-        """Adds the citation to this schema's list of citations. Also,
+        """Adds the citation to this template's list of citations. Also,
         adds the `authority` tag to the citation, referring back to this
         authority."""
         self.citations.append(citation)
@@ -248,10 +248,10 @@ class Authority:
     
     def matches(self, citation) -> bool:
         """
-        Checks whether a given citation matches the schema and defining
+        Checks whether a given citation matches the template and defining
         tokens of this authority.
         """
-        if self.schema.name != citation.schema.name:
+        if self.template.name != citation.template.name:
             return False
         for key, value in self.defining_tokens.items():
             if (key not in citation.processed_tokens
@@ -302,9 +302,9 @@ class Authority:
         # if strict match doesn't exist. Don't default to broadRegex
         # because it might not capture the full text.
         # If that still fails, just use the shortform.
-        base_cite = self.schema.lookup(base_cite_text, broad=False)
+        base_cite = self.template.lookup(base_cite_text, broad=False)
         if not base_cite:
-            base_cite = self.schema.lookup(base_cite_text, broad=True)
+            base_cite = self.template.lookup(base_cite_text, broad=True)
         if not base_cite:
             base_cite = self.citations[0]
         return base_cite
@@ -312,14 +312,14 @@ class Authority:
 
 class Citator:
     """
-    CiteURL's main feature: a collection of schemas, and the tools
+    CiteURL's main feature: a collection of templates, and the tools
     to apply them to text, to find all kinds of citations in a text.
     
     Attributes:
-        schemas: A list of schema objects that this citator will try to
+        templates: A list of template objects that this citator will try to
             match against.
         generic_id: A common regex the citator will append to each
-            schema when it is loaded, to recognize a simple citation to
+            template when it is loaded, to recognize a simple citation to
             the most-recently cited source.
     """
     def __init__(
@@ -330,19 +330,19 @@ class Citator:
     ):
         """
         Calls load_yaml one or more times, to load the citator with
-        schemas.
+        templates.
         
         Arguments:
-            defaults: Whether to load CiteURL's default schemas
-            yaml_paths: paths to additional YAML files with schemas that
+            defaults: Whether to load CiteURL's default templates
+            yaml_paths: paths to additional YAML files with templates that
                 should be loaded to supplement or replace the defaults.
-            generic_id: a common regex to append to all schemas, to
+            generic_id: a common regex to append to all templates, to
                 recognize a simple citation to the most-recently cited
                 source. Detects "id." or "ibid." by default. To
                 disable, set to None.
         """
         self.generic_id: str = generic_id
-        self.schemas: list = []
+        self.templates: list = []
         if defaults:
             self.load_yaml(DEFAULT_YAML_PATH)
         for path in yaml_paths:
@@ -350,41 +350,41 @@ class Citator:
     
     def load_yaml(self, path: str, use_generic_id: bool=True):
         """
-        Import schemas from the specified YAML file into the citator.
+        Import templates from the specified YAML file into the citator.
         
         Arguments:
             path: path to the YAML file to load
             use_generic_id: Whether to append the citator's generic_id
-            citation format to the loaded schemas.
+            citation format to the loaded templates.
         """
         yaml_text = Path(path).read_text()
         yaml_dict = safe_load(yaml_text)
         
-        # read each item in the YAML into a new schema
-        for schema_name, schema_data in yaml_dict.items():
+        # read each item in the YAML into a new template
+        for template_name, template_data in yaml_dict.items():
             # if regex is specified in singular form, convert it to a
             # list with one item, for sake of consistency with multiple-
-            # regex schemas.
+            # regex templates.
             for key in ['regex', 'broadRegex']:
-                if key in schema_data:
-                  schema_data[key + 'es'] = [schema_data.pop(key)]
+                if key in template_data:
+                  template_data[key + 'es'] = [template_data.pop(key)]
             
             # unrelated: if an individual regex is given as a list of
             # strings (convenient for reusing YAML anchors), concatenate
             # it to one string.
             for key in ['regexes', 'broadRegexes', 'idForms', 'shortForms']:
-                if key not in schema_data:
+                if key not in template_data:
                     continue
-                for i, regex in enumerate(schema_data[key]):
+                for i, regex in enumerate(template_data[key]):
                     if type(regex) is list:
-                        schema_data[key][i] = ''.join(regex)
+                        template_data[key][i] = ''.join(regex)
                         
-            # make the schema and add it to the citator, adding the
+            # make the template and add it to the citator, adding the
             # generic id-form citation if applicable
-            new_schema = Schema(name=schema_name, **schema_data)
+            new_template = Template(name=template_name, **template_data)
             if use_generic_id and self.generic_id:
-                new_schema.idForms.append(self.generic_id)
-            self.schemas.append(new_schema)
+                new_template.idForms.append(self.generic_id)
+            self.templates.append(new_template)
     
     def list_citations(self,
         text: str,
@@ -410,8 +410,8 @@ class Citator:
         """
         # First, get full citations:
         citations = []
-        for schema in self.schemas:
-            citations += schema.get_citations(text)
+        for template in self.templates:
+            citations += template.get_citations(text)
         shortform_cites = []
         # Then, add shortforms
         for citation in citations:
@@ -450,20 +450,20 @@ class Citator:
     def lookup(self, query: str, broad: bool=True) -> Citation:
         """
         Convenience method to get the first citation from the first
-        matching schema, or None.
+        matching template, or None.
         
         This is meant for cases where false positives are not an issue,
         so it uses broadRegex and case-insensitive matching by default.
         
         Arguments:
             broad: Whether to use case-insensitive regex matching and,
-                if available, each schema's broadRegex.
+                if available, each template's broadRegex.
             query: The text to scan for a citation
         Returns:
             A single citation object, or None
         """
-        for schema in self.schemas:
-            citation = next(schema.get_citations(query, broad=broad), None)
+        for template in self.templates:
+            citation = next(template.get_citations(query, broad=broad), None)
             if citation:
                 return citation
         return None
@@ -513,17 +513,17 @@ class Citator:
         return list_authorities(citations)
         
     def __str__(self):
-        return str(self.schemas)
+        return str(self.templates)
 
 
-class Schema:
+class Template:
     """
     A pattern to recognize a single kind of citation and generate
     URLs from matches.
     
     In most cases, it is more useful to use the Citator class to load
-    schemas from YAML files and apply them en masse, rather than use
-    the Schema class directly.
+    templates from YAML files and apply them en masse, rather than use
+    the Template class directly.
     """
     def __init__(self,
         name: str,
@@ -535,17 +535,17 @@ class Schema:
         defaults: dict={},
         operations: list[dict]=[],
         parent_citation=None,
-        is_id=False
+        _is_id=False
     ):
         """
-        Schema constructor. Primarily meant for use in loading YAML
-        files and dynamically generating shortform schemas, but can be
+        Template constructor. Primarily meant for use in loading YAML
+        files and dynamically generating shortform templates, but can be
         run directly if needed.
         
         Arguments:
-            name: The name of this schema
+            name: The name of this template
             
-            regexes: A list of one or more regexes that this schema will
+            regexes: A list of one or more regexes that this template will
                 match. Each regex should be provided as a string, and
                 should include one or more named capture groups
                 (i.e. "tokens") that will be used to generate the URL.
@@ -553,7 +553,7 @@ class Schema:
             URL: The template by which to generate URLs from citation
                 matches. Placeholders in {curly braces} will be replaced
                 by the value of the token with the same name, after that
-                token has been processed by the schema
+                token has been processed by the template
                 
                 The URL template can be provided either as as a string
                 or as a list of strings to concatenate. In the latter
@@ -590,9 +590,9 @@ class Schema:
                 a series of dictionary keys (using case-insensitive
                 regex), and set the output to the corresponding value.
                 If the dictionary does not contain a matching key, the
-                entire schema match will retroactively fail.
+                entire template match will retroactively fail.
                 `optionalLookup` works the same way, except that failed
-                lookups will not cause the schema to fail, and will
+                lookups will not cause the template to fail, and will
                 simply leave tokens unmodified.
                 
                 The `numberFormat` operation assumes that the input
@@ -606,7 +606,7 @@ class Schema:
                 
                 Any named section in {curly braces} will be replaced by
                 the value of the corresponding token from the parent
-                citation. So if a schema detects a longform citation to
+                citation. So if a template detects a longform citation to
                 "372 U.S. 335" and has a shortform `{volume} {reporter}
                 at (?P<pincite>\d+)`, it will generate the following
                 regex: `372 U.S. at (?P<pincite>\d+)`.
@@ -615,19 +615,15 @@ class Schema:
                 except that these regexes will only match until the
                 next different citation or other interruption.
                 
-            parent_citation: The citation, if any, that this schema
+            parent_citation: The citation, if any, that this template
                 was created as a shortform of. This argument is
-                for dynamically-generated schemas, and there is usually
+                for dynamically-generated templates, and there is usually
                 no need to use it manually.
-                
-            is_id: Whether this schema represents an immediate repeat
-                shortform citation like "id." or "id. at 30". Really
-                only relevant for procedurally-generated schemas.
         """
         # Basic values
         self.name: str = name
         self.regexes: str = regexes
-        self.is_id: bool = is_id
+        self.is_id: bool = _is_id
         if URL:
             self.URL: str = URL if type(URL) is list else [URL]
         # Supplemental regexes
@@ -667,12 +663,12 @@ class Schema:
         Arguments:
             text: The text to scan for a citation.
             broad: Whether to use case-insensitive regex matching
-                and, if available, the schema's broadRegex.
+                and, if available, the template's broadRegex.
             span: A tuple of one or two values determining
                 the start and end index of where in the text to search
                 for citations. Defaults to (0,) to scan the entire text.
         Returns:
-            The first citation this schema finds in the scanned text,
+            The first citation this template finds in the scanned text,
             or None.
         """
         try:
@@ -687,21 +683,25 @@ class Schema:
         span: tuple=(0,)
     ) -> Iterable:
         """
-        Generator to return all citations the schema finds in text.
+        Generator to return all citations the template finds in text.
         
         Arguments:
             text: The text to scan for a citation
             broad: Whether to use case-insensitive regex matching and,
-                if available, the schema's broadRegex.
+                if available, the template's broadRegex.
             span: A tuple of one or two values determining
                 the start and end index of where in the text to search
                 for citations. Defaults to (0,) to scan the entire text.
         Returns:
-            Generator that yields each citation the schema finds in the
+            Generator that yields each citation the template finds in the
                 text, or None.
         """
         matches = []
-        for index in range(len(self.regexes)):
+        regex_count = len(self.regexes)
+        if broad and self.broadRegexes:
+            regex_count += len(self.broadRegexes)
+        for index in range(regex_count):
+            #print(f'scanning regex {index} for template {self}')
             matches += self._compiled_re(index, broad).finditer(text, *span)
             
         for match in matches:
@@ -720,39 +720,41 @@ class Schema:
         given numbered regex, first compiling it if necessary.
         """
         if broad:
-            compiled = self.__dict__['_compiled_broadRegexes']
-            regex_source = (
-                self.broadRegexes if self.broadRegexes
-                and len(self.broadRegexes) > index
-                else self.regexes
-            )
+            if index < len(self.regexes):
+                regex_str = self.regexes[index]
+            else:
+                regex_str = self.broadRegexes[index - len(self.regexes)]
+            target = self._compiled_broadRegexes
             kwargs = {'flags':re.I}
         else:
-            compiled = self.__dict__['_compiled_regexes']
-            regex_source = self.regexes
-            kwargs= {}
+            regex_str = self.regexes[index]
+            kwargs = {}
+            target = self._compiled_regexes
+        
         # only compile regex if it's not already present
-        if index not in compiled:
+        if index not in target:
             try:
-                compiled[index] = re.compile(regex_source[index], **kwargs)
+                target[index] = re.compile(regex_str, **kwargs)
             except re.error as e:
                 if not self.parent_citation:
                     raise SyntaxError(
-                        "CiteURL schema for %s has an invalid %s: %s"
-                        % (self.name, 'broadRegex' if broad else 'regex', e)
+                        f'CiteURL template for {self.name} has an invalid '
+                        + 'broadRegex' if index>len(self.regexes) else 'regex'
+                        + f': {e}'
                     )
+                # if there's a parent citation, error should refer to
+                # the parent template, not this one
                 else:
                     raise SyntaxError(
-                        ("CiteURL schema for %s has an error in one of its"
-                        + " shortForms or idForms: %s")
-                        % (self.parent_citation.schema.name, e)
+                        f'CiteURL template for {self.parent_citation.template}'
+                        + f' has an error in a shortForm or idForm: {e}'
                     )
-        return compiled[index]
+        return target[index]
 
     def _process_tokens(self, tokens: dict):
         """
         Returns a copy of the given set of tokens, after applying the
-        schema's defaults and processing operations
+        template's defaults and processing operations
         """
         processed_tokens = dict(tokens)
         for key, val in self.defaults.items():
@@ -762,7 +764,10 @@ class Schema:
         # perform each operation in series
         for operation in self.operations:
             # skip any operation that requires a nonexistent token
-            if processed_tokens[operation['token']] is None:
+            if (
+                operation['token'] not in processed_tokens
+                or processed_tokens[operation['token']] is None
+            ):
                 continue
             
             input_value = processed_tokens[operation['token']]
@@ -875,8 +880,8 @@ def insert_links(
     for citation in citations:
         if not citation.URL and not url_optional:
             continue
-        if citation.schema.is_id:
-            if citation.schema._compiled_re().groupindex:
+        if citation.template.is_id:
+            if citation.template._compiled_re().groupindex:
                 if not link_detailed_ids:
                     continue
             elif not link_plain_ids:

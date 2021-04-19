@@ -14,8 +14,8 @@ COPYRIGHT_MESSAGE = """
 // This script was made with CiteURL, an extensible framework to turn
 // legal references into URLs.
 //
-// The "schemas" variable directly below holds the data necessary to 
-// turn each kind of citation into a URL. Some or all of the schemas may
+// The "templates" variable directly below holds the data necessary to 
+// turn each kind of citation into a URL. Some or all of the templates may
 // have been made by a third party and are not part of CiteURL itself.
 //
 // CiteURL is copyright of Simon Raindrum Sherred under the MIT License,
@@ -40,7 +40,7 @@ def makejs(
     include an HTML form so it can be directly embedded in a page
     
     Arguments:
-        citator: a CiteURL citator object, with any number of schemas
+        citator: a CiteURL citator object, with any number of templates
             loaded.
         embed_html: whether to wrap the generated JavaScript in a
             <script> tag and follow it with an HTML form with a CiteURL
@@ -48,33 +48,30 @@ def makejs(
     Returns:
         a string containing raw JavaScript or embeddable HTML
     """
-    # translate each schema to json
-    json_schemas = []
-    for schema in citator.schemas:
-        # skip schemas without URL templates
-        if 'URL' not in schema.__dict__:
+    # translate each template to json
+    json_templates = []
+    for template in citator.templates:
+        # skip templates without URL templates
+        if 'URL' not in template.__dict__:
             continue
         
         json = {}
         
-        # some parts of a schema can be copied over easily
+        # some parts of a template can be copied over easily
         for key in ['name', 'defaults', 'URL']:
-            json[key] = schema.__dict__[key]
-        if schema.broadRegexes:
-            if len(schema.broadRegexes) < len(schema.regexes):
-                regexes_source = schema.broadRegexes + schema.regexes
-            else:
-                regexes_source = schema.broadRegexes
-        else:
-            regexes_source = schema.regexes
+            json[key] = template.__dict__[key]
+        regexes_source = (
+            (template.broadRegexes + template.regexes) if template.broadRegexes
+            else template.regexes
+        )
         json['regexes'] = list(map(
             lambda x: x.replace('?P<', '?<'),
             regexes_source
         ))
         # only add the relevant information from each operation
-        if schema.operations:
+        if template.operations:
             json['operations'] = []
-        for operation in schema.operations:
+        for operation in template.operations:
             json_op = {}
             for key, value in operation.items():
                 if key == 'output' and value == 'token':
@@ -82,11 +79,11 @@ def makejs(
                 json_op[key] = value
             json['operations'].append(json_op)
 
-        json_schemas.append(json)
+        json_templates.append(json)
     
     # write json to str
     json_str = dumps(
-        json_schemas,
+        json_templates,
         indent=4,
         sort_keys=False,
         ensure_ascii=False,
@@ -95,7 +92,7 @@ def makejs(
     # generate javascript
     javascript = (
         COPYRIGHT_MESSAGE
-        + '\nconst schemas = ' 
+        + '\nconst templates = ' 
         + json_str + ';\n\n'
         + BASE_JS_PATH.read_text()
     )
@@ -111,8 +108,8 @@ def makejs(
 def main():
     """
     Print a JavaScript implementation of CiteURL's lookup function,
-    populated with the schemas from the specified YAML files, plus the
-    built-in schemas by default.
+    populated with the templates from the specified YAML files, plus the
+    built-in templates by default.
     
     The JavaScript is meant to be embedded in a HTML page that contains
     a search bar with name="q", inside of a form with
@@ -122,13 +119,13 @@ def main():
     parser.add_argument(
         "yaml_files",
         nargs="*",
-        help="files containing custom citation schemas to include. "
-            + "See https://raindrum.github.io/citeurl/#schema-yamls/",
+        help="files containing custom citation templates to include. "
+            + "See https://raindrum.github.io/citeurl/#template-yamls/",
     )
     parser.add_argument(
-        "-n", "--no-default-schemas",
+        "-n", "--no-default-templates",
         action="store_true",
-        help="don't include CiteURL's default schemas",
+        help="don't include CiteURL's default templates",
     )
     parser.add_argument(
         "-e", "--embed-html",
@@ -144,7 +141,7 @@ def main():
     
     citator = Citator(
         yaml_paths=args.yaml_files,
-        defaults=False if args.no_default_schemas else True,
+        defaults=False if args.no_default_templates else True,
     )
     
     output = makejs(

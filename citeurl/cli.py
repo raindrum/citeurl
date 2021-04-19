@@ -67,19 +67,19 @@ def main():
     )
     parser.add_argument(
         "-n",
-        "--no-default-schemas",
+        "--no-default-templates",
         action="store_true",
-        help="prevent loading the default set of schemas",
+        help="prevent loading the default set of templates",
     )
     parser.add_argument(
         "-s",
-        "--schema-file",
+        "--template-file",
         action="append",
         default=SUPPRESS,
         help=(
-            "path to a YML file containing schemas to load. Can be "
+            "path to a YML file containing templates to load. Can be "
             + "called multiple times to load multiple files. See "
-            + "https://github.com/raindrum/citeurl#writing-your-own-schemas."
+            + "https://github.com/raindrum/citeurl#writing-your-own-templates."
         )
     )
     parser.add_argument(
@@ -114,15 +114,15 @@ def main():
         parser.print_help()
         return
     
-    # load schemas
-    defaults = not args.no_default_schemas
-    if 'schema_file' in args:
-        citator = Citator(yaml_paths=args.schema_file, defaults=defaults)
+    # load templates
+    defaults = not args.no_default_templates
+    if 'template_file' in args:
+        citator = Citator(yaml_paths=args.template_file, defaults=defaults)
     elif defaults:
         citator = Citator()
     else:
         raise SystemExit(
-            "Can't use '-n' without specifying a custom schema file."
+            "Can't use '-n' without specifying a custom template file."
         )
 
     # print output to file or stdout
@@ -134,7 +134,7 @@ def main():
                 if citation.tokens[k]
             ]
             tab_width = max(key_lengths) + 2
-            print('Source: '.ljust(tab_width) + str(citation.schema))
+            print('Source: '.ljust(tab_width) + str(citation.template))
             for key, value in citation.tokens.items():
                 if not value:
                     continue
@@ -154,7 +154,7 @@ def main():
         outputs = []
         for authority in authorities:
             output = f"Authority:  {authority}"
-            output += f"\nSource:     {authority.schema}"
+            output += f"\nSource:     {authority.template}"
             if authority.URL:
                 output += "\nURL:        " + authority.URL
             output += f"\nReferences: {len(authority.citations)}"
