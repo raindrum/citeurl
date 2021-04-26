@@ -6,7 +6,7 @@ United States Code:
   regexes:
     - - &title '([Tt]itle )?(?P<title>\d+) '
       - &usc (U\.?|United) ?(S\.?|States) ?C(ode|\.?)( ?[AS]\.?| Ann(otated|o?\.)| Serv(ice|\.))?
-      - &section ' ((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.]*\w|\d))'
+      - &section '((,? )?(&sect;|&#167|§){1,2}|Sect?\.?|Sections?)? ?(?P<section>\d[\w.-]*\w|\d)'
       - &subsection '(((,? )?sub(sections?|divisions?|(sec|d(iv)?)?s?\.) ?)?(?P<subsection>(\(\w+\))+))?'
     - ['[Ss]ection', *section, *subsection, ' of ', *title, 'of the ', *usc]
   idForms: &id_sec_sub
@@ -417,7 +417,7 @@ Arizona Constitution:
 California Codes:
   regex:
     - &ca_name (Cal(ifornia|\.)|CAL?)
-    - ' ?(?P<code>[BCDEFGHILMPRSUVW].{2,40}?)( ?Code( Ann(otated|\.))?,?)?'
+    - ' ?(?P<code>[BCDEFGHILMPRSUVW].{2,40}?)( ?C(ode|\.)( Ann(otated|\.))?,?)?'
     - *section
     - *subsection
   idForms: *id_sec_sub
@@ -858,6 +858,7 @@ Massachusetts General Laws:
     - *subsection
   idForms:
     - [*id_at, ' ', *mass_section, *subsection]
+    - [*mandatory_section_sign, *mass_section]
     - *subsection_id
   operations:
     - token: section
