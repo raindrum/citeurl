@@ -1,17 +1,17 @@
-# Python Library
+# Library Reference
 
 This page documents how to include CiteURL in your Python programming projects.
 
 The library revolves around the concept of a [Citator](#citator), which contains and applies all of the [Templates](#templates) that detect/create [Citation](#citation) objects in text. As such, the first step is to instantiate a Citator:
 
-```python
+``` python
 from citeurl import Citator
 citator = Citator()
 ```
 
 After that, you can feed it text to return a list of [Citation](#citation) objects:
 
-```python
+``` python
 text = """
 Federal law provides that courts should award prevailing civil
 rights plaintiffs reasonable attorneys fees, see 42 USC § 1988(b),
@@ -41,14 +41,14 @@ print(citations[0].URL)
 
 You can also use [insert_links()](#insert_links) to insert the citations back into the source text as HTML hyperlinks:
 
-```python
+``` python
 from citeurl import insert_links
 output = insert_links(citations, text)
 ```
 
 Or, you can use [list_authorities()](#list_authorities) to combine all the citations into a list of all the authorities cited in the text:
 
-```python
+``` python
 from citeurl import list_authorities
 
 authorities = list_authorities(citations)

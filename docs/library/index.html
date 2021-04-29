@@ -14,7 +14,7 @@
     
     
       
-        <title>Python Library - CiteURL</title>
+        <title>Library Reference - CiteURL</title>
       
     
     
@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#python-library" class="md-skip">
+        <a href="#library-reference" class="md-skip">
           Skip to content
         </a>
       
@@ -93,7 +93,7 @@
         <div class="md-header-nav__topic">
           <span class="md-ellipsis">
             
-              Python Library
+              Library Reference
             
           </span>
         </div>
@@ -240,12 +240,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Python Library
+          Library Reference
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Python Library
+        Library Reference
       </a>
       
         
@@ -654,52 +654,52 @@
                   </a>
                 
                 
-                <h1 id="python-library">Python Library</h1>
+                <h1 id="library-reference">Library Reference</h1>
 <p>This page documents how to include CiteURL in your Python programming projects.</p>
 <p>The library revolves around the concept of a <a href="#citator">Citator</a>, which contains and applies all of the <a href="#templates">Templates</a> that detect/create <a href="#citation">Citation</a> objects in text. As such, the first step is to instantiate a Citator:</p>
-<pre><code class="language-python">from citeurl import Citator
-citator = Citator()
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">citeurl</span> <span class="kn">import</span> <span class="n">Citator</span>
+<span class="n">citator</span> <span class="o">=</span> <span class="n">Citator</span><span class="p">()</span>
+</code></pre></div>
 <p>After that, you can feed it text to return a list of <a href="#citation">Citation</a> objects:</p>
-<pre><code class="language-python">text = &quot;&quot;&quot;
-Federal law provides that courts should award prevailing civil
-rights plaintiffs reasonable attorneys fees, see 42 USC § 1988(b),
-and, by discretion, expert fees, see id. at (c). This is because
-the importance of civil rights litigation cannot be measured by a
-damages judgment. See Riverside v. Rivera, 477 U.S. 561 (1986).
-But Evans v. Jeff D. upheld a settlement where the plaintiffs got
-everything they wanted, on the condition that they waive attorneys
-fees. 475 U.S. 717 (1986). This ruling lets savvy defendants
-create a wedge between plaintiffs and their attorneys, discouraging
-civil rights suits and undermining the court's logic in Riverside,
-477 U.S. at 574-78.
-&quot;&quot;&quot;
-citations = citator.list_citations(text)
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Federal law provides that courts should award prevailing civil</span>
+<span class="s2">rights plaintiffs reasonable attorneys fees, see 42 USC § 1988(b),</span>
+<span class="s2">and, by discretion, expert fees, see id. at (c). This is because</span>
+<span class="s2">the importance of civil rights litigation cannot be measured by a</span>
+<span class="s2">damages judgment. See Riverside v. Rivera, 477 U.S. 561 (1986).</span>
+<span class="s2">But Evans v. Jeff D. upheld a settlement where the plaintiffs got</span>
+<span class="s2">everything they wanted, on the condition that they waive attorneys</span>
+<span class="s2">fees. 475 U.S. 717 (1986). This ruling lets savvy defendants</span>
+<span class="s2">create a wedge between plaintiffs and their attorneys, discouraging</span>
+<span class="s2">civil rights suits and undermining the court&#39;s logic in Riverside,</span>
+<span class="s2">477 U.S. at 574-78.</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">citations</span> <span class="o">=</span> <span class="n">citator</span><span class="o">.</span><span class="n">list_citations</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
 <p>Once you have a list of citations, you can get information about each one:</p>
-<pre><code class="language-python">print(citations[0].text)
-# 42 USC § 1988(b)
-print(citations[0].tokens)
-# {'title': '42', 'section': '1988', 'subsection': '(b)'}
-print(citations[0].URL)
-# https://www.law.cornell.edu/uscode/text/42/1988#b
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">citations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="c1"># 42 USC § 1988(b)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">citations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
+<span class="c1"># {&#39;title&#39;: &#39;42&#39;, &#39;section&#39;: &#39;1988&#39;, &#39;subsection&#39;: &#39;(b)&#39;}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">citations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">URL</span><span class="p">)</span>
+<span class="c1"># https://www.law.cornell.edu/uscode/text/42/1988#b</span>
+</code></pre></div>
 <p>You can also use <a href="#insert_links">insert_links()</a> to insert the citations back into the source text as HTML hyperlinks:</p>
-<pre><code class="language-python">from citeurl import insert_links
-output = insert_links(citations, text)
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">citeurl</span> <span class="kn">import</span> <span class="n">insert_links</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">insert_links</span><span class="p">(</span><span class="n">citations</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+</code></pre></div>
 <p>Or, you can use <a href="#list_authorities">list_authorities()</a> to combine all the citations into a list of all the authorities cited in the text:</p>
-<pre><code class="language-python">from citeurl import list_authorities
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">citeurl</span> <span class="kn">import</span> <span class="n">list_authorities</span>
 
-authorities = list_authorities(citations)
-for authority in authorities:
-    auth_cites = authority.citations
-    print(f&quot;{authority} was cited {len(auth_cites)}}) time(s)&quot;)
+<span class="n">authorities</span> <span class="o">=</span> <span class="n">list_authorities</span><span class="p">(</span><span class="n">citations</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">authority</span> <span class="ow">in</span> <span class="n">authorities</span><span class="p">:</span>
+    <span class="n">auth_cites</span> <span class="o">=</span> <span class="n">authority</span><span class="o">.</span><span class="n">citations</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">authority</span><span class="si">}</span><span class="s2"> was cited </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">auth_cites</span><span class="p">)</span><span class="si">}}</span><span class="s2">) time(s)&quot;</span><span class="p">)</span>
 
-# 42 USC § 1988 was cited 2 time(s)
-# 477 U.S. 561 was cited 2 time(s)
-# 475 U.S. 717 was cited 1 time(s)
-</code></pre>
+<span class="c1"># 42 USC § 1988 was cited 2 time(s)</span>
+<span class="c1"># 477 U.S. 561 was cited 2 time(s)</span>
+<span class="c1"># 475 U.S. 717 was cited 1 time(s)</span>
+</code></pre></div>
 <h2 id="citator">Citator</h2>
 <div class="doc doc-object doc-class">
 <div class="doc doc-contents first">
@@ -1359,7 +1359,7 @@ next different citation or other interruption.</p>
 </tr>
 <tr>
 <td><code>parent_citation</code></td>
-<td><code></code></td>
+<td><code>Citation</code></td>
 <td>
 <p>The citation, if any, that this template
 was created as a shortform of. This argument is
@@ -1382,7 +1382,7 @@ no need to use it manually.</p>
     <span class="n">shortForms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">defaults</span><span class="p">:</span> <span class="nb">dict</span><span class="o">=</span><span class="p">{},</span>
     <span class="n">operations</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span><span class="o">=</span><span class="p">[],</span>
-    <span class="n">parent_citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">parent_citation</span><span class="p">:</span> <span class="n">Citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">_is_id</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">):</span>
     <span class="sd">"""</span>
@@ -1774,6 +1774,14 @@ modified via the template's processes.</p>
 <p>The URL where a user can read this citation online</p>
 </td>
 </tr>
+<tr>
+<td><code>authority</code></td>
+<td><code></code></td>
+<td>
+<p>The Authority that this citation is a reference to.
+This attribute is not set until list_authorities() is run.</p>
+</td>
+</tr>
 </tbody>
 </table>
 <div class="doc doc-children">
@@ -1889,7 +1897,7 @@ this authority.</p>
 </tr>
 <tr>
 <td><code>base_citation</code></td>
-<td><code></code></td>
+<td><code>Citation</code></td>
 <td>
 <p>A citation object representing the hypothetical
 generic citation to this authority.</p>
@@ -1934,7 +1942,7 @@ this authority.</p>
 <tbody>
 <tr>
 <td><code>first_cite</code></td>
-<td><code></code></td>
+<td><code>Citation</code></td>
 <td>
 <p>A long-form citation object representing the
 first and archetypal citation to this authority. The
@@ -1958,7 +1966,7 @@ differ among citations to the same authority</p>
 <details class="quote">
           <summary>Source code in <code>citeurl/__init__.py</code></summary>
           <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_cite</span><span class="p">,</span> <span class="n">allowed_differences</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[]):</span>
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_cite</span><span class="p">:</span> <span class="n">Citation</span><span class="p">,</span> <span class="n">allowed_differences</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[]):</span>
     <span class="sd">"""</span>
 <span class="sd">    Define an authority by providing a single long-form citation,</span>
 <span class="sd">    and the list of tokens which, if present in the citation, should</span>
@@ -1993,6 +2001,7 @@ differ among citations to the same authority</p>
     <span class="c1"># Next, derive a base citation to represent this authority.</span>
     <span class="c1"># If the first_citation to this authority isn't a longform, use</span>
     <span class="c1"># whatever longform it's a child of.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span><span class="p">:</span> <span class="n">Citation</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_derive_base_citation</span><span class="p">(</span><span class="n">long_cite</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
@@ -2015,14 +2024,14 @@ differ among citations to the same authority</p>
 
       </h3>
 <div class="doc doc-contents ">
-<p>Adds the citation to this template's list of citations. Also,
+<p>Adds the citation to this authority's list of citations. Also,
 adds the <code>authority</code> tag to the citation, referring back to this
 authority.</p>
 <details class="quote">
           <summary>Source code in <code>citeurl/__init__.py</code></summary>
           <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">include</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citation</span><span class="p">):</span>
-    <span class="sd">"""Adds the citation to this template's list of citations. Also,</span>
+    <span class="sd">"""Adds the citation to this authority's list of citations. Also,</span>
 <span class="sd">    adds the `authority` tag to the citation, referring back to this</span>
 <span class="sd">    authority."""</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">citations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">citation</span><span class="p">)</span>
@@ -2229,13 +2238,13 @@ attribute referring to the proper authority.</p>
 <td><em>required</em></td>
 </tr>
 <tr>
-<td><code>unimportant_tokens</code></td>
-<td><code></code></td>
+<td><code>irrelevant_tokens</code></td>
+<td><code>list</code></td>
 <td>
 <p>A list of tokens whose values may 
 differ among citations to the same authority.</p>
 </td>
-<td><em>required</em></td>
+<td><code>['subsection', 'subdivision', 'clause', 'pincite', 'pincite_end', 'footnote']</code></td>
 </tr>
 </tbody>
 </table>
@@ -2273,7 +2282,7 @@ that refer to each, from most to least.</p>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        citations: The list of citations to combine</span>
-<span class="sd">        unimportant_tokens: A list of tokens whose values may </span>
+<span class="sd">        irrelevant_tokens: A list of tokens whose values may </span>
 <span class="sd">            differ among citations to the same authority.</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        A list of authority objects, sorted by the number of citations</span>

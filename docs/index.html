@@ -284,7 +284,7 @@
   
     <li class="md-nav__item">
       <a href="library/" class="md-nav__link">
-        Python Library
+        Library Reference
       </a>
     </li>
   
@@ -394,18 +394,18 @@
 <p>If you want to try out CiteURL's citation lookup features without installing anything, you can use <a href="https://raindrum.github.io/lawsearch">Law Search</a>, a JavaScript implementation of CiteURL I maintain on my website.</p>
 <h2 id="installation">Installation</h2>
 <p>CiteURL has been tested with Python version 3.9, but earlier versions probably work too. Install Python if you don't have it, then run this command:</p>
-<pre><code class="language-bash">python -m pip install citeurl
-</code></pre>
+<div class="highlight"><pre><span></span><code>python -m pip install citeurl
+</code></pre></div>
 <h2 id="usage">Usage</h2>
 <p>Look up a single citation and open it directly in a browser:</p>
-<pre><code class="language-bash">citeurl -lb &quot;42 usc 1983&quot;
-</code></pre>
+<div class="highlight"><pre><span></span><code>citeurl -lb <span class="s2">&quot;42 usc 1983&quot;</span>
+</code></pre></div>
 <p>Process a court opinion or other text, and output a version where every citation (long or shortform) is converted into an HTML hyperlink:</p>
-<pre><code class="language-bash">citeurl -i INPUT_FILE.html -o OUTPUT_FILE.html
-</code></pre>
+<div class="highlight"><pre><span></span><code>citeurl -i INPUT_FILE.html -o OUTPUT_FILE.html
+</code></pre></div>
 <p>Get a list of the top 10 authorities cited in a text, ordered by the number of citations to each, <a href="https://raindrum.github.io/citeurl/template-yamls/">including sources of law</a> that CiteURL doesn't even natively support:</p>
-<pre><code class="language-bash">cat INPUT_FILE.html | citeurl -a 10 -s YOUR_CUSTOM_TEMPLATES.YAML -o OUTPUT_FILE.html
-</code></pre>
+<div class="highlight"><pre><span></span><code>cat INPUT_FILE.html <span class="p">|</span> citeurl -a <span class="m">10</span> -s YOUR_CUSTOM_TEMPLATES.YAML -o OUTPUT_FILE.html
+</code></pre></div>
 <p>For more options, run <code>citeurl -h</code>.</p>
 <p>Besides to the command-line tool, CiteURL can be used in a few other forms:</p>
 <ul>

@@ -10,7 +10,7 @@ Before you proceed, make sure you're fairly familiar with [Python Regular Expres
 
 Here is a simplified example of a template that you might write to recognize citations to the U.S. Code:
 
-```yaml
+``` yaml
 United States Code:
   regex: (?P<title>\d+) USC § (?P<section>\d+)
   URL: https://www.law.cornell.edu/uscode/text/{title}/{section}
@@ -29,7 +29,7 @@ In the example above, the regex is provided as a single string. This is perfectl
 
 The example template above can be rewritten to take advantage of these two features, like so:
 
-```yaml
+``` yaml
 United States Code
   regexes:
     - [&title '(?P<title>\d+)', ' USC ', &section '(Section|§) (?P<section>\d+)']
@@ -43,7 +43,7 @@ The above template looks unwieldy, and it is; it is a list of lists. However, it
 
 Another important feature is that a template's URL, like its regex(es), can be specified as a list of strings to concatenate. However, this serves a functional purpose: If a list item contains a placeholder for which no value is set, that whole list item will be omitted from the final URL. For instance, the template below can generate anchor links to subsections of the U.S. Code, but if no subsection is provided, it simply links to the overall page for the section itself:
 
-```yaml
+``` yaml
 United States Code
   regex: (?P<title>\d+) USC § (?P<section>\d+)( \((?P<subsection>[a-z])\)?
   URL:
@@ -59,7 +59,7 @@ To solve this problem, CiteURL templates can specify `operations` that will be p
 
 This example template solves the problem by converting the `reporter` token to lowercase, deleting some common special characters from it, and then replacing spaces with dashes:
 
-```yaml
+``` yaml
 Caselaw Access Project (Simplified):
   regex: (?P<volume>\d+) (?P<reporter>(\D|\d(d|th|rd))+?) (?P<page>\d+)
   operations:
@@ -95,7 +95,7 @@ To address this, CiteURL can essentially generate new templates on the fly, when
 
 Like URL templates, `idForms` and `shortForms` may contain placeholders in curly braces. These placeholders will be replaced with the corresponding token matched in the long-form citation, so that you can ensure that they only match citations where those tokens are unchanged. For instance, you could write a template to recognize court cases:
 
-```yaml
+``` yaml
 Caselaw Access Project (Simplified):
   regex: (?P<volume>\d+) (?P<reporter>(\D|\d(d|th|rd))+?) (?P<page>\d+)(, (?P<pincite>\d+))?
   idForms:
@@ -110,7 +110,7 @@ To be precise, placeholders are replaced by the text *as originally matched* in 
 
 This exception is useful in a few situations. For instance, a California court opinion might reference "California Civil Code § 1946.2" once early on, but then shift to a format like "CIV § 1946.2" in later citations. This poses a problem because the new form drops reference to California, so it's too generic to be its own long-form citation, while at the same time it doesn't match the "Civil Code" token, either. But this can be solved by using a substitution to recognize "Civil Code" and, from it, generate a new token "CIV", then generating a short citation form from that:
 
-```yaml
+``` yaml
 California Codes:
   regex: California (?P<code>Civil Code|Penal Code) § (?P<section>\d+)
   operations:
@@ -126,7 +126,7 @@ Using the example template above, CiteURL will be able to recognize a longform c
 
 One last note: Unlike a template's `regex`, `shortForms` and `idForms` are inherently lists, since they are designed to allow multiple alternative regexes. However, like the `regex` entry, individual list items can optionally be lists of strings, to accommodate YAML anchors. For instance, the following template is functionally identical to the Caselaw Access Project example above; the only difference is that I structured it so that I would only need to write `(?P<pincite>\d+)` once:
 
-```yaml
+``` yaml
 Caselaw Access Project (Simplified):
   regex:
     - '(?P<volume>\d+) (?P<reporter>(\D|\d(d|th|rd))+?) (?P<page>\d+)(, '
@@ -146,7 +146,7 @@ Caselaw Access Project (Simplified):
 
 For instance, the template below will match citations like "29 USC § 157" as well as citations like "§ 1983", but in the latter case, it assumes that the title is '42' by default.
 
-```yaml
+``` yaml
 U.S. Code, but especially Title 42:
   regex: ((?P<title>\d+) USC )?§ (?P<section>\d+)
   defaults: {'title': '42'}

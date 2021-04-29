@@ -57,6 +57,8 @@ class Citation:
         processed_tokens: Dictionary of tokens after they have been
             modified via the template's processes.
         URL: The URL where a user can read this citation online
+        authority: The Authority that this citation is a reference to.
+            This attribute is not set until list_authorities() is run.
     """
     def __init__(self, match: re.Match, template):
         """
@@ -194,7 +196,7 @@ class Authority:
             generic citation to this authority.
         name: The text of base_citation
     """
-    def __init__(self, first_cite, allowed_differences: list=[]):
+    def __init__(self, first_cite: Citation, allowed_differences: list=[]):
         """
         Define an authority by providing a single long-form citation,
         and the list of tokens which, if present in the citation, should
@@ -229,6 +231,7 @@ class Authority:
         # Next, derive a base citation to represent this authority.
         # If the first_citation to this authority isn't a longform, use
         # whatever longform it's a child of.
+        self.base_citation: Citation = None
         try:
             self.base_citation = self._derive_base_citation(long_cite)
         except TypeError:
@@ -240,7 +243,7 @@ class Authority:
         first_cite.authority = self
     
     def include(self, citation):
-        """Adds the citation to this template's list of citations. Also,
+        """Adds the citation to this authority's list of citations. Also,
         adds the `authority` tag to the citation, referring back to this
         authority."""
         self.citations.append(citation)
@@ -534,7 +537,7 @@ class Template:
         shortForms: list[str]=[],
         defaults: dict={},
         operations: list[dict]=[],
-        parent_citation=None,
+        parent_citation: Citation=None,
         _is_id=False
     ):
         """
@@ -941,7 +944,7 @@ def list_authorities(
     
     Arguments:
         citations: The list of citations to combine
-        unimportant_tokens: A list of tokens whose values may 
+        irrelevant_tokens: A list of tokens whose values may 
             differ among citations to the same authority.
     Returns:
         A list of authority objects, sorted by the number of citations

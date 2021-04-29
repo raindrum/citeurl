@@ -12,7 +12,7 @@ You can use the `citeurl-makejs` command to make your own custom instances that 
 2. [Install CiteURL](../index#installation) if you have not done so already.
 3. Open a command line and run the following:
 
-```bash
+``` bash
 citeurl-makejs -e -o output.html PATH/TO/YOUR/TEMPLATES.YAML
 ```
 
