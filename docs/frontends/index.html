@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>CiteURL Frontends - CiteURL</title>
+    <link href="../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/highlight.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "CiteURL Frontends", url: "#_top", children: [
+              {title: "JavaScript", url: "#javascript" },
+              {title: "Markdown Extension", url: "#markdown-extension" },
+          ]},
+        ];
+
+    </script>
+    <script src="../js/base.js"></script>
+      <script src="../search/main.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../library/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../library/" class="btn btn-xs btn-link">
+        CiteURL Library
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href=".." class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href=".." class="btn btn-xs btn-link">
+        Getting Started
+      </a>
+    </div>
+    
+  </div>
+
+    
+
+    <h1 id="citeurl-frontends">CiteURL Frontends</h1>
+<p>CiteURL can be used in a few forms besides the <a href="index#usage">command-line tool</a> and <a href="library">the Python library</a>. Here's what they are:</p>
+<h2 id="javascript">JavaScript</h2>
+<p>Although CiteURL is primarily a Python program, it can also generate a JavaScript implementation of its citation lookup function, so that end users can look up citations in a web browser without having to install anything. <a href="https://raindrum.github.io/lawsearch">Law Search</a> is one such instance that I maintain on my website.</p>
+<p>You can use the <code>citeurl-makejs</code> command to make your own custom instances that support arbitrary sources of law. Here's how:</p>
+<ol>
+<li><a href="template-yamls">Write a YAML file</a> with one or more custom citation templates.</li>
+<li><a href="index#installation">Install CiteURL</a> if you have not done so already.</li>
+<li>Open a command line and run the following:</li>
+</ol>
+<pre><code class="language-bash">citeurl-makejs -e -o output.html PATH/TO/YOUR/TEMPLATES.YAML
+</code></pre>
+<p>Alternatively, to omit the default templates, include the <code>-n</code> option in that command.</p>
+<p>After exporting an HTML file, you can bookmark the local file as a <a href="https://www.howtogeek.com/114176/HOW-TO-EASILY-CREATE-SEARCH-PLUGINS-ADD-ANY-SEARCH-ENGINE-TO-YOUR-BROWSER/">custom search engine</a>.</p>
+<p>Alternatively, if you have a web page you'd like to embed CiteURL functionality into, you can also generate the JavaScript by itself. To do that, omit the <code>-e</code> option and save the output as a <code>.js</code> file. All the citation lookup functionality is available via its <code>getUrlForQuery()</code> function, which takes a search query string as input, and returns the completed URL.</p>
+<p>For more info, run <code>citeurl-makejs -h</code>.</p>
+<h2 id="markdown-extension">Markdown Extension</h2>
+<p>CiteURL can also be used as an extension to <a href="https://python-markdown.github.io/">Python-Markdown</a>. You can load the extension as <code>citeurl</code>, and it supports the following options:</p>
+<ul>
+<li><code>custom_templates</code>: A list of paths to YAML files containing <a href="template-yamls">custom citation templates</a>. Defaults to none.</li>
+<li><code>use_defaults</code>: Whether CiteURL should load the default citation templates. Defaults to <code>True</code>.</li>
+<li><code>attributes</code>: A dictionary of HTML attributes to give each hyperlink that CiteURL inserts into the text. Defaults to <code>{'class': 'citation'}</code>.</li>
+<li><code>link_detailed_ids</code>: Whether to insert links for citations like <code>Id. at 305</code>. Defaults to <code>True</code>.</li>
+<li><code>link_plain_ids</code>: Whether to insert links for citations like <code>Id.</code>. Defaults to <code>False</code>.</li>
+<li><code>break_id_on_regex</code>: Anywhere this string (parsed as regex) appears in the text, chains of citations like <code>id.</code> will be interrupted. Note that this is based on the output HTML, <em>not</em> the original Markdown text. Defaults to <code>L\. ?Rev\.|J\. ?Law|\. ?([Cc]ode|[Cc]onst)</code></li>
+</ul>
+<h3 id="gnome-shell-search-provider">GNOME Shell Search Provider</h3>
+<p>If you use the GNOME desktop environment, you can install <a href="https://extensions.gnome.org/extension/4225/gnome-citeurl-search-provider/">my other project</a> to look up citations directly from your desktop!</p>
+
+  <br>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../library/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../library/" class="btn btn-xs btn-link">
+        CiteURL Library
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href=".." class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href=".." class="btn btn-xs btn-link">
+        Getting Started
+      </a>
+    </div>
+    
+  </div>
+
+    <br>
+</div>
+
+<footer class="col-md-12 wm-page-content">
+  <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a> using <a href="">Windmill Dark</a> theme by None (noraj).</p>
+</footer>
+
+</body>
+</html>

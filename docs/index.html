@@ -36,13 +36,14 @@
         var pageToc = [
           {title: "Getting Started", url: "#_top", children: [
               {title: "Installation", url: "#installation" },
-              {title: "Frontends", url: "#frontends" },
-              {title: "Python Library", url: "#python-library" },
+              {title: "Usage", url: "#usage" },
+              {title: "Credits", url: "#credits" },
           ]},
         ];
 
     </script>
-    <script src="./js/base.js"></script> 
+    <script src="./js/base.js"></script>
+      <script src="search/main.js"></script> 
 </head>
 
 <body>
@@ -85,7 +86,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
       <div class="wm-top-title">
         CiteURL<br>
         
-          <span class="wm-top-version">7.1.0</span>
+          <span class="wm-top-version">7.1.1</span>
         
       </div>
     </a>
@@ -99,9 +100,9 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
   <ul class="wm-toctree">
         <li class="wm-toc-li wm-toc-lev1 "><a href="" class="wm-article-link wm-toc-text">Getting Started</a>
 </li>
-        <li class="wm-toc-li wm-toc-lev1 "><a href="classes/" class="wm-article-link wm-toc-text">Classes</a>
+        <li class="wm-toc-li wm-toc-lev1 "><a href="frontends/" class="wm-article-link wm-toc-text">CiteURL Frontends</a>
 </li>
-        <li class="wm-toc-li wm-toc-lev1 "><a href="functions/" class="wm-article-link wm-toc-text">Functions</a>
+        <li class="wm-toc-li wm-toc-lev1 "><a href="library/" class="wm-article-link wm-toc-text">CiteURL Library</a>
 </li>
         <li class="wm-toc-li wm-toc-lev1 "><a href="template-yamls/" class="wm-article-link wm-toc-text">Writing Your Own Templates</a>
 </li>
@@ -125,12 +126,12 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
   <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
     
     <div class="wm-article-nav pull-right">
-      <a href="classes/" class="btn btn-xs btn-default pull-right">
+      <a href="frontends/" class="btn btn-xs btn-default pull-right">
         Next
         <i class="fa fa-chevron-right" aria-hidden="true"></i>
       </a>
-      <a href="classes/" class="btn btn-xs btn-link">
-        Classes
+      <a href="frontends/" class="btn btn-xs btn-link">
+        CiteURL Frontends
       </a>
     </div>
     
@@ -139,120 +140,62 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
     
 
     <h1 id="getting-started">Getting Started</h1>
-<p>CiteURL is an extensible tool to process legal citations in text and generate links to sites where you can view the cited language online. By default, it supports Bluebook-style citations to the following bodies of law, among others:</p>
+<table>
+<thead>
+<tr>
+<th>Sample Input</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, see 42 USC § 1988(b), and, by discretion, expert fees, see <em>id.</em> at (c). This is because the importance of civil rights litigation cannot be measured by a damages judgment. <em>See</em> <em>Riverside v. Rivera</em>, 477 U.S. 561 (1986). But <em>Evans v. Jeff D.</em>, upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys fees. 475 U.S. 717 (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in <em>Riverside</em>, 477 U.S. at 574-78.</td>
+<td>Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, see <a href="https://www.law.cornell.edu/uscode/text/42/1988#b">42 USC § 1988(b)</a>, and, by discretion, expert fees, see <a href="https://www.law.cornell.edu/uscode/text/42/1988#c"><em>id.</em> at (c)</a>. This is because the importance of civil rights litigation cannot be measured by a damages judgment. <em>See</em> <em>Riverside v. Rivera</em>, <a href="https://cite.case.law/us/477/561">477 U.S. 561</a> (1986). But <em>Evans v. Jeff D.</em>, upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys fees. <a href="https://cite.case.law/us/475/717">475 U.S. 717</a> (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in <em>Riverside</em>, <a href="https://cite.case.law/us/477/561#p574">477 U.S. at 574-78</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>CiteURL is an extensible tool to process legal citations in text and generate links to sites where you can view the cited language online. By default, it supports Bluebook-style citations to these bodies of law, among others:</p>
 <ul>
 <li>most state and federal court cases</li>
 <li>the U.S. Code and Code of Federal Regulations</li>
 <li>the U.S. Constitution and all state constitutions</li>
 <li>codified laws for every state and territory except Arkansas, Georgia, Guam, and Puerto Rico</li>
 </ul>
-<p>The full list is available <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml">here</a>. You can also customize CiteURL to support more bodies of law by <a href="template-yamls">writing your own citation templates</a> in YAML format.</p>
+<p>The full list is available <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml">here</a>. You can also customize CiteURL to support more bodies of law by <a href="https://raindrum.github.io/citeurl/#template-yamls/">writing your own citation templates</a> in YAML format.</p>
+<p>If you want to try out CiteURL's citation lookup features without installing anything, you can use <a href="https://raindrum.github.io/lawsearch">Law Search</a>, a JavaScript implementation of CiteURL I maintain on my website.</p>
 <h2 id="installation">Installation</h2>
-<p>CiteURL has been tested with Python version 3.9, but earlier versions probably work. Install Python if you don't have it, then run this command:</p>
+<p>CiteURL has been tested with Python version 3.9, but earlier versions probably work too. Install Python if you don't have it, then run this command:</p>
 <pre><code class="language-bash">python -m pip install citeurl
 </code></pre>
-<h2 id="frontends">Frontends</h2>
-<p>Most of the documentation on this site concerns CiteURL as a Python library you can use in your own projects. But there are a few built-in ways to use it as well. These interfaces are simpler, so their documentation is contained below:</p>
-<h3 id="lawsearch">LawSearch</h3>
-<p>If you want to try out the citation lookup features without installing anything, you can use <a href="https://raindrum.github.io/lawsearch">LawSearch</a>, which is <a href="#javascript-generator">a JavaScript implementation of CiteURL</a> that I maintain on my website.</p>
-<p>LawSearch is mainly meant for end users who just want to look up laws, but it's also helpful as a developer tool to understand the basic process CiteURL uses to generate URLs from citations. Whenever LawSearch is run, it describes the process step-by-step in the developer console.</p>
-<h3 id="command-line-interface">Command-Line Interface</h3>
-<p>Besides LawSearch, the next-simplest way to use CiteURL is via the <code>citeurl</code> command.</p>
-<p>To create a hyperlink for each citation in <code>input.html</code> and save the result as <code>output.html</code>, use a command like this:</p>
-<pre><code class="language-bash">citeurl -i input.html -o output.html
+<h2 id="usage">Usage</h2>
+<p>Look up a single citation and open it directly in a browser:</p>
+<pre><code class="language-bash">citeurl -lb &quot;42 usc 1983&quot;
 </code></pre>
-<p>You can also pipe the output of a command into CiteURL, and read the output in a web browser:</p>
-<pre><code class="language-bash">curl https://www.courtlistener.com/opinion/109815/carey-v-piphus/ | citeurl -b
+<p>Process a court opinion or other text, and output a version where every citation (long or shortform) is converted into an HTML hyperlink:</p>
+<pre><code class="language-bash">citeurl -i INPUT_FILE.html -o OUTPUT_FILE.html
 </code></pre>
-<p>If you want to look up a single citation instead of processing a block of text, use the <code>-l</code> option, like so:</p>
-<pre><code class="language-bash">citeurl -l &quot;42 USC 1983&quot;
+<p>Get a list of the top 10 authorities cited in a text, ordered by the number of citations to each, <a href="https://raindrum.github.io/citeurl/#template-yamls/">including sources of law</a> that CiteURL doesn't even natively support:</p>
+<pre><code class="language-bash">cat INPUT_FILE.html | citeurl -a 10 -s YOUR_CUSTOM_TEMPLATES.YAML -o OUTPUT_FILE.html
 </code></pre>
-<p>If you want to return the top 10 authorities cited in a text, you can use this:</p>
-<pre><code class="language-bash">citeurl -i input.html -a 10
-</code></pre>
-<p>And if you want to use a <a href="template-yamls">your own set of citation templates</a>, you can use the <code>-s</code> option, followed by the path to a YAML file. If you want to prevent loading CiteURL's default set of templates, use <code>-n</code>.</p>
-<h3 id="javascript-generator">JavaScript Generator</h3>
-<p>Although CiteURL is primarily a Python program, its ability to look up the URL for a single citation has also been ported to JavaScript for use as a search engine. With the <code>citeurl-makejs</code> command, you can export a script that supports any given set of citation templates, for embedding in a website. Run <code>citeurl-makejs -h</code> for more info.</p>
-<h3 id="markdown-extension">Markdown Extension</h3>
-<p>CiteURL can also be used as an extension to <a href="https://python-markdown.github.io/">Python-Markdown</a>. You can load the extension as <code>citeurl</code>, and it supports the following options:</p>
+<p>For more options, run <code>citeurl -h</code>.</p>
+<p>Besides to the command-line tool, CiteURL can be used in a few other forms:</p>
 <ul>
-<li><code>custom_templates</code>: A list of paths to YAML files containing <a href="template-yamls">custom citation templates</a>. Defaults to none.</li>
-<li><code>use_defaults</code>: Whether CiteURL should load the default citation templates. Defaults to <code>True</code>.</li>
-<li><code>attributes</code>: A dictionary of HTML attributes to give each hyperlink that CiteURL inserts into the text. Defaults to <code>{'class': 'citation'}</code>.</li>
-<li><code>link_detailed_ids</code>: Whether to insert links for citations like <code>Id. at 305</code>. Defaults to <code>True</code>.</li>
-<li><code>link_plain_ids</code>: Whether to insert links for citations like <code>Id.</code>. Defaults to <code>False</code>.</li>
-<li><code>break_id_on_regex</code>: Anywhere this string (parsed as regex) appears in the text, chains of citations like <code>id.</code> will be interrupted. Note that this is based on the output HTML, <em>not</em> the original Markdown text. Defaults to <code>L\. ?Rev\.|J\. ?Law|\. ?([Cc]ode|[Cc]onst)</code></li>
+<li><a href="https://raindrum.github.io/citeurl/#frontends/#javascript-generator">a tool to generate</a> embeddable JavaScript so you can make your own instance of <a href="https://raindrum.github.io/lawsearch">Law Search</a> with custom sources of law</li>
+<li><a href="https://raindrum.github.io/citeurl/#library">a flexible Python library</a>, albeit one that changes fairly often</li>
+<li><a href="https://raindrum.github.io/citeurl/#frontends/#markdown-extension">an extension</a> to <a href="https://python-markdown.github.io/">Python-Markdown</a></li>
+<li>for Linux users, a <a href="https://extensions.gnome.org/extension/4225/gnome-citeurl-search-provider/">GNOME desktop search provider</a></li>
 </ul>
-<h3 id="gnome-shell-search-provider">GNOME Shell Search Provider</h3>
-<p>If you use the GNOME desktop environment, you can install <a href="https://github.com/raindrum/gnome-citeurl-search-provider">my other project</a> to look up citations right from your desktop!</p>
-<h2 id="python-library">Python Library</h2>
-<p>To use CiteURL as a Python library, you'll need to import the <a href="classes#citator">Citator</a> class, which contains most of the important features. Then, instantiate a citator to recognize citations:</p>
-<pre><code class="language-python">from citeurl import Citator
-citator = Citator()
-</code></pre>
-<p>After that, you can feed text to the citator to return <a href="classes#citation">Citation</a> objects:</p>
-<pre><code class="language-python">text = &quot;&quot;&quot;
-Federal law provides that courts should award prevailing civil
-rights plaintiffs reasonable attorneys fees, see 42 USC § 1988(b),
-and, by discretion, expert fees, see id. at (c). This is because
-the importance of civil rights litigation cannot be measured by a
-damages judgment. See Riverside v. Rivera, 477 U.S. 561 (1986).
-But Evans v. Jeff D. upheld a settlement where the plaintiffs got
-everything they wanted, on the condition that they waive attorneys
-fees. 475 U.S. 717 (1986). This ruling lets savvy defendants
-create a wedge between plaintiffs and their attorneys, discouraging
-civil rights suits and undermining the court's logic in Riverside,
-477 U.S. at 574-78.
-&quot;&quot;&quot;
-citations = citator.list_citations(text)
-</code></pre>
-<p>Once you have a list of citations, you can get information about them:</p>
-<pre><code class="language-python">for citation in citations:
-    print(citation.text + ' --- ' + str(citation.template) + ' --- ' + citation.URL
-
-# 42 USC § 1988(b) --- United States Code --- https://www.law.cornell.edu/uscode/text/42/1988#b
-# id. at (c) --- United States Code --- https://www.law.cornell.edu/uscode/text/42/1988#c
-# 477 U.S. 561 --- Caselaw Access Project --- https://cite.case.law/us/477/561
-# 475 U.S. 717 --- Caselaw Access Project --- https://cite.case.law/us/475/717
-# 477 U.S. at 574-78 --- Caselaw Access Project --- https://cite.case.law/us/477/561#p574
-</code></pre>
-<p>You can also use <a href="functions#insert_links">insert_links()</a> to insert the citations back into the source text as hyperlinks:</p>
-<pre><code class="language-python">from citeurl import insert_links
-
-output = insert_links(citations, text)
-print(output)
-# Federal law provides that courts should award prevailing civil
-# rights plaintiffs reasonable attorneys fees, see &lt;a class=&quot;citation&quot; 
-# href=&quot;https://www.law.cornell.edu/uscode/text/42/1988#b&quot;&gt;42 USC § 1988(b)&lt;/a&gt;,
-# and, by discretion, expert fees, see &lt;a class=&quot;citation&quot; 
-# href=&quot;https://www.law.cornell.edu/uscode/text/42/1988#c&quot;&gt;id. at (c)&lt;/a&gt;.
-# This is because the importance of civil rights litigation cannot be
-# measured by a damages judgment. See Riverside v. Rivera, &lt;a class=&quot;citation&quot; 
-# href=&quot;https://cite.case.law/us/477/561&quot;&gt;477 U.S. 561&lt;/a&gt; (1986).
-# But Evans v. Jeff D. upheld a settlement where the plaintiffs got
-# everything they wanted, on the condition that they waive attorneys
-# fees. &lt;a class=&quot;citation&quot; href=&quot;https://cite.case.law/us/475/717&quot;&gt;475 U.S.
-# 717&lt;/a&gt; (1986). This ruling lets savvy defendants create a wedge between
-# plaintiffs and their attorneys, discouraging civil rights suits and
-# undermining the court's logic in Riverside, &lt;a class=&quot;citation&quot; 
-# href=&quot;https://cite.case.law/us/477/561#p574&quot;&gt;477 U.S. at 574-78&lt;/a&gt;.
-</code></pre>
-<p>Or, you can use <a href="functions#list_authorities">list_authorities</a> to combine the citations into a list of authorities cited in the text, and see how often each one is cited:</p>
-<pre><code class="language-python">from citeurl import list_authorities
-
-authorities = list_authorities(citations)
-for authority in authorities:
-    print(authority)
-    print(len(authority.citations))
-# 42 USC § 1988
-# 2
-# 477 U.S. 561
-# 2
-# 475 U.S. 717
-# 1
-</code></pre>
-<p>If you want to use CiteURL to recognize citations that aren't supported by its default library, you can create <a href="template-yamls">custom citation templates in YAML files</a>.</p>
-<p>For more information, see the documentation on the CiteURL module's <a href="classes">classes</a> and <a href="functions">module-level functions</a>.</p>
+<h2 id="credits">Credits</h2>
+<p>Many thanks to these websites, which CiteURL's default templates frequently link to:</p>
+<ul>
+<li>Harvard's <a href="https://cite.case.law/">Caselaw Access Project</a> - for court cases</li>
+<li>Cornell's <a href="https://www.law.cornell.edu/">Legal Information Institute</a> - for the U.S. Code and many federal rules</li>
+<li><a href="https://ballotpedia.org">Ballotpedia</a> - for the vast majority of state constitutions</li>
+<li><a href="https://www.lawserver.com/tools/laws">LawServer.com</a> - for statutes in about a dozen states and territories whose websites don't have a compatible URL scheme</li>
+</ul>
+<hr />
+<p>By the way, if you get a lot of use out of CiteURL and want to support the project, you can use the link below:</p>
+<p><a href="https://ko-fi.com/simonsherred"><button>☕ Buy me a coffee</button></a></p>
 
   <br>
     
@@ -265,12 +208,12 @@ for authority in authorities:
   <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
     
     <div class="wm-article-nav pull-right">
-      <a href="classes/" class="btn btn-xs btn-default pull-right">
+      <a href="frontends/" class="btn btn-xs btn-default pull-right">
         Next
         <i class="fa fa-chevron-right" aria-hidden="true"></i>
       </a>
-      <a href="classes/" class="btn btn-xs btn-link">
-        Classes
+      <a href="frontends/" class="btn btn-xs btn-link">
+        CiteURL Frontends
       </a>
     </div>
     
@@ -279,13 +222,13 @@ for authority in authorities:
     <br>
 </div>
 
-<footer class="container-fluid wm-page-content">
-  <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a> using <a href="https://github.com/gristlabs/mkdocs-windmill">Windmill</a> theme by Grist Labs.</p>
+<footer class="col-md-12 wm-page-content">
+  <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a> using <a href="">Windmill Dark</a> theme by None (noraj).</p>
 </footer>
 
 </body>
 </html>
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2021-04-26 20:49:29.750588+00:00
+Build Date UTC : 2021-04-29 02:39:04.476203+00:00
 -->

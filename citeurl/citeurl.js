@@ -52,12 +52,14 @@ class Citation {
         + ', and these tokens were found:'
       );
       for (var group in regexMatch.groups) {
-        log(group + ': "' + regexMatch.groups[group] + '"');
+        if (typeof group !== 'undefined') {
+          log(group + ': "' + regexMatch.groups[group] + '"');
+        }
       }
       log(' ');
     }
     else {
-      throw Error("The provided text and template do not match.");
+      throw Error("The given query does not match the given template.");
     }
     
     this.tokens = regexMatch.groups;
@@ -139,12 +141,15 @@ class Citation {
         if (lookupTypes[t] in operation) {
           let outputValue;
           
-          log(tokens[operation['token']]);
-          
           for (var key in operation[lookupTypes[t]]) {
             let regexStr = '^(' + key + ')$';
             if (tokens[operation['token']].match(new RegExp(regexStr, 'i'))) {
               outputValue = operation[lookupTypes[t]][key];
+              log(
+                'Looked up ' + operation['token'] + ' "'
+                + tokens[operation['token']] + '" in a table, and used that '
+                + 'to set ' + output + ' to "' + outputValue + '"' 
+              );
               break;
             }
           }
@@ -212,6 +217,11 @@ class Citation {
         for (var pair in numerals) {
           if (numerals[pair][key].match(inputValue.toUpperCase())) {
             tokens[output] = numerals[pair][value];
+            log(
+              'translated ' + operation['token'] + ' to '
+              + operation['numberFormat'] + " format if it wasn't already, and"
+              + ' saved the result (' + tokens[output] + ') to ' + output
+            );
             break;
           }
         }
@@ -226,7 +236,8 @@ class Citation {
         tokens[output] = outputValue
         log(
           'added zeros to the beginning of ' + operation['token']
-          + ' until it was ' + String(operation['lpad']) + ' characters long'
+          + ' until it was ' + String(operation['lpad']) + ' characters long,'
+          + ' and saved the result to ' + tokens[output]
         );
       }
     }
@@ -240,7 +251,7 @@ class Citation {
     // placeholder.
     let URL = [];
     let missingPlaceholder = new RegExp("\\{.+\\}");
-    log("generating URL from parts provided in the citation template...");
+    log("filling in placeholders in each part of the URL template...");
     for (var part in template.URL) {
       let URLPart = template.URL[part]
       for (var k in this.processedTokens) {
