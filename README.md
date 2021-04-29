@@ -1,4 +1,4 @@
-[![pytest](https://github.com/raindrum/citeurl/actions/workflows/pytest.yml/badge.svg)](https://github.com/raindrum/citeurl/actions/workflows/pytest.yml) [![GitHub issues](https://img.shields.io/github/issues/raindrum/citeurl)](https://github.com/raindrum/citeurl/issues) [![GitHub license](https://img.shields.io/github/license/raindrum/citeurl)](https://github.com/raindrum/citeurl/blob/main/LICENSE.md) ![PyPI](https://img.shields.io/pypi/v/citeurl)
+[![pytest](https://github.com/raindrum/citeurl/actions/workflows/pytest.yml/badge.svg)](https://github.com/raindrum/citeurl/actions/workflows/pytest.yml) [![GitHub issues](https://img.shields.io/github/issues/raindrum/citeurl)](https://github.com/raindrum/citeurl/issues) [![GitHub license](https://img.shields.io/github/license/raindrum/citeurl)](https://github.com/raindrum/citeurl/blob/main/LICENSE.md) [![PyPI](https://img.shields.io/pypi/v/citeurl)](https://pypi.org/project/citeurl/)
 
 CiteURL is an extensible tool to process long and shortform legal citations in text and generate links to various websites where you can view the cited language for free. Here's an example of what it can do:
 

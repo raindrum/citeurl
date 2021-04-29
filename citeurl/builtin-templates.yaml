@@ -826,7 +826,7 @@ Maine Constitution:
 Maryland Code:
   regex:
     - &md_name M(aryland|d\.|D)
-    - ' (?P<article>(Ac|Al|[BCEFHILNPRST]).{4,38}?) (Code( Ann(otated|\.))? )?'
+    - ' (Code( Ann(otated|\.))?,? )?(?P<article>(Ac|Al|[BCEFHILNPRST]).{4,38}?) (Code( Ann(otated|\.))?,? )?'
     - &md_title_dash_section '((Sections?|(&sect;|&#167|§){1,2}) ?)?(?P<title>\d+[A-Z]?)[-‑–](?P<section>[\dA-Z\-–.]*[\dA-Z])'
     - *subsection
   idForms:
