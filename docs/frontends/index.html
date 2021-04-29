@@ -349,13 +349,13 @@
                 
                 
                 <h1 id="citeurl-frontends">CiteURL Frontends</h1>
-<p>CiteURL can be used in a few forms besides the <a href="index#usage">command-line tool</a> and <a href="library">the Python library</a>. Here's what they are:</p>
+<p>CiteURL can be used in a few forms besides the <a href="../index#usage">command-line tool</a> and <a href="../library">the Python library</a>. Here's what they are:</p>
 <h2 id="javascript">JavaScript</h2>
 <p>Although CiteURL is primarily a Python program, it can also generate a JavaScript implementation of its citation lookup function, so that end users can look up citations in a web browser without having to install anything. <a href="https://raindrum.github.io/lawsearch">Law Search</a> is one such instance that I maintain on my website.</p>
 <p>You can use the <code>citeurl-makejs</code> command to make your own custom instances that support arbitrary sources of law. Here's how:</p>
 <ol>
 <li><a href="template-yamls">Write a YAML file</a> with one or more custom citation templates.</li>
-<li><a href="index#installation">Install CiteURL</a> if you have not done so already.</li>
+<li><a href="../index#installation">Install CiteURL</a> if you have not done so already.</li>
 <li>Open a command line and run the following:</li>
 </ol>
 <pre><code class="language-bash">citeurl-makejs -e -o output.html PATH/TO/YOUR/TEMPLATES.YAML
@@ -367,7 +367,7 @@
 <h2 id="markdown-extension">Markdown Extension</h2>
 <p>CiteURL can also be used as an extension to <a href="https://python-markdown.github.io/">Python-Markdown</a>. You can load the extension as <code>citeurl</code>, and it supports the following options:</p>
 <ul>
-<li><code>custom_templates</code>: A list of paths to YAML files containing <a href="template-yamls">custom citation templates</a>. Defaults to none.</li>
+<li><code>custom_templates</code>: A list of paths to YAML files containing <a href="../template-yamls">custom citation templates</a>. Defaults to none.</li>
 <li><code>use_defaults</code>: Whether CiteURL should load the default citation templates. Defaults to <code>True</code>.</li>
 <li><code>attributes</code>: A dictionary of HTML attributes to give each hyperlink that CiteURL inserts into the text. Defaults to <code>{'class': 'citation'}</code>.</li>
 <li><code>link_detailed_ids</code>: Whether to insert links for citations like <code>Id. at 305</code>. Defaults to <code>True</code>.</li>
