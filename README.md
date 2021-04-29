@@ -9,7 +9,7 @@ CiteURL is an extensible tool to process legal citations in text and generate li
 - the U.S. Constitution and all state constitutions
 - codified laws for every state and territory except Arkansas, Georgia, Guam, and Puerto Rico
 
-The full list is available [here](https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml). You can also customize CiteURL to support more bodies of law by [writing your own citation templates](https://raindrum.github.io/citeurl/#template-yamls/) in YAML format.
+The full list is available [here](https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml). You can also customize CiteURL to support more bodies of law by [writing your own citation templates](https://raindrum.github.io/citeurl/template-yamls/) in YAML format.
 
 If you want to try out CiteURL's citation lookup features without installing anything, you can use [Law Search](https://raindrum.github.io/lawsearch), a JavaScript implementation of CiteURL I maintain on my website.
 
