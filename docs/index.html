@@ -1,145 +1,342 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="shortcut icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.5">
+    
+    
+      
+        <title>CiteURL</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.15aa0b43.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.75751829.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
   
   
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="None">
     
     
-    <link rel="shortcut icon" href="./img/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>CiteURL</title>
-    <link href="./css/bootstrap-3.3.7.min.css" rel="stylesheet">
-    <link href="./css/font-awesome-4.7.0.css" rel="stylesheet">
-    <link href="./css/base.css" rel="stylesheet">
-    <link rel="stylesheet" href="./css/highlight.css">
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
-
-    <script src="./js/jquery-3.2.1.min.js"></script>
-    <script src="./js/bootstrap-3.3.7.min.js"></script>
-    <script src="./js/highlight.pack.js"></script>
     
-      <script src="./js/elasticlunr.min.js"></script>
     
-    <base target="_top">
-    <script>
-      var base_url = '.';
-      var is_top_frame = (window === window.parent);
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
         
-        var pageToc = [
-          {title: "Getting Started", url: "#_top", children: [
-              {title: "Installation", url: "#installation" },
-              {title: "Usage", url: "#usage" },
-              {title: "Credits", url: "#credits" },
-          ]},
-        ];
-
-    </script>
-    <script src="./js/base.js"></script>
-      <script src="search/main.js"></script> 
-</head>
-
-<body>
-<script>
-if (is_top_frame) { $('body').addClass('wm-top-page'); }
-</script>
-
-<nav class="navbar wm-page-top-frame">
-  <div class="container-fluid wm-top-container">
+        <a href="#getting-started" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
     
-    <div class="wm-top-tool pull-right wm-vcenter">
-      <form class="dropdown wm-vcentered" id="wm-search-form" action="./search.html">
-        
-        <button id="wm-search-show" class="btn btn-sm btn-default" type="submit"
-          ><i class="fa fa-search" aria-hidden="true"></i></button>
+      
 
-        <div class="input-group input-group-sm wm-top-search">
-          <input type="text" name="q" class="form-control" id="mkdocs-search-query" placeholder="Search" autocomplete="off">
-          <span class="input-group-btn" role="search">
-            
-            <button class="btn btn-default dropdown-toggle collapse" data-toggle="dropdown" type="button"><span class="caret"></span></button>
-            <ul id="mkdocs-search-results" class="dropdown-menu dropdown-menu-right"></ul>
-            <button id="wm-search-go" class="btn btn-default" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="." title="CiteURL" class="md-header-nav__button md-logo" aria-label="CiteURL">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            CiteURL
           </span>
         </div>
-      </form>
-    </div>
-
-    
-    <div class="wm-top-tool wm-vcenter pull-right wm-small-left">
-      <button id="wm-toc-button" type="button" class="btn btn-sm btn-default wm-vcentered"><i class="fa fa-th-list" aria-hidden="true"></i></button>
-    </div>
-
-    
-    
-
-    
-    <a href="" class="wm-top-brand wm-top-link wm-vcenter">
-      
-      <div class="wm-top-title">
-        CiteURL<br>
-        
-          <span class="wm-top-version">7.1.1</span>
-        
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Getting Started
+            
+          </span>
+        </div>
       </div>
-    </a>
-  </div>
-</nav>
-
-  <div id="main-content" class="wm-page-top-frame">
+    </div>
     
-<nav class="wm-toc-pane">
-  
-  <ul class="wm-toctree">
-        <li class="wm-toc-li wm-toc-lev1 "><a href="" class="wm-article-link wm-toc-text">Getting Started</a>
-</li>
-        <li class="wm-toc-li wm-toc-lev1 "><a href="frontends/" class="wm-article-link wm-toc-text">CiteURL Frontends</a>
-</li>
-        <li class="wm-toc-li wm-toc-lev1 "><a href="library/" class="wm-article-link wm-toc-text">CiteURL Library</a>
-</li>
-        <li class="wm-toc-li wm-toc-lev1 "><a href="template-yamls/" class="wm-article-link wm-toc-text">Writing Your Own Templates</a>
-</li>
-  </ul>
-</nav>
-
-    <div class="wm-content-pane">
-      <iframe class="wm-article" name="article"></iframe>
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
     </div>
   </div>
-
-<div class="container-fluid wm-page-content">
-  <a name="_top"></a>
+</div>
     
-
     
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="CiteURL" class="md-nav__button md-logo" aria-label="CiteURL">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    CiteURL
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
     
       
-    
+      
+      
 
-  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+
+  
+  
     
-    <div class="wm-article-nav pull-right">
-      <a href="frontends/" class="btn btn-xs btn-default pull-right">
-        Next
-        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        Getting Started
       </a>
-      <a href="frontends/" class="btn btn-xs btn-link">
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credits" class="md-nav__link">
+    Credits
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="frontends/" class="md-nav__link">
         CiteURL Frontends
       </a>
-    </div>
-    
-  </div>
+    </li>
+  
 
     
+      
+      
+      
 
-    <h1 id="getting-started">Getting Started</h1>
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="library/" class="md-nav__link">
+        Python Library
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="template-yamls/" class="md-nav__link">
+        Writing Your Own Templates
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    Usage
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credits" class="md-nav__link">
+    Credits
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="getting-started">Getting Started</h1>
 <table>
 <thead>
 <tr>
@@ -196,39 +393,71 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <hr />
 <p>By the way, if you get a lot of use out of CiteURL and want to support the project, you can use the link below:</p>
 <p><a href="https://ko-fi.com/simonsherred"><button>☕ Buy me a coffee</button></a></p>
+                
+              
+              
+                
 
-  <br>
-    
 
-    
-    
+              
+            </article>
+          </div>
+        </div>
+      </main>
       
-    
-
-  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
-    
-    <div class="wm-article-nav pull-right">
-      <a href="frontends/" class="btn btn-xs btn-default pull-right">
-        Next
-        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-      </a>
-      <a href="frontends/" class="btn btn-xs btn-link">
-        CiteURL Frontends
-      </a>
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+        
+          <a href="frontends/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                CiteURL Frontends
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
     </div>
     
-  </div>
-
-    <br>
-</div>
-
-<footer class="col-md-12 wm-page-content">
-  <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a> using <a href="">Windmill Dark</a> theme by None (noraj).</p>
-</footer>
-
-</body>
+      <script src="assets/javascripts/vendor.93c04032.min.js"></script>
+      <script src="assets/javascripts/bundle.83e5331e.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: ".",
+          features: [],
+          search: Object.assign({
+            worker: "assets/javascripts/worker/search.8c7e0a7e.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
 </html>
-<!--
-MkDocs version : 1.1.2
-Build Date UTC : 2021-04-29 02:39:04.476203+00:00
--->

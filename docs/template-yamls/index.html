@@ -1,81 +1,436 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  
-  
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    
-    
-    <link rel="shortcut icon" href="../img/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>Writing Your Own Templates - CiteURL</title>
-    <link href="../css/bootstrap-3.3.7.min.css" rel="stylesheet">
-    <link href="../css/font-awesome-4.7.0.css" rel="stylesheet">
-    <link href="../css/base.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/highlight.css">
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
 
-    <script src="../js/jquery-3.2.1.min.js"></script>
-    <script src="../js/bootstrap-3.3.7.min.js"></script>
-    <script src="../js/highlight.pack.js"></script>
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
     
-    <base target="_top">
-    <script>
-      var base_url = '..';
-      var is_top_frame = false;
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.5">
+    
+    
+      
+        <title>Writing Your Own Templates - CiteURL</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.15aa0b43.min.css">
+      
         
-        var pageToc = [
-          {title: "Writing Your Own Templates", url: "#_top", children: [
-              {title: "The Basic Template Format", url: "#the-basic-template-format" },
-              {title: "Token Processing", url: "#token-processing" },
-              {title: "Recognizing Shortform Citations", url: "#recognizing-shortform-citations" },
-              {title: "Miscellaneous Keys", url: "#miscellaneous-keys" },
-          ]},
-        ];
-
-    </script>
-    <script src="../js/base.js"></script>
-      <script src="../search/main.js"></script> 
-</head>
-
-<body>
-<script>
-if (is_top_frame) { $('body').addClass('wm-top-page'); }
-</script>
-
-
-
-<div class="container-fluid wm-page-content">
-  <a name="_top"></a>
+        <link rel="stylesheet" href="../assets/stylesheets/palette.75751829.min.css">
+        
+      
     
-
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
     
     
       
     
-
-  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
     
-    <div class="wm-article-nav">
-      <a href="../library/" class="btn btn-xs btn-default pull-left">
-        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-        Previous</a><a href="../library/" class="btn btn-xs btn-link">
-        CiteURL Library
-      </a>
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#writing-your-own-templates" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
     </div>
     
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href=".." title="CiteURL" class="md-header-nav__button md-logo" aria-label="CiteURL">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            CiteURL
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Writing Your Own Templates
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="CiteURL" class="md-nav__button md-logo" aria-label="CiteURL">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    CiteURL
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
 
     
+      
+      
+      
 
-    <h1 id="writing-your-own-templates">Writing Your Own Templates</h1>
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontends/" class="md-nav__link">
+        CiteURL Frontends
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../library/" class="md-nav__link">
+        Python Library
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Writing Your Own Templates
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Writing Your Own Templates
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-basic-template-format" class="md-nav__link">
+    The Basic Template Format
+  </a>
+  
+    <nav class="md-nav" aria-label="The Basic Template Format">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#regex-complications" class="md-nav__link">
+    Regex Complications
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#url-complications" class="md-nav__link">
+    URL Complications
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#token-processing" class="md-nav__link">
+    Token Processing
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recognizing-shortform-citations" class="md-nav__link">
+    Recognizing Shortform Citations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#miscellaneous-keys" class="md-nav__link">
+    Miscellaneous Keys
+  </a>
+  
+    <nav class="md-nav" aria-label="Miscellaneous Keys">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defaults" class="md-nav__link">
+    defaults
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#broadregex" class="md-nav__link">
+    broadRegex
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-basic-template-format" class="md-nav__link">
+    The Basic Template Format
+  </a>
+  
+    <nav class="md-nav" aria-label="The Basic Template Format">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#regex-complications" class="md-nav__link">
+    Regex Complications
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#url-complications" class="md-nav__link">
+    URL Complications
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#token-processing" class="md-nav__link">
+    Token Processing
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recognizing-shortform-citations" class="md-nav__link">
+    Recognizing Shortform Citations
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#miscellaneous-keys" class="md-nav__link">
+    Miscellaneous Keys
+  </a>
+  
+    <nav class="md-nav" aria-label="Miscellaneous Keys">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defaults" class="md-nav__link">
+    defaults
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#broadregex" class="md-nav__link">
+    broadRegex
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="writing-your-own-templates">Writing Your Own Templates</h1>
 <p>CiteURL supports a number of citation formats out-of-the box, and I try to add more when I can. However, it will never support every possible kind of citation, and you might want to treat certain citations differently than CiteURL's built-in templates do.</p>
 <p>Templates <a href="classes/#citeurl.Template.__init__">can be created at runtime</a>, but it is often more practical to write a list of them in a YAML file, and load them when instantiating a <a href="classes#citator">Citator</a>. As such, all of <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml">CiteURL's built-in templates</a>, and the templates described on this page, are in YAML format.</p>
 <p>Before you proceed, make sure you're fairly familiar with <a href="https://docs.python.org/3/howto/regex.html">Python Regular Expressions</a>, because the templates rely on them heavily. You'll also need some basic knowledge of <a href="https://www.w3schools.io/file/yaml-introduction/">YAML</a>.</p>
@@ -215,33 +570,71 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <h3 id="broadregex">broadRegex</h3>
 <p><code>broadRegex</code> and <code>broadRegexes</code> are identical in format to the <code>regex</code> and <code>regexes</code> keys. They allow you to specify extra regexes that will be used, in addition to the normal regex(es), in contexts like search engines where user convenience is more important than avoiding false positives. </p>
 <p>BroadRegexes are used by default in the <a href="classes/#citeurl.Template.lookup">lookup()</a> method, as well as in JavaScript implementations generated through the <code>citeurl-makejs</code> command.</p>
+                
+              
+              
+                
 
-  <br>
-    
 
-    
-    
+              
+            </article>
+          </div>
+        </div>
+      </main>
       
-    
-
-  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
-    
-    <div class="wm-article-nav">
-      <a href="../library/" class="btn btn-xs btn-default pull-left">
-        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-        Previous</a><a href="../library/" class="btn btn-xs btn-link">
-        CiteURL Library
-      </a>
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../library/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Python Library
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
     </div>
     
-  </div>
-
-    <br>
-</div>
-
-<footer class="col-md-12 wm-page-content">
-  <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a> using <a href="">Windmill Dark</a> theme by None (noraj).</p>
-</footer>
-
-</body>
+      <script src="../assets/javascripts/vendor.93c04032.min.js"></script>
+      <script src="../assets/javascripts/bundle.83e5331e.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.8c7e0a7e.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
 </html>

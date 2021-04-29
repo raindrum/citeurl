@@ -397,8 +397,8 @@ class Citator:
         order of appearance.
         
         Arguments:
-            id_forms: Whether to detect citations like
-            "Id." and "Id. at 30."
+            id_forms: Whether to detect citations like "Id." and
+                "Id. at 30."
             id_break_regex: A pattern to look for in the text. Any
                 occurrence of the pattern will interrupt a chain of
                 "id." citations as if it were another citation.

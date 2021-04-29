@@ -1,95 +1,770 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  
-  
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    
-    
-    <link rel="shortcut icon" href="../img/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <title>CiteURL Library - CiteURL</title>
-    <link href="../css/bootstrap-3.3.7.min.css" rel="stylesheet">
-    <link href="../css/font-awesome-4.7.0.css" rel="stylesheet">
-    <link href="../css/base.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/highlight.css">
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
 
-    <script src="../js/jquery-3.2.1.min.js"></script>
-    <script src="../js/bootstrap-3.3.7.min.js"></script>
-    <script src="../js/highlight.pack.js"></script>
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
     
-    <base target="_top">
-    <script>
-      var base_url = '..';
-      var is_top_frame = false;
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.2.5">
+    
+    
+      
+        <title>Python Library - CiteURL</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.15aa0b43.min.css">
+      
         
-        var pageToc = [
-          {title: "CiteURL Library", url: "#_top", children: [
-              {title: "Classes", url: "#classes" },
-              {title: "Module-Wide Functions", url: "#module-wide-functions" },
-          ]},
-        ];
-
-    </script>
-    <script src="../js/base.js"></script>
-      <script src="../search/main.js"></script> 
-</head>
-
-<body>
-<script>
-if (is_top_frame) { $('body').addClass('wm-top-page'); }
-</script>
-
-
-
-<div class="container-fluid wm-page-content">
-  <a name="_top"></a>
+        <link rel="stylesheet" href="../assets/stylesheets/palette.75751829.min.css">
+        
+      
     
-
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
     
     
       
     
-
-  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
     
-    <div class="wm-article-nav pull-right">
-      <a href="../template-yamls/" class="btn btn-xs btn-default pull-right">
-        Next
-        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-      </a>
-      <a href="../template-yamls/" class="btn btn-xs btn-link">
-        Writing Your Own Templates
-      </a>
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+      
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#python-library" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
     </div>
     
-    <div class="wm-article-nav">
-      <a href="../frontends/" class="btn btn-xs btn-default pull-left">
-        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-        Previous</a><a href="../frontends/" class="btn btn-xs btn-link">
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href=".." title="CiteURL" class="md-header-nav__button md-logo" aria-label="CiteURL">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      <div class="md-header-nav__ellipsis">
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            CiteURL
+          </span>
+        </div>
+        <div class="md-header-nav__topic">
+          <span class="md-ellipsis">
+            
+              Python Library
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="CiteURL" class="md-nav__button md-logo" aria-label="CiteURL">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    CiteURL
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontends/" class="md-nav__link">
         CiteURL Frontends
       </a>
-    </div>
-    
-  </div>
+    </li>
+  
 
     
+      
+      
+      
 
-    <h1 id="citeurl-library">CiteURL Library</h1>
-<p>CiteURL revolves around the concept of a <a href="#citator">Citator</a>, which contains and applies all of the <a href="#templates">Templates</a> that detect/create <a href="#citation">Citation</a> objects in text.</p>
-<p>By default when you instantiate a Citator, it will contain all of <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml">CiteURL's built-in templates</a>:</p>
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Python Library
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Python Library
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    Classes
+  </a>
+  
+    <nav class="md-nav" aria-label="Classes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#citator" class="md-nav__link">
+    Citator
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator" class="md-nav__link">
+    citeurl.Citator
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.insert_links" class="md-nav__link">
+    insert_links()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.list_authorities" class="md-nav__link">
+    list_authorities()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.list_citations" class="md-nav__link">
+    list_citations()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.load_yaml" class="md-nav__link">
+    load_yaml()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.lookup" class="md-nav__link">
+    lookup()
+  </a>
+  
+    <nav class="md-nav" aria-label="lookup()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#template" class="md-nav__link">
+    Template
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template" class="md-nav__link">
+    citeurl.Template
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.get_citations" class="md-nav__link">
+    get_citations()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.lookup" class="md-nav__link">
+    lookup()
+  </a>
+  
+    <nav class="md-nav" aria-label="lookup()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#citation" class="md-nav__link">
+    Citation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citation" class="md-nav__link">
+    citeurl.Citation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citation.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citation.get_link" class="md-nav__link">
+    get_link()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_link()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authority" class="md-nav__link">
+    Authority
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Authority" class="md-nav__link">
+    citeurl.Authority
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Authority.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Authority.include" class="md-nav__link">
+    include()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Authority.matches" class="md-nav__link">
+    matches()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-wide-functions" class="md-nav__link">
+    Module-Wide Functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Module-Wide Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#insert_links" class="md-nav__link">
+    insert_links()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.insert_links" class="md-nav__link">
+    citeurl.insert_links
+  </a>
+  
+    <nav class="md-nav" aria-label="citeurl.insert_links">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list_authorities" class="md-nav__link">
+    list_authorities()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.list_authorities" class="md-nav__link">
+    citeurl.list_authorities
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../template-yamls/" class="md-nav__link">
+        Writing Your Own Templates
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    Classes
+  </a>
+  
+    <nav class="md-nav" aria-label="Classes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#citator" class="md-nav__link">
+    Citator
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator" class="md-nav__link">
+    citeurl.Citator
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.insert_links" class="md-nav__link">
+    insert_links()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.list_authorities" class="md-nav__link">
+    list_authorities()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.list_citations" class="md-nav__link">
+    list_citations()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.load_yaml" class="md-nav__link">
+    load_yaml()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.lookup" class="md-nav__link">
+    lookup()
+  </a>
+  
+    <nav class="md-nav" aria-label="lookup()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#template" class="md-nav__link">
+    Template
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template" class="md-nav__link">
+    citeurl.Template
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.get_citations" class="md-nav__link">
+    get_citations()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.lookup" class="md-nav__link">
+    lookup()
+  </a>
+  
+    <nav class="md-nav" aria-label="lookup()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#citation" class="md-nav__link">
+    Citation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citation" class="md-nav__link">
+    citeurl.Citation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citation.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citation.get_link" class="md-nav__link">
+    get_link()
+  </a>
+  
+    <nav class="md-nav" aria-label="get_link()">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authority" class="md-nav__link">
+    Authority
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Authority" class="md-nav__link">
+    citeurl.Authority
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Authority.__init__" class="md-nav__link">
+    __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Authority.include" class="md-nav__link">
+    include()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Authority.matches" class="md-nav__link">
+    matches()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-wide-functions" class="md-nav__link">
+    Module-Wide Functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Module-Wide Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#insert_links" class="md-nav__link">
+    insert_links()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.insert_links" class="md-nav__link">
+    citeurl.insert_links
+  </a>
+  
+    <nav class="md-nav" aria-label="citeurl.insert_links">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list_authorities" class="md-nav__link">
+    list_authorities()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.list_authorities" class="md-nav__link">
+    citeurl.list_authorities
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="python-library">Python Library</h1>
+<p>This page documents how to include CiteURL in your Python programming projects.</p>
+<p>The library revolves around the concept of a <a href="#citator">Citator</a>, which contains and applies all of the <a href="#templates">Templates</a> that detect/create <a href="#citation">Citation</a> objects in text. As such, the first step is to instantiate a Citator:</p>
 <pre><code class="language-python">from citeurl import Citator
 citator = Citator()
 </code></pre>
-<p>After that, you can feed text to it to return <a href="#citation">Citation</a> objects:</p>
+<p>After that, you can feed it text to return a list of <a href="#citation">Citation</a> objects:</p>
 <pre><code class="language-python">text = &quot;&quot;&quot;
 Federal law provides that courts should award prevailing civil
 rights plaintiffs reasonable attorneys fees, see 42 USC § 1988(b),
@@ -132,8 +807,8 @@ for authority in authorities:
 <h2 id="classes">Classes</h2>
 <h3 id="citator">Citator</h3>
 <div class="doc doc-object doc-class">
-<h3 class="hidden-toc" id="citeurl.Citator" style="visibility: hidden; position: absolute;">
-        </h3>
+<h2 class="hidden-toc" id="citeurl.Citator" style="visibility: hidden; position: absolute;">
+        </h2>
 <div class="doc doc-contents first">
 <p>CiteURL's main feature: a collection of templates, and the tools
 to apply them to text, to find all kinds of citations in a text.</p>
@@ -168,7 +843,7 @@ the most-recently cited source.</p>
 </table>
 <div class="doc doc-children">
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Citator.__init__">
+<h2 class="doc doc-heading" id="citeurl.Citator.__init__">
 
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml_paths</span><span class="o">=</span><span class="p">[],</span> <span class="n">defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">generic_id</span><span class="o">=</span><span class="s1">'</span><span class="se">\\</span><span class="s1">b(Ib)?[Ii]d</span><span class="se">\\</span><span class="s1">.(&lt;</span><span class="se">\\</span><span class="s1">/(i|em|u)&gt;)?'</span><span class="p">)</span></code>
 
@@ -176,7 +851,7 @@ the most-recently cited source.</p>
       <small class="doc doc-property doc-property-special"><code>special</code></small>
   </span>
 
-      </h3>
+      </h2>
 <div class="doc doc-contents ">
 <p>Calls load_yaml one or more times, to load the citator with
 templates.</p>
@@ -255,12 +930,12 @@ disable, set to None.</p>
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Citator.insert_links">
+<h2 class="doc doc-heading" id="citeurl.Citator.insert_links">
 
 <code class="highlight language-python"><span class="n">insert_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">'class'</span><span class="p">:</span> <span class="s1">'citation'</span><span class="p">},</span> <span class="n">url_optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">link_detailed_ids</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">link_plain_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">id_break_regex</span><span class="o">=</span><span class="s1">'L</span><span class="se">\\</span><span class="s1">. ?Rev</span><span class="se">\\</span><span class="s1">.|J</span><span class="se">\\</span><span class="s1">. ?Law|</span><span class="se">\\</span><span class="s1">. ?([Cc]ode|[Cc]onst)'</span><span class="p">,</span> <span class="n">id_break_indices</span><span class="o">=</span><span class="p">[])</span></code>
 
 
-      </h3>
+      </h2>
 <div class="doc doc-contents ">
 <p>Convenience method to return a copy of the given text, with
 citation hyperlinks inserted.</p>
@@ -306,12 +981,12 @@ those links with the module-wide insert_links function.</p>
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Citator.list_authorities">
+<h2 class="doc doc-heading" id="citeurl.Citator.list_authorities">
 
 <code class="highlight language-python"><span class="n">list_authorities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span></code>
 
 
-      </h3>
+      </h2>
 <div class="doc doc-contents ">
 <p>Convenience method to list all the authorities cited in a
 given text.</p>
@@ -340,12 +1015,12 @@ function.</p>
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Citator.list_citations">
+<h2 class="doc doc-heading" id="citeurl.Citator.list_citations">
 
 <code class="highlight language-python"><span class="n">list_citations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">id_forms</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">id_break_regex</span><span class="o">=</span><span class="s1">'L</span><span class="se">\\</span><span class="s1">. ?Rev</span><span class="se">\\</span><span class="s1">.|J</span><span class="se">\\</span><span class="s1">. ?Law|</span><span class="se">\\</span><span class="s1">. ?([Cc]ode|[Cc]onst)'</span><span class="p">,</span> <span class="n">id_break_indices</span><span class="o">=</span><span class="p">[])</span></code>
 
 
-      </h3>
+      </h2>
 <div class="doc doc-contents ">
 <p>Scan a text and return a list of all citations in it, in
 order of appearance.</p>
@@ -364,7 +1039,8 @@ order of appearance.</p>
 <td><code>id_forms</code></td>
 <td><code>bool</code></td>
 <td>
-<p>Whether to detect citations like</p>
+<p>Whether to detect citations like "Id." and
+"Id. at 30."</p>
 </td>
 <td><code>True</code></td>
 </tr>
@@ -421,8 +1097,8 @@ text.</p>
 <span class="sd">    order of appearance.</span>
 
 <span class="sd">    Arguments:</span>
-<span class="sd">        id_forms: Whether to detect citations like</span>
-<span class="sd">        "Id." and "Id. at 30."</span>
+<span class="sd">        id_forms: Whether to detect citations like "Id." and</span>
+<span class="sd">            "Id. at 30."</span>
 <span class="sd">        id_break_regex: A pattern to look for in the text. Any</span>
 <span class="sd">            occurrence of the pattern will interrupt a chain of</span>
 <span class="sd">            "id." citations as if it were another citation.</span>
@@ -476,12 +1152,12 @@ text.</p>
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Citator.load_yaml">
+<h2 class="doc doc-heading" id="citeurl.Citator.load_yaml">
 
 <code class="highlight language-python"><span class="n">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">use_generic_id</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 
-      </h3>
+      </h2>
 <div class="doc doc-contents ">
 <p>Import templates from the specified YAML file into the citator.</p>
 <p><strong>Parameters:</strong></p>
@@ -559,12 +1235,12 @@ text.</p>
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Citator.lookup">
+<h2 class="doc doc-heading" id="citeurl.Citator.lookup">
 
 <code class="highlight language-python"><span class="n">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 
-      </h3>
+      </h2>
 <div class="doc doc-contents ">
 <p>Convenience method to get the first citation from the first
 matching template, or None.</p>
@@ -650,8 +1326,8 @@ if available, each template's broadRegex.</p>
 </div>
 <h3 id="template">Template</h3>
 <div class="doc doc-object doc-class">
-<h3 class="hidden-toc" id="citeurl.Template" style="visibility: hidden; position: absolute;">
-        </h3>
+<h2 class="hidden-toc" id="citeurl.Template" style="visibility: hidden; position: absolute;">
+        </h2>
 <div class="doc doc-contents first">
 <p>A pattern to recognize a single kind of citation and generate
 URLs from matches.</p>
@@ -660,7 +1336,7 @@ templates from YAML files and apply them en masse, rather than use
 the Template class directly.</p>
 <div class="doc doc-children">
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Template.__init__">
+<h2 class="doc doc-heading" id="citeurl.Template.__init__">
 
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">regexes</span><span class="p">,</span> <span class="n">URL</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">broadRegexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">idForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">shortForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{},</span> <span class="n">operations</span><span class="o">=</span><span class="p">[],</span> <span class="n">parent_citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_is_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
@@ -668,7 +1344,7 @@ the Template class directly.</p>
       <small class="doc doc-property doc-property-special"><code>special</code></small>
   </span>
 
-      </h3>
+      </h2>
 <div class="doc doc-contents ">
 <p>Template constructor. Primarily meant for use in loading YAML
 files and dynamically generating shortform templates, but can be
@@ -934,12 +1610,12 @@ no need to use it manually.</p>
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Template.get_citations">
+<h2 class="doc doc-heading" id="citeurl.Template.get_citations">
 
 <code class="highlight language-python"><span class="n">get_citations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span></code>
 
 
-      </h3>
+      </h2>
 <div class="doc doc-contents ">
 <p>Generator to return all citations the template finds in text.</p>
 <p><strong>Parameters:</strong></p>
@@ -1046,12 +1722,12 @@ for citations. Defaults to (0,) to scan the entire text.</p>
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Template.lookup">
+<h2 class="doc doc-heading" id="citeurl.Template.lookup">
 
 <code class="highlight language-python"><span class="n">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span></code>
 
 
-      </h3>
+      </h2>
 <div class="doc doc-contents ">
 <p>Returns the first citation it finds in the text, or None.</p>
 <p><strong>Parameters:</strong></p>
@@ -1149,8 +1825,8 @@ or None.</p>
 </div>
 <h3 id="citation">Citation</h3>
 <div class="doc doc-object doc-class">
-<h3 class="hidden-toc" id="citeurl.Citation" style="visibility: hidden; position: absolute;">
-        </h3>
+<h2 class="hidden-toc" id="citeurl.Citation" style="visibility: hidden; position: absolute;">
+        </h2>
 <div class="doc doc-contents first">
 <p>A single citation found in text.</p>
 <p><strong>Attributes:</strong></p>
@@ -1213,7 +1889,7 @@ modified via the template's processes.</p>
 </table>
 <div class="doc doc-children">
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Citation.__init__">
+<h2 class="doc doc-heading" id="citeurl.Citation.__init__">
 
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">match</span><span class="p">,</span> <span class="n">template</span><span class="p">)</span></code>
 
@@ -1221,7 +1897,7 @@ modified via the template's processes.</p>
       <small class="doc doc-property doc-property-special"><code>special</code></small>
   </span>
 
-      </h3>
+      </h2>
 <div class="doc doc-contents ">
 <p>For internal use. There should be no need to create citations
 by means other than a Citator or Template object.</p>
@@ -1252,12 +1928,12 @@ by means other than a Citator or Template object.</p>
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Citation.get_link">
+<h2 class="doc doc-heading" id="citeurl.Citation.get_link">
 
 <code class="highlight language-python"><span class="n">get_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">'class'</span><span class="p">:</span> <span class="s1">'citation'</span><span class="p">})</span></code>
 
 
-      </h3>
+      </h2>
 <div class="doc doc-contents ">
 <p>Return citation's link element, with given attributes</p>
 <details class="quote">
@@ -1283,8 +1959,8 @@ by means other than a Citator or Template object.</p>
 </div>
 <h3 id="authority">Authority</h3>
 <div class="doc doc-object doc-class">
-<h3 class="hidden-toc" id="citeurl.Authority" style="visibility: hidden; position: absolute;">
-        </h3>
+<h2 class="hidden-toc" id="citeurl.Authority" style="visibility: hidden; position: absolute;">
+        </h2>
 <div class="doc doc-contents first">
 <p>A single source cited one or more times in a text.</p>
 <p><strong>Attributes:</strong></p>
@@ -1343,7 +2019,7 @@ generic citation to this authority.</p>
 </table>
 <div class="doc doc-children">
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Authority.__init__">
+<h2 class="doc doc-heading" id="citeurl.Authority.__init__">
 
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_cite</span><span class="p">,</span> <span class="n">allowed_differences</span><span class="o">=</span><span class="p">[])</span></code>
 
@@ -1351,7 +2027,7 @@ generic citation to this authority.</p>
       <small class="doc doc-property doc-property-special"><code>special</code></small>
   </span>
 
-      </h3>
+      </h2>
 <div class="doc doc-contents ">
 <p>Define an authority by providing a single long-form citation,
 and the list of tokens which, if present in the citation, should
@@ -1445,12 +2121,12 @@ differ among citations to the same authority</p>
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Authority.include">
+<h2 class="doc doc-heading" id="citeurl.Authority.include">
 
 <code class="highlight language-python"><span class="n">include</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citation</span><span class="p">)</span></code>
 
 
-      </h3>
+      </h2>
 <div class="doc doc-contents ">
 <p>Adds the citation to this template's list of citations. Also,
 adds the <code>authority</code> tag to the citation, referring back to this
@@ -1470,12 +2146,12 @@ authority.</p>
 </div>
 </div>
 <div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.Authority.matches">
+<h2 class="doc doc-heading" id="citeurl.Authority.matches">
 
 <code class="highlight language-python"><span class="n">matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citation</span><span class="p">)</span></code>
 
 
-      </h3>
+      </h2>
 <div class="doc doc-contents ">
 <p>Checks whether a given citation matches the template and defining
 tokens of this authority.</p>
@@ -1506,8 +2182,8 @@ tokens of this authority.</p>
 <p>Most of CiteURL's core features can be accessed through the Citator class. But if you plan to perform multiple operations with the same set of citations, you can use these module-wide functions without generating a whole new list of citations every time.</p>
 <h3 id="insert_links">insert_links()</h3>
 <div class="doc doc-object doc-function">
-<h3 class="hidden-toc" id="citeurl.insert_links" style="visibility: hidden; position: absolute;">
-        </h3>
+<h2 class="hidden-toc" id="citeurl.insert_links" style="visibility: hidden; position: absolute;">
+        </h2>
 <div class="doc doc-contents first">
 <p>Given a text and a list of citations found in it, return a text
 with an HTML hyperlink inserted for each citation.</p>
@@ -1645,8 +2321,8 @@ do not have an associated URL</p>
 </div>
 <h3 id="list_authorities">list_authorities()</h3>
 <div class="doc doc-object doc-function">
-<h3 class="hidden-toc" id="citeurl.list_authorities" style="visibility: hidden; position: absolute;">
-        </h3>
+<h2 class="hidden-toc" id="citeurl.list_authorities" style="visibility: hidden; position: absolute;">
+        </h2>
 <div class="doc doc-contents first">
 <p>Combine a list of citations into a list of authorities, each
 of which represents all the citations to a particular source.</p>
@@ -1738,43 +2414,85 @@ that refer to each, from most to least.</p>
 </details>
 </div>
 </div>
+                
+              
+              
+                
 
-  <br>
-    
 
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../frontends/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                CiteURL Frontends
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../template-yamls/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Writing Your Own Templates
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
     
-    
+      <script src="../assets/javascripts/vendor.93c04032.min.js"></script>
+      <script src="../assets/javascripts/bundle.83e5331e.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.8c7e0a7e.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
       
     
-
-  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
-    
-    <div class="wm-article-nav pull-right">
-      <a href="../template-yamls/" class="btn btn-xs btn-default pull-right">
-        Next
-        <i class="fa fa-chevron-right" aria-hidden="true"></i>
-      </a>
-      <a href="../template-yamls/" class="btn btn-xs btn-link">
-        Writing Your Own Templates
-      </a>
-    </div>
-    
-    <div class="wm-article-nav">
-      <a href="../frontends/" class="btn btn-xs btn-default pull-left">
-        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-        Previous</a><a href="../frontends/" class="btn btn-xs btn-link">
-        CiteURL Frontends
-      </a>
-    </div>
-    
-  </div>
-
-    <br>
-</div>
-
-<footer class="col-md-12 wm-page-content">
-  <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a> using <a href="">Windmill Dark</a> theme by None (noraj).</p>
-</footer>
-
-</body>
+  </body>
 </html>
