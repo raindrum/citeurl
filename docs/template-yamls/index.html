@@ -432,7 +432,7 @@
                 
                 <h1 id="writing-your-own-templates">Writing Your Own Templates</h1>
 <p>CiteURL supports a number of citation formats out-of-the box, and I try to add more when I can. However, it will never support every possible kind of citation, and you might want to treat certain citations differently than CiteURL's built-in templates do.</p>
-<p>Templates <a href="library#citeurl.Template.__init__">can be created at runtime</a>, but it is often more practical to write a list of them in a YAML file, and load them when instantiating a <a href="library#citator">Citator</a>. As such, all of <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml">CiteURL's built-in templates</a>, and the templates described on this page, are in YAML format.</p>
+<p>Templates <a href="../library#citeurl.Template.__init__">can be created at runtime</a>, but it is often more practical to write a list of them in a YAML file, and load them when instantiating a <a href="../library#citator">Citator</a>. As such, all of <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml">CiteURL's built-in templates</a>, and the templates described on this page, are in YAML format.</p>
 <p>Before you proceed, make sure you're fairly familiar with <a href="https://docs.python.org/3/howto/regex.html">Python Regular Expressions</a>, because the templates rely on them heavily. You'll also need some basic knowledge of <a href="https://www.w3schools.io/file/yaml-introduction/">YAML</a>.</p>
 <h2 id="the-basic-template-format">The Basic Template Format</h2>
 <p>Here is a simplified example of a template that you might write to recognize citations to the U.S. Code:</p>
@@ -525,7 +525,7 @@
 <p>One final note: If an operation's input token has not been set (as distinct from being set to an empty string), the operation will be skipped.</p>
 <h2 id="recognizing-shortform-citations">Recognizing Shortform Citations</h2>
 <p>Often, once a particular authority is cited once, subsequent references to it will take a shorter, more contextual format. For example, if a text cites <em>United States v. An Article Consisting of Boxes of Clacker Balls</em>, 413 F. Supp. 1281 (1976), then immediately cites a specific page of it, the citation might look something like "<em>Id</em>. at 1284." Later, once another authority has been cited, the same citation might be referred back to with a citation like "413 F. Supp. at 1289."</p>
-<p>To address this, CiteURL can essentially generate new templates on the fly, whenever it detects a citation. These templates can be of two forms: <code>shortForms</code> and <code>idForms</code>. In each case, the template is only applied to text after the original long-form citation. The difference is that <code>shortForms</code> are applied to <em>all</em> of the remaining text, whereas <code>idForms</code> are only matched against the text in between one citation and the next. The <a href="classes/#citator">Citator.list_citations()</a> function also accepts an interruption regex, all occurrences of which will break chains of "id." citations.</p>
+<p>To address this, CiteURL can essentially generate new templates on the fly, whenever it detects a citation. These templates can be of two forms: <code>shortForms</code> and <code>idForms</code>. In each case, the template is only applied to text after the original long-form citation. The difference is that <code>shortForms</code> are applied to <em>all</em> of the remaining text, whereas <code>idForms</code> are only matched against the text in between one citation and the next. The <a href="../library/#citator">Citator.list_citations()</a> function also accepts an interruption regex, all occurrences of which will break chains of "id." citations.</p>
 <p>Like URL templates, <code>idForms</code> and <code>shortForms</code> may contain placeholders in curly braces. These placeholders will be replaced with the corresponding token matched in the long-form citation, so that you can ensure that they only match citations where those tokens are unchanged. For instance, you could write a template to recognize court cases:</p>
 <pre><code class="language-yaml">Caselaw Access Project (Simplified):
   regex: (?P&lt;volume&gt;\d+) (?P&lt;reporter&gt;(\D|\d(d|th|rd))+?) (?P&lt;page&gt;\d+)(, (?P&lt;pincite&gt;\d+))?
@@ -569,7 +569,7 @@
 </code></pre>
 <h3 id="broadregex">broadRegex</h3>
 <p><code>broadRegex</code> and <code>broadRegexes</code> are identical in format to the <code>regex</code> and <code>regexes</code> keys. They allow you to specify extra regexes that will be used, in addition to the normal regex(es), in contexts like search engines where user convenience is more important than avoiding false positives. </p>
-<p>BroadRegexes are used by default in the <a href="library/#citeurl.Template.lookup">lookup()</a> method, as well as in JavaScript implementations generated through the <code>citeurl-makejs</code> command.</p>
+<p>BroadRegexes are used by default in the <a href="../library/#citeurl.Template.lookup">lookup()</a> method, as well as in JavaScript implementations generated through the <code>citeurl-makejs</code> command.</p>
                 
               
               
