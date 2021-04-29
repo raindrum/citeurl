@@ -1,3 +1,5 @@
+[![pytest](https://github.com/raindrum/citeurl/actions/workflows/pytest.yml/badge.svg)](https://github.com/raindrum/citeurl/actions/workflows/pytest.yml)
+
 CiteURL is an extensible tool to process long and shortform legal citations in text and generate links to various websites where you can view the cited language for free. Here's an example of what it can do:
 
 | Sample Input                                                 | Output                                                       |

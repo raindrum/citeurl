@@ -3,7 +3,7 @@
 **/__pycache__/*
 **.sync-conflict
 mkdocs.yml
-docs_md/
+docs_source/
 build/
 demo/
 dist/

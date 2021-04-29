@@ -1,4 +1,4 @@
-name: pytest
+name: tests
 on: [push, pull_request]
 jobs:
   build:
@@ -19,4 +19,4 @@ jobs:
       run: python3 -m pip install pytest pytest-cov pytest-github-actions-annotate-failures quickjs
       
     - name: Test with pytest
-      run: python3 -m pytest . --exitfirst --verbose --failed-first --cov=citeurl --cov-report=html
+      run: python3 -m pytest . --exitfirst --verbose --failed-first --cov=citeurl
