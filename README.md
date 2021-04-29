@@ -35,7 +35,7 @@ Process a court opinion or other text, and output a version where every citation
 citeurl -i INPUT_FILE.html -o OUTPUT_FILE.html
 ```
 
-Get a list of the top 10 authorities cited in a text, ordered by the number of citations to each, [including sources of law](https://raindrum.github.io/citeurl/#template-yamls/) that CiteURL doesn't even natively support:
+Get a list of the top 10 authorities cited in a text, ordered by the number of citations to each, [including sources of law](https://raindrum.github.io/citeurl/template-yamls/) that CiteURL doesn't even natively support:
 
 ```bash
 cat INPUT_FILE.html | citeurl -a 10 -s YOUR_CUSTOM_TEMPLATES.YAML -o OUTPUT_FILE.html
@@ -45,9 +45,9 @@ For more options, run `citeurl -h`.
 
 Besides to the command-line tool, CiteURL can be used in a few other forms:
 
-- [a tool to generate](https://raindrum.github.io/citeurl/#frontends/#javascript-generator) embeddable JavaScript so you can make your own instance of [Law Search](https://raindrum.github.io/lawsearch) with custom sources of law
-- [a flexible Python library](https://raindrum.github.io/citeurl/#library), albeit one that changes fairly often
-- [an extension](https://raindrum.github.io/citeurl/#frontends/#markdown-extension) to [Python-Markdown](https://python-markdown.github.io/)
+- [a tool to generate](https://raindrum.github.io/citeurl/frontends#javascript) embeddable JavaScript so you can make your own instance of [Law Search](https://raindrum.github.io/lawsearch) with custom sources of law
+- [a flexible Python library](https://raindrum.github.io/citeurl/library), albeit one that changes fairly often
+- [an extension](https://raindrum.github.io/citeurl/frontends#markdown-extension) to [Python-Markdown](https://python-markdown.github.io/)
 - for Linux users, a [GNOME desktop search provider](https://extensions.gnome.org/extension/4225/gnome-citeurl-search-provider/)
 
 ## Credits
