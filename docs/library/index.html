@@ -656,23 +656,13 @@
                 
                 <h1 id="library-reference">Library Reference</h1>
 <p>This page documents how to include CiteURL in your Python programming projects.</p>
-<p>The library revolves around the concept of a <a href="#citator">Citator</a>, which contains and applies all of the <a href="#templates">Templates</a> that detect/create <a href="#citation">Citation</a> objects in text. As such, the first step is to instantiate a Citator:</p>
+<p>The first step is to instantiate a <a href="#citator">Citator</a>, which by default contains all of CiteURL's built-in <a href="#templates">Templates</a>:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">citeurl</span> <span class="kn">import</span> <span class="n">Citator</span>
 <span class="n">citator</span> <span class="o">=</span> <span class="n">Citator</span><span class="p">()</span>
 </code></pre></div>
-<p>After that, you can feed it text to return a list of <a href="#citation">Citation</a> objects:</p>
+<p>After that, you can feed it text to return a list of <a href="#citation">Citations</a> it finds:</p>
 <div class="highlight"><pre><span></span><code><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Federal law provides that courts should award prevailing civil</span>
-<span class="s2">rights plaintiffs reasonable attorneys fees, see 42 USC § 1988(b),</span>
-<span class="s2">and, by discretion, expert fees, see id. at (c). This is because</span>
-<span class="s2">the importance of civil rights litigation cannot be measured by a</span>
-<span class="s2">damages judgment. See Riverside v. Rivera, 477 U.S. 561 (1986).</span>
-<span class="s2">But Evans v. Jeff D. upheld a settlement where the plaintiffs got</span>
-<span class="s2">everything they wanted, on the condition that they waive attorneys</span>
-<span class="s2">fees. 475 U.S. 717 (1986). This ruling lets savvy defendants</span>
-<span class="s2">create a wedge between plaintiffs and their attorneys, discouraging</span>
-<span class="s2">civil rights suits and undermining the court&#39;s logic in Riverside,</span>
-<span class="s2">477 U.S. at 574-78.</span>
+<span class="s2">Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, 42 USC § 1988(b), and, by discretion, expert fees, id. at (c). This is because the importance of civil rights litigation cannot be measured by a damages judgment. See Riverside v. Rivera, 477 U.S. 561 (1986). But Evans v. Jeff D. upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys&#39; fees. 475 U.S. 717 (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court&#39;s logic in Riverside, 477 U.S. at 574-78.</span>
 <span class="s2">&quot;&quot;&quot;</span>
 <span class="n">citations</span> <span class="o">=</span> <span class="n">citator</span><span class="o">.</span><span class="n">list_citations</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 </code></pre></div>
@@ -694,7 +684,7 @@
 <span class="n">authorities</span> <span class="o">=</span> <span class="n">list_authorities</span><span class="p">(</span><span class="n">citations</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">authority</span> <span class="ow">in</span> <span class="n">authorities</span><span class="p">:</span>
     <span class="n">auth_cites</span> <span class="o">=</span> <span class="n">authority</span><span class="o">.</span><span class="n">citations</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">authority</span><span class="si">}</span><span class="s2"> was cited </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">auth_cites</span><span class="p">)</span><span class="si">}}</span><span class="s2">) time(s)&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">authority</span><span class="si">}</span><span class="s2"> was cited </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">auth_cites</span><span class="p">)</span><span class="si">}</span><span class="s2"> time(s)&quot;</span><span class="p">)</span>
 
 <span class="c1"># 42 USC § 1988 was cited 2 time(s)</span>
 <span class="c1"># 477 U.S. 561 was cited 2 time(s)</span>
@@ -1006,13 +996,16 @@ text.</p>
     <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="p">:</span>
         <span class="n">citations</span> <span class="o">+=</span> <span class="n">template</span><span class="o">.</span><span class="n">get_citations</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
     <span class="n">shortform_cites</span> <span class="o">=</span> <span class="p">[]</span>
+
     <span class="c1"># Then, add shortforms</span>
     <span class="k">for</span> <span class="n">citation</span> <span class="ow">in</span> <span class="n">citations</span><span class="p">:</span>
         <span class="n">shortform_cites</span> <span class="o">+=</span> <span class="n">citation</span><span class="o">.</span><span class="n">_get_shortform_citations</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
     <span class="n">citations</span> <span class="o">+=</span> <span class="n">shortform_cites</span>
     <span class="n">citations</span> <span class="o">=</span> <span class="n">_sort_and_remove_overlaps</span><span class="p">(</span><span class="n">citations</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">id_forms</span><span class="p">:</span> <span class="c1"># no need to proceed</span>
         <span class="k">return</span> <span class="n">citations</span>
+
     <span class="c1"># determine where to break chains of id. citations</span>
     <span class="k">for</span> <span class="n">citation</span> <span class="ow">in</span> <span class="n">citations</span><span class="p">:</span> <span class="c1"># break at full or short citations</span>
         <span class="n">id_break_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">citation</span><span class="o">.</span><span class="n">span</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -1021,6 +1014,7 @@ text.</p>
         <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
             <span class="n">id_break_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">span</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">id_break_indices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">id_break_indices</span><span class="p">))</span>
+
     <span class="c1"># loop through all citations to find their id citations</span>
     <span class="n">id_citations</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">citation</span> <span class="ow">in</span> <span class="n">citations</span><span class="p">:</span>
@@ -2192,19 +2186,29 @@ do not have an associated URL</p>
 <span class="sd">    """</span>
     <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">citation</span> <span class="ow">in</span> <span class="n">citations</span><span class="p">:</span>
+        <span class="c1"># by default, skip citations without URLs</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">citation</span><span class="o">.</span><span class="n">URL</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">url_optional</span><span class="p">:</span>
             <span class="k">continue</span>
+
         <span class="k">if</span> <span class="n">citation</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">is_id</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">citation</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">_compiled_re</span><span class="p">()</span><span class="o">.</span><span class="n">groupindex</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">link_detailed_ids</span><span class="p">:</span>
+            <span class="c1"># check whether the matched citation is from a template that</span>
+            <span class="c1"># has any named capture groups. If it doesn't, it's a</span>
+            <span class="c1"># "plain id." and should normally be skipped</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="s1">'(?P&lt;'</span> <span class="ow">in</span> <span class="n">citation</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">_compiled_re</span><span class="p">()</span><span class="o">.</span><span class="n">pattern</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">link_plain_ids</span><span class="p">:</span>
                     <span class="k">continue</span>
-            <span class="k">elif</span> <span class="ow">not</span> <span class="n">link_plain_ids</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">link_detailed_ids</span><span class="p">:</span>
                 <span class="k">continue</span>
+
         <span class="n">link</span> <span class="o">=</span> <span class="n">citation</span><span class="o">.</span><span class="n">get_link</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+
+        <span class="c1"># insert each link into the proper place by offsetting later</span>
+        <span class="c1"># citations by however many extra characters are added by each</span>
         <span class="n">cite_start</span> <span class="o">=</span> <span class="n">citation</span><span class="o">.</span><span class="n">span</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span>
         <span class="n">cite_end</span> <span class="o">=</span> <span class="n">citation</span><span class="o">.</span><span class="n">span</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span>
         <span class="n">text</span> <span class="o">=</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">text</span><span class="p">[:</span><span class="n">cite_start</span><span class="p">],</span> <span class="n">link</span><span class="p">,</span> <span class="n">text</span><span class="p">[</span><span class="n">cite_end</span><span class="p">:]])</span>
         <span class="n">offset</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">link</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">citation</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">text</span>
 </code></pre>
 </div>

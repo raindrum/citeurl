@@ -47,7 +47,7 @@ Another important feature is that a template's URL, like its regex(es), can be s
 United States Code
   regex: (?P<title>\d+) USC § (?P<section>\d+)( \((?P<subsection>[a-z])\)?
   URL:
-    - 'https://www.law.cornell.edu/uscode/text/{title}/{section}''
+    - 'https://www.law.cornell.edu/uscode/text/{title}/{section}'
     - '#{subsection}'
 ```
 
@@ -80,7 +80,7 @@ The above example shows two kinds of operation: case modification (`case`), and 
 | ---------------- | ------------------------------------------------------------ | ------------------------------------ |
 | `case`           | sets the input token to the specified capitalization         | `upper`, `lower`, or `title`         |
 | `sub`            | replaces all instances of the provided regex pattern with the replacement string | `[PATTERN, REPL]`                    |
-| `lookup`         | uses case-insensitive regex matching to check the token against each pattern until it fully matches, in which case it outputs the corresponding replacement string. If no pattern is matched, it causes the entire template match to retroactively fail. | `{PATTERN: REPL, PATTERN: REPL ...}` |
+| `lookup`         | uses case-insensitive regex matching to check the token against each pattern until it fully matches one of them, in which case it outputs the corresponding replacement string. If no pattern is matched, it causes the entire template match to retroactively fail, as if there had never been a regex match in the first place. | `{PATTERN: REPL, PATTERN: REPL ...}` |
 | `optionalLookup` | same as `lookup`, except that if the lookup fails, it simply proceeds without modifying any tokens | `{PATTERN: REPL, PATTERN: REPL ...}` |
 | `lpad`           | adds zeros to the beginning of the token until it is the specified length | an integer                           |
 | `numberFormat`   | assumes that the token is an integer in digit or roman numeral form, and converts it to the specified form, irrespective of which format it was originally in. The outputted roman numerals are capitalized. | `roman` or `digit`                   |
@@ -89,9 +89,9 @@ One final note: If an operation's input token has not been set (as distinct from
 
 ## Recognizing Shortform Citations
 
-Often, once a particular authority is cited once, subsequent references to it will take a shorter, more contextual format. For example, if a text cites *United States v. An Article Consisting of Boxes of Clacker Balls*, 413 F. Supp. 1281 (1976), then immediately cites a specific page of it, the citation might look something like "*Id*. at 1284." Later, once another authority has been cited, the same citation might be referred back to with a citation like "413 F. Supp. at 1289."
+Often, once a particular authority is cited once, subsequent references to it will take a shorter, more contextual format. For example, if a text cites *United States v. An Article Consisting of Boxes of Clacker Balls*, 413 F. Supp. 1281 (E.D. Wis. 1976), then immediately cites a specific page of it, the second citation might look something like "*Id*. at 1284." Later, once a different authority has been cited in the interim, the same citation might be referred back to with a citation like "413 F. Supp. at 1289."
 
-To address this, CiteURL can essentially generate new templates on the fly, whenever it detects a citation. These templates can be of two forms: `shortForms` and `idForms`. In each case, the template is only applied to text after the original long-form citation. The difference is that `shortForms` are applied to *all* of the remaining text, whereas `idForms` are only matched against the text in between one citation and the next. The [Citator.list_citations()](../library/#citeurl.Citator.list_citations) function also accepts an interruption regex, all occurrences of which will break chains of "id." citations.
+To address this, CiteURL can essentially generate new templates on the fly, whenever it detects a citation. These templates can be of two forms: `shortForms` and `idForms`. In each case, the template is only applied to text after the original long-form citation. The difference is that `shortForms` are applied to *all* of the remaining text, whereas `idForms` are only matched against the text in between one citation and the next. Note that the [Citator.list_citations()](../library/#citeurl.Citator.list_citations) function also accepts an interruption regex, all occurrences of which will break chains of `idForm` citations.
 
 Like URL templates, `idForms` and `shortForms` may contain placeholders in curly braces. These placeholders will be replaced with the corresponding token matched in the long-form citation, so that you can ensure that they only match citations where those tokens are unchanged. For instance, you could write a template to recognize court cases:
 

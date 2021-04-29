@@ -1,0 +1,22 @@
+name: pytest
+on: [push, pull_request]
+jobs:
+  build:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+        
+    - name: Install CiteURL
+      run: python3 -m pip install citeurl
+      
+    - name: Install test dependencies
+      run: python3 -m pip install pytest pytest-cov pytest-github-actions-annotate-failures quickjs
+      
+    - name: Test with pytest
+      run: python3 -m pytest . --exitfirst --verbose --failed-first --cov=citeurl --cov-report=html

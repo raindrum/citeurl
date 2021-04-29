@@ -2,28 +2,18 @@
 
 This page documents how to include CiteURL in your Python programming projects.
 
-The library revolves around the concept of a [Citator](#citator), which contains and applies all of the [Templates](#templates) that detect/create [Citation](#citation) objects in text. As such, the first step is to instantiate a Citator:
+The first step is to instantiate a [Citator](#citator), which by default contains all of CiteURL's built-in [Templates](#templates):
 
 ``` python
 from citeurl import Citator
 citator = Citator()
 ```
 
-After that, you can feed it text to return a list of [Citation](#citation) objects:
+After that, you can feed it text to return a list of [Citations](#citation) it finds:
 
 ``` python
 text = """
-Federal law provides that courts should award prevailing civil
-rights plaintiffs reasonable attorneys fees, see 42 USC § 1988(b),
-and, by discretion, expert fees, see id. at (c). This is because
-the importance of civil rights litigation cannot be measured by a
-damages judgment. See Riverside v. Rivera, 477 U.S. 561 (1986).
-But Evans v. Jeff D. upheld a settlement where the plaintiffs got
-everything they wanted, on the condition that they waive attorneys
-fees. 475 U.S. 717 (1986). This ruling lets savvy defendants
-create a wedge between plaintiffs and their attorneys, discouraging
-civil rights suits and undermining the court's logic in Riverside,
-477 U.S. at 574-78.
+Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, 42 USC § 1988(b), and, by discretion, expert fees, id. at (c). This is because the importance of civil rights litigation cannot be measured by a damages judgment. See Riverside v. Rivera, 477 U.S. 561 (1986). But Evans v. Jeff D. upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys' fees. 475 U.S. 717 (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in Riverside, 477 U.S. at 574-78.
 """
 citations = citator.list_citations(text)
 ```
@@ -54,7 +44,7 @@ from citeurl import list_authorities
 authorities = list_authorities(citations)
 for authority in authorities:
     auth_cites = authority.citations
-    print(f"{authority} was cited {len(auth_cites)}}) time(s)")
+    print(f"{authority} was cited {len(auth_cites)} time(s)")
 
 # 42 USC § 1988 was cited 2 time(s)
 # 477 U.S. 561 was cited 2 time(s)

@@ -369,6 +369,7 @@
                 
                 
                 <h1 id="getting-started">Getting Started</h1>
+<p>CiteURL is an extensible tool to process long and shortform legal citations in text and generate links to various websites where you can view the cited language for free. Here's an example of what it can do:</p>
 <table>
 <thead>
 <tr>
@@ -378,19 +379,19 @@
 </thead>
 <tbody>
 <tr>
-<td>Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, see 42 USC § 1988(b), and, by discretion, expert fees, see <em>id.</em> at (c). This is because the importance of civil rights litigation cannot be measured by a damages judgment. <em>See</em> <em>Riverside v. Rivera</em>, 477 U.S. 561 (1986). But <em>Evans v. Jeff D.</em>, upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys fees. 475 U.S. 717 (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in <em>Riverside</em>, 477 U.S. at 574-78.</td>
-<td>Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, see <a href="https://www.law.cornell.edu/uscode/text/42/1988#b">42 USC § 1988(b)</a>, and, by discretion, expert fees, see <a href="https://www.law.cornell.edu/uscode/text/42/1988#c"><em>id.</em> at (c)</a>. This is because the importance of civil rights litigation cannot be measured by a damages judgment. <em>See</em> <em>Riverside v. Rivera</em>, <a href="https://cite.case.law/us/477/561">477 U.S. 561</a> (1986). But <em>Evans v. Jeff D.</em>, upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys fees. <a href="https://cite.case.law/us/475/717">475 U.S. 717</a> (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in <em>Riverside</em>, <a href="https://cite.case.law/us/477/561#p574">477 U.S. at 574-78</a>.</td>
+<td>Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, 42 USC § 1988(b), and, by discretion, expert fees, <em>id.</em> at (c). This is because the importance of civil rights litigation cannot be measured by a damages judgment. <em>See</em> <em>Riverside v. Rivera</em>, 477 U.S. 561 (1986). But <em>Evans v. Jeff D.</em> upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys' fees. 475 U.S. 717 (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in <em>Riverside</em>, 477 U.S. at 574-78.</td>
+<td>Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, <a href="https://www.law.cornell.edu/uscode/text/42/1988#b">42 USC § 1988(b)</a>, and, by discretion, expert fees, <a href="https://www.law.cornell.edu/uscode/text/42/1988#c"><em>id.</em> at (c)</a>. This is because the importance of civil rights litigation cannot be measured by a damages judgment. <em>See</em> <em>Riverside v. Rivera</em>, <a href="https://cite.case.law/us/477/561">477 U.S. 561</a> (1986). But <em>Evans v. Jeff D.</em> upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys' fees. <a href="https://cite.case.law/us/475/717">475 U.S. 717</a> (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in <em>Riverside</em>, <a href="https://cite.case.law/us/477/561#p574">477 U.S. at 574-78</a>.</td>
 </tr>
 </tbody>
 </table>
-<p>CiteURL is an extensible tool to process legal citations in text and generate links to sites where you can view the cited language online. By default, it supports Bluebook-style citations to these bodies of law, among others:</p>
+<p>By default, CiteURL supports Bluebook-style citations to <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml">over 130 sources</a> of U.S. law, including:</p>
 <ul>
 <li>most state and federal court cases</li>
 <li>the U.S. Code and Code of Federal Regulations</li>
 <li>the U.S. Constitution and all state constitutions</li>
-<li>codified laws for every state and territory except Arkansas, Georgia, Guam, and Puerto Rico</li>
+<li>codified laws for every state and territory except Arkansas, Georgia, Guam, and Puerto Rico.</li>
 </ul>
-<p>The full list is available <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml">here</a>. You can also customize CiteURL to support more bodies of law by <a href="https://raindrum.github.io/citeurl/template-yamls/">writing your own citation templates</a> in YAML format.</p>
+<p>You can also customize CiteURL to support more sources of law by <a href="https://raindrum.github.io/citeurl/template-yamls/">writing your own citation templates</a> in YAML format.</p>
 <p>If you want to try out CiteURL's citation lookup features without installing anything, you can use <a href="https://raindrum.github.io/lawsearch">Law Search</a>, a JavaScript implementation of CiteURL I maintain on my website.</p>
 <h2 id="installation">Installation</h2>
 <p>CiteURL has been tested with Python version 3.9, but earlier versions probably work too. Install Python if you don't have it, then run this command:</p>
@@ -398,13 +399,13 @@
 </code></pre></div>
 <h2 id="usage">Usage</h2>
 <p>Look up a single citation and open it directly in a browser:</p>
-<div class="highlight"><pre><span></span><code>citeurl -lb <span class="s2">&quot;42 usc 1983&quot;</span>
+<div class="highlight"><pre><span></span><code>citeurl <span class="s2">&quot;42 usc 1983&quot;</span> -l -b
 </code></pre></div>
-<p>Process a court opinion or other text, and output a version where every citation (long or shortform) is converted into an HTML hyperlink:</p>
+<p>Process a court opinion or other text, and output a version where every citation is converted into an HTML hyperlink:</p>
 <div class="highlight"><pre><span></span><code>citeurl -i INPUT_FILE.html -o OUTPUT_FILE.html
 </code></pre></div>
-<p>Get a list of the top 10 authorities cited in a text, ordered by the number of citations to each, <a href="https://raindrum.github.io/citeurl/template-yamls/">including sources of law</a> that CiteURL doesn't even natively support:</p>
-<div class="highlight"><pre><span></span><code>cat INPUT_FILE.html <span class="p">|</span> citeurl -a <span class="m">10</span> -s YOUR_CUSTOM_TEMPLATES.YAML -o OUTPUT_FILE.html
+<p>Get a list of the top 10 authorities cited in a text, ordered by the number of citations to each, including <a href="https://raindrum.github.io/citeurl/template-yamls/">citations to custom sources</a> that CiteURL doesn't even natively support:</p>
+<div class="highlight"><pre><span></span><code>cat INPUT_FILE.html <span class="p">|</span> citeurl -a <span class="m">10</span> -s YOUR_TEMPLATES.YAML
 </code></pre></div>
 <p>For more options, run <code>citeurl -h</code>.</p>
 <p>Besides to the command-line tool, CiteURL can be used in a few other forms:</p>

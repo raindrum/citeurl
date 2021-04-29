@@ -416,13 +416,16 @@ class Citator:
         for template in self.templates:
             citations += template.get_citations(text)
         shortform_cites = []
+        
         # Then, add shortforms
         for citation in citations:
             shortform_cites += citation._get_shortform_citations(text)
         citations += shortform_cites
         citations = _sort_and_remove_overlaps(citations)
+        
         if not id_forms: # no need to proceed
             return citations
+        
         # determine where to break chains of id. citations
         for citation in citations: # break at full or short citations
             id_break_indices.append(citation.span[0])
@@ -431,6 +434,7 @@ class Citator:
             for match in matches:
                 id_break_indices.append(match.span()[0])
         id_break_indices = sorted(set(id_break_indices))
+        
         # loop through all citations to find their id citations
         id_citations = []
         for citation in citations:
@@ -881,19 +885,29 @@ def insert_links(
     """
     offset = 0
     for citation in citations:
+        # by default, skip citations without URLs
         if not citation.URL and not url_optional:
             continue
+        
         if citation.template.is_id:
-            if citation.template._compiled_re().groupindex:
-                if not link_detailed_ids:
+            # check whether the matched citation is from a template that
+            # has any named capture groups. If it doesn't, it's a
+            # "plain id." and should normally be skipped
+            if not '(?P<' in citation.template._compiled_re().pattern:
+                if not link_plain_ids:
                     continue
-            elif not link_plain_ids:
+            elif not link_detailed_ids:
                 continue
+        
         link = citation.get_link(attrs=attrs)
+        
+        # insert each link into the proper place by offsetting later
+        # citations by however many extra characters are added by each
         cite_start = citation.span[0] + offset
         cite_end = citation.span[1] + offset
         text = ''.join([text[:cite_start], link, text[cite_end:]])
         offset += len(link) - len(citation.text)
+    
     return text
 
 

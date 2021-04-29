@@ -493,8 +493,8 @@
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">United States Code</span>
   <span class="l l-Scalar l-Scalar-Plain">regex</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">(?P&lt;title&gt;\d+) USC § (?P&lt;section&gt;\d+)( \((?P&lt;subsection&gt;[a-z])\)?</span>
   <span class="l l-Scalar l-Scalar-Plain">URL</span><span class="p p-Indicator">:</span>
-    <span class="p p-Indicator">-</span> <span class="s">&#39;https://www.law.cornell.edu/uscode/text/{title}/{section}</span><span class="se">&#39;&#39;</span>
-    <span class="s">-</span><span class="nv"> </span><span class="s">&#39;</span><span class="c1">#{subsection}&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;https://www.law.cornell.edu/uscode/text/{title}/{section}&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;#{subsection}&#39;</span>
 </code></pre></div>
 <h2 id="token-processing">Token Processing</h2>
 <p>In many cases, the tokens matched in a citation won't directly correspond with the values that need to be inserted into the URL placeholder. For example, your template might detect a court reporter called "F. App'x." or "Pa. D. &amp; C.4th", but <a href="https://case.law/">Case.Law</a>'s URL scheme needs those reporters to be called "<a href="https://cite.case.law/f-appx/">f-appx</a>" and "<a href="https://cite.case.law/pa-d-c4th/">pa-d-c4th</a>", respectively.</p>
@@ -534,7 +534,7 @@
 </tr>
 <tr>
 <td><code>lookup</code></td>
-<td>uses case-insensitive regex matching to check the token against each pattern until it fully matches, in which case it outputs the corresponding replacement string. If no pattern is matched, it causes the entire template match to retroactively fail.</td>
+<td>uses case-insensitive regex matching to check the token against each pattern until it fully matches one of them, in which case it outputs the corresponding replacement string. If no pattern is matched, it causes the entire template match to retroactively fail, as if there had never been a regex match in the first place.</td>
 <td><code>{PATTERN: REPL, PATTERN: REPL ...}</code></td>
 </tr>
 <tr>
@@ -556,8 +556,8 @@
 </table>
 <p>One final note: If an operation's input token has not been set (as distinct from being set to an empty string), the operation will be skipped.</p>
 <h2 id="recognizing-shortform-citations">Recognizing Shortform Citations</h2>
-<p>Often, once a particular authority is cited once, subsequent references to it will take a shorter, more contextual format. For example, if a text cites <em>United States v. An Article Consisting of Boxes of Clacker Balls</em>, 413 F. Supp. 1281 (1976), then immediately cites a specific page of it, the citation might look something like "<em>Id</em>. at 1284." Later, once another authority has been cited, the same citation might be referred back to with a citation like "413 F. Supp. at 1289."</p>
-<p>To address this, CiteURL can essentially generate new templates on the fly, whenever it detects a citation. These templates can be of two forms: <code>shortForms</code> and <code>idForms</code>. In each case, the template is only applied to text after the original long-form citation. The difference is that <code>shortForms</code> are applied to <em>all</em> of the remaining text, whereas <code>idForms</code> are only matched against the text in between one citation and the next. The <a href="../library/#citeurl.Citator.list_citations">Citator.list_citations()</a> function also accepts an interruption regex, all occurrences of which will break chains of "id." citations.</p>
+<p>Often, once a particular authority is cited once, subsequent references to it will take a shorter, more contextual format. For example, if a text cites <em>United States v. An Article Consisting of Boxes of Clacker Balls</em>, 413 F. Supp. 1281 (E.D. Wis. 1976), then immediately cites a specific page of it, the second citation might look something like "<em>Id</em>. at 1284." Later, once a different authority has been cited in the interim, the same citation might be referred back to with a citation like "413 F. Supp. at 1289."</p>
+<p>To address this, CiteURL can essentially generate new templates on the fly, whenever it detects a citation. These templates can be of two forms: <code>shortForms</code> and <code>idForms</code>. In each case, the template is only applied to text after the original long-form citation. The difference is that <code>shortForms</code> are applied to <em>all</em> of the remaining text, whereas <code>idForms</code> are only matched against the text in between one citation and the next. Note that the <a href="../library/#citeurl.Citator.list_citations">Citator.list_citations()</a> function also accepts an interruption regex, all occurrences of which will break chains of <code>idForm</code> citations.</p>
 <p>Like URL templates, <code>idForms</code> and <code>shortForms</code> may contain placeholders in curly braces. These placeholders will be replaced with the corresponding token matched in the long-form citation, so that you can ensure that they only match citations where those tokens are unchanged. For instance, you could write a template to recognize court cases:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">Caselaw Access Project (Simplified)</span><span class="p">:</span>
   <span class="nt">regex</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(?P&lt;volume&gt;\d+) (?P&lt;reporter&gt;(\D|\d(d|th|rd))+?) (?P&lt;page&gt;\d+)(, (?P&lt;pincite&gt;\d+))?</span>

@@ -1,15 +1,17 @@
+CiteURL is an extensible tool to process long and shortform legal citations in text and generate links to various websites where you can view the cited language for free. Here's an example of what it can do:
+
 | Sample Input                                                 | Output                                                       |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, see 42 USC § 1988(b), and, by discretion, expert fees, see *id.* at (c). This is because the importance of civil rights litigation cannot be measured by a damages judgment. *See* *Riverside v. Rivera*, 477 U.S. 561 (1986). But *Evans v. Jeff D.*, upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys fees. 475 U.S. 717 (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in *Riverside*, 477 U.S. at 574-78. | Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, see [42 USC § 1988(b)](https://www.law.cornell.edu/uscode/text/42/1988#b), and, by discretion, expert fees, see [*id.* at (c)](https://www.law.cornell.edu/uscode/text/42/1988#c). This is because the importance of civil rights litigation cannot be measured by a damages judgment. *See* *Riverside v. Rivera*, [477 U.S. 561](https://cite.case.law/us/477/561) (1986). But *Evans v. Jeff D.*, upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys fees. [475 U.S. 717](https://cite.case.law/us/475/717) (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in *Riverside*, [477 U.S. at 574-78](https://cite.case.law/us/477/561#p574). |
+| Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, 42 USC § 1988(b), and, by discretion, expert fees, *id.* at (c). This is because the importance of civil rights litigation cannot be measured by a damages judgment. *See* *Riverside v. Rivera*, 477 U.S. 561 (1986). But *Evans v. Jeff D.* upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys' fees. 475 U.S. 717 (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in *Riverside*, 477 U.S. at 574-78. | Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, [42 USC § 1988(b)](https://www.law.cornell.edu/uscode/text/42/1988#b), and, by discretion, expert fees, [*id.* at (c)](https://www.law.cornell.edu/uscode/text/42/1988#c). This is because the importance of civil rights litigation cannot be measured by a damages judgment. *See* *Riverside v. Rivera*, [477 U.S. 561](https://cite.case.law/us/477/561) (1986). But *Evans v. Jeff D.* upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys' fees. [475 U.S. 717](https://cite.case.law/us/475/717) (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in *Riverside*, [477 U.S. at 574-78](https://cite.case.law/us/477/561#p574). |
 
-CiteURL is an extensible tool to process legal citations in text and generate links to sites where you can view the cited language online. By default, it supports Bluebook-style citations to these bodies of law, among others:
+By default, CiteURL supports Bluebook-style citations to [over 130 sources](https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml) of U.S. law, including:
 
 - most state and federal court cases
 - the U.S. Code and Code of Federal Regulations
 - the U.S. Constitution and all state constitutions
-- codified laws for every state and territory except Arkansas, Georgia, Guam, and Puerto Rico
+- codified laws for every state and territory except Arkansas, Georgia, Guam, and Puerto Rico.
 
-The full list is available [here](https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml). You can also customize CiteURL to support more bodies of law by [writing your own citation templates](https://raindrum.github.io/citeurl/template-yamls/) in YAML format.
+You can also customize CiteURL to support more sources of law by [writing your own citation templates](https://raindrum.github.io/citeurl/template-yamls/) in YAML format.
 
 If you want to try out CiteURL's citation lookup features without installing anything, you can use [Law Search](https://raindrum.github.io/lawsearch), a JavaScript implementation of CiteURL I maintain on my website.
 
@@ -26,19 +28,19 @@ python -m pip install citeurl
 Look up a single citation and open it directly in a browser:
 
 ```bash
-citeurl -lb "42 usc 1983"
+citeurl "42 usc 1983" -l -b
 ```
 
-Process a court opinion or other text, and output a version where every citation (long or shortform) is converted into an HTML hyperlink:
+Process a court opinion or other text, and output a version where every citation is converted into an HTML hyperlink:
 
 ```bash
 citeurl -i INPUT_FILE.html -o OUTPUT_FILE.html
 ```
 
-Get a list of the top 10 authorities cited in a text, ordered by the number of citations to each, [including sources of law](https://raindrum.github.io/citeurl/template-yamls/) that CiteURL doesn't even natively support:
+Get a list of the top 10 authorities cited in a text, ordered by the number of citations to each, including [citations to custom sources](https://raindrum.github.io/citeurl/template-yamls/) that CiteURL doesn't even natively support:
 
 ```bash
-cat INPUT_FILE.html | citeurl -a 10 -s YOUR_CUSTOM_TEMPLATES.YAML -o OUTPUT_FILE.html
+cat INPUT_FILE.html | citeurl -a 10 -s YOUR_TEMPLATES.YAML
 ```
 
 For more options, run `citeurl -h`.
