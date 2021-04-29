@@ -192,7 +192,7 @@ class Authority:
             this authority.
         base_citation: A citation object representing the hypothetical
             generic citation to this authority.
-        name: The text of base_cite
+        name: The text of base_citation
     """
     def __init__(self, first_cite, allowed_differences: list=[]):
         """
@@ -208,7 +208,7 @@ class Authority:
                 first and archetypal citation to this authority. The
                 first_cite will be added as the first entry in the
                 authority's citation list, and it will be used as the
-                basis to generate the authority's base_cite.
+                basis to generate the authority's base_citation.
             allowed_differences: A list of tokens whose values can
                 differ among citations to the same authority
         """
