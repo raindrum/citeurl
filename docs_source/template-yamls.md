@@ -1,10 +1,16 @@
 # Writing Your Own Templates
 
-CiteURL supports a number of citation formats out-of-the box, and I try to add more when I can. However, it will never support every possible kind of citation, and you might want to treat certain citations differently than CiteURL's built-in templates do.
+CiteURL supports a number of citation formats out-of-the box, and I try to add more when I can. However, it can never support every possible kind of citation, especially for local laws and countries outside the U.S.
 
-Templates [can be created at runtime](../library#citeurl.Template.__init__), but it is often more practical to write a list of them in a YAML file, and load them when instantiating a [Citator](../library#citator). As such, all of [CiteURL's built-in templates](https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml), and the templates described on this page, are in YAML format.
+For that reason, CiteURL is designed so that you can write your own citation templates in YAML format, and use them in various contexts:
 
-Before you proceed, make sure you're fairly familiar with [Python Regular Expressions](https://docs.python.org/3/howto/regex.html), because the templates rely on them heavily. You'll also need some basic knowledge of [YAML](https://www.w3schools.io/file/yaml-introduction/).
+- The `citeurl` command lets you can load these YAMLs with the `-s` option.
+- The `citeurl-makejs` command uses them to generate [custom JavaScript search engines](../frontends/#javascript).
+- The Python library lets you load YAMLs when [creating a Citator](../library/#citeurl.Citator.__init__), though you can also [define templates at runtime](../library/#citeurl.Template.__init__).
+
+This page details how to write these template files. Before you proceed, make sure you're at least a little familiar with [Python regex](https://docs.python.org/3/howto/regex.html), because the templates rely heavily on it. You'll also need some basic knowledge of [YAML](https://www.w3schools.io/file/yaml-introduction/).
+
+**Note**: [CiteURL's built-in templates](https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml) are written in the same YAML format described on this page, so they are a good resource to help you write your own. You can also find a step-by-step summary of how each template works by opening a browser console with `ctrl+shift+i` while using [Law Search](https://raindrum.github.io/lawsearch).
 
 ## The Basic Template Format
 
@@ -22,7 +28,7 @@ Finally, the template also has a pattern to generate a URL based on the recogniz
 
 ### Regex Complications
 
-In the example above, the regex is provided as a single string. This is perfectly valid, but templates' regexes can be much more complicated than this, for two reasons:
+In the example above, the regex is provided as a single string. This is perfectly valid, but templates' regexes can be much more complicated than that, for two reasons:
 
 1. A regex can be provided either as a string (as shown above), *or* as a list of strings. In the latter case, they will be concatenated (with no spaces) to create the actual regex. There is no functional difference between using strings and lists, except that providing them in list form allows you to reuse common regex parts using [YAML anchors](https://medium.com/@kinghuang/docker-compose-anchors-aliases-extensions-a1e4105d70bd).
 2. Independent of the first reason, it is possible to give a template *multiple* regexes to match, by using the `regexes` key instead of `regex`. Normally, this will not be necessary, because the usual solution is to just write one regex to recognize multiple citation formats. However, regexes are limited in that capture groups cannot be rearranged.
@@ -37,11 +43,15 @@ United States Code
   URL: https://www.law.cornell.edu/uscode/text/{title}/{section}
 ```
 
-The above template looks unwieldy, and it is; it is a list of lists. However, it provides two advantages over the first template: First, it is possible to recognize both "42 USC § 1983" and "Section 1983 of Title 42 of the United States Code," which would be impossible with a single regex, since `title` and `section` are in a different order. Second, by using YAML anchors it is possible to reuse common pieces of regex, like `*section`, which can recognize either the word "Section" or a section sign ("§"). This can make it much easier to write and maintain large libraries of templates.
+The above template looks unwieldy, and it is; its regex is a list of lists. However, it provides two advantages over the first example:
+
+First, it is possible to recognize both "42 USC § 1983" and "Section 1983 of Title 42 of the United States Code," which would be impossible with a single regex, since `title` and `section` are in a different order.
+
+Second, by using YAML anchors it is possible to reuse common pieces of regex, like `*section`, which can recognize either the word "Section" or a section sign ("§"). This can make it much easier to write and maintain large libraries of templates.
 
 ### URL Complications
 
-Another important feature is that a template's URL, like its regex(es), can be specified as a list of strings to concatenate. However, this serves a functional purpose: If a list item contains a placeholder for which no value is set, that whole list item will be omitted from the final URL. For instance, the template below can generate anchor links to subsections of the U.S. Code, but if no subsection is provided, it simply links to the overall page for the section itself:
+Another important feature is that a template's URL, like its regex(es), can be specified as a list of strings to concatenate. Unlike with regexes, splitting a URL into a list of strings makes it function differently: If a list item contains a placeholder for which no value is set, that whole list item will be omitted from the final URL. For instance, the template below can generate anchor links to subsections of the U.S. Code, but if no subsection is specified, it simply links to the overall page for the section itself:
 
 ``` yaml
 United States Code
@@ -156,4 +166,4 @@ U.S. Code, but especially Title 42:
 
 `broadRegex` and `broadRegexes` are identical in format to the `regex` and `regexes` keys. They allow you to specify extra regexes that will be used, in addition to the normal regex(es), in contexts like search engines where user convenience is more important than avoiding false positives. 
 
-BroadRegexes are used by default in the [lookup()](../library/#citeurl.Template.lookup) method, as well as in JavaScript implementations generated through the `citeurl-makejs` command.
+BroadRegexes are used by default in the [lookup()](../library/#citeurl.Template.lookup) method, as well as in [JavaScript implementations](../frontends#javascript), though if you are writing templates *exclusively* for these use cases rather than text processing, it is not important whether you use `regexes` or `broadRegexes`.

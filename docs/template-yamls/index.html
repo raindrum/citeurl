@@ -463,9 +463,15 @@
                 
                 
                 <h1 id="writing-your-own-templates">Writing Your Own Templates</h1>
-<p>CiteURL supports a number of citation formats out-of-the box, and I try to add more when I can. However, it will never support every possible kind of citation, and you might want to treat certain citations differently than CiteURL's built-in templates do.</p>
-<p>Templates <a href="../library#citeurl.Template.__init__">can be created at runtime</a>, but it is often more practical to write a list of them in a YAML file, and load them when instantiating a <a href="../library#citator">Citator</a>. As such, all of <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml">CiteURL's built-in templates</a>, and the templates described on this page, are in YAML format.</p>
-<p>Before you proceed, make sure you're fairly familiar with <a href="https://docs.python.org/3/howto/regex.html">Python Regular Expressions</a>, because the templates rely on them heavily. You'll also need some basic knowledge of <a href="https://www.w3schools.io/file/yaml-introduction/">YAML</a>.</p>
+<p>CiteURL supports a number of citation formats out-of-the box, and I try to add more when I can. However, it can never support every possible kind of citation, especially for local laws and countries outside the U.S.</p>
+<p>For that reason, CiteURL is designed so that you can write your own citation templates in YAML format, and use them in various contexts:</p>
+<ul>
+<li>The <code>citeurl</code> command lets you can load these YAMLs with the <code>-s</code> option.</li>
+<li>The <code>citeurl-makejs</code> command uses them to generate <a href="../frontends/#javascript">custom JavaScript search engines</a>.</li>
+<li>The Python library lets you load YAMLs when <a href="../library/#citeurl.Citator.__init__">creating a Citator</a>, though you can also <a href="../library/#citeurl.Template.__init__">define templates at runtime</a>.</li>
+</ul>
+<p>This page details how to write these template files. Before you proceed, make sure you're at least a little familiar with <a href="https://docs.python.org/3/howto/regex.html">Python regex</a>, because the templates rely heavily on it. You'll also need some basic knowledge of <a href="https://www.w3schools.io/file/yaml-introduction/">YAML</a>.</p>
+<p><strong>Note</strong>: <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml">CiteURL's built-in templates</a> are written in the same YAML format described on this page, so they are a good resource to help you write your own. You can also find a step-by-step summary of how each template works by opening a browser console with <code>ctrl+shift+i</code> while using <a href="https://raindrum.github.io/lawsearch">Law Search</a>.</p>
 <h2 id="the-basic-template-format">The Basic Template Format</h2>
 <p>Here is a simplified example of a template that you might write to recognize citations to the U.S. Code:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">United States Code</span><span class="p">:</span>
@@ -475,7 +481,7 @@
 <p>This citation template recognizes any series of one or more digits, followed by " USC § ", followed by another series of digits. It knows that the first string of digits is something called a "title" and the second is a "section". We will call these stored values <code>tokens</code>.</p>
 <p>Finally, the template also has a pattern to generate a URL based on the recognized citation. It does this by replacing the placeholders (i.e. the parts in curly braces) with the values from the captured tokens. Although this template does not have any, it could also define <a href="#token-processing">operations</a> to perform on the captured tokens before inserting them into the URL.</p>
 <h3 id="regex-complications">Regex Complications</h3>
-<p>In the example above, the regex is provided as a single string. This is perfectly valid, but templates' regexes can be much more complicated than this, for two reasons:</p>
+<p>In the example above, the regex is provided as a single string. This is perfectly valid, but templates' regexes can be much more complicated than that, for two reasons:</p>
 <ol>
 <li>A regex can be provided either as a string (as shown above), <em>or</em> as a list of strings. In the latter case, they will be concatenated (with no spaces) to create the actual regex. There is no functional difference between using strings and lists, except that providing them in list form allows you to reuse common regex parts using <a href="https://medium.com/@kinghuang/docker-compose-anchors-aliases-extensions-a1e4105d70bd">YAML anchors</a>.</li>
 <li>Independent of the first reason, it is possible to give a template <em>multiple</em> regexes to match, by using the <code>regexes</code> key instead of <code>regex</code>. Normally, this will not be necessary, because the usual solution is to just write one regex to recognize multiple citation formats. However, regexes are limited in that capture groups cannot be rearranged.</li>
@@ -487,9 +493,11 @@
     <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="nv">*section</span><span class="p p-Indicator">,</span> <span class="s">&#39;</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">Title</span><span class="nv"> </span><span class="s">&#39;</span><span class="p p-Indicator">,</span> <span class="nv">*title</span><span class="p p-Indicator">,</span> <span class="s">&#39;</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">United</span><span class="nv"> </span><span class="s">States</span><span class="nv"> </span><span class="s">Code&#39;</span><span class="p p-Indicator">]</span>
 <span class=" -Error">  </span><span class="nt">URL</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://www.law.cornell.edu/uscode/text/{title}/{section}</span>
 </code></pre></div>
-<p>The above template looks unwieldy, and it is; it is a list of lists. However, it provides two advantages over the first template: First, it is possible to recognize both "42 USC § 1983" and "Section 1983 of Title 42 of the United States Code," which would be impossible with a single regex, since <code>title</code> and <code>section</code> are in a different order. Second, by using YAML anchors it is possible to reuse common pieces of regex, like <code>*section</code>, which can recognize either the word "Section" or a section sign ("§"). This can make it much easier to write and maintain large libraries of templates.</p>
+<p>The above template looks unwieldy, and it is; its regex is a list of lists. However, it provides two advantages over the first example:</p>
+<p>First, it is possible to recognize both "42 USC § 1983" and "Section 1983 of Title 42 of the United States Code," which would be impossible with a single regex, since <code>title</code> and <code>section</code> are in a different order.</p>
+<p>Second, by using YAML anchors it is possible to reuse common pieces of regex, like <code>*section</code>, which can recognize either the word "Section" or a section sign ("§"). This can make it much easier to write and maintain large libraries of templates.</p>
 <h3 id="url-complications">URL Complications</h3>
-<p>Another important feature is that a template's URL, like its regex(es), can be specified as a list of strings to concatenate. However, this serves a functional purpose: If a list item contains a placeholder for which no value is set, that whole list item will be omitted from the final URL. For instance, the template below can generate anchor links to subsections of the U.S. Code, but if no subsection is provided, it simply links to the overall page for the section itself:</p>
+<p>Another important feature is that a template's URL, like its regex(es), can be specified as a list of strings to concatenate. Unlike with regexes, splitting a URL into a list of strings makes it function differently: If a list item contains a placeholder for which no value is set, that whole list item will be omitted from the final URL. For instance, the template below can generate anchor links to subsections of the U.S. Code, but if no subsection is specified, it simply links to the overall page for the section itself:</p>
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">United States Code</span>
   <span class="l l-Scalar l-Scalar-Plain">regex</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">(?P&lt;title&gt;\d+) USC § (?P&lt;section&gt;\d+)( \((?P&lt;subsection&gt;[a-z])\)?</span>
   <span class="l l-Scalar l-Scalar-Plain">URL</span><span class="p p-Indicator">:</span>
@@ -601,7 +609,7 @@
 </code></pre></div>
 <h3 id="broadregex">broadRegex</h3>
 <p><code>broadRegex</code> and <code>broadRegexes</code> are identical in format to the <code>regex</code> and <code>regexes</code> keys. They allow you to specify extra regexes that will be used, in addition to the normal regex(es), in contexts like search engines where user convenience is more important than avoiding false positives. </p>
-<p>BroadRegexes are used by default in the <a href="../library/#citeurl.Template.lookup">lookup()</a> method, as well as in JavaScript implementations generated through the <code>citeurl-makejs</code> command.</p>
+<p>BroadRegexes are used by default in the <a href="../library/#citeurl.Template.lookup">lookup()</a> method, as well as in <a href="../frontends#javascript">JavaScript implementations</a>, though if you are writing templates <em>exclusively</em> for these use cases rather than text processing, it is not important whether you use <code>regexes</code> or <code>broadRegexes</code>.</p>
                 
               
               
