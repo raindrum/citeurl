@@ -1113,7 +1113,13 @@ text.</p>
         <span class="c1"># make the template and add it to the citator, adding the</span>
         <span class="c1"># generic id-form citation if applicable</span>
         <span class="n">new_template</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">template_name</span><span class="p">,</span> <span class="o">**</span><span class="n">template_data</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">use_generic_id</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">use_generic_id</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span>
+            <span class="c1"># weird bug: without this next check, the generic id</span>
+            <span class="c1"># gets added upwards of 44 times even though the code</span>
+            <span class="c1"># appears to run only once</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">new_template</span><span class="o">.</span><span class="n">idForms</span>
+        <span class="p">):</span>
             <span class="n">new_template</span><span class="o">.</span><span class="n">idForms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_template</span><span class="p">)</span>
 </code></pre>
