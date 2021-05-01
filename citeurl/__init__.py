@@ -145,6 +145,7 @@ class Citation:
                 idForms=self.template.idForms,
                 URL=self.template.URL if hasattr(self.template, 'URL') else None,
                 operations=self.template.operations,
+                defaults=self.template.defaults,
                 parent_citation=self,
                 _is_id=is_id
             ))
