@@ -385,7 +385,13 @@ class Citator:
             # make the template and add it to the citator, adding the
             # generic id-form citation if applicable
             new_template = Template(name=template_name, **template_data)
-            if use_generic_id and self.generic_id:
+            if (
+                use_generic_id and self.generic_id
+                # weird bug: without this next check, the generic id
+                # gets added upwards of 44 times even though the code
+                # appears to run only once
+                and self.generic_id not in new_template.idForms
+            ):
                 new_template.idForms.append(self.generic_id)
             self.templates.append(new_template)
     
