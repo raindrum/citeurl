@@ -1,6 +1,6 @@
 from citeurl import Citator
-from requests import get
-from time import sleep
+#from requests import get
+#from time import sleep
 
 TESTS = {
     "United States Code": {
