@@ -6,7 +6,7 @@ United States Code:
   regexes:
     - - &title '([Tt]itle )?(?P<title>\d+) '
       - &usc (U\.?|United) ?(S\.?|States) ?C(ode|\.?)( ?[AS]\.?| Ann(otated|o?\.)| Serv(ice|\.))?
-      - &section '(,? )?((&sect;|&#167|§){1,2}|Sect?\.?|Sections?)? ?(?P<section>\d[\w.-]*\w|\d)'
+      - &section '(,? )?((&sect;|&#167|§){1,2}|[Ss]ec(tions?|t?s?\.))? ?(?P<section>\d[\w.-]*\w|\d)'
       - &subsection '(((,? )?sub(sections?|divisions?|(sec|d(iv)?)?s?\.) ?)?(?P<subsection>(\(\w+\))+))?'
     - ['[Ss]ection', *section, *subsection, ' of ', *title, 'of the ', *usc]
   idForms: &id_sec_sub
