@@ -1,3 +1,5 @@
+"tests for individual citation templates. not all of them are ready yet"
+
 from citeurl import Citator
 #from requests import get
 #from time import sleep
@@ -222,7 +224,12 @@ TESTS = {
 }
 
 def test_url_generation():
+    """
+    make sure each template is properly matching longform and shortform
+    citations and generating the expected URLs
+    """
     citator = Citator()
+    print('Checking each template against sample citations...')
     for template in citator.templates:
         # skip templates that don't have tests yet
         if template.name not in TESTS:
@@ -230,9 +237,10 @@ def test_url_generation():
         
         # try parsing a text where the shortform follows the longform
         test = TESTS[template.name]
-        found_cites = citator.list_citations(
-            f"{test['cite']}. {test['shortform']}"
-        )
+        test_string = f"{test['cite']}. {test['shortform'] or ''}"
+        found_cites = citator.list_citations(test_string)
+        
+        print(f'{template.name}: "{test_string}" ... ', end='')
         
         # if there was a shortform, citator should find two citations
         assert len(found_cites) == 2 if test['shortform'] else 1
@@ -246,8 +254,11 @@ def test_url_generation():
         # check if shortform citation (if any) has expected URL
         if len(found_cites) == 2:
             assert found_cites[1].URL == test['shortform_URL']
+        
+        print('OK')
 
 #def test_urls_validity():
+#    "make sure CiteURL's URLs generally don't go to error pages"
 #    print('Checking whether test URLs still return valid response codes...')
 #    for template in TESTS.values():
 #        print(f"{template['cite']} ... ", end='')
