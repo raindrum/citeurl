@@ -54,6 +54,7 @@ def get_ip():
         IP = '127.0.0.1'
     finally:
         s.close()
+    return IP
 
 def serve(citator, IP='localhost', port=53037):
     "Host the given Citator as a server"
