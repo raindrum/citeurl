@@ -5,7 +5,7 @@ with open('README.md', 'r') as f:
 
 setuptools.setup(
     name='citeurl',
-    version='7.1.6',
+    version='7.2.0',
     description='an extensible tool to process legal citations in text',
     author='Simon Raindrum Sherred',
     author_email='simonraindrum@gmail.com',
@@ -22,7 +22,7 @@ setuptools.setup(
         'markdown.extensions': ['citeurl=citeurl.mdx:CiteURLExtension'],
     },
     include_package_data=True,
-    install_requires=['pyyaml', 'markdown'],
+    install_requires=['pyyaml'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Legal Industry',

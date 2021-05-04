@@ -43,8 +43,7 @@ def main():
         ),
     )
     action.add_argument(
-        "-a",
-        "--authorities",
+        "-a", "--authorities",
         action="store",
         nargs="?",
         const=-1,
@@ -55,6 +54,14 @@ def main():
             + "return only the X authorities with the most citations."
         )
     )
+    action.add_argument(
+        "-s", "--serve",
+        action="store_true",
+        help=(
+            "host the citator as a server to allow others on your local "
+            + "network to use it"
+        )
+    )
     parser.add_argument(
         "-b", "--browse",
         action="store_true",
@@ -62,18 +69,16 @@ def main():
             "open the result in a browser. If the '-l' option is used, "
             + "it will directly open the generated URL. Otherwise, it "
             + "makes a temporary HTML file with the hyperlinked text, "
-            + "and opens that. Has no effect if paired with '-a'."
+            + "and opens that. No effect if paired with '-a' or '-s'."
         )
     )
     parser.add_argument(
-        "-n",
-        "--no-default-templates",
+        "-n", "--no-default-templates",
         action="store_true",
         help="prevent loading the default set of templates",
     )
     parser.add_argument(
-        "-s",
-        "--template-file",
+        "-t", "--template-file",
         action="append",
         default=SUPPRESS,
         help=(
@@ -83,8 +88,7 @@ def main():
         )
     )
     parser.add_argument(
-        "-c",
-        "--css-class",
+        "-c", "--css-class",
         default='citation',
         help=(
             "the class each inserted <a> element will have. "
@@ -92,8 +96,7 @@ def main():
         )
     )
     parser.add_argument(
-        "-I",
-        "--link-ids",
+        "-I", "--link-ids",
         action="store",
         type=str,
         default='detailed',
@@ -101,6 +104,16 @@ def main():
         help='which "id" citations to hyperlink. Options are "all", "none", '
             + 'and "detailed". Defaults to detailed, which links "id. at 35" '
             + 'but not "id."'
+    )
+    parser.add_argument(
+        "-p", "--port",
+        action="store",
+        default=53037,
+        type=int,
+        help=(
+            "the port to use for hosting the citator. No effect unless "
+            + "paired with the '-s' option"
+        )
     )
     args = parser.parse_args()
         
@@ -110,7 +123,7 @@ def main():
             text = f.read()[0:-1]
     elif args.text:
         text = ' '.join(args.text)
-    else:
+    elif not args.serve:
         parser.print_help()
         return
     
@@ -125,8 +138,7 @@ def main():
             "Can't use '-n' without specifying a custom template file."
         )
 
-    # print output to file or stdout
-    if args.lookup:
+    if args.lookup: # look up info for a single citation
         citation = citator.lookup(text)
         if citation:
             key_lengths = [
@@ -143,11 +155,12 @@ def main():
                     + value
                 )
             print('URL: '.ljust(tab_width) + (citation.URL or 'Unavailable'))
-            if args.browse:
+            if args.browse and citation.URL:
                 webbrowser.open(citation.URL)
         else:
             print("Couldn't recognize citation.")
-    elif args.authorities:
+    
+    elif args.authorities: # print list of authorities
         authorities = citator.list_authorities(text)
         if args.authorities != -1:
             authorities = authorities[:args.authorities]
@@ -160,7 +173,19 @@ def main():
             output += f"\nReferences: {len(authority.citations)}"
             outputs.append(output)
         print('\n\n'.join(outputs))
-    else:
+    
+    elif args.serve: # host a CiteURL server
+        try:
+            from .server import serve
+            serve(citator, port=args.port)
+        except ModuleNotFoundError:
+            print(
+                'Server features depend on flask and gevent. You can '
+                + 'probably install them with the following command:'
+            )
+            print('python3 -m pip install flask gevent')
+    
+    else: # default to the insert_links function
         out_text = citator.insert_links(
             text,
             attrs={'class': args.css_class} if args.css_class else [],

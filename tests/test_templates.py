@@ -220,6 +220,120 @@ TESTS = {
         "URL": "https://ballotpedia.org/Article_XIX,_Colorado_Constitution#Section_2",
         "shortform": "§ 3",
         "shortform_URL": "https://ballotpedia.org/Article_XIX,_Colorado_Constitution#Section_3"
+    },
+    "General Statutes of Connecticut": {
+        "cite": "Conn. Gen. Stat. § 46b-137",
+        "URL": "https://www.lawserver.com/law/state/connecticut/ct-laws/connecticut_statutes_46b",
+        "shortform": "§ 121q",
+        "shortform_URL": "https://www.lawserver.com/law/state/connecticut/ct-laws/connecticut_statutes_121q"
+    },
+    "Connecticut Constitution": {
+        "cite": "Conn. Const. Art. XIII, Sec. 2",
+        "URL": "https://ballotpedia.org/Article_XIII,_Connecticut_Constitution#Section_2",
+        "shortform": "Art. VII",
+        "shortform_URL": "https://ballotpedia.org/Article_VII,_Connecticut_Constitution"
+    },
+    "Delaware Code": {
+        "cite": "9 Del. C. § 2402(b)",
+        "URL": "https://www.lawserver.com/law/state/delaware/de-code/delaware_code_title_9_2402",
+        "shortform": "§ 2403",
+        "shortform_URL": "https://www.lawserver.com/law/state/delaware/de-code/delaware_code_title_9_2403"
+    },
+    "Delaware General Corporations Law": {
+        "cite": "DGCL § 203",
+        "URL": "https://delcode.delaware.gov/title8/c001/sc06/index.shtml#203.",
+        "shortform": "§ 244",
+        "shortform_URL": "https://delcode.delaware.gov/title8/c001/sc08/index.shtml#244."
+    },
+    "Delaware Constitution": {
+        "cite": "Del. Const. Art. XVI",
+        "URL": "https://ballotpedia.org/Article_XVI,_Delaware_Constitution",
+        "shortform": "Id. at § 2",
+        "shortform_URL": "https://ballotpedia.org/Article_XVI,_Delaware_Constitution#Section_2"
+    },
+    "District of Columbia Official Code": {
+        "cite": "D.C. Code § 40-101",
+        "URL": "https://code.dccouncil.us/dc/council/code/sections/40-101.html",
+        "shortform": "§ 40-103",
+        "shortform_URL": "https://code.dccouncil.us/dc/council/code/sections/40-103.html"
+    },
+    "Florida Statutes": {
+        "cite": "Fla. Stat. § 285.16",
+        "URL": "https://www.flsenate.gov/Laws/Statutes/2020/0285.16",
+        "shortform": "§ 285.20",
+        "shortform_URL": "https://www.flsenate.gov/Laws/Statutes/2020/0285.20"
+    },
+    "Florida Constitution": {
+        "cite": "Florida Constitution Article X, Section 2",
+        "URL": "https://www.flsenate.gov/Laws/Constitution#A10S02",
+        "shortform": "Section 6",
+        "shortform_URL": "https://www.flsenate.gov/Laws/Constitution#A10S06"
+    },
+    "Georgia Code": {
+        "cite": "Ga. Code Ann. § 21-2-417",
+        "URL": None,
+        "shortform": "§ 38-3-4",
+        "shortform_URL": None
+    },
+    "Georgia Constitution": {
+        "cite": "Ga. Const. Art. II, § 1",
+        "URL": "https://ballotpedia.org/Article_II,_Georgia_Constitution",
+        "shortform": "Id. at para. 2",
+        "shortform_URL": "https://ballotpedia.org/Article_II,_Georgia_Constitution"
+    },
+    "Guam Code": {
+        "cite": "11 Guam Code § 72107",
+        "URL": None,
+        "shortform": "§ 72106",
+        "shortform_URL": None
+    },
+    "Hawaii Revised Statutes": {
+        "cite": "Haw. Rev. Stat. § 237-13",
+        "URL": "https://www.lawserver.com/law/state/hawaii/hi-statutes/hawaii_statutes_237-13",
+        "shortform": "§ 521-8",
+        "shortform_URL": "https://www.lawserver.com/law/state/hawaii/hi-statutes/hawaii_statutes_521-8"
+    },
+    "Hawaii Constitution": {
+        "cite": "Hawaii Constitution Article VIII, Section 2",
+        "URL": "https://ballotpedia.org/Article_VIII,_Hawaii_Constitution#Section_2",
+        "shortform": "§ 6",
+        "shortform_URL": "https://ballotpedia.org/Article_VIII,_Hawaii_Constitution#Section_6"
+    },
+    "Idaho Code": {
+        "cite": "Idaho Code § 66-326",
+        "URL": "https://legislature.idaho.gov/statutesrules/idstat/Title66/T66CH3/SECT66-326/",
+        "shortform": "Id. at (2)",
+        "shortform_URL": "https://legislature.idaho.gov/statutesrules/idstat/Title66/T66CH3/SECT66-326/"
+    },
+    "Idaho Constitution": {
+        "cite": "Idaho Const. Art. 2, § 3",
+        "URL": "https://ballotpedia.org/Article_II,_Idaho_Constitution#Section_3",
+        "shortform": "Art. 1, § 1",
+        "shortform_URL": "https://ballotpedia.org/Article_I,_Idaho_Constitution#Section_1"
+    },
+    "Illinois Compiled Statutes": {
+        "cite": "410 ILCS 54/1",
+        "URL": "https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=041000540K1",
+        "shortform": "§ 10",
+        "shortform_URL": "https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=041000540K10"
+    },
+    "Illinois Constitution": {
+        "cite": "Ill. Const. Art. VII, Sec. 2",
+        "URL": "https://ballotpedia.org/Article_VII,_Illinois_Constitution#Section_2",
+        "shortform": "§ 3",
+        "shortform_URL": "https://ballotpedia.org/Article_VII,_Illinois_Constitution#Section_3"
+    },
+    "Indiana Code": {
+        "cite": "Ind. Code § 9-22-3-2.5",
+        "URL": "https://iga.in.gov/legislative/laws/2020/ic/titles/09#09-22-3-2.5",
+        "shortform": "§ 9-22-3-3",
+        "shortform_URL": "https://iga.in.gov/legislative/laws/2020/ic/titles/09#09-22-3-3"
+    },
+    "Indiana Constitution": {
+        "cite": "Indiana Constitution Article XIII, Section 1",
+        "URL": "https://ballotpedia.org/Article_13,_Indiana_Constitution#Section_1",
+        "shortform": "Art. 4, § 2",
+        "shortform_URL": "https://ballotpedia.org/Article_4,_Indiana_Constitution#Section_2"
     }
 }
 
@@ -262,6 +376,8 @@ def test_url_generation():
 #    print('Checking whether test URLs still return valid response codes...')
 #    for template in TESTS.values():
 #        print(f"{template['cite']} ... ", end='')
+#        if not template['URL']:
+#            continue
 #        response = get(template['URL'])
 #        assert response.ok
 #        print('OK')

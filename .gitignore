@@ -1,6 +1,7 @@
 *.sh
 *.egg-info/
 **/__pycache__/*
+**/.pytest_cache/*
 **.sync-conflict
 mkdocs.yml
 docs_source/

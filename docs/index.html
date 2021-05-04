@@ -405,14 +405,17 @@
 <p>Process a court opinion or other text, and output a version where every citation is converted into an HTML hyperlink:</p>
 <div class="highlight"><pre><span></span><code>citeurl -i INPUT_FILE.html -o OUTPUT_FILE.html
 </code></pre></div>
-<p>Get a list of the top 10 authorities cited in a text, ordered by the number of citations to each, including <a href="https://raindrum.github.io/citeurl/template-yamls/">citations to custom sources</a> that CiteURL doesn't even natively support:</p>
-<div class="highlight"><pre><span></span><code>cat INPUT_FILE.html <span class="p">|</span> citeurl -a <span class="m">10</span> -s YOUR_TEMPLATES.YAML
+<p>Write your own <a href="https://raindrum.github.io/citeurl/template-yamls/">citation templates</a>, then host a server where people on your local network can look up citations to any sources of law you need:</p>
+<div class="highlight"><pre><span></span><code>citeurl -s -t PATH_TO_YOUR_TEMPLATES.YAML
+</code></pre></div>
+<p>Pipe a text to CiteURL and get a list of the top ten authorities it cites, ordered by the number of citations to each:</p>
+<div class="highlight"><pre><span></span><code>cat INPUT_FILE.html <span class="p">|</span> citeurl -a <span class="m">10</span>
 </code></pre></div>
 <p>For more options, run <code>citeurl -h</code>.</p>
 <p>Besides to the command-line tool, CiteURL can be used in a few other forms:</p>
 <ul>
 <li><a href="https://raindrum.github.io/citeurl/frontends#javascript">a tool to generate</a> embeddable JavaScript so you can make your own instance of <a href="https://raindrum.github.io/lawsearch">Law Search</a> with custom sources of law</li>
-<li><a href="https://raindrum.github.io/citeurl/library">a flexible Python library</a>, albeit one that changes fairly often</li>
+<li><a href="https://raindrum.github.io/citeurl/library">a flexible Python library</a></li>
 <li><a href="https://raindrum.github.io/citeurl/frontends#markdown-extension">an extension</a> to <a href="https://python-markdown.github.io/">Python-Markdown</a></li>
 <li>for Linux users, a <a href="https://extensions.gnome.org/extension/4225/gnome-citeurl-search-provider/">GNOME desktop search provider</a></li>
 </ul>

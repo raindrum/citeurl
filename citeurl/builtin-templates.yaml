@@ -652,11 +652,11 @@ Idaho Constitution:
   idForms: *const_art_sec_cl_ids
   operations: *article_to_roman
   URL:
-    - https://ballotpedia.org/Article_{roman_article},_Idaho_Constitution
+    - https://ballotpedia.org/Article_{article},_Idaho_Constitution
     - '#Section_{section}'
 
 Illinois Compiled Statutes:
-  regex: (?P<chapter>\d+) ILCS (?P<act>\d+)/(?P<section>(\d[\d.-]*\w|\d))
+  regex: '([Cc]h(apter|\.) )?(?P<chapter>\d+) (ILCS|Ill(inois|\.) Comp(iled|\.) Stat(utes|\.)) (?P<act>\d+)/(?P<section>(\d[\d.-]*\w|\d))'
   idForms: *id_sec_sub
   operations:
     - token: chapter
@@ -1200,7 +1200,7 @@ North Dakota Constitution:
   idForms: *const_art_sec_cl_ids
   operations: *article_to_roman
   URL:
-    - https://ballotpedia.org/Article_{roman_article},_North_Dakota_Constitution
+    - https://ballotpedia.org/Article_{article},_North_Dakota_Constitution
     - '#Section_{section}'
 
 Northern Mariana Islands Commonwealth Code:
@@ -1261,7 +1261,7 @@ Oklahoma Constitution:
   idForms: *const_art_sec_cl_ids
   operations: *article_to_roman
   URL:
-    - https://ballotpedia.org/Article_{roman_article},_Oklahoma_Constitution
+    - https://ballotpedia.org/Article_{article},_Oklahoma_Constitution
     - '#Section_{section}'
 
 Oregon Revised Statutes:
@@ -1553,7 +1553,7 @@ West Virginia Constitution:
   idForms: *const_art_sec_cl_ids
   operations: *article_to_roman
   URL:
-    - https://ballotpedia.org/Article_{roman_article},_West_Virginia_Constitution
+    - https://ballotpedia.org/Article_{article},_West_Virginia_Constitution
     - '#Section_{section}'
 
 Wisconsin Statutes:
