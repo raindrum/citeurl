@@ -3,8 +3,6 @@
 **/__pycache__/*
 **/.pytest_cache/*
 **.sync-conflict
-mkdocs.yml
-docs_source/
 build/
 demo/
 dist/

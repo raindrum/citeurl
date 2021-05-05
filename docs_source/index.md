@@ -1,3 +1,5 @@
+# Getting Started
+
 [![pytest](https://github.com/raindrum/citeurl/actions/workflows/pytest.yml/badge.svg)](https://github.com/raindrum/citeurl/actions/workflows/pytest.yml) [![GitHub issues](https://img.shields.io/github/issues/raindrum/citeurl)](https://github.com/raindrum/citeurl/issues) [![GitHub license](https://img.shields.io/github/license/raindrum/citeurl)](https://github.com/raindrum/citeurl/blob/main/LICENSE.md) [![PyPI](https://img.shields.io/pypi/v/citeurl)](https://pypi.org/project/citeurl/)
 
 CiteURL is an extensible tool to process long and shortform legal citations in text and generate links to various websites where you can view the cited language for free. Here's an example of what it can do:
@@ -72,3 +74,9 @@ Many thanks to these websites, which CiteURL's default templates frequently link
 - Cornell's [Legal Information Institute](https://www.law.cornell.edu/) - for the U.S. Code and many federal rules
 - [Ballotpedia](https://ballotpedia.org) - for the vast majority of state constitutions
 - [LawServer.com](https://www.lawserver.com/tools/laws) - for statutes in about a dozen states and territories whose websites don't have a compatible URL scheme
+
+---
+
+By the way, if you get a lot of use out of CiteURL and want to support the project, you can use the link below:
+
+[☕ Buy me a coffee](https://ko-fi.com/simonsherred){ .md-button }

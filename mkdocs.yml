@@ -1,0 +1,39 @@
+site_name: CiteURL
+repo_url: https://github.com/raindrum/citeurl
+docs_dir: docs_source
+site_dir: docs
+
+theme:
+  name: material
+  logo: assets/logo.svg
+  favicon: assets/favicon.png
+  palette:
+    scheme: slate
+    primary: blue
+    accent: pink
+  icon:
+    repo: fontawesome/brands/github
+
+edit_uri: edit/master/docs_source
+
+plugins:
+- search
+- mkdocstrings:
+    default_handler: python
+    handlers:
+      python:
+        rendering:
+          show_root_heading: no
+          show_root_full_path: no
+          show_root_toc_entry: no
+          show_object_full_path: no
+          heading_level: 3
+
+markdown_extensions:
+  - attr_list
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+extra:
+  version: 8.0.0
+  history_buttons: false

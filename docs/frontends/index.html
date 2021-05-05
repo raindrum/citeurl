@@ -375,7 +375,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/raindrum/citeurl/edit/master/docs/frontends.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/raindrum/citeurl/edit/master/docs_source/frontends.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
@@ -384,18 +384,18 @@
 <p>CiteURL can be used in a few forms besides the <a href="../index#usage">command-line tool</a> and <a href="../library">the Python library</a>. Here's what they are:</p>
 <h2 id="javascript">JavaScript</h2>
 <p>Although CiteURL is primarily a Python program, it can also generate a JavaScript implementation of its citation lookup function, so that end users can look up citations in a web browser without having to install anything. <a href="https://raindrum.github.io/lawsearch">Law Search</a> is one such instance that I maintain on my website.</p>
-<p>You can use the <code>citeurl-makejs</code> command to make your own custom instances that support arbitrary sources of law. Here's how:</p>
+<p>You can use the <code>citeurl makejs</code> command to make your own custom instances that support arbitrary sources of law. Here's how:</p>
 <ol>
 <li><a href="template-yamls">Write a YAML file</a> with one or more custom citation templates.</li>
 <li><a href="../index#installation">Install CiteURL</a> if you have not done so already.</li>
 <li>Open a command line and run the following:</li>
 </ol>
-<div class="highlight"><pre><span></span><code>citeurl-makejs -e -o output.html PATH/TO/YOUR/TEMPLATES.YAML
+<div class="highlight"><pre><span></span><code>citeurl makejs -e -o output.html -t PATH_TO_YOUR_TEMPLATES.YAML
 </code></pre></div>
 <p>Alternatively, to omit the default templates, include the <code>-n</code> option in that command.</p>
 <p>After exporting an HTML file, you can bookmark the local file as a <a href="https://www.howtogeek.com/114176/HOW-TO-EASILY-CREATE-SEARCH-PLUGINS-ADD-ANY-SEARCH-ENGINE-TO-YOUR-BROWSER/">custom search engine</a>.</p>
 <p>Alternatively, if you have a web page you'd like to embed CiteURL functionality into, you can also generate the JavaScript by itself. To do that, omit the <code>-e</code> option and save the output as a <code>.js</code> file. All the citation lookup functionality is available via its <code>getUrlForQuery()</code> function, which takes a search query string as input, and returns the completed URL.</p>
-<p>For more info, run <code>citeurl-makejs -h</code>.</p>
+<p>For more info, run <code>citeurl makejs -h</code>.</p>
 <h2 id="markdown-extension">Markdown Extension</h2>
 <p>CiteURL can also be used as an extension to <a href="https://python-markdown.github.io/">Python-Markdown</a>. You can load the extension as <code>citeurl</code>, and it supports the following options:</p>
 <ul>

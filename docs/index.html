@@ -363,7 +363,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/raindrum/citeurl/edit/master/docs/index.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/raindrum/citeurl/edit/master/docs_source/index.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
@@ -399,25 +399,32 @@
 <div class="highlight"><pre><span></span><code>python -m pip install citeurl
 </code></pre></div>
 <h2 id="usage">Usage</h2>
-<p>Look up a single citation and open it directly in a browser:</p>
-<div class="highlight"><pre><span></span><code>citeurl <span class="s2">&quot;42 usc 1983&quot;</span> -l -b
-</code></pre></div>
-<p>Process a court opinion or other text, and output a version where every citation is converted into an HTML hyperlink:</p>
-<div class="highlight"><pre><span></span><code>citeurl -i INPUT_FILE.html -o OUTPUT_FILE.html
-</code></pre></div>
-<p>Write your own <a href="https://raindrum.github.io/citeurl/template-yamls/">citation templates</a>, then host a server where people on your local network can look up citations to any sources of law you need:</p>
-<div class="highlight"><pre><span></span><code>citeurl -s -t PATH_TO_YOUR_TEMPLATES.YAML
-</code></pre></div>
-<p>Pipe a text to CiteURL and get a list of the top ten authorities it cites, ordered by the number of citations to each:</p>
-<div class="highlight"><pre><span></span><code>cat INPUT_FILE.html <span class="p">|</span> citeurl -a <span class="m">10</span>
-</code></pre></div>
-<p>For more options, run <code>citeurl -h</code>.</p>
-<p>Besides to the command-line tool, CiteURL can be used in a few other forms:</p>
+<p>CiteURL provides four command-line tools:</p>
 <ul>
-<li><a href="https://raindrum.github.io/citeurl/frontends#javascript">a tool to generate</a> embeddable JavaScript so you can make your own instance of <a href="https://raindrum.github.io/lawsearch">Law Search</a> with custom sources of law</li>
+<li><code>citeurl process</code>: Parse a text and insert an HTML hyperlink for every citation it contains, including shortform citations.</li>
+<li><code>citeurl lookup</code>: Look up a single citation and display information about it.</li>
+<li><code>citeurl host</code>: Host a citation lookup service via HTTP.</li>
+<li><code>citeurl makejs</code>: Export an instance of CiteURL's lookup function as JavaScript that can be embedded in an HTML page. <a href="https://raindrum.github.io/lawsearch">Law Search</a> is an example of this JavaScript. More info is available <a href="https://raindrum.github.io/citeurl/frontends#javascript">here</a>.</li>
+</ul>
+<p>Each command has its own command-line arguments you can view with the <code>-h</code> option. They all share the <code>-t</code> option, which allows you to load a list of custom <a href="https://raindrum.github.io/citeurl/template-yamls/">citation templates</a> in YAML form.</p>
+<p>Here are a few common use cases:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Process a court opinion and output a version where each citation is hyperlinked:</span>
+citeurl process -i INPUT_FILE.html -o OUTPUT_FILE.html
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Look up a single citation and open it directly in a browser</span>
+citeurl lookup <span class="s2">&quot;42 USC 1983&quot;</span> -b
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># List the top ten authorities cited in a text, from most citations to least:</span>
+cat INPUT_FILE.html <span class="p">|</span> citeurl process -a <span class="m">10</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Host a lookup tool with custom templates, and serve it on the local network:</span>
+citeurl host -t PATH_TO_YOUR_TEMPLATES.YAML -s
+</code></pre></div>
+<p>Besides to the command-line interface, CiteURL can be used in a few other forms:</p>
+<ul>
 <li><a href="https://raindrum.github.io/citeurl/library">a flexible Python library</a></li>
 <li><a href="https://raindrum.github.io/citeurl/frontends#markdown-extension">an extension</a> to <a href="https://python-markdown.github.io/">Python-Markdown</a></li>
-<li>for Linux users, a <a href="https://extensions.gnome.org/extension/4225/gnome-citeurl-search-provider/">GNOME desktop search provider</a></li>
+<li><a href="https://extensions.gnome.org/extension/4225/gnome-citeurl-search-provider/">a search provider</a> for Linux users with the GNOME shell</li>
 </ul>
 <h2 id="credits">Credits</h2>
 <p>Many thanks to these websites, which CiteURL's default templates frequently link to:</p>
