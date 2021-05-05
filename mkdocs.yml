@@ -14,7 +14,7 @@ theme:
   icon:
     repo: fontawesome/brands/github
 
-edit_uri: edit/master/docs_source
+edit_uri: edit/main/docs_source
 
 plugins:
 - search
