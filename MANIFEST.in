@@ -1,4 +1,4 @@
 include LICENSE.md
 include README.md
 include citeurl/builtin-templates.yaml
-include citeurl/citeurl.js
+graft citeurl/web

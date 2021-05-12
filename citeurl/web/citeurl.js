@@ -84,9 +84,6 @@ class Citation {
     
     // apply predefined operations to the found tokens
     let appliedAnOperation = false;
-    if (!('operations' in template)) {
-      return;
-    }
     function titleCase (txt) {
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     }

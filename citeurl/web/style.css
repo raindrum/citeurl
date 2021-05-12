@@ -1,0 +1,73 @@
+:root {
+  --font-color: #e5e0d7;
+  --bg-color: #223159;
+  --emph-color: #fe0052;
+}
+body {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  font-size: 18px;
+  font-family: Sans;
+  height: 100%;
+  margin: 0;
+  text-align: center;
+}
+.content {
+  min-height: calc(100vh - 4rem);
+  max-width: 50ch;
+  margin: auto;
+  padding: 1ch;
+  vertical-align: middle;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+footer {
+  font-size: 75%;
+  height: 2rem;
+}
+h1, h2, h3, h4, h5, h6, a, .explainer { color: var(--emph-color); }
+h1, h2, h3, h4, h5, h6 { margin: 0; }
+button {
+  background-color: var(--emph-color);
+  color: var(--font-color);
+  font-size: 125%;
+  font-weight: bold;
+  padding: 10px;
+  border: 2px solid var(--emph-color);
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+button:hover, button:focus {
+  background-color: var(--font-color);
+  color: var(--bg-color);
+  border-color: var(--font-color);
+}
+input {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  border: 2px solid var(--emph-color);
+  border-radius: 10px 0 0 10px;
+  padding-left: 16px;
+  flex-grow: 1;
+  min-width: 0;
+}
+input:focus {
+  outline: none;
+  border-color: var(--font-color);
+}
+.searchbar {
+  display: flex;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  max-width: 100% !important;
+  overflow: hidden;
+}
+.searchbar * {
+  padding: 10px;
+  flex-basis: 0;
+}
+.searchbar button { border-radius: 0 10px 10px 0; }
+.searchbar input { font-size: 125%; }

@@ -4,17 +4,19 @@ This is a tool to detect legal citations in text, and
 generate relevant hyperlinks. For more information, see
 https://raindrum.github.io/citeurl."""
 
+# NOTE: the commented-out imports are imported conditionally later on
+
 # python standard imports
 from sys import stdin
 from argparse import ArgumentParser, SUPPRESS
-import webbrowser
-# see below: from tempfile import NamedTemporaryFile
-# see below: from time import sleep
+# import webbrowser
+# from tempfile import
+# from time import sleep
 
 # internal imports
 from . import Citator
-# see below: from .server import serve
-# see below: from .makejs import makejs
+# from .web.server import serve
+# from .web.makejs import makejs
 
 def main():
     parser = ArgumentParser(
@@ -194,9 +196,9 @@ def main():
     )
     
     makejs_parser.add_argument(
-        "-e", "--embed-html",
+        "-e", "--entire-page",
         action="store_true",
-        help="generate an embeddable HTML form instead of just JavaScript",
+        help="generate a full HTML page instead of just JavaScript",
     )
     makejs_parser.add_argument(
         "-o", "--output",
@@ -223,8 +225,12 @@ def main():
     elif args.command == 'm':
         args.command = 'makejs'
     
-    # get input for the commands that need it
+    # these commands share functionality for parsing input,
+    # as well as the 'browse' option
     if args.command in ['process', 'lookup']:
+        if args.browse:
+            import webbrowser
+        
         if 'input' in args and args.input:
             with open(args.input, 'r') as f:
                 text = f.read()[0:-1]
@@ -329,7 +335,7 @@ def main():
 
     elif args.command == 'host': # host a CiteURL server
         try:
-            from .server import serve
+            from .web.server import serve
             serve(
                 citator,
                 IP='auto' if args.serve else 'localhost',
@@ -347,7 +353,7 @@ def main():
     #################################################################### 
     
     elif args.command == 'makejs':
-        from .makejs import makejs
+        from .web.makejs import makejs
         output = makejs(
             citator,
             embed_html=args.embed_html,

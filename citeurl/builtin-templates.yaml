@@ -68,19 +68,13 @@ United States Constitution:
   operations:
     - token: article
       optionalLookup: {'one':'1', 'two':'2', 'three':'3', 'four':'4', 'five':'5', 'six':'6', 'seven':'7'}
+    - {token: amendment, sub: ['(st|nd|rd|th)$', '']}
     - token: amendment
-      sub: ['(st|nd|rd|th)$', '']
-    - token: amendment
-      optionalLookup: {'fir': '1', 'seco': '2', 'thi': '3', 'four': '4', 'fif': '5', 'six': '6', 'seven': '7', 'eigh': '8', 'nin': '9', 'ten': '10', 'eleven': '11', 'twelf': '12', 'thirteen': '13', 'fourteen': '14', 'fifteen': '15', 'sixteen': '16', 'seventeen': '17', 'eighteen': '18', 'nineteen': '19', 'twentie': '20', 'twenty(- )?fir': '21', 'twenty(- )?seco': '22', 'twenty(- )?thi': '23', 'twenty(- )?four': '24', 'twenty(- )?fif': '25', 'twenty(- )?six': '26', 'twenty(- )?seven': '21', 'twenty(- )?eigh': '28', 'twenty(- )?nin': '29'}
-    - token: article
-      numberFormat: roman
-      output: article_roman
-    - token: article
-      numberFormat: digit
-    - token: amendment
-      numberFormat: digit
-    - token: section
-      numberFormat: digit
+      optionalLookup: {'fir': '1', 'seco': '2', 'thi': '3', 'four': '4', 'fif': '5', 'six': '6', 'seven': '7', 'eigh': '8', 'nin': '9', 'ten': '10', 'eleven': '11', 'twelf': '12', 'thirteen': '13', 'fourteen': '14', 'fifteen': '15', 'sixteen': '16', 'seventeen': '17', 'eighteen': '18', 'nineteen': '19', 'twentie': '20', 'twenty[- ]?fir': '21', 'twenty(- )?seco': '22', 'twenty[- ]?thi': '23', 'twenty(- )?four': '24', 'twenty[- ]?fif': '25', 'twenty[- ]?six': '26', 'twenty[- ]?seven': '21', 'twenty[- ]?eigh': '28', 'twenty[- ]?nin': '29'}
+    - {token: article, numberFormat: roman, output: article_roman}
+    - {token: article, numberFormat: digit}
+    - {token: amendment, numberFormat: digit}
+    - {token: section, numberFormat: digit}
   URL:
     - https://constitution.congress.gov/browse/
     - amendment-{amendment}/
@@ -521,6 +515,7 @@ Delaware Code:
     - token: section
       case: lower
   URL: https://www.lawserver.com/law/state/delaware/de-code/delaware_code_title_{title}_{section}
+
 Delaware General Corporations Law:
   regex:
     - (D\.? ?G\.? ?C\.? ?L\.?|Del(aware|\.) ?Gen(eral|\.) ?Corp(orations?|s?\.) ?L(aw|\.))

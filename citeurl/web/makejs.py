@@ -6,9 +6,7 @@ from json import dumps
 from pathlib import Path
 
 # internal imports
-from . import Citator
-
-BASE_JS_PATH =  Path(__file__).parent.absolute() / 'citeurl.js'
+from .. import Citator
 
 COPYRIGHT_MESSAGE = """
 // This script was made with CiteURL, an extensible framework to turn
@@ -18,17 +16,42 @@ COPYRIGHT_MESSAGE = """
 // turn each kind of citation into a URL. Some or all of the templates may
 // have been made by a third party and are not part of CiteURL itself.
 //
-// CiteURL is copyright of Simon Raindrum Sherred under the MIT License,
-// and is available at https://github.com/raindrum/citeurl.
+// CiteURL is copyright of Simon Raindrum Sherred under the MIT License.
+// See https://raindrum.github.io/citeurl for more info.
 """
 
-HTML_FORM = (
-    '<form class="citeurl-form" onsubmit="handleSearch(event)">\n  '
-    + '<input type="search" placeholder="Enter citation..." name="q" id="q">'
-    + '<input type="submit" value="Go"><br>\n  '
-    + '<label for="q" id="explainer" class="citeurl-explainer"></label>\n'
-    + '</form>'
-)
+_dir = Path(__file__).parent.absolute()
+BASE_JS_PATH =  _dir / 'citeurl.js'
+CSS_PATH = _dir / 'style.css'
+LOGO_PATH = _dir / 'logo.svg'
+
+PAGE = """
+<head>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+</head>
+<script>{JS}</script>
+<style>{CSS}</style>
+<body><div class="content">
+  {LOGO}
+  <h1>Law Search</h1>
+  <p>Type a legal citation into the box below, and I'll try to send you
+  directly to the case or law that it references:</p>
+  <form onsubmit="handleSearch(event)">
+    <div class="searchbar">
+      <input type="search" name="q" id="q" placeholder="Enter citation..."
+      label="Citation search bar"><button type="submit">Go</button>
+    </div>
+    <p>
+      <label for="q" id="explainer" class="explainer"> </label>
+    </p>
+  </form>
+</div>
+<footer>
+  Powered by <a href="https://raindrum.github.io/citeurl">CiteURL</a>,
+  and subject to absolutely no warranty.
+</footer>
+</body>
+"""
 
 def makejs(
     citator: Citator,
@@ -99,7 +122,11 @@ def makejs(
     
     # optionally embed the javascript into an HTML page
     if embed_html:
-        output = '<script>' + javascript + '</script>' + HTML_FORM
+        output = PAGE.format(
+            JS=javascript,
+            CSS=CSS_PATH.read_text(),
+            LOGO=LOGO_PATH.read_text(),
+        )
     else:
         output = javascript
     
