@@ -356,7 +356,7 @@ def main():
         from .web.makejs import makejs
         output = makejs(
             citator,
-            embed_html=args.embed_html,
+            entire_page=args.entire_page,
         )
 
         # save or print output

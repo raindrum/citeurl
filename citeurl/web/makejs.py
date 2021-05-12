@@ -55,21 +55,20 @@ PAGE = """
 
 def makejs(
     citator: Citator,
-    embed_html: bool = False,
+    entire_page: bool = False,
 ) -> str:
     """
     Generate a JavaScript implementation of a given citator's lookup
     features, so that it can be embedded in a website. Optionally
-    include an HTML form so it can be directly embedded in a page
+    package it as a standalone web page for end users.
     
     Arguments:
         citator: a CiteURL citator object, with any number of templates
             loaded.
-        embed_html: whether to wrap the generated JavaScript in a
-            <script> tag and follow it with an HTML form with a CiteURL
-            search bar
+        entire_page: whether to output an HTML page with a searchbar
+            and styling
     Returns:
-        a string containing raw JavaScript or embeddable HTML
+        a string containing JavaScript or HTML
     """
     # translate each template to json
     json_templates = []
@@ -121,7 +120,7 @@ def makejs(
     )
     
     # optionally embed the javascript into an HTML page
-    if embed_html:
+    if entire_page:
         output = PAGE.format(
             JS=javascript,
             CSS=CSS_PATH.read_text(),
