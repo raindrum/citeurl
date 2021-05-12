@@ -1,7 +1,7 @@
 "tests of CiteURL's ability to export JavaScript search engines"
 
 from citeurl import Citator
-from citeurl.makejs import makejs
+from citeurl.web.makejs import makejs
 from quickjs import Function
 
 citator = Citator()
