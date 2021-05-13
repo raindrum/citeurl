@@ -1,23 +1,29 @@
 # Getting Started
 
-[![pytest](https://github.com/raindrum/citeurl/actions/workflows/pytest.yml/badge.svg)](https://github.com/raindrum/citeurl/actions/workflows/pytest.yml) [![GitHub issues](https://img.shields.io/github/issues/raindrum/citeurl)](https://github.com/raindrum/citeurl/issues) [![GitHub license](https://img.shields.io/github/license/raindrum/citeurl)](https://github.com/raindrum/citeurl/blob/main/LICENSE.md) [![PyPI](https://img.shields.io/pypi/v/citeurl)](https://pypi.org/project/citeurl/)
+<p align="center"><img src="https://raw.githubusercontent.com/raindrum/citeurl/main/citeurl/web/logo.svg" alt="CiteURL Logo" width=200px"></p>
 
-CiteURL is an extensible tool to process long and shortform legal citations in text and generate links to various websites where you can view the cited language for free. Here's an example of what it can do:
+<p align="center"><a href="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml"><img src="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml/badge.svg" alt="pytest" /></a> <a href="https://github.com/raindrum/citeurl/issues"><img src="https://img.shields.io/github/issues/raindrum/citeurl" alt="GitHub issues" /></a> <a href="https://github.com/raindrum/citeurl/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/raindrum/citeurl" alt="GitHub license" /></a> <a href="https://pypi.org/project/citeurl/"><img src="https://img.shields.io/pypi/v/citeurl" alt="PyPI" /></a></p>
 
-| Sample Input                                                 | Output                                                       |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, 42 USC § 1988(b), and, by discretion, expert fees, *id.* at (c). This is because the importance of civil rights litigation cannot be measured by a damages judgment. *See* *Riverside v. Rivera*, 477 U.S. 561 (1986). But *Evans v. Jeff D.* upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys' fees. 475 U.S. 717 (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in *Riverside*, 477 U.S. at 574-78. | Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, [42 USC § 1988(b)](https://www.law.cornell.edu/uscode/text/42/1988#b), and, by discretion, expert fees, [*id.* at (c)](https://www.law.cornell.edu/uscode/text/42/1988#c). This is because the importance of civil rights litigation cannot be measured by a damages judgment. *See* *Riverside v. Rivera*, [477 U.S. 561](https://cite.case.law/us/477/561) (1986). But *Evans v. Jeff D.* upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys' fees. [475 U.S. 717](https://cite.case.law/us/475/717) (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in *Riverside*, [477 U.S. at 574-78](https://cite.case.law/us/477/561#p574). |
+CiteURL is an extensible tool that parses legal citations and makes links to websites where you can read the cited language for free. It can be used to quickly look up a reference, or to insert a hyperlink for every long- or short-form citation in a longer text.
+
+---
+
+Here's a sample of the links it can make:
+
+> Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, [42 USC § 1988(b)](https://www.law.cornell.edu/uscode/text/42/1988#b), and, by discretion, expert fees, [*id.* at (c)](https://www.law.cornell.edu/uscode/text/42/1988#c). This is because the importance of civil rights litigation cannot be measured by a damages judgment. *See* *Riverside v. Rivera*, [477 U.S. 561](https://cite.case.law/us/477/561) (1986). But *Evans v. Jeff D.* upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys' fees. [475 U.S. 717](https://cite.case.law/us/475/717) (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in *Riverside*, [477 U.S. at 574-78](https://cite.case.law/us/477/561#p574).
+
+---
 
 By default, CiteURL supports Bluebook-style citations to [over 130 sources](https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml) of U.S. law, including:
 
 - most state and federal court cases
 - the U.S. Code and Code of Federal Regulations
 - the U.S. Constitution and all state constitutions
-- codified laws for every state and territory except Arkansas, Georgia, Guam, and Puerto Rico.
+- the codified laws for every state and territory except Arkansas, Georgia, Guam, and Puerto Rico.
 
-You can also customize CiteURL to support more sources of law by [writing your own citation templates](https://raindrum.github.io/citeurl/template-yamls/) in YAML format.
+You can also add more sources of law by [writing your own citation templates](https://raindrum.github.io/citeurl/template-yamls/) in YAML format.
 
-If you want to try out CiteURL's citation lookup features without installing anything, you can use [Law Search](https://raindrum.github.io/lawsearch), a JavaScript implementation of CiteURL I maintain on my website.
+If you just want to try out CiteURL's citation lookup features without installing anything, you can use [Law Search](https://raindrum.github.io/lawsearch), a JavaScript implementation of CiteURL I maintain on my website.
 
 ## Installation
 
@@ -60,11 +66,12 @@ cat INPUT_FILE.html | citeurl process -a 10
 citeurl host -t PATH_TO_YOUR_TEMPLATES.YAML -s
 ```
 
-Besides to the command-line interface, CiteURL can be used in a few other forms:
+CiteURL is also available in a few other forms besides the command-line tool: 
 
+- [Law Search](https://raindrum.github.io/lawsearch)
 - [a flexible Python library](https://raindrum.github.io/citeurl/library)
 - [an extension](https://raindrum.github.io/citeurl/frontends#markdown-extension) to [Python-Markdown](https://python-markdown.github.io/)
-- [a search provider](https://extensions.gnome.org/extension/4225/gnome-citeurl-search-provider/) for Linux users with the GNOME shell
+- [a desktop search provider](https://extensions.gnome.org/extension/4225/gnome-citeurl-search-provider/) for Linux users with the GNOME shell
 
 ## Credits
 
