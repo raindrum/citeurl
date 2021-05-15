@@ -32,20 +32,20 @@ def main():
     shared_args = ArgumentParser(add_help=False)
     shared_args_grp = shared_args.add_argument_group(title='citator options')
     shared_args_grp.add_argument(
-        "-t", "--template-file",
-        metavar="FILE",
-        action="append",
+        '-t', '--template-file',
+        metavar='FILE',
+        action='append',
         default=SUPPRESS,
         help=(
-            "path to a YAML file with extra citation templates for CiteURL "
-            + "to use. See https://raindrum.github.io/citeurl/template-yamls "
-            + "for help writing templates. The -t option can be used "
-            + "multiple times to load multiple files."
+            'path to a YAML file with extra citation templates for CiteURL '
+            + 'to use. See https://raindrum.github.io/citeurl/template-yamls '
+            + 'for help writing templates. The -t option can be used '
+            + 'multiple times to load multiple files.'
         )
     )
     shared_args_grp.add_argument(
-        "-n", "--no-default-templates",
-        action="store_true",
+        '-n', '--no-default-templates',
+        action='store_true',
         help="prevent loading CiteURL's default templates",
     )
     
@@ -66,23 +66,23 @@ def main():
         help='detect all citations in a block of text',
     )
     process_parser.add_argument(
-        "-i",
-        "--input",
-        metavar="FILE",
-        help="path to a file from which to read input text",
+        '-i',
+        '--input',
+        metavar='FILE',
+        help='path to a file from which to read input text',
     )
     process_parser.add_argument(
-        "text",
+        'text',
         help=(
-            "a string containing legal citations. Can be omitted if -i is "
-            + "specified, or if text is piped from stdin"
+            'a string containing legal citations. Can be omitted if -i is '
+            + 'specified, or if text is piped from stdin'
         ),
-        nargs="*",
+        nargs='*',
         default=(None if stdin.isatty() else [''.join(stdin.read()[0:-1])])
     )
     process_parser.add_argument(
-        "-I", "--link-ids",
-        action="store",
+        '-I', '--link-ids',
+        action='store',
         type=str,
         default='detailed',
         choices=['all', 'detailed', 'none'],
@@ -91,40 +91,40 @@ def main():
             + 'but not "id."'
     )
     process_parser.add_argument(
-        "-c", "--css-class",
-        metavar="CLASS",
+        '-c', '--css-class',
+        metavar='CLASS',
         default='citation',
         help=(
-            "the class each inserted <a> element will have. "
+            'the class each inserted <a> element will have. '
             + 'Defaults to "citation"'
         )
     )
     output = process_parser.add_mutually_exclusive_group(required=False)
     
     output.add_argument(
-        "-o", "--output",
-        metavar="FILE",
-        help="write hyperlinked text to a file instead of stdout",
+        '-o', '--output',
+        metavar='FILE',
+        help='write hyperlinked text to a file instead of stdout',
     )
     output.add_argument(
-        "-b", "--browse",
-        action="store_true",
+        '-b', '--browse',
+        action='store_true',
         help=(
-            "make a temporary HTML file with the hyperlinked text, "
-            + "and open it in a browser."
+            'make a temporary HTML file with the hyperlinked text, '
+            + 'and open it in a browser.'
         )
     )
     output.add_argument(
-        "-a", "--authorities",
-        metavar="NUMBER",
-        action="store",
-        nargs="?",
+        '-a', '--authorities',
+        metavar='NUMBER',
+        action='store',
+        nargs='?',
         const=-1,
         type=int,
         help=(
-            "return list of all the authorities cited in the text, "
-            + "with information about each one. If a number is given, "
-            + "return only the X authorities with the most citations."
+            'return list of all the authorities cited in the text, '
+            + 'with information about each one. If a number is given, '
+            + 'return only the X authorities with the most citations.'
         )
     )
     
@@ -139,24 +139,24 @@ def main():
         help='look up the URL or other information for a single citation',
     )
     lookup_parser.add_argument(
-        "text",
+        'text',
         help=(
-            "a string containing legal citations. Can be omitted if text is "
-            + " piped from stdin"
+            'a string containing legal citations. Can be omitted if text is '
+            + ' piped from stdin'
         ),
-        nargs="*",
+        nargs='*',
         default=(None if stdin.isatty() else [''.join(stdin.read()[0:-1])])
     )
     lookup_parser.add_argument(
-        "-b", "--browse",
-        action="store_true",
-        help="open the resulting URL, if any, in a browser"
+        '-b', '--browse',
+        action='store_true',
+        help='open the resulting URL, if any, in a browser'
     )
     lookup_parser.add_argument(
-        "-s", "--strict",
-        action="store_true",
+        '-s', '--strict',
+        action='store_true',
         help=(
-            "match templates the same way the 'process' command does: "
+            'match templates the same way the "process" command does: '
             + "use case-sensitive regex, and ignore templates' broadRegexes"
         )
     )
@@ -181,7 +181,7 @@ def main():
         action='store',
         default=53037,
         type=int,
-        help=("the port to use for hosting. Defaults to 53037")
+        help=('the port to use for hosting. Defaults to 53037')
     )
     
     ####################################################################
@@ -196,14 +196,22 @@ def main():
     )
     
     makejs_parser.add_argument(
-        "-e", "--entire-page",
-        action="store_true",
-        help="generate a full HTML page instead of just JavaScript",
+        '-e', '--entire-page',
+        action='store_true',
+        help='generate a full HTML page instead of just JavaScript',
     )
     makejs_parser.add_argument(
-        "-o", "--output",
-        metavar="FILE",
-        help="write output to a file instead of stdout",
+        '-s', '--sources-table',
+        action='store_true',
+        help=(
+            'include a table listing all the supported sources of law. '
+            + 'Implies --entire-page.'
+        )
+    )
+    makejs_parser.add_argument(
+        '-o', '--output',
+        metavar='FILE',
+        help='write output to a file instead of stdout',
     )
     
     ####################################################################
@@ -356,7 +364,8 @@ def main():
         from .web.makejs import makejs
         output = makejs(
             citator,
-            entire_page=args.entire_page,
+            entire_page=args.entire_page or args.sources_table,
+            include_sources_table=args.sources_table,
         )
 
         # save or print output

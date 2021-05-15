@@ -14,7 +14,7 @@ body {
 }
 .content {
   min-height: calc(100vh - 4rem);
-  max-width: 50ch;
+  max-width: 60ch;
   margin: auto;
   padding: 1ch;
   vertical-align: middle;
@@ -71,3 +71,40 @@ input:focus {
 }
 .searchbar button { border-radius: 0 10px 10px 0; }
 .searchbar input { font-size: 125%; }
+
+.table-wrapper { overflow-x: auto; }
+table {
+  table-layout: fixed;
+  max-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0; 
+}
+td {
+  border: solid 1px var(--font-color);
+  padding: 0.75em;
+  overflow: auto
+}
+td:first-child { border-left-width: 2px; }
+td:last-child { border-right-width: 2px; }
+tr:first-child td { border-top-width: 2px; }
+tr:last-child td { border-bottom-width: 2px; }
+tr:first-child td:first-child {
+  border-top-left-radius: 10px;
+  -webkit-border-top-left-radius: 10px;
+  -moz-border-radius-topleft: 10px;
+}
+tr:first-child td:last-child {
+  border-top-right-radius: 10px;
+  -webkit-border-top-right-radius: 10px;
+  -moz-border-radius-topright: 10px;
+}
+tr:last-child td:first-child {
+  border-bottom-left-radius: 10px;
+  -webkit-border-bottom-left-radius: 10px;
+  -moz-border-radius-bottomleft: 10px;
+}
+tr:last-child td:last-child {
+  border-bottom-right-radius: 10px;
+  -webkit-border-bottom-right-radius: 10px;
+  -moz-border-radius-bottomright: 10px;
+}

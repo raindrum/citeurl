@@ -4,7 +4,11 @@ monkey.patch_all()
 
 # python standard imports
 import socket
-from urllib.parse import unquote
+from urllib.parse import unquote, quote_plus, urlsplit
+from re import sub
+
+# internal imports
+from .resources import format_page, sources_table, SOURCES_INTRO
 
 # third-party imports
 from flask import Flask, redirect, abort, make_response, send_file, request
@@ -12,9 +16,9 @@ from gevent.pywsgi import WSGIServer
 
 APP = Flask(__name__, static_url_path='')
 
-############################################
+########################################################################
 # Messages
-############################################
+########################################################################
 
 PAGE_TEMPLATE = """
 <head>
@@ -33,14 +37,28 @@ and subject to absolutely no warranty.</footer>
 """
 
 INDEX = """
-<h1>Law Search</h1>
+<h1>CiteURL</h1>
 <p>Type a legal citation into the box below, and I'll try to send you
 directly to the case or law that it references:</p>
 <form class="searchbar" method="get">
-<input type="search" name="s" placeholder="Enter citation..."
-label="citation search bar"><button type="submit">Go</button>
+  <input type="search" name="s" placeholder="Enter citation..."
+  label="citation search bar"><button type="submit">Go</button>
 </form>
-<p></p>
+<p>Check <a href="sources">here</a> for the supported sources of law.</p>
+"""
+
+SOURCES_PAGE = """
+<h1>Sources of Law</h1>
+{intro}
+{table}
+"""
+
+SOURCE_TABLE_ROW = """
+      <tr>
+        <td>{name}</td>
+        <td><a href="{domain_URL}">{domain_name}</a></td>
+        <td><a href="https://regexper.com#{escaped_regex}">view regex</a></td>
+      </tr>
 """
 
 ERROR_501 = """
@@ -56,13 +74,9 @@ ERROR_400 = """
 <a href="/"><button>Go Back</button></a>
 """
 
-def format_page(text: str, **kwargs):
-    text = text.format(**kwargs)
-    return PAGE_TEMPLATE.format(content=text)
-
-############################################
+########################################################################
 # Routes
-############################################
+########################################################################
 
 @APP.route('/<query>')
 def _read_citation(query: str):
@@ -83,7 +97,11 @@ def _index():
     if query:
         return _read_citation(query)
     else:
-        return format_page(INDEX, base_URL=APP.base_URL)
+        return APP.index_page
+
+@APP.route('/sources')
+def _sources():
+    return APP.sources_page
 
 @APP.route('/logo.svg')
 def _logo():
@@ -93,11 +111,11 @@ def _logo():
 def _css():
     return send_file('style.css')
 
-############################################
-# Functions
-############################################
+########################################################################
+# Utility Functions
+########################################################################
 
-def get_local_ip():
+def _get_local_ip():
     "get local IP address. source: https://stackoverflow.com/a/28950776"
     # source: https://stackoverflow.com/a/28950776
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -110,16 +128,27 @@ def get_local_ip():
         s.close()
     return IP
 
+########################################################################
+# Public Functions
+########################################################################
+
 def serve(citator, IP='auto', port=53037):
     """
     Host the given Citator as a server via HTTP. If IP is 'auto', use
-    get_local_ip() to find the IP address to host at.
+    _get_local_ip() to find the IP address to host at.
     """
     if IP == 'auto':
-        IP = get_local_ip()
+        IP = _get_local_ip()
     
+    # write the commonly-used vars to the app itself for easy access
     APP.base_URL = f'http://{IP}:{port}'
     APP.citator = citator
+    APP.sources_page = format_page(
+        SOURCES_PAGE,
+        intro=SOURCES_INTRO,
+        table=sources_table(citator),
+    )
+    APP.index_page = format_page(INDEX, base_URL=APP.base_URL)
     APP.IP = IP
     
     server = WSGIServer((IP, port), APP)

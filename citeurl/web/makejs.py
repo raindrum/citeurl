@@ -7,6 +7,7 @@ from pathlib import Path
 
 # internal imports
 from .. import Citator
+from .resources import unify_regex, format_page, sources_table, SOURCES_INTRO
 
 COPYRIGHT_MESSAGE = """
 // This script was made with CiteURL, an extensible framework to turn
@@ -22,40 +23,27 @@ COPYRIGHT_MESSAGE = """
 
 _dir = Path(__file__).parent.absolute()
 BASE_JS_PATH =  _dir / 'citeurl.js'
-CSS_PATH = _dir / 'style.css'
-LOGO_PATH = _dir / 'logo.svg'
 
 PAGE = """
-<head>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-</head>
-<script>{JS}</script>
-<style>{CSS}</style>
-<body><div class="content">
-  {LOGO}
-  <h1>Law Search</h1>
-  <p>Type a legal citation into the box below, and I'll try to send you
-  directly to the case or law that it references:</p>
-  <form onsubmit="handleSearch(event)">
-    <div class="searchbar">
-      <input type="search" name="q" id="q" placeholder="Enter citation..."
-      label="Citation search bar"><button type="submit">Go</button>
-    </div>
-    <p>
-      <label for="q" id="explainer" class="explainer"> </label>
-    </p>
-  </form>
+<h1>CiteURL</h1>
+<p>Type a legal citation into the box below, and I'll try to send you
+directly to the case or law that it references:</p>
+<form onsubmit="handleSearch(event)">
+<div class="searchbar">
+  <input type="search" name="q" id="q" placeholder="Enter citation..."
+  label="Citation search bar"><button type="submit">Go</button>
 </div>
-<footer>
-  Powered by <a href="https://raindrum.github.io/citeurl">CiteURL</a>,
-  and subject to absolutely no warranty.
-</footer>
-</body>
+<p>
+  <label for="q" id="explainer" class="explainer"> </label>
+</p>
+</form>
+{sources_table}
 """
 
 def makejs(
     citator: Citator,
     entire_page: bool = False,
+    include_sources_table: bool = False,
 ) -> str:
     """
     Generate a JavaScript implementation of a given citator's lookup
@@ -67,9 +55,14 @@ def makejs(
             loaded.
         entire_page: whether to output an HTML page with a searchbar
             and styling
+        include_sources_table: whether to provide a table listing each
+            template that the page supports. Implies entire_page = True.
     Returns:
         a string containing JavaScript or HTML
     """
+    if include_sources_table:
+        entire_page = True
+    
     # translate each template to json
     json_templates = []
     for template in citator.templates:
@@ -119,12 +112,20 @@ def makejs(
         + BASE_JS_PATH.read_text()
     )
     
+    if include_sources_table:
+        table = (f'{SOURCES_INTRO}\n{sources_table(citator)}')
+    else:
+        table = ''
+    
     # optionally embed the javascript into an HTML page
     if entire_page:
-        output = PAGE.format(
-            JS=javascript,
-            CSS=CSS_PATH.read_text(),
-            LOGO=LOGO_PATH.read_text(),
+        output = format_page(
+            PAGE,
+            sources_table=table,
+            inline_logo=True,
+            inline_css=True,
+            inline_js=javascript,
+            relation='This page is a static instance of',
         )
     else:
         output = javascript

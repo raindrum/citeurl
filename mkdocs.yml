@@ -9,7 +9,7 @@ theme:
   favicon: assets/favicon.png
   palette:
     scheme: slate
-    primary: blue
+    primary: indigo
     accent: pink
   icon:
     repo: fontawesome/brands/github
@@ -35,5 +35,5 @@ markdown_extensions:
   - pymdownx.superfences
 
 extra:
-  version: 8.1.0
+  version: 8.2.0
   history_buttons: false
