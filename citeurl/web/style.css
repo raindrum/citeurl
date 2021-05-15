@@ -9,7 +9,6 @@ body {
   font-size: 18px;
   font-family: Sans;
   height: 100%;
-  margin: 0;
   text-align: center;
 }
 .content {
@@ -29,6 +28,11 @@ footer {
 }
 h1, h2, h3, h4, h5, h6, a, .explainer { color: var(--emph-color); }
 h1, h2, h3, h4, h5, h6 { margin: 0; }
+
+/*======================================================================
+USER INPUT
+======================================================================*/
+
 button {
   background-color: var(--emph-color);
   color: var(--font-color);
@@ -72,17 +76,26 @@ input:focus {
 .searchbar button { border-radius: 0 10px 10px 0; }
 .searchbar input { font-size: 125%; }
 
-.table-wrapper { overflow-x: auto; }
+/*======================================================================
+TABLES
+======================================================================*/
+.table-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100% !important;
+}
+
 table {
   table-layout: fixed;
-  max-width: 100%;
+  overflow-x: auto;
+  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0; 
 }
+th, td { overflow: auto; }
 td {
   border: solid 1px var(--font-color);
   padding: 0.75em;
-  overflow: auto
 }
 td:first-child { border-left-width: 2px; }
 td:last-child { border-right-width: 2px; }

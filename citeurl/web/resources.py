@@ -32,14 +32,12 @@ PAGE_TEMPLATE = """
 <footer>{relation}
 <a href="https://raindrum.github.io/citeurl">CiteURL</a>
 v{version} and subject to absolutely no warranty.</footer>
-</body>
-"""
+</body>"""
 
 SOURCES_INTRO = """
 <p>Below, you'll find the sources of law that this instance of CiteURL
 supports. If you want to know what citation formats each one will
-recognize, you can click "view regex" to see a diagram.</p>
-"""
+recognize, you can click "view regex" to see a diagram.</p>"""
 
 SOURCES_TABLE = """
 <div class="table-wrapper">
@@ -53,16 +51,14 @@ SOURCES_TABLE = """
       {rows}
     </tbody>
   </table>
-</div>
-"""
+</div>"""
 
 SOURCES_TABLE_ROW = """
       <tr>
         <td>{name}</td>
         <td><a href="{domain_URL}">{domain_name}</a></td>
         <td><a href="https://regexper.com#{escaped_regex}">view regex</a></td>
-      </tr>
-"""
+      </tr>"""
 
 ########################################################################
 # Functions
@@ -114,7 +110,7 @@ def sources_table(citator):
             escaped_regex=quote_plus(regex).replace('+', '%20')
         ))
     
-    return SOURCES_TABLE.format(rows='\n'.join(rows))
+    return SOURCES_TABLE.format(rows=''.join(rows))
 
 def unify_regex(template, simplify_for_regexper: bool=False):
     """

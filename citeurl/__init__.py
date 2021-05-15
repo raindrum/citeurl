@@ -328,7 +328,7 @@ class Citator:
     """
     def __init__(
         self,
-        yaml_paths: list[str]=[],
+        yaml_paths: list=[],
         defaults: bool=True,
         generic_id: str=GENERIC_ID
     ):
@@ -541,13 +541,13 @@ class Template:
     """
     def __init__(self,
         name: str,
-        regexes: list[str],
+        regexes: list,
         URL=None,
-        broadRegexes: list[str]=None,
-        idForms: list[str]=[],
-        shortForms: list[str]=[],
+        broadRegexes: list=None,
+        idForms: list=[],
+        shortForms: list=[],
         defaults: dict={},
-        operations: list[dict]=[],
+        operations: list=[],
         parent_citation: Citation=None,
         _is_id=False
     ):
