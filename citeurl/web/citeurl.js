@@ -50,7 +50,9 @@ class Citation {
       */
       for (var group in regexMatch.groups) {
         if (typeof group !== 'undefined') {
+          /*LOGS
           log(group + ': "' + regexMatch.groups[group] + '"');
+          */
         }
       }
       /*LOGS
@@ -281,14 +283,14 @@ class Citation {
         log('"' + template.URL[part] + '"   -->   "' + URLPart + '"')
         */
       }
+      /*LOGS
       else {
-        /*LOGS
         log(
           'omitting "' + template.URL[part]
           + '" since it references a missing placeholder'
         )
-        */
       }
+      */
     }
     this.URL = URL.join('');
     /*LOGS
