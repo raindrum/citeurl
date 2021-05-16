@@ -164,7 +164,9 @@ def unify_regex(template, simplify_for_regexper: bool=False):
     if simplify_for_regexper:
         # remove lookaheads and lookbehinds
         regex = sub(r'\(\?(<!|<=|!|=).+?\)', '', regex)
-
+        
+        # escape slashes
+        regex = regex.replace('/', r'\/')
 
         # remove capture group names
         regex = sub(r'\?P<.+?>', '', regex)

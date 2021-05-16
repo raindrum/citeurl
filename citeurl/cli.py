@@ -10,12 +10,12 @@ https://raindrum.github.io/citeurl."""
 from sys import stdin
 from argparse import ArgumentParser, SUPPRESS
 # import webbrowser
-# from tempfile import
+# from tempfile import NamedTemporaryFile
 # from time import sleep
 
 # internal imports
 from . import Citator
-# from .web.server import serve
+# from .web.server import serve, App
 # from .web.makejs import makejs
 
 def main():
@@ -253,11 +253,11 @@ def main():
         
     # create citator
     defaults = not args.no_default_templates
-    if 'template_file' in args:
-        citator = Citator(yaml_paths=args.template_file,  defaults=defaults)
-    elif defaults:
-        citator = Citator()
-    else:
+    citator = Citator(
+        yaml_paths=args.template_file if 'template_file' in args else [],
+        defaults=defaults
+    )
+    if not citator.templates:
         raise SystemExit("Can't use '-n' without specifying a template file.")
     
     ####################################################################
@@ -343,11 +343,11 @@ def main():
 
     elif args.command == 'host': # host a CiteURL server
         try:
-            from .web.server import serve
+            from .web.server import serve, App
             serve(
-                citator,
-                IP='auto' if args.serve else 'localhost',
-                port=args.port
+                App(citator),
+                localhost=not args.serve,
+                port=args.port,
             )
         except ModuleNotFoundError:
             print(

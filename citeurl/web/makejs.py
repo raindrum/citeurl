@@ -125,7 +125,7 @@ def makejs(
             inline_logo=True,
             inline_css=True,
             inline_js=javascript,
-            relation='This page is a static instance of',
+            relation='Static page generated with',
         )
     else:
         output = javascript
