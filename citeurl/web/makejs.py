@@ -4,16 +4,18 @@
 from argparse import ArgumentParser
 from json import dumps
 from pathlib import Path
+from re import sub
 
 # internal imports
 from .. import Citator
-from .resources import unify_regex, format_page, sources_table, SOURCES_INTRO
+from .resources import unify_regex, format_page, sources_table
+from .resources import SOURCES_INTRO, VERSION
 
-COPYRIGHT_MESSAGE = """
-// This script was made with CiteURL, an extensible framework to turn
-// legal references into URLs.
+COPYRIGHT_MESSAGE = f"""
+// This script was made with CiteURL {VERSION}, an extensible framework
+// to turn legal references into URLs.
 //
-// The "templates" variable directly below holds the data necessary to 
+// The "templates" variable below holds the data necessary to 
 // turn each kind of citation into a URL. Some or all of the templates may
 // have been made by a third party and are not part of CiteURL itself.
 //
@@ -39,6 +41,16 @@ directly to the case or law that it references:</p>
 </form>
 {sources_table}
 """
+
+# these functions either uncomment or remove a commented-out code block
+# that looks like this:
+# /*blockname
+# <whatever code goes here>
+# */
+def _uncomment(blockname: str, source_js: str):
+    return sub(f' */\*{blockname}\n([^©]+?) *\*/\n', r'\1', source_js)
+def _remove(blockname: str, source_js: str):
+    return sub(f' */\*{blockname}\n[^©]+? *\*/\n', '', source_js)
 
 def makejs(
     citator: Citator,
@@ -111,6 +123,14 @@ def makejs(
         + json_str + ';\n\n'
         + BASE_JS_PATH.read_text()
     )
+    
+    # uncomment or remove browser-only features in the JS
+    if entire_page:
+        javascript = _uncomment('PAGEBEHAVIOR', javascript)
+        javascript = _uncomment('LOGS', javascript)
+    else:
+        javascript = _remove('LOGS', javascript)
+        javascript = _remove('PAGEBEHAVIOR', javascript)
     
     if include_sources_table:
         table = (f'{SOURCES_INTRO}\n{sources_table(citator)}')

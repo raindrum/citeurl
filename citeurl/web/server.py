@@ -8,30 +8,14 @@ from .resources import format_page, sources_table, SOURCES_INTRO
 
 # third-party imports
 from flask import Flask, redirect, make_response, send_file, request
-from gevent import monkey
-from gevent.pywsgi import WSGIServer
+# from gevent import monkey (imported in serve())
+# from gevent.pywsgi import WSGIServer (imported in serve())
 
 _APP = Flask(__name__, static_url_path='')
 
 ########################################################################
 # Messages
 ########################################################################
-
-PAGE_TEMPLATE = """
-<head>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="content">
-  <img src="logo.svg" alt="CiteURL logo" class="logo">
-  {content}
-</div>
-<footer>Powered by
-<a href="https://raindrum.github.io/citeurl">CiteURL</a>,
-and subject to absolutely no warranty.</footer>
-</body>
-"""
 
 INDEX = """
 <h1>{name}</h1>
@@ -48,14 +32,6 @@ SOURCES_PAGE = """
 <h1>Sources of Law</h1>
 {intro}
 {table}
-"""
-
-SOURCE_TABLE_ROW = """
-      <tr>
-        <td>{name}</td>
-        <td><a href="{domain_URL}">{domain_name}</a></td>
-        <td><a href="https://regexper.com#{escaped_regex}">view regex</a></td>
-      </tr>
 """
 
 ERROR_501 = """
@@ -158,6 +134,8 @@ def serve(app, localhost=True, port=53037):
     Use gevent to host the app as a WSGI server at the given port. If
     not localhost, use _get_local_ip() to find the IP address to use.
     """ 
+    from gevent import monkey
+    from gevent.pywsgi import WSGIServer
     monkey.patch_all()
     
     if localhost:

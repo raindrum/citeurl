@@ -31,7 +31,7 @@ PAGE_TEMPLATE = """
 </div>
 <footer>{relation}
 <a href="https://raindrum.github.io/citeurl">CiteURL</a>
-v{version} and subject to absolutely no warranty.</footer>
+{version} and subject to absolutely no warranty.</footer>
 </body>"""
 
 SOURCES_INTRO = """
@@ -60,6 +60,8 @@ SOURCES_TABLE_ROW = """
         <td><a href="https://regexper.com#{escaped_regex}">view regex</a></td>
       </tr>"""
 
+VERSION = f"v{version('citeurl')}"
+
 ########################################################################
 # Functions
 ########################################################################
@@ -83,7 +85,7 @@ def format_page(text: str, **kwargs):
         js=js,
         css=css,
         logo=logo,
-        version=version('citeurl'),
+        version=VERSION,
         relation=kwargs.get('relation') or 'Powered by',
     )
 

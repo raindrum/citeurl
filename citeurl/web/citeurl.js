@@ -1,40 +1,35 @@
+/*PAGEBEHAVIOR
 // on page load, check whether there's a URL parameter.
 // If there is, insert it into the search bar, and run the
 // search. Otherwise, unhide the page for normal display.
-if (typeof document !== 'undefined') {
-  document.addEventListener("DOMContentLoaded", () => {
-    if (!location.search) {
-      return document.body.removeAttribute('hidden');
-    }
-    let query = decodeURIComponent(location.search);
-    query = query.trim().replace(/^\?(?:q=)?|\.$|,$|;$/g, '');
-    document.getElementById("q").value = query.replace(/\+/g, ' ');
-    
-    handleQuery(query);
-  });
+document.addEventListener("DOMContentLoaded", () => {
+if (!location.search) {
+  return document.body.removeAttribute('hidden');
 }
+let query = decodeURIComponent(location.search);
+query = query.trim().replace(/^\?(?:q=)?|\.$|,$|;$/g, '');
+document.getElementById("q").value = query.replace(/\+/g, ' ');
 
-if (
-    typeof window !== 'undefined'
-    && typeof window.addEventListener !== 'undefined'
-) {
-  window.addEventListener( "pageshow", function ( event ) {
-    var historyTraversal = event.persisted || (
-      typeof window.performance != "undefined" &&
-      window.performance.navigation.type === 2
-    );
-    if ( historyTraversal ) {
-      // Handle page restore.
-      window.location.reload();
-    }
-  });
+handleQuery(query);
+});
+
+window.addEventListener( "pageshow", function ( event ) {
+var historyTraversal = event.persisted || (
+  typeof window.performance != "undefined" &&
+  window.performance.navigation.type === 2
+);
+if ( historyTraversal ) {
+  // Handle page restore.
+  window.location.reload();
 }
+});
 
+*/
+/*LOGS
 function log(text) {
-  if (typeof console !== 'undefined') {
-    console.log(text)
-  }
+  console.log(text)
 }
+*/
 
 class Citation {
   constructor(template, text) {
@@ -47,16 +42,20 @@ class Citation {
       }
     }
     if (regexMatch) {
+      /*LOGS
       log(
         '"' + text + '" matched regex for ' + template['name']
         + ', and these tokens were found:'
       );
+      */
       for (var group in regexMatch.groups) {
         if (typeof group !== 'undefined') {
           log(group + ': "' + regexMatch.groups[group] + '"');
         }
       }
+      /*LOGS
       log(' ');
+      */
     }
     else {
       throw Error("The given query does not match the given template.");
@@ -73,12 +72,16 @@ class Citation {
     // set default values for missing tokens
     for (var d in template.defaults) {
       if (!tokens[d]) {
+        /*LOGS
         log(
           d + ' was not specified, so it will be set to "'
           + template.defaults[d] + '" by default'
         );
+        */
         tokens[d] = template.defaults[d];
+        /*LOGS
         log(' ');
+        */
       }
     }
     
@@ -125,11 +128,13 @@ class Citation {
         let regex = new RegExp(operation['sub'][0], 'ig');
         let outputValue = inputValue.replace(regex, operation['sub'][1]);
         tokens[output] = outputValue;
+        /*LOGS
         log(
           'replaced all instances of regex "' + operation['sub'][0] + '" in '
           + 'token "' + operation['token'] + '" with "' + operation['sub'][1]
           + '" to set token "${output}" to "${outputValue}".'
         );
+        */
       }
       
       // handle regex lookups
@@ -142,11 +147,13 @@ class Citation {
             let regexStr = '^(' + key + ')$';
             if (tokens[operation['token']].match(new RegExp(regexStr, 'i'))) {
               outputValue = operation[lookupTypes[t]][key];
+              /*LOGS
               log(
                 'Looked up ' + operation['token'] + ' "'
                 + tokens[operation['token']] + '" in a table, and used that '
                 + 'to set ' + output + ' to "' + outputValue + '"' 
               );
+              */
               break;
             }
           }
@@ -154,10 +161,12 @@ class Citation {
             tokens[output] = outputValue;
           }
           else if (lookupTypes[t] == 'optionalLookup') {
+            /*LOGS
             log(
               'tried to look up token "' + operation['token'] + '" in an index,'
               + 'but failed, so token "' + output + '" will not be modified.'
             );
+            */
           }
           else {
             throw Error(
@@ -214,11 +223,13 @@ class Citation {
         for (var pair in numerals) {
           if (numerals[pair][key].match(inputValue.toUpperCase())) {
             tokens[output] = numerals[pair][value];
+            /*LOGS
             log(
               'translated ' + operation['token'] + ' to '
               + operation['numberFormat'] + " format if it wasn't already, and"
               + ' saved the result (' + tokens[output] + ') to ' + output
             );
+            */
             break;
           }
         }
@@ -231,15 +242,19 @@ class Citation {
           outputValue = '0' + outputValue;
         }
         tokens[output] = outputValue
+        /*LOGS
         log(
           'added zeros to the beginning of ' + operation['token']
           + ' until it was ' + String(operation['lpad']) + ' characters long,'
           + ' and saved the result to ' + tokens[output]
         );
+        */
       }
     }
     if (appliedAnOperation) {
+      /*LOGS
       log(' ');
+      */
     }
     this.processedTokens = tokens;
     
@@ -248,7 +263,9 @@ class Citation {
     // placeholder.
     let URL = [];
     let missingPlaceholder = new RegExp("\\{.+\\}");
+    /*LOGS
     log("filling in placeholders in each part of the URL template...");
+    */
     for (var part in template.URL) {
       let URLPart = template.URL[part]
       for (var k in this.processedTokens) {
@@ -260,21 +277,28 @@ class Citation {
       }
       if (!URLPart.match(missingPlaceholder)) {
         URL.push(URLPart);
+        /*LOGS
         log('"' + template.URL[part] + '"   -->   "' + URLPart + '"')
+        */
       }
       else {
+        /*LOGS
         log(
           'omitting "' + template.URL[part]
           + '" since it references a missing placeholder'
         )
+        */
       }
     }
     this.URL = URL.join('');
+    /*LOGS
     log('Finished building URL: "' + this.URL + '"');
     log(' ');
+    */
   }
 }
 
+/*LOGS
 // run search from form entry
 function handleSearch(event) {
   event.preventDefault()
@@ -298,6 +322,7 @@ function handleQuery(query) {
     document.getElementById("explainer").innerHTML = error.message;
   }
 }
+*/
 
 // perform each step to convert query into URL
 function getUrlForQuery(query) {
@@ -322,10 +347,12 @@ function getCitations(query, returnFirst) {
     }
   }
   if (returnFirst) {
+    /*LOGS
     log(
       '"' + query + '" did not match the regex for any template. Check the '
       + 'page source to see the templates and their regexes.'
     );
+    */
     throw Error(MATCH_ERROR);
   }
   return citations;
