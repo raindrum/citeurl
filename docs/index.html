@@ -10,7 +10,7 @@
       
       
       <link rel="icon" href="assets/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.4">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.5">
     
     
       
@@ -25,7 +25,7 @@
         
           
           
-          <meta name="theme-color" content="#4051b5">
+          <meta name="theme-color" content="#2094f3">
         
       
     
@@ -52,7 +52,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="pink">
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="pink">
   
     
     <script>function __prefix(e){return new URL(".",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
@@ -367,13 +367,13 @@
                 
                 
                 <h1 id="getting-started">Getting Started</h1>
-<p align="center"><img src="https://raw.githubusercontent.com/raindrum/citeurl/main/citeurl/web/logo.svg" alt="CiteURL Logo" width=200px"></p>
-
-<p align="center"><a href="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml"><img src="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml/badge.svg" alt="pytest" /></a> <a href="https://github.com/raindrum/citeurl/issues"><img src="https://img.shields.io/github/issues/raindrum/citeurl" alt="GitHub issues" /></a> <a href="https://github.com/raindrum/citeurl/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/raindrum/citeurl" alt="GitHub license" /></a> <a href="https://pypi.org/project/citeurl/"><img src="https://img.shields.io/pypi/v/citeurl" alt="PyPI" /></a></p>
+<p align="center"><a href="https://raindrum.pythonanywhere.com"><img src="https://raw.githubusercontent.com/raindrum/citeurl/main/citeurl/web/logo.svg" alt="CiteURL Logo" width=200px"></a></p>
+<p align="center"><a href="https://raindrum.pythonanywhere.com"><img alt="Website" src="https://img.shields.io/website?down_color=lightgrey&up_color=blue&url=https%3A%2F%2Fraindrum.pythonanywhere.com"></a> <a href="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml"><img src="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml/badge.svg" alt="pytest" /></a> <a href="https://github.com/raindrum/citeurl/issues"><img src="https://img.shields.io/github/issues/raindrum/citeurl" alt="GitHub issues" /></a> <a href="https://github.com/raindrum/citeurl/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/raindrum/citeurl" alt="GitHub license" /></a> <a href="https://pypi.org/project/citeurl/"><img src="https://img.shields.io/pypi/v/citeurl" alt="PyPI" /></a></p>
 
 <p>CiteURL is an extensible tool that parses legal citations and makes links to websites where you can read the cited language for free. It can be used to quickly look up a reference, or to insert a hyperlink for every long- or short-form citation in a longer text.</p>
+<p>If you want to quickly it out, <a href="https://raindrum.pythonanywhere.com">check out the web app</a>.</p>
 <hr />
-<p>Here's a sample of the links it can make:</p>
+<p>Here's a sample of the links CiteURL can make:</p>
 <blockquote>
 <p>Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, <a href="https://www.law.cornell.edu/uscode/text/42/1988#b">42 USC § 1988(b)</a>, and, by discretion, expert fees, <a href="https://www.law.cornell.edu/uscode/text/42/1988#c"><em>id.</em> at (c)</a>. This is because the importance of civil rights litigation cannot be measured by a damages judgment. <em>See</em> <em>Riverside v. Rivera</em>, <a href="https://cite.case.law/us/477/561">477 U.S. 561</a> (1986). But <em>Evans v. Jeff D.</em> upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys' fees. <a href="https://cite.case.law/us/475/717">475 U.S. 717</a> (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in <em>Riverside</em>, <a href="https://cite.case.law/us/477/561#p574">477 U.S. at 574-78</a>.</p>
 </blockquote>
@@ -385,8 +385,7 @@
 <li>the U.S. Constitution and all state constitutions</li>
 <li>the codified laws for every state and territory except Arkansas, Georgia, Guam, and Puerto Rico.</li>
 </ul>
-<p>You can also add more sources of law by <a href="https://raindrum.github.io/citeurl/template-yamls/">writing your own citation templates</a> in YAML format.</p>
-<p>If you just want to try out CiteURL's citation lookup features without installing anything, you can use <a href="https://raindrum.github.io/lawsearch">Law Search</a>, a JavaScript implementation of CiteURL I maintain on my website.</p>
+<p>try CiteURLYou can also add more sources of law by <a href="https://raindrum.github.io/citeurl/template-yamls/">writing your own citation templates</a> in YAML format.</p>
 <h2 id="installation">Installation</h2>
 <p>CiteURL has been tested with Python version 3.9, but earlier versions probably work too. Install Python if you don't have it, then run this command:</p>
 <div class="highlight"><pre><span></span><code>python -m pip install citeurl
@@ -485,10 +484,10 @@ citeurl host -t PATH_TO_YOUR_TEMPLATES.YAML -s
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "assets/javascripts/workers/search.4fa0e4ee.min.js", "version": "8.2.4"}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "assets/javascripts/workers/search.d351de03.min.js", "version": "8.3.0"}</script>
     
     
-      <script src="assets/javascripts/bundle.1d3bfcf1.min.js"></script>
+      <script src="assets/javascripts/bundle.a1609d9a.min.js"></script>
       
     
   </body>

@@ -10,7 +10,7 @@
       
       
       <link rel="icon" href="../assets/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.4">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.5">
     
     
       
@@ -25,7 +25,7 @@
         
           
           
-          <meta name="theme-color" content="#4051b5">
+          <meta name="theme-color" content="#2094f3">
         
       
     
@@ -52,7 +52,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="pink">
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="pink">
   
     
     <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
@@ -245,6 +245,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#citeurl-server" class="md-nav__link">
+    CiteURL Server
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#javascript" class="md-nav__link">
     JavaScript
   </a>
@@ -256,18 +263,12 @@
     Markdown Extension
   </a>
   
-    <nav class="md-nav" aria-label="Markdown Extension">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
+</li>
+      
+        <li class="md-nav__item">
   <a href="#gnome-shell-search-provider" class="md-nav__link">
     GNOME Shell Search Provider
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -335,6 +336,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#citeurl-server" class="md-nav__link">
+    CiteURL Server
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#javascript" class="md-nav__link">
     JavaScript
   </a>
@@ -346,18 +354,12 @@
     Markdown Extension
   </a>
   
-    <nav class="md-nav" aria-label="Markdown Extension">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
+</li>
+      
+        <li class="md-nav__item">
   <a href="#gnome-shell-search-provider" class="md-nav__link">
     GNOME Shell Search Provider
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -380,20 +382,27 @@
                 
                 <h1 id="citeurl-frontends">CiteURL Frontends</h1>
 <p>CiteURL can be used in a few forms besides the <a href="../index#usage">command-line tool</a> and <a href="../library">the Python library</a>. Here's what they are:</p>
+<h2 id="citeurl-server">CiteURL Server</h2>
+<p>If you want to use CiteURL from your web browser, it's hosted <a href="https://raindrum.pythonanywhere.com">here</a>.</p>
+<p>You can also use a set of <a href="template-yamls">custom citation templates</a> to host your own instance on your local network or beyond. The simplest way to do that is to run this command:</p>
+<div class="highlight"><pre><span></span><code>citeurl host -st PATH_TO_YOUR_TEMPLATES.YAML
+</code></pre></div>
+<p>Or, if you're using a hosting provider like <a href="https://pythonanywhere.com">pythonanywhere.com</a>, you can give it direct access to CiteURL as a Flask application:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">citeurl.web.server</span> <span class="kn">import</span> <span class="n">App</span>
+<span class="kn">from</span> <span class="nn">citeurl</span> <span class="kn">import</span> <span class="n">Citator</span>
+
+<span class="n">APP</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="n">Citator</span><span class="p">())</span>
+</code></pre></div>
 <h2 id="javascript">JavaScript</h2>
-<p>Although CiteURL is primarily a Python program, it can also generate a JavaScript implementation of its citation lookup function, so that end users can look up citations in a web browser without having to install anything. <a href="https://raindrum.github.io/lawsearch">Law Search</a> is one such instance that I maintain on my website.</p>
-<p>You can use the <code>citeurl makejs</code> command to make your own custom instances that support arbitrary sources of law. Here's how:</p>
+<p>Although CiteURL is primarily a Python program, you can also use it to generate a JavaScript implementation of its citation lookup functionality, including any extra citation templates you've written This allows it to be hosted on a static website (like <a href="https://raindrum.github.io/lawsearch">mine</a>, for example), or distributed as an HTML file that people can bookmark and use as a <a href="https://www.howtogeek.com/114176/HOW-TO-EASILY-CREATE-SEARCH-PLUGINS-ADD-ANY-SEARCH-ENGINE-TO-YOUR-BROWSER/">custom search engine</a> stored on their own computers.</p>
+<p>To make a JavaScript implementation, first <a href="template-yamls">make a YAML file</a> with any custom citation templates you'd like to support. Next, open a command line and run the following command:</p>
 <ol>
 <li><a href="template-yamls">Write a YAML file</a> with one or more custom citation templates.</li>
-<li><a href="../index#installation">Install CiteURL</a> if you have not done so already.</li>
 <li>Open a command line and run the following:</li>
 </ol>
 <div class="highlight"><pre><span></span><code>citeurl makejs -e -o output.html -t PATH_TO_YOUR_TEMPLATES.YAML
 </code></pre></div>
-<p>Alternatively, to omit the default templates, include the <code>-n</code> option in that command.</p>
-<p>After exporting an HTML file, you can bookmark the local file as a <a href="https://www.howtogeek.com/114176/HOW-TO-EASILY-CREATE-SEARCH-PLUGINS-ADD-ANY-SEARCH-ENGINE-TO-YOUR-BROWSER/">custom search engine</a>.</p>
-<p>Alternatively, if you have a web page you'd like to embed CiteURL functionality into, you can also generate the JavaScript by itself. To do that, omit the <code>-e</code> option and save the output as a <code>.js</code> file. All the citation lookup functionality is available via its <code>getUrlForQuery()</code> function, which takes a search query string as input, and returns the completed URL.</p>
-<p>For more info, run <code>citeurl makejs -h</code>.</p>
+<p>Alternatively, to omit CiteURL's default templates, include the <code>-n</code> option in that command. For more info, run <code>citeurl makejs -h</code>.</p>
 <h2 id="markdown-extension">Markdown Extension</h2>
 <p>CiteURL can also be used as an extension to <a href="https://python-markdown.github.io/">Python-Markdown</a>. You can load the extension as <code>citeurl</code>, and it supports the following options:</p>
 <ul>
@@ -404,7 +413,7 @@
 <li><code>link_plain_ids</code>: Whether to insert links for citations like <code>Id.</code>. Defaults to <code>False</code>.</li>
 <li><code>break_id_on_regex</code>: Anywhere this string (parsed as regex) appears in the text, chains of citations like <code>id.</code> will be interrupted. Note that this is based on the output HTML, <em>not</em> the original Markdown text. Defaults to <code>L\. ?Rev\.|J\. ?Law|\. ?([Cc]ode|[Cc]onst)</code></li>
 </ul>
-<h3 id="gnome-shell-search-provider">GNOME Shell Search Provider</h3>
+<h2 id="gnome-shell-search-provider">GNOME Shell Search Provider</h2>
 <p>If you use the GNOME desktop environment, you can install <a href="https://extensions.gnome.org/extension/4225/gnome-citeurl-search-provider/">my other project</a> to look up citations directly from your desktop!</p>
                 
               
@@ -474,10 +483,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.4fa0e4ee.min.js", "version": "8.2.4"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": "8.3.0"}</script>
     
     
-      <script src="../assets/javascripts/bundle.1d3bfcf1.min.js"></script>
+      <script src="../assets/javascripts/bundle.a1609d9a.min.js"></script>
       
     
   </body>

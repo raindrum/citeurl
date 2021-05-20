@@ -5,6 +5,7 @@ from re import sub
 
 # internal imports
 from .resources import format_page, sources_table, SOURCES_INTRO
+from .. import insert_links, list_authorities
 
 # third-party imports
 from flask import Flask, redirect, make_response, send_file, request
@@ -17,15 +18,17 @@ _APP = Flask(__name__, static_url_path='')
 # Messages
 ########################################################################
 
-INDEX = """
+INDEX_PAGE = """
 <h1>{name}</h1>
 <p>Type a legal citation into the box below, and I'll try to send you
 directly to the case or law that it references:</p>
 <form class="searchbar" method="get">
-  <input type="search" name="s" placeholder="Enter citation..."
-  label="citation search bar"><button type="submit">Go</button>
+  <input type="search" required name="s" placeholder="Enter citation..."
+  maxlength=400 label="citation search bar"><button type="submit">Go</button>
 </form>
-<p>Check <a href="sources">here</a> for the supported sources of law.</p>
+<p>This web app supports citations to <a href="sources">various sources</a>
+of law. You can also use it to <a href="parser">detect citations</a> in a
+longer text, like a court opinion.</p>
 """
 
 SOURCES_PAGE = """
@@ -33,6 +36,42 @@ SOURCES_PAGE = """
 {intro}
 {table}
 """
+
+PARSER_PAGE = """
+<h1>{name} Text Parser</h1>
+<p>Paste some text into the box below and click Parse to process
+the text and find every <a href="sources">supported citation</a>
+it contains.</p> 
+<form action="parser#output" method="post">
+<textarea required cols=80 rows=16 maxlength=400000 name="text"
+placeholder="Paste text here.." label="Input text for
+parser">{given_text}</textarea>
+<p><button type="submit">Parse</button></p>
+</form>
+{output}
+"""
+
+AUTHORITIES_TABLE = """
+<h2 id="authorities">Authorities Cited</h2>
+<div class="table-wrapper"><table>
+  <thead>
+    <th style="width: 80%;">Authority</th>
+    <th style="width: 20%'">References</th>
+  </thead>
+  <tbody>
+    {rows}
+  </tbody>
+</table></div>
+"""
+
+AUTHORITIES_TABLE_ROW = """
+    <tr>
+      <td>{name}</td>
+      <td>{references}</td>
+    </tr>
+"""
+
+# Errors
 
 ERROR_501 = """
 <h1>Missing URL</h1>
@@ -47,8 +86,14 @@ ERROR_400 = """
 <a href="/"><button>Go Back</button></a>
 """
 
+ERROR_413 = """
+<h1>Query Too Long</h1>
+<p>Sorry, that's too many characters for the server to process.</p>
+<a href="/"><button>Go Back</button></a>
+"""
+
 ########################################################################
-# Define APP
+# Routes
 ########################################################################
 
 @_APP.route('/<query>')
@@ -58,6 +103,9 @@ def _handle_query(query: str):
     it returns a URL. Otherwise return 501 error if it matches a
     citation without a URL, or 400 if no match.
     """
+    if len(query) > _APP.max_chars:
+        return format_page(ERROR_501)
+    
     query = unquote(query)
     cite = _APP.citator.lookup(query)
     if cite and cite.URL:
@@ -81,10 +129,60 @@ def _index():
     else:
         return _APP.index_page
 
+# Pregenerated Pages
+
 @_APP.route('/sources')
 def _sources():
     "return a page listing the citator's templates in a table"
     return _APP.sources_page
+
+@_APP.route('/parser', methods= ['POST', 'GET'])
+def _linker():
+    "return a page that parses user-provided text"
+    if request.method == 'GET':
+        return format_page(
+            PARSER_PAGE,
+            name=_APP.name,
+            given_text='',
+            output=''
+        )
+        
+    given_text = request.form['text']
+    if _APP.max_chars and len(given_text) > _APP.max_chars:
+        return format_page(ERROR_501)
+    citations = _APP.citator.list_citations(given_text)
+    
+    if not citations:
+        return format_page(
+            PARSER_PAGE,
+            name=_APP.name,
+            given_text=given_text,
+            output="<p>Sorry, I couldn't find any citations in that.</p>"
+        )
+    
+    output = insert_links(citations, given_text)
+    output = '<p>' + sub(r'\n+', '</p>\n<p>', output) + '</p>'
+    rows = [
+        AUTHORITIES_TABLE_ROW.format(
+            name=f'<a href="{a.URL}">{a.name}</a>' if a.URL else f'{a.name}',
+            references=len(a.citations)
+        )
+        for a in list_authorities(citations)
+    ]
+    authorities_section = AUTHORITIES_TABLE.format(rows='\n'.join(rows))
+    
+    return format_page(
+        PARSER_PAGE,
+        name=_APP.name,
+        given_text=given_text,
+        output=(
+            '<h2 id="output">Output</h2>\n'
+            + f'<form><div class="output-box">{output}</div></form>'
+            + (authorities_section if rows else '')
+        ),
+    )
+
+# Static Files
 
 @_APP.route('/logo.svg')
 def _logo():
@@ -120,8 +218,11 @@ def App(citator, name='CiteURL'):
     Return a flask application to implement the given citator. If called
     repeatedly, it will probably overwrite earlier instances.
     """
-    _APP.index_page = format_page(INDEX, name=name)
+    # store variables in the app itself
+    _APP.name = name
+    _APP.index_page = format_page(INDEX_PAGE, name=name)
     _APP.citator = citator
+    _APP.max_chars=400000 # limit query length
     _APP.sources_page = format_page(
         SOURCES_PAGE,
         intro=SOURCES_INTRO,

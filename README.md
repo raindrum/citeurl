@@ -1,12 +1,13 @@
-<p align="center"><img src="https://raw.githubusercontent.com/raindrum/citeurl/main/citeurl/web/logo.svg" alt="CiteURL Logo" width=200px"></p>
-
-<p align="center"><a href="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml"><img src="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml/badge.svg" alt="pytest" /></a> <a href="https://github.com/raindrum/citeurl/issues"><img src="https://img.shields.io/github/issues/raindrum/citeurl" alt="GitHub issues" /></a> <a href="https://github.com/raindrum/citeurl/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/raindrum/citeurl" alt="GitHub license" /></a> <a href="https://pypi.org/project/citeurl/"><img src="https://img.shields.io/pypi/v/citeurl" alt="PyPI" /></a></p>
+<p align="center"><a href="https://raindrum.pythonanywhere.com"><img src="https://raw.githubusercontent.com/raindrum/citeurl/main/citeurl/web/logo.svg" alt="CiteURL Logo" width=200px"></a></p>
+<p align="center"><a href="https://raindrum.pythonanywhere.com"><img alt="Website" src="https://img.shields.io/website?down_color=lightgrey&up_color=blue&url=https%3A%2F%2Fraindrum.pythonanywhere.com"></a> <a href="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml"><img src="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml/badge.svg" alt="pytest" /></a> <a href="https://github.com/raindrum/citeurl/issues"><img src="https://img.shields.io/github/issues/raindrum/citeurl" alt="GitHub issues" /></a> <a href="https://github.com/raindrum/citeurl/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/raindrum/citeurl" alt="GitHub license" /></a> <a href="https://pypi.org/project/citeurl/"><img src="https://img.shields.io/pypi/v/citeurl" alt="PyPI" /></a></p>
 
 CiteURL is an extensible tool that parses legal citations and makes links to websites where you can read the cited language for free. It can be used to quickly look up a reference, or to insert a hyperlink for every long- or short-form citation in a longer text.
 
+If you want to quickly it out, [check out the web app](https://raindrum.pythonanywhere.com).
+
 ---
 
-Here's a sample of the links it can make:
+Here's a sample of the links CiteURL can make:
 
 > Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, [42 USC § 1988(b)](https://www.law.cornell.edu/uscode/text/42/1988#b), and, by discretion, expert fees, [*id.* at (c)](https://www.law.cornell.edu/uscode/text/42/1988#c). This is because the importance of civil rights litigation cannot be measured by a damages judgment. *See* *Riverside v. Rivera*, [477 U.S. 561](https://cite.case.law/us/477/561) (1986). But *Evans v. Jeff D.* upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys' fees. [475 U.S. 717](https://cite.case.law/us/475/717) (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in *Riverside*, [477 U.S. at 574-78](https://cite.case.law/us/477/561#p574).
 
@@ -19,9 +20,7 @@ By default, CiteURL supports Bluebook-style citations to [over 130 sources](http
 - the U.S. Constitution and all state constitutions
 - the codified laws for every state and territory except Arkansas, Georgia, Guam, and Puerto Rico.
 
-You can also add more sources of law by [writing your own citation templates](https://raindrum.github.io/citeurl/template-yamls/) in YAML format.
-
-If you just want to try out CiteURL's citation lookup features without installing anything, you can use [Law Search](https://raindrum.github.io/lawsearch), a JavaScript implementation of CiteURL I maintain on my website.
+try CiteURLYou can also add more sources of law by [writing your own citation templates](https://raindrum.github.io/citeurl/template-yamls/) in YAML format.
 
 ## Installation
 

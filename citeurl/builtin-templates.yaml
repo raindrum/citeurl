@@ -40,7 +40,7 @@ United States Constitution:
       - (
       - &us_const_sec '(,? ((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>\d+|[IVXivx]{1,7}))'
       - (
-      - &us_const_clause '(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))'
+      - &us_const_clause '(,? ([Cc]l(ause|s?\.) ?(?P<clause>\d+)))'
       - )?)?
     - - *us_const_art_am
       - (
@@ -300,7 +300,9 @@ Uniform Commercial Code:
   regex:
     - &ucc '(Uniform Commercial Code|U\.? ?C\.? ?C\.?)( ?§)? (?P<article>\d[a-z]?)[-‑–](?P<section>\d+)'
     - *subsection
-  operations: *usc_sub
+  operations: # only include the first subsection tag in the URL
+    - token: subsection
+      sub: ['\).+', ')']
   URL:
     - https://www.law.cornell.edu/ucc/{article}/{article}-{section}
     - '#{article}-{section}{subsection}'
@@ -328,11 +330,11 @@ Code of Alabama, 1975:
 Alabama Constitution:
   regex:
     - *al_name
-    - &const_art_sec_cl ' ?Const(itution|\.) ?[Aa]rt(icle|\.) ?(?P<article>[\dIVXivx]{1,8})(,? ?((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?)?'
+    - &const_art_sec_cl ' ?Const(itution|\.) ?[Aa]rt(icle|\.) ?(?P<article>[\dIVXivx]{1,8})(,? ?((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d))(,? ([Cc]l(ause|s?\.) ?(?P<clause>\d+)))?)?'
   idForms: &const_art_sec_cl_ids
-    - [*optional_id_at, '\b[Aa]rt(icle|\.) ?(?P<article>[\dIVXivx]{1,3})(,? ?((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.]*\w|\d|[IVXivx]{1,7}))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?)?']
-    - [*optional_id_at, '((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d|[IVXivx]{1,7}))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?']
-    - [*optional_id_at, '\b[Cc]l(ause|\.) ?(?P<clause>\d+)']
+    - [*optional_id_at, '\b[Aa]rt(icle|\.) ?(?P<article>[\dIVXivx]{1,3})(,? ?((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.]*\w|\d|[IVXivx]{1,7}))(,? ([Cc]l(ause|s?\.) ?(?P<clause>\d+)))?)?']
+    - [*optional_id_at, '((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d|[IVXivx]{1,7}))(,? ([Cc]l(ause|s?\.) ?(?P<clause>\d+)))?']
+    - [*optional_id_at, '\b[Cc]l(ause|s?\.) ?(?P<clause>\d+)']
   operations: [{token: article, numberFormat: roman}]
   URL:
     - https://ballotpedia.org/Article_{article},_Alabama_Constitution
@@ -720,11 +722,11 @@ Kansas Statutes:
 Kansas Constitution:
   regex:
     - *ks_name
-    - &const_art_or_other_sec_cl ' ?Const(itution|\.) ?([Aa]rt(icle|\.) ?(?P<article>[\dIVXivx]{1,8})|(?P<part>Bill of Rights|Preamble))(,? ?((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?)?'
+    - &const_art_or_other_sec_cl ' ?Const(itution|\.) ?([Aa]rt(icle|\.) ?(?P<article>[\dIVXivx]{1,8})|(?P<part>Bill of Rights|Preamble))(,? ?((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d))(,? ([Cc]l(ause|s?\.) ?(?P<clause>\d+)))?)?'
   idForms: &const_art_or_other_sec_cl_ids
-    - [*optional_id_at, '\b([Aa]rt(icle|\.) ?(?P<article>[\dIVXivx]{1,8})|(?P<part>Bill of Rights|Preamble))(,? ?((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.]*\w|\d|[IVXivx]{1,7}))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?)?']
-    - [*optional_id_at, '((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d|[IVXivx]{1,7}))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?']
-    - [*optional_id_at, '\b[Cc]l(ause|\.) ?(?P<clause>\d+)']
+    - [*optional_id_at, '\b([Aa]rt(icle|\.) ?(?P<article>[\dIVXivx]{1,8})|(?P<part>Bill of Rights|Preamble))(,? ?((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.]*\w|\d|[IVXivx]{1,7}))(,? ([Cc]l(ause|s?\.) ?(?P<clause>\d+)))?)?']
+    - [*optional_id_at, '((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d|[IVXivx]{1,7}))(,? ([Cc]l(ause|?\.) ?(?P<clause>\d+)))?']
+    - [*optional_id_at, '\b[Cc]l(ause|s?\.) ?(?P<clause>\d+)']
   operations:
     - token: article
       numberFormat: roman
@@ -816,11 +818,11 @@ Maine Statutes:
 Maine Constitution:
   regex:
     - *me_name
-    - &const_art_pt_sec_cl ' ?Const(itution|\.) ?[Aa]rt(icle|\.) ?(?P<article>[\dIVXivx]{1,8})(,? [Pp](art|t\.) ?(?P<part>\d))?(,? ?((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?)?'
+    - &const_art_pt_sec_cl ' ?Const(itution|\.) ?[Aa]rt(icle|\.) ?(?P<article>[\dIVXivx]{1,8})(,? [Pp](art|t\.) ?(?P<part>\d))?(,? ?((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d))(,? ([Cc]l(ause|s?\.) ?(?P<clause>\d+)))?)?'
   idForms: &const_art_pt_sec_cl_ids
-    - [*optional_id_at, '\b[Aa]rt(icle|\.) ?(?P<article>[\dIVXivx]{1,3})(,? [Pp](art|t\.) ?(?P<part>\d))?(,? ?((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.]*\w|\d|[IVXivx]{1,7}))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?)?']
-    - [*optional_id_at, '((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d|[IVXivx]{1,7}))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?']
-    - [*optional_id_at, '\b[Cc]l(ause|\.) ?(?P<clause>\d+)']
+    - [*optional_id_at, '\b[Aa]rt(icle|\.) ?(?P<article>[\dIVXivx]{1,3})(,? [Pp](art|t\.) ?(?P<part>\d))?(,? ?((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.))? ?(?P<section>(\d[\w.]*\w|\d|[IVXivx]{1,7}))(,? ([Cc]l(ause|s?\.) ?(?P<clause>\d+)))?)?']
+    - [*optional_id_at, '((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d|[IVXivx]{1,7}))(,? ([Cc]l(ause|s?\.) ?(?P<clause>\d+)))?']
+    - [*optional_id_at, '\b[Cc]l(ause|s?\.) ?(?P<clause>\d+)']
   operations:
     - token: article
       numberFormat: roman
@@ -1274,7 +1276,7 @@ Oregon Constitution:
     - ' ?Const(itution|\.) ?'
     - &or_art '[Aa]rt(icle|\.) ?(?P<article>[IVXivx]{1,5}(-\w(\(\d\))?)?)'
     - '(,? ?'
-    - &or_sec_cl '((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d))(,? ([Cc]l(ause|\.) ?(?P<clause>\d+)))?'
+    - &or_sec_cl '((&sect;|&#167|§){1,2}|[Ss]ect?(ions?|s?\.)) ?(?P<section>(\d[\w.]*\w|\d))(,? ([Cc]l(ause|s?\.) ?(?P<clause>\d+)))?'
     - ')?'
   idForms:
     - [*optional_id_at, *or_art, '(,? ?', *or_sec_cl, ')?']

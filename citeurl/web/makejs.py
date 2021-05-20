@@ -144,7 +144,7 @@ def makejs(
             sources_table=table,
             inline_logo=True,
             inline_css=True,
-            inline_js=javascript,
+            js=javascript,
             relation='Static page generated with',
         )
     else:

@@ -66,24 +66,47 @@ VERSION = f"v{version('citeurl')}"
 # Functions
 ########################################################################
 
-def format_page(text: str, **kwargs):
+def format_page(
+    text: str,
+    js: str='',
+    inline_css: bool=False,
+    inline_logo: bool=False,
+    relation_to_citeurl: str='Powered by',
+    **kwargs
+):
+    """
+    Returns PAGE_TEMPLATE with the given text inserted into the body.
+    All placeholders (in curly braces) in the given text must be filled
+    via keyword arguments. In addition to those mandatory keywords, you
+    may provide any of the following:
+    
+    Arguments:
+        js: JavaScript to be inserted directly into the page head
+        inline_css: whether the CSS styling should be embedded in the
+            instead of an outside link. Default: False
+        inline_logo: whether the logo SVG should be embedded in the page
+            instead of an outside link. Default: False
+        relation_to_citeurl: a string that will be inserted into the
+            page footer, just before the link to CiteURL and the
+            subsequent disclaimer. Default: 'Powered by'.
+    """
     text = text.format(**kwargs)
-    if kwargs.get('inline_logo'):
+    if inline_logo:
         logo = LOGO_PATH.read_text()
     else:
-        logo = '<img src="logo.svg" alt="CiteURL logo" class="logo">'
-    if kwargs.get('inline_css'):
-        css = f'<style>{CSS_PATH.read_text()}</style>'
+        logo = '<img src="logo.svg" alt="CiteURL logo">'
+    if inline_css:
+        css_section = f'<style>{CSS_PATH.read_text()}</style>'
     else:
-        css = '<link rel="stylesheet" href="style.css">'
-    if kwargs.get('inline_js'):
-        js = f"<script>{kwargs['inline_js']}</script>"
+        css_section = '<link rel="stylesheet" href="style.css">'
+    if kwargs.get('js'):
+        js_section = f"<script>{kwargs['js']}</script>"
     else:
-        js = ''
+        js_section = ''
     return PAGE_TEMPLATE.format(
         content=text,
-        js=js,
-        css=css,
+        js=js_section,
+        css=css_section,
         logo=logo,
         version=VERSION,
         relation=kwargs.get('relation') or 'Powered by',
