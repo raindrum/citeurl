@@ -1,9 +1,9 @@
-<p align="center"><a href="https://raindrum.pythonanywhere.com"><img src="https://raw.githubusercontent.com/raindrum/citeurl/main/citeurl/web/logo.svg" alt="CiteURL Logo" width=200px></a></p>
-<p align="center"><a href="https://raindrum.pythonanywhere.com"><img alt="Website" src="https://img.shields.io/website?down_color=lightgrey&up_color=blue&url=https%3A%2F%2Fraindrum.pythonanywhere.com"></a> <a href="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml"><img src="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml/badge.svg" alt="pytest" /></a> <a href="https://github.com/raindrum/citeurl/issues"><img src="https://img.shields.io/github/issues/raindrum/citeurl" alt="GitHub issues" /></a> <a href="https://github.com/raindrum/citeurl/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/raindrum/citeurl" alt="GitHub license" /></a> <a href="https://pypi.org/project/citeurl/"><img src="https://img.shields.io/pypi/v/citeurl" alt="PyPI" /></a></p>
+<p align="center"><a href="https://citeurl.pythonanywhere.com"><img src="https://raw.githubusercontent.com/raindrum/citeurl/main/citeurl/web/logo.svg" alt="CiteURL Logo" width=200px></a></p>
+<p align="center"><a href="https://citeurl.pythonanywhere.com"><img alt="Website" src="https://img.shields.io/website?down_color=lightgrey&up_color=blue&url=https%3A%2F%2Fraindrum.pythonanywhere.com"></a> <a href="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml"><img src="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml/badge.svg" alt="pytest" /></a> <a href="https://github.com/raindrum/citeurl/issues"><img src="https://img.shields.io/github/issues/raindrum/citeurl" alt="GitHub issues" /></a> <a href="https://github.com/raindrum/citeurl/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/raindrum/citeurl" alt="GitHub license" /></a> <a href="https://pypi.org/project/citeurl/"><img src="https://img.shields.io/pypi/v/citeurl" alt="PyPI" /></a></p>
 
 CiteURL is an extensible tool that parses legal citations and makes links to websites where you can read the cited language for free. It can be used to quickly look up a reference, or to insert a hyperlink for every long- or short-form citation in a longer text.
 
-If you want to quickly try it out, [check out the web app](https://raindrum.pythonanywhere.com).
+If you want to quickly try it out, [check out the web app](https://citeurl.pythonanywhere.com).
 
 ---
 
@@ -36,7 +36,7 @@ CiteURL provides four command-line tools:
 
 - `citeurl process`: Parse a text and insert an HTML hyperlink for every citation it contains, including shortform citations.
 - `citeurl lookup`: Look up a single citation and display information about it.
-- `citeurl host`: Host a citation lookup service via HTTP.
+- `citeurl host`: Host CiteURL as a web app [like this one](https://citeurl.pythonanywhere.com).
 - `citeurl makejs`: Export an instance of CiteURL's lookup function as JavaScript that can be embedded in an HTML page. [Law Search](https://raindrum.github.io/lawsearch) is an example of this JavaScript. More info is available [here](https://raindrum.github.io/citeurl/frontends#javascript).
 
 Each command has its own command-line arguments you can view with the `-h` option. They all share the `-t` option, which allows you to load a list of custom [citation templates](https://raindrum.github.io/citeurl/template-yamls/) in YAML form.

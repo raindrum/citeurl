@@ -4,7 +4,7 @@ CiteURL can be used in a few forms besides the [command-line tool](../index#usag
 
 ## CiteURL Server
 
-If you want to use CiteURL from your web browser, it's hosted [here](https://raindrum.pythonanywhere.com).
+If you just want to use CiteURL from your web browser, there's an instance hosted [here](https://citeurl.pythonanywhere.com).
 
 You can also use a set of [custom citation templates](template-yamls) to host your own instance on your local network or beyond. The simplest way to do that is to run this command:
 
@@ -23,12 +23,9 @@ APP = App(Citator())
 
 ## JavaScript
 
-Although CiteURL is primarily a Python program, you can also use it to generate a JavaScript implementation of its citation lookup functionality, including any extra citation templates you've written This allows it to be hosted on a static website (like [mine](https://raindrum.github.io/lawsearch), for example), or distributed as an HTML file that people can bookmark and use as a [custom search engine](https://www.howtogeek.com/114176/HOW-TO-EASILY-CREATE-SEARCH-PLUGINS-ADD-ANY-SEARCH-ENGINE-TO-YOUR-BROWSER/) stored on their own computers.
+Although CiteURL is primarily a Python program, you can also use it to generate a JavaScript implementation of its citation lookup functionality, including any extra citation templates you've written. This allows it to be hosted on a static website (like [mine](https://raindrum.github.io/lawsearch), for example), or distributed as an HTML file that people can save to their own computers and bookmark as a [custom search engine](https://www.howtogeek.com/114176/HOW-TO-EASILY-CREATE-SEARCH-PLUGINS-ADD-ANY-SEARCH-ENGINE-TO-YOUR-BROWSER/).
 
 To make a JavaScript implementation, first [make a YAML file](template-yamls) with any custom citation templates you'd like to support. Next, open a command line and run the following command:
-
-1. [Write a YAML file](template-yamls) with one or more custom citation templates.
-3. Open a command line and run the following:
 
 ``` bash
 citeurl makejs -e -o output.html -t PATH_TO_YOUR_TEMPLATES.YAML

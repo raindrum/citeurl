@@ -383,7 +383,7 @@
                 <h1 id="citeurl-frontends">CiteURL Frontends</h1>
 <p>CiteURL can be used in a few forms besides the <a href="../index#usage">command-line tool</a> and <a href="../library">the Python library</a>. Here's what they are:</p>
 <h2 id="citeurl-server">CiteURL Server</h2>
-<p>If you want to use CiteURL from your web browser, it's hosted <a href="https://raindrum.pythonanywhere.com">here</a>.</p>
+<p>If you just want to use CiteURL from your web browser, there's an instance hosted <a href="https://citeurl.pythonanywhere.com">here</a>.</p>
 <p>You can also use a set of <a href="template-yamls">custom citation templates</a> to host your own instance on your local network or beyond. The simplest way to do that is to run this command:</p>
 <div class="highlight"><pre><span></span><code>citeurl host -st PATH_TO_YOUR_TEMPLATES.YAML
 </code></pre></div>
@@ -394,12 +394,8 @@
 <span class="n">APP</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="n">Citator</span><span class="p">())</span>
 </code></pre></div>
 <h2 id="javascript">JavaScript</h2>
-<p>Although CiteURL is primarily a Python program, you can also use it to generate a JavaScript implementation of its citation lookup functionality, including any extra citation templates you've written This allows it to be hosted on a static website (like <a href="https://raindrum.github.io/lawsearch">mine</a>, for example), or distributed as an HTML file that people can bookmark and use as a <a href="https://www.howtogeek.com/114176/HOW-TO-EASILY-CREATE-SEARCH-PLUGINS-ADD-ANY-SEARCH-ENGINE-TO-YOUR-BROWSER/">custom search engine</a> stored on their own computers.</p>
+<p>Although CiteURL is primarily a Python program, you can also use it to generate a JavaScript implementation of its citation lookup functionality, including any extra citation templates you've written. This allows it to be hosted on a static website (like <a href="https://raindrum.github.io/lawsearch">mine</a>, for example), or distributed as an HTML file that people can save to their own computers and bookmark as a <a href="https://www.howtogeek.com/114176/HOW-TO-EASILY-CREATE-SEARCH-PLUGINS-ADD-ANY-SEARCH-ENGINE-TO-YOUR-BROWSER/">custom search engine</a>.</p>
 <p>To make a JavaScript implementation, first <a href="template-yamls">make a YAML file</a> with any custom citation templates you'd like to support. Next, open a command line and run the following command:</p>
-<ol>
-<li><a href="template-yamls">Write a YAML file</a> with one or more custom citation templates.</li>
-<li>Open a command line and run the following:</li>
-</ol>
 <div class="highlight"><pre><span></span><code>citeurl makejs -e -o output.html -t PATH_TO_YOUR_TEMPLATES.YAML
 </code></pre></div>
 <p>Alternatively, to omit CiteURL's default templates, include the <code>-n</code> option in that command. For more info, run <code>citeurl makejs -h</code>.</p>

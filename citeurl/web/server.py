@@ -39,7 +39,7 @@ SOURCES_PAGE = """
 
 PARSER_PAGE = """
 <h1>{name} Text Parser</h1>
-<p>Paste some text into the box below and click Parse to process
+<p>Paste some text into the box below and click "Parse" to process
 the text and find every <a href="sources">supported citation</a>
 it contains.</p> 
 <form action="parser#output" method="post">
