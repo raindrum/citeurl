@@ -1,22 +1,30 @@
 :root {
   --font-color: #e5e0d7;
   --bg-color: #223159;
+  --box-bg-color: transparent;
   --emph-color: #fe0052;
+  --font-size: 18px;
+  --content-width: 60ch;
+  --content-padding: 1ch;
+  --box-padding: 8px;
+  --border-radius: 10px;
+  --outline-width: 2px;
 }
 
 body {
   background-color: var(--bg-color); 
   color: var(--font-color);
-  font-size: 18px;
+  margin: 0;
+  font-size: var(--font-size);
   font-family: Sans;
   height: calc(100vh - 4rem);
   text-align: center;
 }
 .content {
   min-height: calc(100vh - 4rem);
-  max-width: 60ch;
+  max-width: var(--content-width);
   margin: auto;
-  padding: 1ch;
+  padding: var(--content-padding);
   vertical-align: middle;
   display: flex;
   flex-direction: column;
@@ -40,9 +48,9 @@ button {
   color: var(--font-color);
   font-size: 125%;
   font-weight: bold;
-  padding: 10px;
-  border: 2px solid var(--emph-color);
-  border-radius: 10px;
+  padding: var(--box-padding);
+  border: var(--outline-width) solid var(--emph-color);
+  border-radius: var(--border-radius);
   text-align: center;
   cursor: pointer;
 }
@@ -52,12 +60,12 @@ button:hover, button:focus {
   border-color: var(--font-color);
 }
 input, textarea, .output-box {
-  background-color: transparent;
+  background-color: var(--box-bg-color);
   color: var(--font-color);
   text-align: left;
-  border: 2px solid var(--emph-color);
-  border-radius: 10px;
-  padding: 10px;
+  border: var(--outline-width) solid var(--emph-color);
+  border-radius: var(--border-radius);
+  padding: var(--box-padding);
   resize: none;
 }
 textarea, form { width: 100% !important; }
@@ -78,16 +86,18 @@ input:focus, textarea:focus, .output-box {
   overflow: hidden;
 }
 .searchbar * {
-  padding: 10px;
+  padding: var(--box-padding);
   flex-basis: 0;
 }
-.searchbar button { border-radius: 0 10px 10px 0; }
+.searchbar button {
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
 .searchbar input {
   font-size: 125%;
   min-width: 0;
   flex-grow: 1;
-  border-radius: 10px 0 0 10px;
-  padding-left: 16px;
+  padding-left: calc(1ch + var(--box-padding));
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
 
 /*======================================================================
@@ -95,8 +105,7 @@ TABLES
 ======================================================================*/
 .table-wrapper {
   overflow-x: auto;
-  overflow-y: hidden;
-  width: 100% !important;
+  width: 100%;
 }
 table {
   min-width: 100%;
@@ -107,30 +116,31 @@ table {
 }
 th, td { overflow: auto; }
 td {
-  border: solid 1px var(--font-color);
-  padding: 0.75em;
+  border: solid calc(var(--outline-width) / 2) var(--font-color);
+  padding: var(--box-padding);
+  background-color: var(--box-bg-color);
 }
-td:first-child { border-left-width: 2px; }
-td:last-child { border-right-width: 2px; }
-tr:first-child td { border-top-width: 2px; }
-tr:last-child td { border-bottom-width: 2px; }
+td:first-child { border-left-width: var(--outline-width); }
+td:last-child { border-right-width: var(--outline-width); }
+tr:first-child td { border-top-width: var(--outline-width); }
+tr:last-child td { border-bottom-width: var(--outline-width); }
 tr:first-child td:first-child {
-  border-top-left-radius: 10px;
-  -webkit-border-top-left-radius: 10px;
-  -moz-border-radius-topleft: 10px;
+  border-top-left-radius: var(--border-radius);
+  -webkit-border-top-left-radius: var(--border-radius);
+  -moz-border-radius-topleft: var(--border-radius);
 }
 tr:first-child td:last-child {
-  border-top-right-radius: 10px;
-  -webkit-border-top-right-radius: 10px;
-  -moz-border-radius-topright: 10px;
+  border-top-right-radius: var(--border-radius);
+  -webkit-border-top-right-radius: var(--border-radius);
+  -moz-border-radius-topright: var(--border-radius);
 }
 tr:last-child td:first-child {
-  border-bottom-left-radius: 10px;
-  -webkit-border-bottom-left-radius: 10px;
-  -moz-border-radius-bottomleft: 10px;
+  border-bottom-left-radius: var(--border-radius);
+  -webkit-border-bottom-left-radius: var(--border-radius);
+  -moz-border-radius-bottomleft: var(--border-radius);
 }
 tr:last-child td:last-child {
-  border-bottom-right-radius: 10px;
-  -webkit-border-bottom-right-radius: 10px;
-  -moz-border-radius-bottomright: 10px;
+  border-bottom-right-radius: var(--border-radius);
+  -webkit-border-bottom-right-radius: var(--border-radius);
+  -moz-border-radius-bottomright: var(--border-radius);
 }
