@@ -4,9 +4,9 @@ CiteURL can be used in a few forms besides the [command-line tool](../index#usag
 
 ## CiteURL Server
 
-If you just want to use CiteURL from your web browser, I host an instance of it at [citation.link](https://citation.link).
+If you just want to use CiteURL from your web browser, it's hosted as a web app at [citation.link](https://www.citation.link).
 
-You can also use a set of [custom citation templates](template-yamls) to host your own instance on your local network or beyond. The simplest way to do that is to run this command:
+You can also host your own instance of it on your local network or beyond. This is useful if you want to add support for your own [custom citation templates](template-yamls). The simplest way is to run this command:
 
 ```citeurl
 citeurl host -st PATH_TO_YOUR_TEMPLATES.YAML
@@ -18,7 +18,7 @@ Or, if you're using a hosting provider like [pythonanywhere.com](https://pythona
 from citeurl.web.server import App
 from citeurl import Citator
 
-APP = App(Citator())
+APP = App(Citator(yaml_paths=['PATH_TO_YOUR_TEMPLATES.YAML']))
 ```
 
 ## JavaScript
