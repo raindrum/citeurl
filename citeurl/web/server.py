@@ -2,6 +2,7 @@
 import socket
 from urllib.parse import unquote, quote_plus, urlsplit
 from re import sub
+from html import escape
 
 # internal imports
 from .resources import format_page, sources_table, SOURCES_INTRO
@@ -106,7 +107,7 @@ def _handle_query(query: str):
     if len(query) > _APP.max_chars:
         return format_page(ERROR_501)
     
-    query = unquote(query)
+    query = escape(unquote(query))
     cite = _APP.citator.lookup(query)
     if cite and cite.URL:
         return redirect(cite.URL, code=301)
@@ -147,7 +148,7 @@ def _linker():
             output=''
         )
         
-    given_text = request.form['text']
+    given_text = escape(request.form['text'])
     if _APP.max_chars and len(given_text) > _APP.max_chars:
         return format_page(ERROR_501)
     citations = _APP.citator.list_citations(given_text)
