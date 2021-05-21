@@ -20,7 +20,7 @@ By default, CiteURL supports Bluebook-style citations to [over 130 sources](http
 - the U.S. Constitution and all state constitutions
 - the codified laws for every state and territory except Arkansas, Georgia, Guam, and Puerto Rico.
 
-try CiteURLYou can also add more sources of law by [writing your own citation templates](https://raindrum.github.io/citeurl/template-yamls/) in YAML format.
+You can also add more sources of law by [writing your own citation templates](https://raindrum.github.io/citeurl/template-yamls/) in YAML format.
 
 ## Installation
 
