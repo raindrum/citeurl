@@ -16,7 +16,7 @@ United States Code:
   URL: https://www.law.cornell.edu/uscode/text/{title}/{section}
 ```
 
-Because of what's in the 'regex' key, this citation template recognizes any series of one or more digits, followed by " USC § ", followed by another series of digits. It knows that the first string of digits is something called a "title" and the second is a "section". We will call these stored values `tokens`.
+Because of what's in the 'regex' key, this citation template recognizes any series of one or more digits, followed by " USC § ," followed by another series of digits. It knows that the first string of digits is something called a "title" and the second is a "section." We will call these stored values "tokens."
 
 Any tokens that are captured in the regex can be used to fill placeholders (identified by curly braces) in the URL template, as shown above.
 
@@ -81,7 +81,7 @@ United States Code:
 
 ## Token Processing
 
-In many cases, the tokens matched in a citation won't directly correspond with the values that need to be inserted into the URL placeholder. For example, your template might detect a court reporter called "F. App'x." or "Pa. D. & C.4th", but [Case.Law](https://case.law/)'s URL scheme needs those reporters to be called "[f-appx](https://cite.case.law/f-appx/)" and "[pa-d-c4th](https://cite.case.law/pa-d-c4th/)", respectively.
+In many cases, the tokens matched in a citation won't directly correspond with the values that need to be inserted into the URL placeholder. For example, your template might detect a court reporter called "F. App'x." or "Pa. D. & C.4th", but [Case.Law](https://case.law/)'s URL scheme needs those reporters to be called "[f-appx](https://cite.case.law/f-appx/)" and "[pa-d-c4th](https://cite.case.law/pa-d-c4th/)," respectively.
 
 To solve this problem, CiteURL templates can specify `operations` that will be performed on the dictionary of matched tokens to turn them into a new dictionary (i.e. `processed_tokens`) before using it to populate the URL.
 
@@ -117,42 +117,29 @@ One final note: If an operation's input token has not been set (as distinct from
 
 ## Recognizing Shortform Citations
 
-Often, once a particular authority is cited once, subsequent references to it will take a shorter, more contextual format. For example, if a text cites *United States v. An Article Consisting of Boxes of Clacker Balls*, 413 F. Supp. 1281 (E.D. Wis. 1976), then immediately cites a specific page of it, the second citation might look something like "*Id*. at 1284." Later, once a different authority has been cited in the interim, the same citation might be referred back to with a citation like "413 F. Supp. at 1289."
+Often, once a particular authority is cited once, subsequent references to it will take a shorter, more contextual format. CiteURL templates can account for these kinds of citations using the `shortForms` and `idForms` keys.
 
-To address this, CiteURL can essentially generate new templates on the fly, whenever it detects a citation. These templates can be of two forms: `shortForms` and `idForms`. In each case, the template is only applied to text after the original long-form citation. The difference is that `shortForms` are applied to *all* of the remaining text, whereas `idForms` are only matched against the text in between one citation and the next. Note that the [Citator.list_citations()](../library/#citeurl.Citator.list_citations) function also accepts an interruption regex, all occurrences of which will break chains of `idForm` citations.
+ Consider the following template:
 
-Like URL templates, `idForms` and `shortForms` may contain placeholders in curly braces. These placeholders will be replaced with the corresponding token matched in the long-form citation, so that you can ensure that they only match citations where those tokens are unchanged. For instance, you could write a template to recognize court cases:
-
-``` yaml
-U.S. Caselaw:
-  regex: '(?P<volume>\d+) (?P<reporter>(\D|\d(d|th|rd))+?) (?P<page>\d+)(, (?P<pincite>\d+))?'
+```yaml
+Federal Supplement:
+  regex: '(?P<volume>\d+) F\. Supp\. (?P<page>\d+)(, (?P<pincite>\d+))?'
   idForms:
     - 'Id\. at (?P<pincite>\d+)'
   shortForms:
-    - '{volume} {reporter} at (?P<pincite>\d+)'
+    - '{volume} F\. Supp\. at (?P<pincite>\d+)'
+  URL:
+    - 'https://cite.case.law/f-supp/{title}/{page}'
+    - '#p{pincite}'
 ```
 
-This template will recognize long-form citations like 372 U.S. 335 (optionally with a pincite citation afterwards). After that long-form citation is recognized, it will generate the regex `372 U\.S\. at (?P<pincite>\d+)`, to recognize later citations to different pincites in the same case.
+If a text cites *United States v. An Article Consisting of Boxes of Clacker Balls*, 413 F. Supp. 1281 (E.D. Wis. 1976), it CiteURL will recognize it as a full citation because it matches the regex for the Federal Supplement citation template.
 
-To be precise, placeholders are replaced by the text *as originally matched* in the original regex capture group, before any [operations](#token-processing) are applied. This is normally the desired behavior, since operations often turn a token into something that would never be recognized. An exception applies where the placeholder refers to a token that only exists after operations are applied. In those cases, the processed token is used.
+When this occurs, it will dynamically generate a `shortForm` template to recognize citations like "413 F. Supp. at 1289" anywhere in the following text. It will also generate an `idForm` template that will recognize citations like "*Id.* at 1284," but which will be deactivated as soon as the text references a different authority.
 
-This exception is useful in a few situations. For instance, a California court opinion might reference "California Civil Code § 1946.2" once early on, but then shift to a format like "CIV § 1946.2" in later citations. This poses a problem because the new form drops reference to California, so it's too generic to be its own long-form citation, while at the same time it doesn't match the "Civil Code" token, either. But this can be solved by using a substitution to recognize "Civil Code" and, from it, generate a new token "CIV", then generating a short citation form from that:
+The `idForms` and `shortForms` keys are like the `regexes` key in that they contain a list of regexes, and each regex may be given as a string or a list of strings. However, they differ from normal regexes in that, like the `URL` key, they may contain placeholders in curly braces, which will be filled in with the relevant tokens found in the longform citation.
 
-``` yaml
-California Codes:
-  regex: California (?P<code>Civil Code|Penal Code) § (?P<section>\d+)
-  operations:
-    - token: code
-      output: abbreviatedCode
-      lookup: {'Civil Code':'CIV', 'Penal Code':'PEN'}
-  shortForms:
-    - {abbreviatedCode} § (?P<section>\d+)
-    - {code} § (?P<section>\d+)
-```
-
-Using the example template above, CiteURL will be able to recognize a longform citation to "California Civil Code § 1946.2", and then recognize subsequent citations *either* to "Civil Code" sections *or* "CIV" sections.
-
-One last note: The `shortForms` and `idForms` keys are like the `regexes` key in that each one contains a list of regexes, each of which can be provided either as a string or as a list of strings to concatenate.
+Note that while the `URL` key uses the tokens after they have been [processed](#token-processing), the placeholders here use the values exactly as captured in the regex, *unless* the placeholder references a token that only exists after processing.
 
 ## Miscellaneous Keys
 

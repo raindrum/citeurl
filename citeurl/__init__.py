@@ -138,7 +138,7 @@ class Citation:
             regex = template
             for key, value in template_fillers.items():
                 if not value: continue
-                regex = regex.replace('{%s}' % key, value)
+                regex = regex.replace('{%s}' % key, re.escape(value))
             templates.append(Template(
                 name=self.template.name,
                 regexes=[regex],
