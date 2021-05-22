@@ -89,6 +89,7 @@ def format_page(
         relation_to_citeurl: a string that will be inserted into the
             page footer, just before the link to CiteURL and the
             subsequent disclaimer. Default: 'Powered by'.
+        title: the HTML page title
     """
     text = text.format(**kwargs)
     if inline_logo:
@@ -99,10 +100,7 @@ def format_page(
         css_section = f'<style>{CSS_PATH.read_text()}</style>'
     else:
         css_section = '<link rel="stylesheet" href="style.css">'
-    if kwargs.get('js'):
-        js_section = f"<script>{kwargs['js']}</script>"
-    else:
-        js_section = ''
+    js_section = f"<script>{js}</script>" if js else ''
     return PAGE_TEMPLATE.format(
         content=text,
         js=js_section,

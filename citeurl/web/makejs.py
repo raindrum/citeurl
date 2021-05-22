@@ -27,7 +27,8 @@ _dir = Path(__file__).parent.absolute()
 BASE_JS_PATH =  _dir / 'citeurl.js'
 
 PAGE = """
-<h1>CiteURL</h1>
+<h1>CiteURL</h1><title>CiteURL</title>
+<div class="narrow">
 <p>Type a legal citation into the box below, and I'll try to send you
 directly to the case or law that it references:</p>
 <form onsubmit="handleSearch(event)">
@@ -39,6 +40,7 @@ directly to the case or law that it references:</p>
   <label for="q" id="explainer" class="explainer"> </label>
 </p>
 </form>
+</div>
 {sources_table}
 """
 

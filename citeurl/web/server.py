@@ -20,7 +20,8 @@ _APP = Flask(__name__, static_url_path='')
 ########################################################################
 
 INDEX_PAGE = """
-<h1>{name}</h1>
+<h1>{name}</h1><title>{name}</title>
+<div class="narrow">
 <p>Type a legal citation into the box below, and I'll try to send you
 directly to the case or law that it references:</p>
 <form class="searchbar" method="get">
@@ -30,16 +31,18 @@ directly to the case or law that it references:</p>
 <p>This web app supports citations to <a href="sources">various sources</a>
 of law. You can also use it to <a href="parser">detect citations</a> in a
 longer text, like a court opinion.</p>
+</div>
 """
 
 SOURCES_PAGE = """
-<h1>Sources of Law</h1>
+<h1>Sources of Law</h1><title>Sources of Law</title>
 {intro}
 {table}
+<p><a href="/"><button>Go Back</button></a></p>
 """
 
 PARSER_PAGE = """
-<h1>{name} Text Parser</h1>
+<h1>Text Parser</h1><title>Text Parser</title>
 <p>Paste some text into the box below and click "Parse" to process
 the text and find every <a href="sources">supported citation</a>
 it contains.</p> 
@@ -47,7 +50,8 @@ it contains.</p>
 <textarea required cols=80 rows=16 maxlength=400000 name="text"
 placeholder="Paste text here.." label="Input text for
 parser">{given_text}</textarea>
-<p><button type="submit">Parse</button></p>
+<p><a href="/"><button type="button">Go Back</button></a>
+<button type="submit">Parse</button></p>
 </form>
 {output}
 """
@@ -74,21 +78,22 @@ AUTHORITIES_TABLE_ROW = """
 
 # Errors
 
-ERROR_501 = """
-<h1>Missing URL</h1>
-<p>Sorry, I can tell that's a {template} citation but I don't have a
-link for it.</p>
-<a href="/"><button>Go Back</button></a>
-"""
 
 ERROR_400 = """
-<h1>Unrecognized Citation</h1>
+<h1>Unknown Citation</h1><title>Unknown Citation</title>
 <p>Sorry, "{query}" isn't a citation I recognize.</p>
-<a href="/"><button>Go Back</button></a>
+<p><a href="/"><button>Go Back</button></a></p>
+"""
+
+ERROR_501 = """
+<h1>Missing URL</h1><title>Missing URL</title>
+<p>Sorry, I can tell that's a {template} citation but I don't have a
+link for it.</p>
+<p><a href="/"><button>Go Back</button></a></p>
 """
 
 ERROR_413 = """
-<h1>Query Too Long</h1>
+<h1>Query Too Long</h1><title>Query Too Long</title>
 <p>Sorry, that's too many characters for the server to process.</p>
 <a href="/"><button>Go Back</button></a>
 """
@@ -141,12 +146,7 @@ def _sources():
 def _linker():
     "return a page that parses user-provided text"
     if request.method == 'GET':
-        return format_page(
-            PARSER_PAGE,
-            name=_APP.name,
-            given_text='',
-            output=''
-        )
+        return format_page(PARSER_PAGE, given_text='', output='')
         
     given_text = escape(request.form['text'])
     if _APP.max_chars and len(given_text) > _APP.max_chars:
@@ -156,7 +156,6 @@ def _linker():
     if not citations:
         return format_page(
             PARSER_PAGE,
-            name=_APP.name,
             given_text=given_text,
             output="<p>Sorry, I couldn't find any citations in that.</p>"
         )
@@ -174,7 +173,6 @@ def _linker():
     
     return format_page(
         PARSER_PAGE,
-        name=_APP.name,
         given_text=given_text,
         output=(
             '<h2 id="output">Output</h2>\n'

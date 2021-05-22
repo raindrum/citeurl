@@ -38,6 +38,7 @@ footer {
 h1, h2, h3, h4, h5, h6, a, .explainer { color: var(--emph-color); }
 h1, h2, h3, h4, h5, h6 { margin-bottom: 0.5rem; }
 img + h1, svg + h1 { margin-top: 0; }
+.narrow { max-width: 50ch; margin: 0; padding: 0; }
 
 /*======================================================================
 USER INPUT/OUTPUT
@@ -96,7 +97,6 @@ input:focus, textarea:focus, .output-box {
   font-size: 125%;
   min-width: 0;
   flex-grow: 1;
-  padding-left: calc(1ch + var(--box-padding));
   border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
 
