@@ -5,6 +5,7 @@
   --emph-color: #fe0052;
   --font-size: 18px;
   --content-width: 60ch;
+  --narrow-content-width: 48ch;
   --content-padding: 1ch;
   --box-padding: 8px;
   --border-radius: 10px;
@@ -38,7 +39,14 @@ footer {
 h1, h2, h3, h4, h5, h6, a, .explainer { color: var(--emph-color); }
 h1, h2, h3, h4, h5, h6 { margin-bottom: 0.5rem; }
 img + h1, svg + h1 { margin-top: 0; }
-.narrow { max-width: 50ch; margin: 0; padding: 0; }
+.narrow {
+  max-width: min(
+    var(--narrow-content-width),
+    calc(100vw - calc(2 * var(--content-padding)))
+  );
+  margin: 0;
+  padding: 0;
+}
 
 /*======================================================================
 USER INPUT/OUTPUT
