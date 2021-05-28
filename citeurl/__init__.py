@@ -656,7 +656,7 @@ class Template:
             regex_list = self.__dict__[key]
             if not regex_list:
                 continue
-            regex_list = list(map(lambda x: fr'(\b|^){x}(\b|$)', regex_list))
+            regex_list = list(map(lambda x: fr'(?<!\w){x}(?!\w)', regex_list))
             self.__dict__[key] = regex_list
         
         # dictionaries of compiled regexes
