@@ -26,10 +26,8 @@ You can also add more sources of law by [writing your own citation templates](ht
 
 ## Installation
 
-CiteURL has been tested with Python version 3.9, but earlier versions probably work too. Install Python if you don't have it, then run this command:
-
 ```bash
-python -m pip install citeurl
+python3 -m pip install citeurl
 ```
 
 ## Usage
@@ -38,8 +36,8 @@ CiteURL provides four command-line tools:
 
 - `citeurl process`: Parse a text and insert an HTML hyperlink for every citation it contains, including shortform citations.
 - `citeurl lookup`: Look up a single citation and display information about it.
-- `citeurl host`: Host CiteURL as a web app [like this one](https://www.citation.link).
-- `citeurl makejs`: Export an instance of CiteURL's lookup function as JavaScript that can be embedded in an HTML page. [Law Search](https://raindrum.github.io/lawsearch) is an example of this JavaScript. More info is available [here](https://raindrum.github.io/citeurl/frontends#javascript).
+- `citeurl host`: Host an instance of CiteURL as a web app like [citation.link](https://www.citation.link).
+- `citeurl makejs`: Export an instance of CiteURL's lookup feature as JavaScript or a static web page. More info is available [here](https://raindrum.github.io/citeurl/frontends#javascript).
 
 Each command has its own command-line arguments you can view with the `-h` option. They all share the `-t` option, which allows you to load a list of custom [citation templates](https://raindrum.github.io/citeurl/template-yamls/) in YAML form.
 
@@ -67,7 +65,7 @@ citeurl host -t PATH_TO_YOUR_TEMPLATES.YAML -s
 
 CiteURL is also available in a few other forms besides the command-line tool: 
 
-- [Law Search](https://raindrum.github.io/lawsearch)
+- [citation.link](https://www.citation.link), the web app
 - [a flexible Python library](https://raindrum.github.io/citeurl/library)
 - [an extension](https://raindrum.github.io/citeurl/frontends#markdown-extension) to [Python-Markdown](https://python-markdown.github.io/)
 - [a desktop search provider](https://extensions.gnome.org/extension/4225/gnome-citeurl-search-provider/) for Linux users with the GNOME shell

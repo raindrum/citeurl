@@ -6,7 +6,7 @@ from html import escape
 
 # internal imports
 from .resources import format_page, sources_table, SOURCES_INTRO
-from .. import insert_links, list_authorities
+from .. import Citator, insert_links, list_authorities
 
 # third-party imports
 from flask import Flask, redirect, make_response, send_file, request
@@ -77,7 +77,6 @@ AUTHORITIES_TABLE_ROW = """
 """
 
 # Errors
-
 
 ERROR_400 = """
 <h1>Unknown Citation</h1><title>Unknown Citation</title>
@@ -212,7 +211,7 @@ def _get_local_ip():
 # Public Functions
 ########################################################################
 
-def App(citator, name='CiteURL'):
+def App(citator: Citator=Citator(), name: str='CiteURL'):
     """
     Return a flask application to implement the given citator. If called
     repeatedly, it will probably overwrite earlier instances.

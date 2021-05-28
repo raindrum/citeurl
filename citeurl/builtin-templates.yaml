@@ -63,7 +63,7 @@ United States Constitution:
     - [*id_at, *us_const_sec, '(', *us_const_clause, ')?']
     - [*id_at, *us_const_clause]
   shortForms: 
-    - [*us_const_art_am, '(', *us_const_sec, '(', *us_const_clause, ')?)?']
+    - ['([Aa]rticle (?P<article>[\dIViv]{1,3}|[Oo]ne|[Tt]wo|[Tt]hree|[Ff]our|[Ff]ive|[Ss]ix|[Ss]even)|[Aa]m(endment|(end|dt?)\.) (?P<amendment>[\dXIVxiv]{1,3}))', '(', *us_const_sec, '(', *us_const_clause, ')?)?']
     - *the_us_const_amdt
   operations:
     - token: article

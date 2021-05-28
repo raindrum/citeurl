@@ -387,16 +387,15 @@
 </ul>
 <p>You can also add more sources of law by <a href="https://raindrum.github.io/citeurl/template-yamls/">writing your own citation templates</a> in YAML format.</p>
 <h2 id="installation">Installation</h2>
-<p>CiteURL has been tested with Python version 3.9, but earlier versions probably work too. Install Python if you don't have it, then run this command:</p>
-<div class="highlight"><pre><span></span><code>python -m pip install citeurl
+<div class="highlight"><pre><span></span><code>python3 -m pip install citeurl
 </code></pre></div>
 <h2 id="usage">Usage</h2>
 <p>CiteURL provides four command-line tools:</p>
 <ul>
 <li><code>citeurl process</code>: Parse a text and insert an HTML hyperlink for every citation it contains, including shortform citations.</li>
 <li><code>citeurl lookup</code>: Look up a single citation and display information about it.</li>
-<li><code>citeurl host</code>: Host CiteURL as a web app <a href="https://www.citation.link">like this one</a>.</li>
-<li><code>citeurl makejs</code>: Export an instance of CiteURL's lookup function as JavaScript that can be embedded in an HTML page. <a href="https://raindrum.github.io/lawsearch">Law Search</a> is an example of this JavaScript. More info is available <a href="https://raindrum.github.io/citeurl/frontends#javascript">here</a>.</li>
+<li><code>citeurl host</code>: Host an instance of CiteURL as a web app like <a href="https://www.citation.link">citation.link</a>.</li>
+<li><code>citeurl makejs</code>: Export an instance of CiteURL's lookup feature as JavaScript or a static web page. More info is available <a href="https://raindrum.github.io/citeurl/frontends#javascript">here</a>.</li>
 </ul>
 <p>Each command has its own command-line arguments you can view with the <code>-h</code> option. They all share the <code>-t</code> option, which allows you to load a list of custom <a href="https://raindrum.github.io/citeurl/template-yamls/">citation templates</a> in YAML form.</p>
 <p>Here are a few common use cases:</p>
@@ -414,7 +413,7 @@ citeurl host -t PATH_TO_YOUR_TEMPLATES.YAML -s
 </code></pre></div>
 <p>CiteURL is also available in a few other forms besides the command-line tool: </p>
 <ul>
-<li><a href="https://raindrum.github.io/lawsearch">Law Search</a></li>
+<li><a href="https://www.citation.link">citation.link</a>, the web app</li>
 <li><a href="https://raindrum.github.io/citeurl/library">a flexible Python library</a></li>
 <li><a href="https://raindrum.github.io/citeurl/frontends#markdown-extension">an extension</a> to <a href="https://python-markdown.github.io/">Python-Markdown</a></li>
 <li><a href="https://extensions.gnome.org/extension/4225/gnome-citeurl-search-provider/">a desktop search provider</a> for Linux users with the GNOME shell</li>
@@ -484,7 +483,7 @@ citeurl host -t PATH_TO_YOUR_TEMPLATES.YAML -s
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "assets/javascripts/workers/search.d351de03.min.js", "version": "8.3.5"}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "assets/javascripts/workers/search.d351de03.min.js", "version": "8.3.6"}</script>
     
     
       <script src="assets/javascripts/bundle.a1609d9a.min.js"></script>
