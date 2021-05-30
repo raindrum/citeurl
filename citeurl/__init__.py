@@ -753,9 +753,12 @@ class Template:
             except re.error as e:
                 if not self.parent_citation:
                     raise SyntaxError(
-                        f'CiteURL template for {self.name} has an invalid '
-                        + 'broadRegex' if index>len(self.regexes) else 'regex'
-                        + f': {e}'
+                        f'{self.name} citation template has a broken ' +
+                        (
+                            'broadRegex' if index > len(self.regexes)
+                            else 'regex'
+                        )
+                        + f':\n{e}'
                     )
                 # if there's a parent citation, error should refer to
                 # the parent template, not this one
