@@ -82,6 +82,12 @@ class Citation:
     def __str__(self):
         return self.text
     
+    def __repr__(self):
+        # evaluating this will give the wrong value for citation.span
+        # since the citation will be out of the document context,
+        # but it should be accurate otherwise.
+        return f'{object.__repr__(self.template)}.lookup("{self.text}")'
+    
     def _get_url(self) -> str:
         """
         Processes tokens, feeds the results into the template's
@@ -265,6 +271,20 @@ class Authority:
     
     def __str__(self):
         return str(self.base_citation)
+    
+    def __repr__(self):
+        if self.citations:
+            example_cite = self.citations[0]
+        else:
+            example_cite = self.base_citation
+        diffs = [
+            t for t in example_cite.processed_tokens.keys()
+            if t not in self.defining_tokens.keys()
+        ]
+        return (
+            f'citeurl.Authority(first_cite={repr(example_cite)}, '
+            + f'allowed_differences={diffs})'
+        )
     
     def _derive_base_citation(self, parent: Citation) -> Citation:
         replacement_tokens = {}
@@ -665,6 +685,31 @@ class Template:
         
     def __str__(self):
         return self.name
+    
+    def __repr__(self):
+        text = f'citeurl.Template(name="{self.name}", regexes={self.regexes}'
+        if self.URL:
+            text += f', URL={self.URL}'
+        if self.broadRegexes:
+            text += f', broadRegexes={self.broadRegexes}'
+        if self.idForms:
+            text += f', idForms={self.idForms}'
+        if self.shortForms:
+            text += f', shortForms={self.shortForms}'
+        if self.defaults:
+            text += f', defaults={self.defaults}'
+        if self.operations:
+            text += f', operations={self.operations}'
+        if self.parent_citation:
+            # don't use the parent cite's actual __repr__ because this gets
+            # very recursive very fast
+            text += (
+                ', parent_citation=' +
+                object.__repr__(self.parent_citation)
+            )
+        if self.is_id:
+            text += ', _is_id=True'
+        return text + ')'
     
     def lookup(
         self,

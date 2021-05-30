@@ -88,11 +88,12 @@ U.S. Public Laws:
   URL: https://uscode.house.gov/statutes/pl/{congress}/{law}.pdf
 
 U.S. Statutes at Large:
-  regex: (?P<volume>\d+) Stat\.? (?P<page>\d+)([–‑-]\d+)?(, (?P<pincite>\d+))?
+  regex:
+    - (?P<volume>\d+) Stat\.? (?P<page>\d+)(, (?P<pincite>\d+))?
   URL: https://www.govinfo.gov/content/pkg/STATUTE-{volume}/pdf/STATUTE-{volume}-Pg{page}.pdf
 
 Federal Register:
-  regex: (?P<volume>\d+) (Fed\. ?Reg\.|F\.? ?R\.?) (?P<page>\d([,\d]+\d)?)
+  regex: (?P<volume>\d+) (Fed\. ?Reg\.|F\.? ?R\.?) (?P<page>\d([,\d]+\d)?)(, (?P<pincite>\d+))?
   operations:
     - token: page
       sub: [',', '']
@@ -212,7 +213,7 @@ National Labor Relations Act:
     - '#{subsection}'
 
 National Labor Relations Board Decisions:
-  regex: (?P<volume>\d+) N\.? ?L\.? ?R\.? ?B\.? (?P<page>\d+)
+  regex: (?P<volume>\d+) N\.? ?L\.? ?R\.? ?B\.? (?P<page>\d+)(, (?P<pincite>\d+))?
   URL: https://www.nlrb.gov/cases-decisions/decisions/board-decisions?search_term=&volume={volume}&page_number={page}
 
 National Labor Relations Board Slip Opinions:
