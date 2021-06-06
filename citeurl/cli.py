@@ -319,12 +319,12 @@ def main():
         # pretty-print citation information by indenting each bit of info
         # based on the length of the longest token name
         key_lengths = [
-            len(k) for k in citation.tokens.keys()
-            if citation.tokens[k]
+            len(k) for k in citation.processed_tokens.keys()
+            if citation.processed_tokens[k]
         ]
         tab_width = max(key_lengths) + 2
         print('Source: '.ljust(tab_width) + str(citation.template))
-        for key, value in citation.tokens.items():
+        for key, value in citation.processed_tokens.items():
             if not value:
                 continue
             print(

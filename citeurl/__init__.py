@@ -55,7 +55,9 @@ class Citation:
             this citation matched. For "id." and "shortform" citations,
             this includes tokens carried over from the parent citation.
         processed_tokens: Dictionary of tokens after they have been
-            modified via the template's processes.
+            modified via the template's operations. Toekns  whose names
+            begin with an underscore will be omitted from the
+            processed_tokens attribute.
         URL: The URL where a user can read this citation online
         authority: The Authority that this citation is a reference to.
             This attribute is not set until list_authorities() is run.
@@ -76,39 +78,25 @@ class Citation:
                 self.tokens[key] = val
         else:
             self.tokens: dict = match.groupdict()
-        self.processed_tokens: dict = self.template._process_tokens(self.tokens)
-        self.URL: str = self._get_url()
-    
-    def __str__(self):
-        return self.text
-    
-    def __repr__(self):
-        # evaluating this will give the wrong value for citation.span
-        # since the citation will be out of the document context,
-        # but it should be accurate otherwise.
-        return f'{object.__repr__(self.template)}.lookup("{self.text}")'
-    
-    def _get_url(self) -> str:
-        """
-        Processes tokens, feeds the results into the template's
-        URL template, and returns the resulting URL.
         
-        Returns:
-            A generated URL pointing to where to find the citation,
-            or None.
-        """
-        if not hasattr(self.template, 'URL'):
-            return None
-        # Process matched tokens (i.e. named regex capture groups)
-        URL = """"""
-        for part in self.template.URL:
-            for key, value in self.processed_tokens.items():
-                if value is None: continue
-                part = part.replace('{%s}' % key, value)
-            missing_value = re.search('\{.+\}', part)
-            if not missing_value:
-                URL += part
-        return URL
+        # get processed tokens and URL
+        tokens = self.template._process_tokens(self.tokens)
+        self.processed_tokens = {
+            k:v for (k,v) in tokens.items() if not k.startswith('_')
+        }
+        if self.template.URL:
+            URL = ''
+            for part in self.template.URL:
+                for key, value in tokens.items():
+                    if value is None:
+                        continue
+                    part = part.replace('{%s}' % key, value)
+                missing_value = re.search('\{.+\}', part)
+                if not missing_value:
+                    URL += part
+            self.URL = URL
+        else:
+            self.URL = None
     
     def get_link(self, attrs: dict={'class': 'citation'}):
         """Return citation's link element, with given attributes"""
@@ -149,7 +137,7 @@ class Citation:
                 name=self.template.name,
                 regexes=[regex],
                 idForms=self.template.idForms,
-                URL=self.template.URL if hasattr(self.template, 'URL') else None,
+                URL=self.template.URL,
                 operations=self.template.operations,
                 defaults=self.template.defaults,
                 parent_citation=self,
@@ -183,6 +171,28 @@ class Citation:
                 id_citations.append(id_citation)
                 scan_cites.append(id_citation)
         return id_citations
+    
+    def __str__(self):
+        return self.text
+    
+    def __repr__(self):
+        # evaluating this will give the wrong value for citation.span
+        # since the citation will be out of the document context,
+        # but it should be accurate otherwise.
+        return f'{object.__repr__(self.template)}.lookup("{self.text}")'
+    
+    def __eq__(self, other_citation):
+        """
+        Two citations are equal if they were matched by templates with
+        the same name, and if they have the same processed_tokens.
+        """
+        if (
+            self.template.name == other_citation.template.name and
+            self.processed_tokens == other_citation.processed_tokens
+        ):
+            return True
+        else:
+            return False
 
 
 class Authority:
@@ -648,7 +658,14 @@ class Template:
             idForms: Think "id.", not ID. Identical to shortForms,
                 except that these regexes will only match until the
                 next different citation or other interruption.
-                
+            
+            broadRegexes: Identical to regexes, except that they will be
+                matched in addition to the normal regexes, and only in
+                lookups where broad=True. This is meant to allow for
+                very permissive regexes in contexts like a search
+                engine, where user convenience is more important than
+                avoiding false positives.
+            
             parent_citation: The citation, if any, that this template
                 was created as a shortform of. This argument is
                 for dynamically-generated templates, and there is usually
@@ -660,6 +677,8 @@ class Template:
         self.is_id: bool = _is_id
         if URL:
             self.URL: str = URL if type(URL) is list else [URL]
+        else:
+            self.URL = None
         # Supplemental regexes
         self.broadRegexes: str = broadRegexes
         self.idForms: list = idForms

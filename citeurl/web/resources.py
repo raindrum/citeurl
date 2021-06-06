@@ -91,7 +91,9 @@ def format_page(
             subsequent disclaimer. Default: 'Powered by'.
         title: the HTML page title
     """
-    text = text.format(**kwargs)
+    for k, v in kwargs.items():
+        text = text.replace('{' + k + '}', v)
+    #text = text.format(**kwargs)
     if inline_logo:
         logo = LOGO_PATH.read_text()
     else:

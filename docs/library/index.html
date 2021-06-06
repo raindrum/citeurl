@@ -357,6 +357,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#citeurl.Citation.__eq__" class="md-nav__link">
+    __eq__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#citeurl.Citation.__init__" class="md-nav__link">
     __init__()
   </a>
@@ -567,6 +574,13 @@
   
     <nav class="md-nav" aria-label="Citation">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#citeurl.Citation.__eq__" class="md-nav__link">
+    __eq__()
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#citeurl.Citation.__init__" class="md-nav__link">
@@ -1356,6 +1370,19 @@ next different citation or other interruption.</p>
 <td><code>[]</code></td>
 </tr>
 <tr>
+<td><code>broadRegexes</code></td>
+<td><code>list</code></td>
+<td>
+<p>Identical to regexes, except that they will be
+matched in addition to the normal regexes, and only in
+lookups where broad=True. This is meant to allow for
+very permissive regexes in contexts like a search
+engine, where user convenience is more important than
+avoiding false positives.</p>
+</td>
+<td><code>None</code></td>
+</tr>
+<tr>
 <td><code>parent_citation</code></td>
 <td><code>Citation</code></td>
 <td>
@@ -1461,6 +1488,13 @@ no need to use it manually.</p>
 <span class="sd">            except that these regexes will only match until the</span>
 <span class="sd">            next different citation or other interruption.</span>
 
+<span class="sd">        broadRegexes: Identical to regexes, except that they will be</span>
+<span class="sd">            matched in addition to the normal regexes, and only in</span>
+<span class="sd">            lookups where broad=True. This is meant to allow for</span>
+<span class="sd">            very permissive regexes in contexts like a search</span>
+<span class="sd">            engine, where user convenience is more important than</span>
+<span class="sd">            avoiding false positives.</span>
+
 <span class="sd">        parent_citation: The citation, if any, that this template</span>
 <span class="sd">            was created as a shortform of. This argument is</span>
 <span class="sd">            for dynamically-generated templates, and there is usually</span>
@@ -1472,6 +1506,8 @@ no need to use it manually.</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">is_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">_is_id</span>
     <span class="k">if</span> <span class="n">URL</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">URL</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">URL</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span> <span class="k">else</span> <span class="p">[</span><span class="n">URL</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">URL</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1"># Supplemental regexes</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">broadRegexes</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">broadRegexes</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">idForms</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">idForms</span>
@@ -1760,15 +1796,17 @@ this includes tokens carried over from the parent citation.</p>
 </tr>
 <tr>
 <td><code>processed_tokens</code></td>
-<td><code>dict</code></td>
+<td><code></code></td>
 <td>
 <p>Dictionary of tokens after they have been
-modified via the template's processes.</p>
+modified via the template's operations. Toekns  whose names
+begin with an underscore will be omitted from the
+processed_tokens attribute.</p>
 </td>
 </tr>
 <tr>
 <td><code>URL</code></td>
-<td><code>str</code></td>
+<td><code></code></td>
 <td>
 <p>The URL where a user can read this citation online</p>
 </td>
@@ -1784,6 +1822,39 @@ This attribute is not set until list_authorities() is run.</p>
 </tbody>
 </table>
 <div class="doc doc-children">
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="citeurl.Citation.__eq__">
+
+<code class="highlight language-python"><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_citation</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-special"><code>special</code></small>
+  </span>
+
+      </h3>
+<div class="doc doc-contents ">
+<p>Two citations are equal if they were matched by templates with
+the same name, and if they have the same processed_tokens.</p>
+<details class="quote">
+          <summary>Source code in <code>citeurl/__init__.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_citation</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Two citations are equal if they were matched by templates with</span>
+<span class="sd">    the same name, and if they have the same processed_tokens.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other_citation</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">processed_tokens</span> <span class="o">==</span> <span class="n">other_citation</span><span class="o">.</span><span class="n">processed_tokens</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="citeurl.Citation.__init__">
 
@@ -1816,8 +1887,25 @@ by means other than a Citator or Template object.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">processed_tokens</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">_process_tokens</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_url</span><span class="p">()</span>
+
+    <span class="c1"># get processed tokens and URL</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">_process_tokens</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">processed_tokens</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">tokens</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span>
+        <span class="n">URL</span> <span class="o">=</span> <span class="s1">''</span>
+        <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">tokens</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">part</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'{</span><span class="si">%s</span><span class="s1">}'</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="n">missing_value</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">'\{.+\}'</span><span class="p">,</span> <span class="n">part</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">missing_value</span><span class="p">:</span>
+                <span class="n">URL</span> <span class="o">+=</span> <span class="n">part</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">URL</span> <span class="o">=</span> <span class="n">URL</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">URL</span> <span class="o">=</span> <span class="kc">None</span>
 </code></pre>
 </div>
 </details>
@@ -2381,7 +2469,7 @@ that refer to each, from most to least.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": "8.3.9"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": "8.4.0"}</script>
     
     
       <script src="../assets/javascripts/bundle.a1609d9a.min.js"></script>

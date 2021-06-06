@@ -113,7 +113,9 @@ The above example shows two kinds of operation: case modification (`case`), and 
 | `lpad`           | adds zeros to the beginning of the token until it is the specified length | an integer                           |
 | `numberFormat`   | assumes that the token is an integer in digit or roman numeral form, and converts it to the specified form, irrespective of which format it was originally in. The outputted roman numerals are capitalized. | `roman` or `digit`                   |
 
-One final note: If an operation's input token has not been set (as distinct from being set to an empty string), the operation will be skipped.
+Two final notes: First, if an operation's input token has not been set (as distinct from being set to an empty string), the operation will be skipped without error.
+
+Second, if a token's name begins with an underscore, it will ultimately be omitted from the citation's `processed_tokens` attribute. This is meant as a way to distinguish between tokens that are crucial to the identity of the citation (e.g. the page number) and those that only serve as scaffolding to build a URL (e.g. a left-padded duplicate of the page number).
 
 ## Recognizing Shortform Citations
 

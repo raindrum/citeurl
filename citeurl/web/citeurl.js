@@ -300,7 +300,7 @@ class Citation {
   }
 }
 
-/*LOGS
+/*PAGEBEHAVIOR
 // run search from form entry
 function handleSearch(event) {
   event.preventDefault()

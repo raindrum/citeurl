@@ -1,6 +1,6 @@
 # python standard imports
 import socket
-from urllib.parse import unquote, quote_plus, urlsplit
+from urllib.parse import unquote, urlsplit
 from re import sub
 from html import escape
 
@@ -117,7 +117,8 @@ def _handle_query(query: str):
         return redirect(cite.URL, code=301)
     elif cite:
         return make_response(
-            format_page(ERROR_501, template=cite.template.name), 501
+            format_page(ERROR_501, template=cite.template.name),
+            501
         )
     else:
         return make_response(format_page(ERROR_400, query=query), 400)

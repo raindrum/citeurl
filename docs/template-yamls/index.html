@@ -568,7 +568,8 @@
 </tr>
 </tbody>
 </table>
-<p>One final note: If an operation's input token has not been set (as distinct from being set to an empty string), the operation will be skipped.</p>
+<p>Two final notes: First, if an operation's input token has not been set (as distinct from being set to an empty string), the operation will be skipped without error.</p>
+<p>Second, if a token's name begins with an underscore, it will ultimately be omitted from the citation's <code>processed_tokens</code> attribute. This is meant as a way to distinguish between tokens that are crucial to the identity of the citation (e.g. the page number) and those that only serve as scaffolding to build a URL (e.g. a left-padded duplicate of the page number).</p>
 <h2 id="recognizing-shortform-citations">Recognizing Shortform Citations</h2>
 <p>Often, once a particular authority is cited once, subsequent references to it will take a shorter, more contextual format. CiteURL templates can account for these kinds of citations using the <code>shortForms</code> and <code>idForms</code> keys.</p>
 <p>Consider the following template:</p>
@@ -651,7 +652,7 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": "8.3.9"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": "8.4.0"}</script>
     
     
       <script src="../assets/javascripts/bundle.a1609d9a.min.js"></script>
