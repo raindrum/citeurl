@@ -21,12 +21,10 @@ LOGO_PATH = _dir / 'logo.svg'
 PAGE_TEMPLATE = """
 <head>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  {css}
-  {js}
+  {head}
 </head>
 <body>
 <div class="content">
-  {logo}
   {content}
 </div>
 <footer>{relation}
@@ -102,12 +100,14 @@ def format_page(
         css_section = f'<style>{CSS_PATH.read_text()}</style>'
     else:
         css_section = '<link rel="stylesheet" href="style.css">'
+    if not inline_logo: # add favicon to header
+        favicon = '<link rel="icon" href="logo.svg">\n'
+    else:
+        favicon = ''
     js_section = f"<script>{js}</script>" if js else ''
     return PAGE_TEMPLATE.format(
-        content=text,
-        js=js_section,
-        css=css_section,
-        logo=logo,
+        head=favicon + css_section + '\n' + js_section,
+        content=logo + '\n' + text,
         version=VERSION,
         relation=kwargs.get('relation') or 'Powered by',
     )

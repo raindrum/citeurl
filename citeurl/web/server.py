@@ -197,7 +197,6 @@ def _css():
 
 def _get_local_ip():
     "get local IP address. source: https://stackoverflow.com/a/28950776"
-    # source: https://stackoverflow.com/a/28950776
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
         s.connect(('10.255.255.255', 1))
