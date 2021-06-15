@@ -343,6 +343,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#citeurl.Template.to_yaml" class="md-nav__link">
+    to_yaml()
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -558,6 +565,13 @@
           <li class="md-nav__item">
   <a href="#citeurl.Template.lookup" class="md-nav__link">
     lookup()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#citeurl.Template.to_yaml" class="md-nav__link">
+    to_yaml()
   </a>
   
 </li>
@@ -816,9 +830,9 @@ disable, set to None.</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">generic_id</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">defaults</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">DEFAULT_YAML_PATH</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">DEFAULT_YAML_PATH</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
     <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">yaml_paths</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
 </code></pre>
 </div>
 </details>
@@ -1053,12 +1067,12 @@ text.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="citeurl.Citator.load_yaml">
 
-<code class="highlight language-python"><span class="n">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">use_generic_id</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml</span><span class="p">,</span> <span class="n">use_generic_id</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 
       </h3>
 <div class="doc doc-contents ">
-<p>Import templates from the specified YAML file into the citator.</p>
+<p>Import templates from the given YAML string into the citator.</p>
 <p><strong>Parameters:</strong></p>
 <table>
 <thead>
@@ -1072,7 +1086,7 @@ text.</p>
 <tbody>
 <tr>
 <td><code>path</code></td>
-<td><code>str</code></td>
+<td><code></code></td>
 <td>
 <p>path to the YAML file to load</p>
 </td>
@@ -1091,17 +1105,16 @@ text.</p>
 <details class="quote">
           <summary>Source code in <code>citeurl/__init__.py</code></summary>
           <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use_generic_id</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use_generic_id</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">"""</span>
-<span class="sd">    Import templates from the specified YAML file into the citator.</span>
+<span class="sd">    Import templates from the given YAML string into the citator.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        path: path to the YAML file to load</span>
 <span class="sd">        use_generic_id: Whether to append the citator's generic_id</span>
 <span class="sd">        citation format to the loaded templates.</span>
 <span class="sd">    """</span>
-    <span class="n">yaml_text</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
-    <span class="n">yaml_dict</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">yaml_text</span><span class="p">)</span>
+    <span class="n">yaml_dict</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">yaml</span><span class="p">)</span>
 
     <span class="c1"># read each item in the YAML into a new template</span>
     <span class="k">for</span> <span class="n">template_name</span><span class="p">,</span> <span class="n">template_data</span> <span class="ow">in</span> <span class="n">yaml_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -1746,6 +1759,62 @@ or None.</p>
 </details>
 </div>
 </div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="citeurl.Template.to_yaml">
+
+<code class="highlight language-python"><span class="n">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+      </h3>
+<div class="doc doc-contents ">
+<p>Convert this template to a loadable yaml</p>
+<details class="quote">
+          <summary>Source code in <code>citeurl/__init__.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s2">"Convert this template to a loadable yaml"</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regexes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">values</span><span class="p">[</span><span class="s1">'regexes'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regexes</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">values</span><span class="p">[</span><span class="s1">'regex'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regexes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">broadRegexes</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">broadRegexes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">values</span><span class="p">[</span><span class="s1">'broadRegexes'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">broadRegexes</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">values</span><span class="p">[</span><span class="s1">'broadRegex'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">broadRegexes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
+        <span class="n">values</span><span class="p">[</span><span class="s1">'operations'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">:</span>
+        <span class="n">values</span><span class="p">[</span><span class="s1">'defaults'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shortForms</span><span class="p">:</span>
+        <span class="n">values</span><span class="p">[</span><span class="s1">'shortForms'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shortForms</span>
+
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">idForms</span><span class="p">:</span>
+        <span class="n">values</span><span class="p">[</span><span class="s1">'idForms'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">idForms</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">values</span><span class="p">[</span><span class="s1">'URL'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">URL</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">values</span><span class="p">[</span><span class="s1">'URL'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">safe_dump</span><span class="p">(</span>
+        <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">values</span><span class="p">},</span>
+        <span class="n">sort_keys</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">allow_unicode</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1891,7 +1960,7 @@ by means other than a Citator or Template object.</p>
     <span class="c1"># get processed tokens and URL</span>
     <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">_process_tokens</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">processed_tokens</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">tokens</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)</span>
+        <span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">tokens</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)</span>
     <span class="p">}</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span>
         <span class="n">URL</span> <span class="o">=</span> <span class="s1">''</span>
@@ -2469,7 +2538,7 @@ that refer to each, from most to least.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": "8.4.1"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": "8.4.2"}</script>
     
     
       <script src="../assets/javascripts/bundle.a1609d9a.min.js"></script>

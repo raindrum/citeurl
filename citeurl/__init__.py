@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Iterable
 
 # external imports
-from yaml import safe_load
+from yaml import safe_load, safe_dump
 
 # file with all the templates to load by default
 DEFAULT_YAML_PATH = Path(__file__).parent.absolute() / 'builtin-templates.yaml'
@@ -82,7 +82,7 @@ class Citation:
         # get processed tokens and URL
         tokens = self.template._process_tokens(self.tokens)
         self.processed_tokens = {
-            k:v for (k,v) in tokens.items() if not k.startswith('_')
+            k:v for (k,v) in tokens.items() if v and not k.startswith('_')
         }
         if self.template.URL:
             URL = ''
@@ -378,21 +378,20 @@ class Citator:
         self.generic_id: str = generic_id
         self.templates: list = []
         if defaults:
-            self.load_yaml(DEFAULT_YAML_PATH)
+            self.load_yaml(DEFAULT_YAML_PATH.read_text())
         for path in yaml_paths:
-            self.load_yaml(path)
+            self.load_yaml(path.read_text())
     
-    def load_yaml(self, path: str, use_generic_id: bool=True):
+    def load_yaml(self, yaml: str, use_generic_id: bool=True):
         """
-        Import templates from the specified YAML file into the citator.
+        Import templates from the given YAML string into the citator.
         
         Arguments:
             path: path to the YAML file to load
             use_generic_id: Whether to append the citator's generic_id
             citation format to the loaded templates.
         """
-        yaml_text = Path(path).read_text()
-        yaml_dict = safe_load(yaml_text)
+        yaml_dict = safe_load(yaml)
         
         # read each item in the YAML into a new template
         for template_name, template_data in yaml_dict.items():
@@ -730,6 +729,46 @@ class Template:
             text += ', _is_id=True'
         return text + ')'
     
+    def to_yaml(self) -> str:
+        "Convert this template to a loadable yaml"
+        values = {}
+        if len(self.regexes) > 1:
+            values['regexes'] = self.regexes
+        else:
+            values['regex'] = self.regexes[0]
+        
+        if not self.broadRegexes:
+            pass
+        elif len(self.broadRegexes) > 1:
+            values['broadRegexes'] = self.broadRegexes
+        else:
+            values['broadRegex'] = self.broadRegexes[0]
+        
+        if self.operations:
+            values['operations'] = self.operations
+        
+        if self.defaults:
+            values['defaults'] = self.defaults
+        
+        if self.shortForms:
+            values['shortForms'] = self.shortForms
+        
+        if self.idForms:
+            values['idForms'] = self.idForms
+        
+        if not self.URL:
+            pass
+        elif len(self.URL) > 1:
+            values['URL'] = self.URL
+        else:
+            values['URL'] = self.URL[0]
+        
+        return safe_dump(
+            {self.name: values},
+            sort_keys = False,
+            allow_unicode = True,
+        )
+        
     def lookup(
         self,
         text: str,
