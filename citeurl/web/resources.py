@@ -118,7 +118,7 @@ def sources_table(citator):
     citator can link to.
     """ 
     rows = []
-    for template in citator.templates:
+    for template in citator.templates.values():
         # skip templates that can't make URLs
         if not template.__dict__.get('URL'):
             continue

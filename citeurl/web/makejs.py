@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 # python standard imports
 from argparse import ArgumentParser
 from json import dumps
@@ -79,7 +77,7 @@ def makejs(
     
     # translate each template to json
     json_templates = []
-    for template in citator.templates:
+    for template in citator.templates.values():
         # skip templates without URL templates
         if 'URL' not in template.__dict__:
             continue

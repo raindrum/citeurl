@@ -24,7 +24,7 @@ Once you have a list of citations, you can get information about each one:
 print(citations[0].text)
 # 42 USC § 1988(b)
 print(citations[0].tokens)
-# {'title': '42', 'section': '1988', 'subsection': '(b)'}
+# {'Title': '42', 'Section': '1988', 'subsection': 'b'}
 print(citations[0].URL)
 # https://www.law.cornell.edu/uscode/text/42/1988#b
 ```

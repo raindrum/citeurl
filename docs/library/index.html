@@ -330,6 +330,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#citeurl.Template.from_dict" class="md-nav__link">
+    from_dict()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#citeurl.Template.get_citations" class="md-nav__link">
     get_citations()
   </a>
@@ -400,6 +407,13 @@
           <li class="md-nav__item">
   <a href="#citeurl.Authority.__init__" class="md-nav__link">
     __init__()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#citeurl.Authority.base_citation" class="md-nav__link">
+    base_citation()
   </a>
   
 </li>
@@ -556,6 +570,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#citeurl.Template.from_dict" class="md-nav__link">
+    from_dict()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#citeurl.Template.get_citations" class="md-nav__link">
     get_citations()
   </a>
@@ -631,6 +652,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#citeurl.Authority.base_citation" class="md-nav__link">
+    base_citation()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#citeurl.Authority.include" class="md-nav__link">
     include()
   </a>
@@ -696,7 +724,7 @@
 <div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">citations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 <span class="c1"># 42 USC § 1988(b)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">citations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
-<span class="c1"># {&#39;title&#39;: &#39;42&#39;, &#39;section&#39;: &#39;1988&#39;, &#39;subsection&#39;: &#39;(b)&#39;}</span>
+<span class="c1"># {&#39;Title&#39;: &#39;42&#39;, &#39;Section&#39;: &#39;1988&#39;, &#39;subsection&#39;: &#39;b&#39;}</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">citations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">URL</span><span class="p">)</span>
 <span class="c1"># https://www.law.cornell.edu/uscode/text/42/1988#b</span>
 </code></pre></div>
@@ -733,19 +761,10 @@ to apply them to text, to find all kinds of citations in a text.</p>
 <tbody>
 <tr>
 <td><code>templates</code></td>
-<td><code>list</code></td>
+<td><code>dict</code></td>
 <td>
-<p>A list of template objects that this citator will try to
-match against.</p>
-</td>
-</tr>
-<tr>
-<td><code>generic_id</code></td>
-<td><code>str</code></td>
-<td>
-<p>A common regex the citator will append to each
-template when it is loaded, to recognize a simple citation to
-the most-recently cited source.</p>
+<p>A dictionary of citation templates that this citator
+will try to match against.</p>
 </td>
 </tr>
 </tbody>
@@ -754,7 +773,7 @@ the most-recently cited source.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="citeurl.Citator.__init__">
 
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml_paths</span><span class="o">=</span><span class="p">[],</span> <span class="n">defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">generic_id</span><span class="o">=</span><span class="s1">'</span><span class="se">\\</span><span class="s1">b(Ib)?[Ii]d</span><span class="se">\\</span><span class="s1">.(&lt;</span><span class="se">\\</span><span class="s1">/(i|em|u)&gt;)?'</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml_paths</span><span class="o">=</span><span class="p">[],</span> <span class="n">defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -787,21 +806,9 @@ templates.</p>
 <td><code>yaml_paths</code></td>
 <td><code>list</code></td>
 <td>
-<p>paths to additional YAML files with templates that
-should be loaded to supplement or replace the defaults.</p>
+<p>paths to additional YAML files with templates that</p>
 </td>
 <td><code>[]</code></td>
-</tr>
-<tr>
-<td><code>generic_id</code></td>
-<td><code>str</code></td>
-<td>
-<p>a common regex to append to all templates, to
-recognize a simple citation to the most-recently cited
-source. Detects "id." or "ibid." by default. To
-disable, set to None.</p>
-</td>
-<td><code>'\\b(Ib)?[Ii]d\\.(&lt;\\/(i|em|u)&gt;)?'</code></td>
 </tr>
 </tbody>
 </table>
@@ -812,7 +819,6 @@ disable, set to None.</p>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">yaml_paths</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">defaults</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">generic_id</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">GENERIC_ID</span>
 <span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Calls load_yaml one or more times, to load the citator with</span>
@@ -821,18 +827,12 @@ disable, set to None.</p>
 <span class="sd">    Arguments:</span>
 <span class="sd">        defaults: Whether to load CiteURL's default templates</span>
 <span class="sd">        yaml_paths: paths to additional YAML files with templates that</span>
-<span class="sd">            should be loaded to supplement or replace the defaults.</span>
-<span class="sd">        generic_id: a common regex to append to all templates, to</span>
-<span class="sd">            recognize a simple citation to the most-recently cited</span>
-<span class="sd">            source. Detects "id." or "ibid." by default. To</span>
-<span class="sd">            disable, set to None.</span>
 <span class="sd">    """</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">generic_id</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">if</span> <span class="n">defaults</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">DEFAULT_YAML_PATH</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
     <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">yaml_paths</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
 </code></pre>
 </div>
 </details>
@@ -1019,7 +1019,7 @@ text.</p>
 <span class="sd">    """</span>
     <span class="c1"># First, get full citations:</span>
     <span class="n">citations</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="n">citations</span> <span class="o">+=</span> <span class="n">template</span><span class="o">.</span><span class="n">get_citations</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
     <span class="n">shortform_cites</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -1067,7 +1067,7 @@ text.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="citeurl.Citator.load_yaml">
 
-<code class="highlight language-python"><span class="n">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml</span><span class="p">,</span> <span class="n">use_generic_id</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml</span><span class="p">)</span></code>
 
 
       </h3>
@@ -1092,61 +1092,20 @@ text.</p>
 </td>
 <td><em>required</em></td>
 </tr>
-<tr>
-<td><code>use_generic_id</code></td>
-<td><code>bool</code></td>
-<td>
-<p>Whether to append the citator's generic_id</p>
-</td>
-<td><code>True</code></td>
-</tr>
 </tbody>
 </table>
 <details class="quote">
           <summary>Source code in <code>citeurl/__init__.py</code></summary>
           <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">use_generic_id</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<pre><span></span><code><span class="k">def</span> <span class="nf">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Import templates from the given YAML string into the citator.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        path: path to the YAML file to load</span>
-<span class="sd">        use_generic_id: Whether to append the citator's generic_id</span>
-<span class="sd">        citation format to the loaded templates.</span>
 <span class="sd">    """</span>
-    <span class="n">yaml_dict</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">yaml</span><span class="p">)</span>
-
-    <span class="c1"># read each item in the YAML into a new template</span>
-    <span class="k">for</span> <span class="n">template_name</span><span class="p">,</span> <span class="n">template_data</span> <span class="ow">in</span> <span class="n">yaml_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="c1"># if regex is specified in singular form, convert it to a</span>
-        <span class="c1"># list with one item, for sake of consistency with multiple-</span>
-        <span class="c1"># regex templates.</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'regex'</span><span class="p">,</span> <span class="s1">'broadRegex'</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">template_data</span><span class="p">:</span>
-              <span class="n">template_data</span><span class="p">[</span><span class="n">key</span> <span class="o">+</span> <span class="s1">'es'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">template_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
-
-        <span class="c1"># unrelated: if an individual regex is given as a list of</span>
-        <span class="c1"># strings (convenient for reusing YAML anchors), concatenate</span>
-        <span class="c1"># it to one string.</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'regexes'</span><span class="p">,</span> <span class="s1">'broadRegexes'</span><span class="p">,</span> <span class="s1">'idForms'</span><span class="p">,</span> <span class="s1">'shortForms'</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">template_data</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">regex</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">template_data</span><span class="p">[</span><span class="n">key</span><span class="p">]):</span>
-                <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">regex</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
-                    <span class="n">template_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">regex</span><span class="p">)</span>
-
-        <span class="c1"># make the template and add it to the citator, adding the</span>
-        <span class="c1"># generic id-form citation if applicable</span>
-        <span class="n">new_template</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">template_name</span><span class="p">,</span> <span class="o">**</span><span class="n">template_data</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="n">use_generic_id</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span>
-            <span class="c1"># weird bug: without this next check, the generic id</span>
-            <span class="c1"># gets added upwards of 44 times even though the code</span>
-            <span class="c1"># appears to run only once</span>
-            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">new_template</span><span class="o">.</span><span class="n">idForms</span>
-        <span class="p">):</span>
-            <span class="n">new_template</span><span class="o">.</span><span class="n">idForms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generic_id</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_template</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">yaml</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Template</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
 </code></pre>
 </div>
 </details>
@@ -1229,7 +1188,7 @@ if available, each template's broadRegex.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        A single citation object, or None</span>
 <span class="sd">    """</span>
-    <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="n">citation</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">get_citations</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="n">broad</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">citation</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">citation</span>
@@ -1254,7 +1213,7 @@ the Template class directly.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="citeurl.Template.__init__">
 
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">regexes</span><span class="p">,</span> <span class="n">URL</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">broadRegexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">idForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">shortForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{},</span> <span class="n">operations</span><span class="o">=</span><span class="p">[],</span> <span class="n">parent_citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_is_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">regexes</span><span class="p">,</span> <span class="n">URL</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">broadRegexes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">idForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">shortForms</span><span class="o">=</span><span class="p">[],</span> <span class="n">defaults</span><span class="o">=</span><span class="p">{},</span> <span class="n">operations</span><span class="o">=</span><span class="p">[],</span> <span class="n">use_generic_id</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parent_citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_is_id</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -1324,10 +1283,11 @@ otherwise set by a regex capture group.</p>
 <td><code>operations</code></td>
 <td><code>list</code></td>
 <td>
-<p>A list of operations to perform on the tokens,
-in sequence, to transform them from <code>captured_tokens</code> to
-<code>processed_tokens</code>, the tokens that are used for URL
-generation.</p>
+<p>A list of dicts, where each dict represents a
+string modification to perform on a value captured by
+a named capture group in the regex. Operations are
+performed in order, and the end result of all operations
+is saved as the citation's 'tokens' attribute.</p>
 <p>Each operation must specify a <code>token</code> for its input. It
 will also be used as the output of the operation, unless
 <code>output</code> is specified. If the specified input token is
@@ -1396,6 +1356,15 @@ avoiding false positives.</p>
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>use_generic_id</code></td>
+<td><code>bool</code></td>
+<td>
+<p>Whether this template should recognize the
+generic "id." citation defined in GENERIC_ID</p>
+</td>
+<td><code>True</code></td>
+</tr>
+<tr>
 <td><code>parent_citation</code></td>
 <td><code>Citation</code></td>
 <td>
@@ -1420,6 +1389,7 @@ no need to use it manually.</p>
     <span class="n">shortForms</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[],</span>
     <span class="n">defaults</span><span class="p">:</span> <span class="nb">dict</span><span class="o">=</span><span class="p">{},</span>
     <span class="n">operations</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[],</span>
+    <span class="n">use_generic_id</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">parent_citation</span><span class="p">:</span> <span class="n">Citation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">_is_id</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">):</span>
@@ -1450,10 +1420,11 @@ no need to use it manually.</p>
 <span class="sd">            values which should be set if the token's value is not</span>
 <span class="sd">            otherwise set by a regex capture group.</span>
 
-<span class="sd">        operations: A list of operations to perform on the tokens,</span>
-<span class="sd">            in sequence, to transform them from `captured_tokens` to</span>
-<span class="sd">            `processed_tokens`, the tokens that are used for URL</span>
-<span class="sd">            generation.</span>
+<span class="sd">        operations: A list of dicts, where each dict represents a</span>
+<span class="sd">            string modification to perform on a value captured by</span>
+<span class="sd">            a named capture group in the regex. Operations are</span>
+<span class="sd">            performed in order, and the end result of all operations</span>
+<span class="sd">            is saved as the citation's 'tokens' attribute.</span>
 
 <span class="sd">            Each operation must specify a `token` for its input. It</span>
 <span class="sd">            will also be used as the output of the operation, unless</span>
@@ -1508,6 +1479,9 @@ no need to use it manually.</p>
 <span class="sd">            engine, where user convenience is more important than</span>
 <span class="sd">            avoiding false positives.</span>
 
+<span class="sd">        use_generic_id: Whether this template should recognize the</span>
+<span class="sd">            generic "id." citation defined in GENERIC_ID</span>
+
 <span class="sd">        parent_citation: The citation, if any, that this template</span>
 <span class="sd">            was created as a shortform of. This argument is</span>
 <span class="sd">            for dynamically-generated templates, and there is usually</span>
@@ -1524,6 +1498,8 @@ no need to use it manually.</p>
     <span class="c1"># Supplemental regexes</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">broadRegexes</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">broadRegexes</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">idForms</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">idForms</span>
+    <span class="k">if</span> <span class="n">use_generic_id</span> <span class="ow">and</span> <span class="n">GENERIC_ID</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">idForms</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">idForms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GENERIC_ID</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">shortForms</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">shortForms</span>
     <span class="c1"># String operators</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">defaults</span>
@@ -1543,6 +1519,51 @@ no need to use it manually.</p>
     <span class="c1"># dictionaries of compiled regexes</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_regexes</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_compiled_broadRegexes</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="citeurl.Template.from_dict">
+
+<code class="highlight language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
+  </span>
+
+      </h3>
+<div class="doc doc-contents ">
+<p>Return a template from a dictionary of values, like a dictionary
+created by parsing a template from YAML format.</p>
+<details class="quote">
+          <summary>Source code in <code>citeurl/__init__.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Return a template from a dictionary of values, like a dictionary</span>
+<span class="sd">    created by parsing a template from YAML format.</span>
+<span class="sd">    """</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="c1"># if regex is specified in singular form, convert it to a</span>
+    <span class="c1"># list with one item, for sake of consistency with multiple-</span>
+    <span class="c1"># regex templates.</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'regex'</span><span class="p">,</span> <span class="s1">'broadRegex'</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+          <span class="n">values</span><span class="p">[</span><span class="n">key</span> <span class="o">+</span> <span class="s1">'es'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">values</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
+
+    <span class="c1"># unrelated: if an individual regex is given as a list of</span>
+    <span class="c1"># strings (convenient for reusing YAML anchors), concatenate</span>
+    <span class="c1"># it to one string.</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'regexes'</span><span class="p">,</span> <span class="s1">'broadRegexes'</span><span class="p">,</span> <span class="s1">'idForms'</span><span class="p">,</span> <span class="s1">'shortForms'</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">regex</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">key</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">regex</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+                <span class="n">values</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">regex</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">values</span><span class="p">)</span>
 </code></pre>
 </div>
 </details>
@@ -1774,6 +1795,8 @@ or None.</p>
 <pre><span></span><code><span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="s2">"Convert this template to a loadable yaml"</span>
     <span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Save regex or, where multiple, regexes</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regexes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">values</span><span class="p">[</span><span class="s1">'regexes'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regexes</span>
     <span class="k">else</span><span class="p">:</span>
@@ -1786,24 +1809,18 @@ or None.</p>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">values</span><span class="p">[</span><span class="s1">'broadRegex'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">broadRegexes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
-        <span class="n">values</span><span class="p">[</span><span class="s1">'operations'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span>
-
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">:</span>
-        <span class="n">values</span><span class="p">[</span><span class="s1">'defaults'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span>
-
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shortForms</span><span class="p">:</span>
-        <span class="n">values</span><span class="p">[</span><span class="s1">'shortForms'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shortForms</span>
-
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">idForms</span><span class="p">:</span>
-        <span class="n">values</span><span class="p">[</span><span class="s1">'idForms'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">idForms</span>
-
+    <span class="c1"># Save URL to string if it's only one value</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span>
         <span class="k">pass</span>
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">values</span><span class="p">[</span><span class="s1">'URL'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">URL</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">values</span><span class="p">[</span><span class="s1">'URL'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># these values can just be copied over</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'operations'</span><span class="p">,</span> <span class="s1">'defaults'</span><span class="p">,</span> <span class="s1">'shortForms'</span><span class="p">,</span> <span class="s1">'idForms'</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
+            <span class="n">values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">safe_dump</span><span class="p">(</span>
         <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">values</span><span class="p">},</span>
@@ -1856,21 +1873,19 @@ source text.</p>
 </tr>
 <tr>
 <td><code>tokens</code></td>
-<td><code>dict</code></td>
-<td>
-<p>Dictionary of the named capture groups from the regex
-this citation matched. For "id." and "shortform" citations,
-this includes tokens carried over from the parent citation.</p>
-</td>
-</tr>
-<tr>
-<td><code>processed_tokens</code></td>
 <td><code></code></td>
 <td>
-<p>Dictionary of tokens after they have been
-modified via the template's operations. Toekns  whose names
-begin with an underscore will be omitted from the
-processed_tokens attribute.</p>
+<p>Dictionary of the values that define this citation, such
+as its volume and page number, or its title, section, and
+subsection, etc.</p>
+<p>These are derived from the named capture
+groups in the citation template's regex, as modified by the
+template's operations. Tokens whose names start with
+underscores are used only to generate the URL and are
+otherwise discarded.</p>
+<p>For idForm and shortForm citations, tokens that are not
+explicitly overwritten will be retained from the parent
+citation.</p>
 </td>
 </tr>
 <tr>
@@ -1903,18 +1918,18 @@ This attribute is not set until list_authorities() is run.</p>
       </h3>
 <div class="doc doc-contents ">
 <p>Two citations are equal if they were matched by templates with
-the same name, and if they have the same processed_tokens.</p>
+the same name, and if they have the same tokens.</p>
 <details class="quote">
           <summary>Source code in <code>citeurl/__init__.py</code></summary>
           <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_citation</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Two citations are equal if they were matched by templates with</span>
-<span class="sd">    the same name, and if they have the same processed_tokens.</span>
+<span class="sd">    the same name, and if they have the same tokens.</span>
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other_citation</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">processed_tokens</span> <span class="o">==</span> <span class="n">other_citation</span><span class="o">.</span><span class="n">processed_tokens</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="o">==</span> <span class="n">other_citation</span><span class="o">.</span><span class="n">tokens</span>
     <span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">else</span><span class="p">:</span>
@@ -1951,15 +1966,15 @@ by means other than a Citator or Template object.</p>
     <span class="c1"># idForm and shortForm citations get values from parent citation</span>
     <span class="c1"># except where their regexes include space for those values</span>
     <span class="k">if</span> <span class="n">template</span><span class="o">.</span><span class="n">parent_citation</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">parent_citation</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_raw_tokens</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">parent_citation</span><span class="o">.</span><span class="n">_raw_tokens</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_raw_tokens</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_raw_tokens</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
 
     <span class="c1"># get processed tokens and URL</span>
-    <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">_process_tokens</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">processed_tokens</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">_process_tokens</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_raw_tokens</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">tokens</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)</span>
     <span class="p">}</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span>
@@ -2013,7 +2028,17 @@ by means other than a Citator or Template object.</p>
 <h2 id="authority">Authority</h2>
 <div class="doc doc-object doc-class">
 <div class="doc doc-contents first">
-<p>A single source cited one or more times in a text.</p>
+<p>A single source, such as a case or a section of a statute, cited one
+or more times in a text. Two subtly-different citations may refer to
+the same authority, because an authority is defined by two things:</p>
+<ol>
+<li>The name of the template that a citation was matched by, e.g.
+"United States Code".</li>
+<li>All of the citation's tokens that contain an upper-case letter.
+Fully-lowercase tokens are discarded for this purpose, because they
+are intended for subsections, pincites, and other details that
+differentiate citations <em>within</em> an authority. </li>
+</ol>
 <p><strong>Attributes:</strong></p>
 <table>
 <thead>
@@ -2025,14 +2050,12 @@ by means other than a Citator or Template object.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>defining_tokens</code></td>
-<td><code>dict</code></td>
+<td><code>tokens</code></td>
+<td><code></code></td>
 <td>
-<p>A dictionary of tokens that define this
-authority, such that any citations with incompatible
-token values will not match it. Note that this uses
-processed_tokens (those which have been modified by
-the template's operations).</p>
+<p>A dictionary of tokens that define this authority, such
+that any citations with incompatible token values will not
+match it.</p>
 </td>
 </tr>
 <tr>
@@ -2052,16 +2075,8 @@ this authority.</p>
 </td>
 </tr>
 <tr>
-<td><code>base_citation</code></td>
-<td><code>Citation</code></td>
-<td>
-<p>A citation object representing the hypothetical
-generic citation to this authority.</p>
-</td>
-</tr>
-<tr>
 <td><code>name</code></td>
-<td><code>str</code></td>
+<td><code></code></td>
 <td>
 <p>The text of base_citation</p>
 </td>
@@ -2072,7 +2087,7 @@ generic citation to this authority.</p>
 <div class="doc doc-object doc-method">
 <h3 class="doc doc-heading" id="citeurl.Authority.__init__">
 
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_cite</span><span class="p">,</span> <span class="n">allowed_differences</span><span class="o">=</span><span class="p">[])</span></code>
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_cite</span><span class="p">,</span> <span class="n">include_first_cite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
@@ -2080,11 +2095,8 @@ generic citation to this authority.</p>
 
       </h3>
 <div class="doc doc-contents ">
-<p>Define an authority by providing a single long-form citation,
-and the list of tokens which, if present in the citation, should
-be discarded from the definition of the authority.</p>
-<p>Generates a base_citation to represent the generic instance of
-this authority.</p>
+<p>Define an authority by providing a single example of a long-form
+citation to that authority.</p>
 <p><strong>Parameters:</strong></p>
 <table>
 <thead>
@@ -2109,27 +2121,23 @@ basis to generate the authority's base_citation.</p>
 <td><em>required</em></td>
 </tr>
 <tr>
-<td><code>allowed_differences</code></td>
-<td><code>list</code></td>
+<td><code>include_first_cite</code></td>
+<td><code>bool</code></td>
 <td>
-<p>A list of tokens whose values can
-differ among citations to the same authority</p>
+<p>Whether to run include() on the provided
+citation.</p>
 </td>
-<td><code>[]</code></td>
+<td><code>True</code></td>
 </tr>
 </tbody>
 </table>
 <details class="quote">
           <summary>Source code in <code>citeurl/__init__.py</code></summary>
           <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_cite</span><span class="p">:</span> <span class="n">Citation</span><span class="p">,</span> <span class="n">allowed_differences</span><span class="p">:</span> <span class="nb">list</span><span class="o">=</span><span class="p">[]):</span>
+<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_cite</span><span class="p">:</span> <span class="n">Citation</span><span class="p">,</span> <span class="n">include_first_cite</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">"""</span>
-<span class="sd">    Define an authority by providing a single long-form citation,</span>
-<span class="sd">    and the list of tokens which, if present in the citation, should</span>
-<span class="sd">    be discarded from the definition of the authority.</span>
-
-<span class="sd">    Generates a base_citation to represent the generic instance of</span>
-<span class="sd">    this authority.</span>
+<span class="sd">    Define an authority by providing a single example of a long-form</span>
+<span class="sd">    citation to that authority.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        first_cite: A long-form citation object representing the</span>
@@ -2137,36 +2145,106 @@ differ among citations to the same authority</p>
 <span class="sd">            first_cite will be added as the first entry in the</span>
 <span class="sd">            authority's citation list, and it will be used as the</span>
 <span class="sd">            basis to generate the authority's base_citation.</span>
-<span class="sd">        allowed_differences: A list of tokens whose values can</span>
-<span class="sd">            differ among citations to the same authority</span>
+<span class="sd">        include_first_cite: Whether to run include() on the provided</span>
+<span class="sd">            citation.</span>
 <span class="sd">    """</span>
     <span class="n">long_cite</span> <span class="o">=</span> <span class="n">first_cite</span><span class="o">.</span><span class="n">_original_cite</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">:</span> <span class="n">Template</span> <span class="o">=</span> <span class="n">long_cite</span><span class="o">.</span><span class="n">template</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">citations</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="n">first_cite</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">citations</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1"># List the token values that distinguish this authority from</span>
     <span class="c1"># others in the same template. This uses processed tokens, not</span>
     <span class="c1"># raw, so that a citation to "50 U.S. 5" will match</span>
     <span class="c1"># a citation to "50 U. S. 5", etc.</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">first_cite</span><span class="o">.</span><span class="n">processed_tokens</span><span class="p">:</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="n">first_cite</span><span class="o">.</span><span class="n">processed_tokens</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">!=</span> <span class="kc">None</span>
-            <span class="ow">and</span> <span class="n">t</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_differences</span>
-        <span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_cite</span><span class="o">.</span><span class="n">processed_tokens</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
-    <span class="c1"># Next, derive a base citation to represent this authority.</span>
-    <span class="c1"># If the first_citation to this authority isn't a longform, use</span>
-    <span class="c1"># whatever longform it's a child of.</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span><span class="p">:</span> <span class="n">Citation</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_derive_base_citation</span><span class="p">(</span><span class="n">long_cite</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span> <span class="o">=</span> <span class="n">first_cite</span>
-    <span class="c1"># Set other instance variables</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span><span class="o">.</span><span class="n">text</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_citation</span><span class="o">.</span><span class="n">URL</span>
-    <span class="c1"># finally, give the first citation a reference to this authority</span>
-    <span class="n">first_cite</span><span class="o">.</span><span class="n">authority</span> <span class="o">=</span> <span class="bp">self</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">first_cite</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">islower</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_parent_citation</span> <span class="o">=</span> <span class="n">first_cite</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_base_citation</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">include_first_cite</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="n">first_cite</span><span class="p">)</span>
+</code></pre>
+</div>
+</details>
+</div>
+</div>
+<div class="doc doc-object doc-method">
+<h3 class="doc doc-heading" id="citeurl.Authority.base_citation">
+
+<code class="highlight language-python"><span class="n">base_citation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+      </h3>
+<div class="doc doc-contents ">
+<p>Return a citation object representing the hypothetical
+generic citation to this authority. This code is a mess, and
+will often give subpar results, but it's better than nothing.
+One alternative would be to define a canonical citation format
+for each template.</p>
+<details class="quote">
+          <summary>Source code in <code>citeurl/__init__.py</code></summary>
+          <div class="highlight">
+<pre><span></span><code><span class="k">def</span> <span class="nf">base_citation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Citation</span><span class="p">:</span>
+    <span class="sd">"""</span>
+<span class="sd">    Return a citation object representing the hypothetical</span>
+<span class="sd">    generic citation to this authority. This code is a mess, and</span>
+<span class="sd">    will often give subpar results, but it's better than nothing.</span>
+<span class="sd">    One alternative would be to define a canonical citation format</span>
+<span class="sd">    for each template.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_citation</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_citation</span>
+
+    <span class="n">longform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_citation</span><span class="o">.</span><span class="n">_original_cite</span><span class="p">()</span>
+
+    <span class="n">replacement_tokens</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_citation</span><span class="o">.</span><span class="n">_raw_tokens</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="p">:</span>
+            <span class="n">replacement_tokens</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="c1"># Check if the parent longform citation contains all the defining</span>
+    <span class="c1"># tokens. If it doesn't, use the shortform that does.</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">replacement_tokens</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">longform</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="n">longform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent_citation</span>
+            <span class="k">break</span>
+    <span class="c1"># Next, construct a regex pattern to pull out the defining</span>
+    <span class="c1"># tokens, along with the non-token text preceding each one. The</span>
+    <span class="c1"># non-token "prelude" text lets us replace the text of each</span>
+    <span class="c1"># token only when they appear in context. </span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="s1">''</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">replacement_tokens</span><span class="p">:</span>
+        <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">longform</span><span class="o">.</span><span class="n">_raw_tokens</span><span class="p">[</span><span class="n">token</span><span class="p">])</span>
+        <span class="n">segment</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""((?P&lt;</span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">_prelude&gt;.*?)(?P&lt;</span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&gt;</span><span class="si">{</span><span class="n">regex</span><span class="si">}</span><span class="s2">))?"""</span>
+        <span class="k">if</span> <span class="n">pattern</span><span class="p">:</span>
+            <span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">segment</span> <span class="o">+</span> <span class="s1">')?'</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">pattern</span> <span class="o">=</span> <span class="n">segment</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">longform</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="c1"># Slice off all the text after the last defining token. This will</span>
+    <span class="c1"># remove things like subsections, etc. It assumes that optional</span>
+    <span class="c1"># tokens are always after the mandatory ones.</span>
+    <span class="n">base_cite_text</span> <span class="o">=</span> <span class="n">longform</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="n">match</span><span class="o">.</span><span class="n">span</span><span class="p">(</span><span class="n">token</span><span class="p">)[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="c1"># For each token, replace the value from the longform citation</span>
+    <span class="c1"># with the proper value for this authority.</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">replacement_tokens</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">prelude</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">token</span> <span class="o">+</span> <span class="s1">'_prelude'</span><span class="p">))</span>
+        <span class="n">old_value</span> <span class="o">=</span> <span class="n">prelude</span> <span class="o">+</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+        <span class="n">new_value</span> <span class="o">=</span> <span class="n">prelude</span> <span class="o">+</span> <span class="n">replacement_tokens</span><span class="p">[</span><span class="n">token</span><span class="p">]</span>
+        <span class="n">base_cite_text</span> <span class="o">=</span> <span class="n">base_cite_text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">old_value</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span>
+    <span class="c1"># Default to strict matching, but fall back to broadRegex</span>
+    <span class="c1"># if strict match doesn't exist. Don't default to broadRegex</span>
+    <span class="c1"># because it might not capture the full text.</span>
+    <span class="c1"># If that still fails, just use the shortform.</span>
+    <span class="n">base_cite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="n">base_cite_text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">base_cite</span><span class="p">:</span>
+        <span class="n">base_cite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="n">base_cite_text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">base_cite</span><span class="p">:</span>
+        <span class="n">base_cite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">citations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">base_cite</span>
 </code></pre>
 </div>
 </details>
@@ -2187,9 +2265,11 @@ authority.</p>
           <summary>Source code in <code>citeurl/__init__.py</code></summary>
           <div class="highlight">
 <pre><span></span><code><span class="k">def</span> <span class="nf">include</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">citation</span><span class="p">):</span>
-    <span class="sd">"""Adds the citation to this authority's list of citations. Also,</span>
+    <span class="sd">"""</span>
+<span class="sd">    Adds the citation to this authority's list of citations. Also,</span>
 <span class="sd">    adds the `authority` tag to the citation, referring back to this</span>
-<span class="sd">    authority."""</span>
+<span class="sd">    authority.</span>
+<span class="sd">    """</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">citations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">citation</span><span class="p">)</span>
     <span class="n">citation</span><span class="o">.</span><span class="n">authority</span> <span class="o">=</span> <span class="bp">self</span>
 </code></pre>
@@ -2217,9 +2297,8 @@ tokens of this authority.</p>
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="n">citation</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">defining_tokens</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">citation</span><span class="o">.</span><span class="n">processed_tokens</span>
-            <span class="ow">or</span> <span class="n">citation</span><span class="o">.</span><span class="n">processed_tokens</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">!=</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">citation</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="kc">True</span>
 </code></pre>
@@ -2538,7 +2617,7 @@ that refer to each, from most to least.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": "8.4.2"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": "9.0.0"}</script>
     
     
       <script src="../assets/javascripts/bundle.a1609d9a.min.js"></script>

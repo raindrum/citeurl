@@ -164,7 +164,10 @@ def _linker():
     output = '<p>' + sub(r'\n+', '</p>\n<p>', output) + '</p>'
     rows = [
         AUTHORITIES_TABLE_ROW.format(
-            name=f'<a href="{a.URL}">{a.name}</a>' if a.URL else f'{a.name}',
+            name=(
+                f'<a href="{a.get_URL()}">{a}</a>' if a.get_URL()
+                else f'{a}'
+            ),
             references=len(a.citations)
         )
         for a in list_authorities(citations)

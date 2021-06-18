@@ -344,7 +344,7 @@ def test_url_generation():
     """
     citator = Citator()
     print('Checking each template against sample citations...')
-    for template in citator.templates:
+    for template in citator.templates.values():
         # skip templates that don't have tests yet
         if template.name not in TESTS:
             continue

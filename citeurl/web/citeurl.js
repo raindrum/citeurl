@@ -35,40 +35,36 @@ class Citation {
   constructor(template, text) {
     // first, try matching the template
     let regexMatch = false;
-    for (var r in template['regexes']) {
-      regexMatch = text.match(new RegExp(template['regexes'][r], 'i'));
+    for (var r in template.regexes) {
+      regexMatch = text.match(new RegExp(template.regexes[r], 'i'));
       if (regexMatch) {
         break;
       }
     }
-    if (regexMatch) {
-      /*LOGS
+    if (!regexMatch) {
+      throw Error("The given query does not match the given template.");
+    }
+    /*LOGS
+    else {
       log(
         '"' + text + '" matched regex for ' + template['name']
         + ', and these tokens were found:'
       );
-      */
       for (var group in regexMatch.groups) {
         if (typeof group !== 'undefined') {
-          /*LOGS
           log(group + ': "' + regexMatch.groups[group] + '"');
-          */
         }
       }
-      /*LOGS
-      log(' ');
-      */
     }
-    else {
-      throw Error("The given query does not match the given template.");
-    }
+    log(' ');
+    */
     
     this.tokens = regexMatch.groups;
     this.text = text;
-    this.template = template['name'];
+    this.template = template.name;
     
     // this variable will become this.processedTokens
-    var tokens = {}
+    var tokens = {};
     Object.assign(tokens, this.tokens);
     
     // set default values for missing tokens
@@ -77,13 +73,10 @@ class Citation {
         /*LOGS
         log(
           d + ' was not specified, so it will be set to "'
-          + template.defaults[d] + '" by default'
+          + template.defaults[d] + '" by default\n '
         );
         */
         tokens[d] = template.defaults[d];
-        /*LOGS
-        log(' ');
-        */
       }
     }
     
@@ -94,7 +87,7 @@ class Citation {
     }
     for (var o in template.operations) {
       var operation = template.operations[o];
-      var inputValue = tokens[operation['token']];
+      var inputValue = tokens[operation.token];
       
       // skip tokens that were not set
       if (inputValue === undefined) {
@@ -105,35 +98,36 @@ class Citation {
       }
       
       // determine output token
+      var output;
       if ('output' in operation) {
-        var output = operation['output'];
+        output = operation.output;
       }
       else {
-        var output = operation['token'];
+        output = operation.token;
       }
       
       // handle case modification
       if ('case' in operation) {
-        if (operation['case'] == 'upper') {
+        if (operation.case == 'upper') {
           tokens[output] = inputValue.toUpperCase();
         }
-        else if (operation['case'] == 'lower') {
+        else if (operation.case == 'lower') {
           tokens[output] = inputValue.toLowerCase();
         }
-        else if (operation['case'] == 'title') {
+        else if (operation.case == 'title') {
           tokens[output] = inputValue.replace(/\w\S*/g, titleCase);
         }
       }
       
       // handle regex substitution
       if ('sub' in operation) {
-        let regex = new RegExp(operation['sub'][0], 'ig');
-        let outputValue = inputValue.replace(regex, operation['sub'][1]);
+        let regex = new RegExp(operation.sub[0], 'ig');
+        let outputValue = inputValue.replace(regex, operation.sub[1]);
         tokens[output] = outputValue;
         /*LOGS
         log(
-          'replaced all instances of regex "' + operation['sub'][0] + '" in '
-          + 'token "' + operation['token'] + '" with "' + operation['sub'][1]
+          'replaced all instances of regex "' + operation.sub[0] + '" in '
+          + 'token "' + operation.token + '" with "' + operation.sub[1]
           + '" to set token "${output}" to "${outputValue}".'
         );
         */
@@ -147,12 +141,12 @@ class Citation {
           
           for (var key in operation[lookupTypes[t]]) {
             let regexStr = '^(' + key + ')$';
-            if (tokens[operation['token']].match(new RegExp(regexStr, 'i'))) {
+            if (tokens[operation.token].match(new RegExp(regexStr, 'i'))) {
               outputValue = operation[lookupTypes[t]][key];
               /*LOGS
               log(
-                'Looked up ' + operation['token'] + ' "'
-                + tokens[operation['token']] + '" in a table, and used that '
+                'Looked up ' + operation.token + ' "'
+                + tokens[operation.token] + '" in a table, and used that '
                 + 'to set ' + output + ' to "' + outputValue + '"' 
               );
               */
@@ -162,17 +156,17 @@ class Citation {
           if (outputValue !== undefined) {
             tokens[output] = outputValue;
           }
+          /*LOGS
           else if (lookupTypes[t] == 'optionalLookup') {
-            /*LOGS
             log(
-              'tried to look up token "' + operation['token'] + '" in an index,'
+              'tried to look up token "' + operation.token + '" in an index,'
               + 'but failed, so token "' + output + '" will not be modified.'
             );
-            */
           }
+          */
           else {
             throw Error(
-              "Sorry, I can't find that" + operation['token'] + " in the " + template
+              "Sorry, I can't find that" + operation.token + " in the " + template
             );
           }
         }
@@ -211,11 +205,11 @@ class Citation {
         ];
         // determine which format is being used to look up the other
         let key, value;
-        if (operation['numberFormat'] == 'roman') {
+        if (operation.numberFormat == 'roman') {
           key = 1;
           value = 0;
         }
-        else if (operation['numberFormat'] == 'digit') {
+        else if (operation.numberFormat == 'digit') {
           key = 0;
           value = 1;
         }
@@ -227,8 +221,8 @@ class Citation {
             tokens[output] = numerals[pair][value];
             /*LOGS
             log(
-              'translated ' + operation['token'] + ' to '
-              + operation['numberFormat'] + " format if it wasn't already, and"
+              'translated ' + operation.token + ' to '
+              + operation.numberFormat + " format if it wasn't already, and"
               + ' saved the result (' + tokens[output] + ') to ' + output
             );
             */
@@ -240,10 +234,10 @@ class Citation {
       // left pad with zeros
       if ('lpad' in operation) {
         let outputValue = inputValue;
-        while (outputValue.length < operation['lpad']) {
+        while (outputValue.length < operation.lpad) {
           outputValue = '0' + outputValue;
         }
-        tokens[output] = outputValue
+        tokens[output] = outputValue;
         /*LOGS
         log(
           'added zeros to the beginning of ' + operation['token']
@@ -253,11 +247,11 @@ class Citation {
         */
       }
     }
+    /*LOGS
     if (appliedAnOperation) {
-      /*LOGS
       log(' ');
-      */
     }
+    */
     this.processedTokens = tokens;
     
     // finally, fill in placeholders in the URL template to generate the
@@ -269,7 +263,7 @@ class Citation {
     log("filling in placeholders in each part of the URL template...");
     */
     for (var part in template.URL) {
-      let URLPart = template.URL[part]
+      let URLPart = template.URL[part];
       for (var k in this.processedTokens) {
         if (typeof this.processedTokens[k] === 'undefined') {
           continue;
@@ -294,8 +288,7 @@ class Citation {
     }
     this.URL = URL.join('');
     /*LOGS
-    log('Finished building URL: "' + this.URL + '"');
-    log(' ');
+    log('Finished building URL: "' + this.URL + '"\n ');
     */
   }
 }

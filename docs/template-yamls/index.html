@@ -467,11 +467,12 @@
 <h2 id="the-basic-template-format">The Basic Template Format</h2>
 <p>Here is a simplified example of a template that you might write to recognize citations to the U.S. Code:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">United States Code</span><span class="p">:</span>
-  <span class="nt">regex</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(?P&lt;title&gt;\d+) USC § (?P&lt;section&gt;\d+)</span>
-  <span class="nt">URL</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://www.law.cornell.edu/uscode/text/{title}/{section}</span>
+  <span class="nt">regex</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(?P&lt;Title&gt;\d+) USC § (?P&lt;Section&gt;\d+)</span>
+  <span class="nt">URL</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://www.law.cornell.edu/uscode/text/{Title}/{Section}</span>
 </code></pre></div>
-<p>Because of what's in the 'regex' key, this citation template recognizes any series of one or more digits, followed by " USC § ," followed by another series of digits. It knows that the first string of digits is something called a "title" and the second is a "section." We will call these stored values "tokens."</p>
-<p>Any tokens that are captured in the regex can be used to fill placeholders (identified by curly braces) in the URL template, as shown above.</p>
+<p>Because of what's in the 'regex' field, this citation template recognizes any series of one or more digits, followed by " USC § ," followed by another series of digits. It knows that the first string of digits is something called a "Title" and the second is a "Section." We will call these stored values "tokens."</p>
+<p>CiteURL draws a subtle distinction between tokens that contain an upper-case letter and those that do not. The former kind of token serves to distinguish between different <a href="../library/#citeurl.Authority">authorities</a>, such as a single court case or statutory section. Fully lowercase tokens, however, are used to indicate differences among citations to the <em>same</em> authority, such as a specific pincite or subsection.</p>
+<p>Any tokens (lowercase or otherwise) that are captured in the regex can be used to fill placeholders (identified by curly braces) in the URL template, as shown above.</p>
 <p><strong>Note</strong> that although this example inserts tokens into the URL unmodified, it is also possible to process the tokens first using one or more <a href="#token-processing">operations</a>. Also note that this template only recognizes full, long-form citations to the U.S. Code, but you can add additional information to help it <a href="#recognizing-shortform-citations">recognize shortform citations</a> that follow the original citation.</p>
 <p>But before we get into that, it's important to know a bit more about how the regex and URL fields work:</p>
 <h3 id="regex-complications">Regex Complications</h3>
@@ -479,9 +480,9 @@
 <p>First, it's possible to provide a regex as a list rather than a single strings, so that the actual regex will be composed of each list entry combined together. string, like so:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">United States Code</span><span class="p">:</span>
   <span class="nt">regex</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="nl">&amp;title</span> <span class="s">&#39;(?P&lt;title&gt;\d+)&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="nl">&amp;title</span> <span class="s">&#39;(?P&lt;Title&gt;\d+)&#39;</span>
     <span class="p p-Indicator">-</span> <span class="s">&#39;</span><span class="nv"> </span><span class="s">USC</span><span class="nv"> </span><span class="s">&#39;</span>
-    <span class="p p-Indicator">-</span> <span class="nl">&amp;section</span> <span class="s">&#39;§</span><span class="nv"> </span><span class="s">(?P&lt;section&gt;\d+)&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="nl">&amp;section</span> <span class="s">&#39;§</span><span class="nv"> </span><span class="s">(?P&lt;Section&gt;\d+)&#39;</span>
   <span class="nt">URL</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://www.law.cornell.edu/uscode/text/{title}/{section}</span>
 </code></pre></div>
 <p>Functionally, this template works exactly like the last one. However, because the regex was broken up into a list of components, it was possible to define the <code>title</code> and <code>section</code> components as <a href="https://medium.com/@kinghuang/docker-compose-anchors-aliases-extensions-a1e4105d70bd">YAML anchors</a> that can be reused later, by writing <code>*title</code> or <code>*section</code>, respectively. When writing a large number of templates, this can save a lot of time, as well as make them easier to maintain.</p>
@@ -489,25 +490,25 @@
 <p>To provide multiple regexes, replace the "regex" key with "regexes," as shown here:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">United States Code</span><span class="p">:</span>
   <span class="nt">regexes</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="s">&#39;(?P&lt;title&gt;\d+)</span><span class="nv"> </span><span class="s">USC</span><span class="nv"> </span><span class="s">§</span><span class="nv"> </span><span class="s">(?P&lt;section&gt;\d+)&#39;</span>
-    <span class="p p-Indicator">-</span> <span class="s">&#39;section</span><span class="nv"> </span><span class="s">(?P&lt;section&gt;\d+)</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">title</span><span class="nv"> </span><span class="s">(?P&lt;title&gt;\d+)</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">U\.S\.</span><span class="nv"> </span><span class="s">Code&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;(?P&lt;Title&gt;\d+)</span><span class="nv"> </span><span class="s">USC</span><span class="nv"> </span><span class="s">§</span><span class="nv"> </span><span class="s">(?P&lt;Section&gt;\d+)&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;section</span><span class="nv"> </span><span class="s">(?P&lt;Section&gt;\d+)</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">title</span><span class="nv"> </span><span class="s">(?P&lt;Title&gt;\d+)</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">U\.S\.</span><span class="nv"> </span><span class="s">Code&#39;</span>
   <span class="nt">URL</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://www.law.cornell.edu/uscode/text/{title}/{section}</span>
 </code></pre></div>
 <p>This template uses multiple regexes to make it possible to recognize U.S. Code citations no matter whether the title is specified before the section, or vice versa.</p>
 <p>It's important to remember the difference between using multiple regexes and defining one regex in list form. In fact, it is possible to do both at once:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">United States Code</span><span class="p">:</span>
   <span class="nt">regexes</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="nl">&amp;title</span> <span class="s">&#39;(?P&lt;title&gt;\d+)&#39;</span><span class="p p-Indicator">,</span> <span class="s">&#39;</span><span class="nv"> </span><span class="s">USC</span><span class="nv"> </span><span class="s">&#39;</span><span class="p p-Indicator">,</span> <span class="nl">&amp;section</span> <span class="s">&#39;§</span><span class="nv"> </span><span class="s">(?P&lt;section&gt;\d+)&#39;</span><span class="p p-Indicator">]</span>
+    <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="nl">&amp;title</span> <span class="s">&#39;(?P&lt;Title&gt;\d+)&#39;</span><span class="p p-Indicator">,</span> <span class="s">&#39;</span><span class="nv"> </span><span class="s">USC</span><span class="nv"> </span><span class="s">&#39;</span><span class="p p-Indicator">,</span> <span class="nl">&amp;section</span> <span class="s">&#39;§</span><span class="nv"> </span><span class="s">(?P&lt;Section&gt;\d+)&#39;</span><span class="p p-Indicator">]</span>
     <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="nv">*section</span><span class="p p-Indicator">,</span> <span class="s">&#39;</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">Title</span><span class="nv"> </span><span class="s">&#39;</span><span class="p p-Indicator">,</span> <span class="nv">*title</span><span class="p p-Indicator">,</span> <span class="s">&#39;</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">United</span><span class="nv"> </span><span class="s">States</span><span class="nv"> </span><span class="s">Code&#39;</span><span class="p p-Indicator">]</span>
-  <span class="nt">URL</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://www.law.cornell.edu/uscode/text/{title}/{section}</span>
+  <span class="nt">URL</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://www.law.cornell.edu/uscode/text/{Title}/{Section}</span>
 </code></pre></div>
 <p>This is functionally equivalent to the previous example, but because the individual regexes are provided in list form, it is possible to reuse the "title" and "section" pieces via YAML anchors, rather than write them twice.</p>
 <h3 id="url-complications">URL Complications</h3>
 <p>Another important feature is that a template's URL, like its regex(es), can be specified as a list of strings to concatenate. Unlike with regexes, splitting a URL into a list of strings makes it behave differently. Specifically, If a section of the URL contains a placeholder for which no value is set, that whole list item will be omitted from the final URL. For instance, the template below can generate links to specific subsections of the U.S. Code, but if no subsection is specified, it simply links to the overall page for the section itself:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">United States Code</span><span class="p">:</span>
-  <span class="nt">regex</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(?P&lt;title&gt;\d+) USC § (?P&lt;section&gt;\d+)( \((?P&lt;subsection&gt;[a-z])\)?</span>
+  <span class="nt">regex</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">(?P&lt;Title&gt;\d+) USC § (?P&lt;Section&gt;\d+)( \((?P&lt;subsection&gt;[a-z])\)?</span>
   <span class="nt">URL</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="s">&#39;https://www.law.cornell.edu/uscode/text/{title}/{section}&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;https://www.law.cornell.edu/uscode/text/{Title}/{Section}&#39;</span>
     <span class="p p-Indicator">-</span> <span class="s">&#39;#{subsection}&#39;</span>
 </code></pre></div>
 <h2 id="token-processing">Token Processing</h2>
@@ -574,13 +575,13 @@
 <p>Often, once a particular authority is cited once, subsequent references to it will take a shorter, more contextual format. CiteURL templates can account for these kinds of citations using the <code>shortForms</code> and <code>idForms</code> keys.</p>
 <p>Consider the following template:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">Federal Supplement</span><span class="p">:</span>
-  <span class="nt">regex</span><span class="p">:</span> <span class="s">&#39;(?P&lt;volume&gt;\d+)</span><span class="nv"> </span><span class="s">F\.</span><span class="nv"> </span><span class="s">Supp\.</span><span class="nv"> </span><span class="s">(?P&lt;page&gt;\d+)(,</span><span class="nv"> </span><span class="s">(?P&lt;pincite&gt;\d+))?&#39;</span>
+  <span class="nt">regex</span><span class="p">:</span> <span class="s">&#39;(?P&lt;Volume&gt;\d+)</span><span class="nv"> </span><span class="s">F\.</span><span class="nv"> </span><span class="s">Supp\.</span><span class="nv"> </span><span class="s">(?P&lt;Page&gt;\d+)(,</span><span class="nv"> </span><span class="s">(?P&lt;pincite&gt;\d+))?&#39;</span>
   <span class="nt">idForms</span><span class="p">:</span>
     <span class="p p-Indicator">-</span> <span class="s">&#39;Id\.</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">(?P&lt;pincite&gt;\d+)&#39;</span>
   <span class="nt">shortForms</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="s">&#39;{volume}</span><span class="nv"> </span><span class="s">F\.</span><span class="nv"> </span><span class="s">Supp\.</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">(?P&lt;pincite&gt;\d+)&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;{Volume}</span><span class="nv"> </span><span class="s">F\.</span><span class="nv"> </span><span class="s">Supp\.</span><span class="nv"> </span><span class="s">at</span><span class="nv"> </span><span class="s">(?P&lt;pincite&gt;\d+)&#39;</span>
   <span class="nt">URL</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="s">&#39;https://cite.case.law/f-supp/{title}/{page}&#39;</span>
+    <span class="p p-Indicator">-</span> <span class="s">&#39;https://cite.case.law/f-supp/{Title}/{Page}&#39;</span>
     <span class="p p-Indicator">-</span> <span class="s">&#39;#p{pincite}&#39;</span>
 </code></pre></div>
 <p>If a text cites <em>United States v. An Article Consisting of Boxes of Clacker Balls</em>, 413 F. Supp. 1281 (E.D. Wis. 1976), it CiteURL will recognize it as a full citation because it matches the regex for the Federal Supplement citation template.</p>
@@ -592,8 +593,8 @@
 <p><code>defaults</code> is a dictionary of tokens whose values will be set to specified values, if they are not set by a named capture group in the matched regex. Defaults are applied prior to any <a href="#token-processing">operations</a>.</p>
 <p>For instance, the template below will match citations like "29 USC § 157" as well as citations like "§ 1983", but in the latter case, it assumes that the title is '42' by default.</p>
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">U.S. Code, but especially Title 42</span><span class="p p-Indicator">:</span>
-  <span class="nt">regex</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">((?P&lt;title&gt;\d+) USC )?§ (?P&lt;section&gt;\d+)</span>
-  <span class="nt">defaults</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="s">&#39;title&#39;</span><span class="p p-Indicator">:</span> <span class="s">&#39;42&#39;</span><span class="p p-Indicator">}</span>
+  <span class="nt">regex</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">((?P&lt;Title&gt;\d+) USC )?§ (?P&lt;Section&gt;\d+)</span>
+  <span class="nt">defaults</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="s">&#39;Title&#39;</span><span class="p p-Indicator">:</span> <span class="s">&#39;42&#39;</span><span class="p p-Indicator">}</span>
 </code></pre></div>
 <h3 id="broadregex">broadRegex</h3>
 <p><code>broadRegex</code> and <code>broadRegexes</code> are identical in format to the <code>regex</code> and <code>regexes</code> keys. They allow you to specify extra regexes that will be used, in addition to the normal regex(es), in contexts like search engines where user convenience is more important than avoiding false positives. </p>
@@ -652,7 +653,7 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": "8.4.2"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": "9.0.0"}</script>
     
     
       <script src="../assets/javascripts/bundle.a1609d9a.min.js"></script>

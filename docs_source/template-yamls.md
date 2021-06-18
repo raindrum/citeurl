@@ -12,13 +12,15 @@ Here is a simplified example of a template that you might write to recognize cit
 
 ``` yaml
 United States Code:
-  regex: (?P<title>\d+) USC § (?P<section>\d+)
-  URL: https://www.law.cornell.edu/uscode/text/{title}/{section}
+  regex: (?P<Title>\d+) USC § (?P<Section>\d+)
+  URL: https://www.law.cornell.edu/uscode/text/{Title}/{Section}
 ```
 
-Because of what's in the 'regex' key, this citation template recognizes any series of one or more digits, followed by " USC § ," followed by another series of digits. It knows that the first string of digits is something called a "title" and the second is a "section." We will call these stored values "tokens."
+Because of what's in the 'regex' field, this citation template recognizes any series of one or more digits, followed by " USC § ," followed by another series of digits. It knows that the first string of digits is something called a "Title" and the second is a "Section." We will call these stored values "tokens."
 
-Any tokens that are captured in the regex can be used to fill placeholders (identified by curly braces) in the URL template, as shown above.
+CiteURL draws a subtle distinction between tokens that contain an upper-case letter and those that do not. The former kind of token serves to distinguish between different [authorities](../library/#citeurl.Authority), such as a single court case or statutory section. Fully lowercase tokens, however, are used to indicate differences among citations to the *same* authority, such as a specific pincite or subsection.
+
+Any tokens (lowercase or otherwise) that are captured in the regex can be used to fill placeholders (identified by curly braces) in the URL template, as shown above.
 
 **Note** that although this example inserts tokens into the URL unmodified, it is also possible to process the tokens first using one or more [operations](#token-processing). Also note that this template only recognizes full, long-form citations to the U.S. Code, but you can add additional information to help it [recognize shortform citations](#recognizing-shortform-citations) that follow the original citation.
 
@@ -33,9 +35,9 @@ First, it's possible to provide a regex as a list rather than a single strings, 
 ```yaml
 United States Code:
   regex:
-    - &title '(?P<title>\d+)'
+    - &title '(?P<Title>\d+)'
     - ' USC '
-    - &section '§ (?P<section>\d+)'
+    - &section '§ (?P<Section>\d+)'
   URL: https://www.law.cornell.edu/uscode/text/{title}/{section}
 ```
 
@@ -48,8 +50,8 @@ To provide multiple regexes, replace the "regex" key with "regexes," as shown he
 ```yaml
 United States Code:
   regexes:
-    - '(?P<title>\d+) USC § (?P<section>\d+)'
-    - 'section (?P<section>\d+) of title (?P<title>\d+) of the U\.S\. Code'
+    - '(?P<Title>\d+) USC § (?P<Section>\d+)'
+    - 'section (?P<Section>\d+) of title (?P<Title>\d+) of the U\.S\. Code'
   URL: https://www.law.cornell.edu/uscode/text/{title}/{section}
 ```
 
@@ -60,9 +62,9 @@ It's important to remember the difference between using multiple regexes and def
 ``` yaml
 United States Code:
   regexes:
-    - [&title '(?P<title>\d+)', ' USC ', &section '§ (?P<section>\d+)']
+    - [&title '(?P<Title>\d+)', ' USC ', &section '§ (?P<Section>\d+)']
     - [*section, ' of Title ', *title, ' of the United States Code']
-  URL: https://www.law.cornell.edu/uscode/text/{title}/{section}
+  URL: https://www.law.cornell.edu/uscode/text/{Title}/{Section}
 ```
 
 This is functionally equivalent to the previous example, but because the individual regexes are provided in list form, it is possible to reuse the "title" and "section" pieces via YAML anchors, rather than write them twice.
@@ -73,9 +75,9 @@ Another important feature is that a template's URL, like its regex(es), can be s
 
 ``` yaml
 United States Code:
-  regex: (?P<title>\d+) USC § (?P<section>\d+)( \((?P<subsection>[a-z])\)?
+  regex: (?P<Title>\d+) USC § (?P<Section>\d+)( \((?P<subsection>[a-z])\)?
   URL:
-    - 'https://www.law.cornell.edu/uscode/text/{title}/{section}'
+    - 'https://www.law.cornell.edu/uscode/text/{Title}/{Section}'
     - '#{subsection}'
 ```
 
@@ -125,13 +127,13 @@ Often, once a particular authority is cited once, subsequent references to it wi
 
 ```yaml
 Federal Supplement:
-  regex: '(?P<volume>\d+) F\. Supp\. (?P<page>\d+)(, (?P<pincite>\d+))?'
+  regex: '(?P<Volume>\d+) F\. Supp\. (?P<Page>\d+)(, (?P<pincite>\d+))?'
   idForms:
     - 'Id\. at (?P<pincite>\d+)'
   shortForms:
-    - '{volume} F\. Supp\. at (?P<pincite>\d+)'
+    - '{Volume} F\. Supp\. at (?P<pincite>\d+)'
   URL:
-    - 'https://cite.case.law/f-supp/{title}/{page}'
+    - 'https://cite.case.law/f-supp/{Title}/{Page}'
     - '#p{pincite}'
 ```
 
@@ -153,8 +155,8 @@ For instance, the template below will match citations like "29 USC § 157" as we
 
 ``` yaml
 U.S. Code, but especially Title 42:
-  regex: ((?P<title>\d+) USC )?§ (?P<section>\d+)
-  defaults: {'title': '42'}
+  regex: ((?P<Title>\d+) USC )?§ (?P<Section>\d+)
+  defaults: {'Title': '42'}
 ```
 
 ### broadRegex

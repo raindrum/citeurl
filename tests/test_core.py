@@ -16,17 +16,17 @@ def test_list_citations():
     
     assert citations[0].text == '42 USC § 1988(b)'
     assert citations[0].tokens == {
-        'title': '42',
-        'section': '1988',
-        'subsection': '(b)'
+        'Title': '42',
+        'Section': '1988',
+        'subsection': 'b'
     }
     assert citations[0].URL == (
         'https://www.law.cornell.edu/uscode/text/42/1988#b'
     )
     assert citations[1].tokens == {
-        'title': '42',
-        'section': '1988',
-        'subsection': '(c)'
+        'Title': '42',
+        'Section': '1988',
+        'subsection': 'c'
     }
 
 def test_insert_links():
@@ -36,8 +36,8 @@ def test_insert_links():
 def test_list_authorities():
     citations = Citator().list_citations(TEXT)
     authorities = list_authorities(citations)
-    assert authorities[0].name == '42 USC § 1988'
-    assert authorities[1].name == '477 U.S. 561'
+    assert str(authorities[0]) == '42 USC § 1988'
+    assert str(authorities[1]) == '477 U.S. 561'
     assert len(authorities[1].citations) == 2
 
 def test_lookup():

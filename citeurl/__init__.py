@@ -2,6 +2,7 @@
 import re
 from pathlib import Path
 from typing import Iterable
+from copy import copy
 
 # external imports
 from yaml import safe_load, safe_dump
@@ -10,7 +11,7 @@ from yaml import safe_load, safe_dump
 DEFAULT_YAML_PATH = Path(__file__).parent.absolute() / 'builtin-templates.yaml'
 
 # regex for "Id."-type citations that will be recognized for all templates
-GENERIC_ID = r"\b(Ib)?[Ii]d\.(<\/(i|em|u)>)?"
+GENERIC_ID = r"(Ib)?[Ii]d\.(<\/(i|em|u)>)?"
 
 # regex to break chains of "Id."-type citations
 DEFAULT_ID_BREAKS = 'L\. ?Rev\.|J\. ?Law|\. ?([Cc]ode|[Cc]onst)'
@@ -51,13 +52,19 @@ class Citation:
         span: The beginning and end positions of this citation in the
             source text.
         template: The template which recognized this citation
-        tokens: Dictionary of the named capture groups from the regex
-            this citation matched. For "id." and "shortform" citations,
-            this includes tokens carried over from the parent citation.
-        processed_tokens: Dictionary of tokens after they have been
-            modified via the template's operations. Toekns  whose names
-            begin with an underscore will be omitted from the
-            processed_tokens attribute.
+        tokens: Dictionary of the values that define this citation, such
+            as its volume and page number, or its title, section, and
+            subsection, etc.
+            
+            These are derived from the named capture
+            groups in the citation template's regex, as modified by the
+            template's operations. Tokens whose names start with
+            underscores are used only to generate the URL and are
+            otherwise discarded.
+            
+            For idForm and shortForm citations, tokens that are not
+            explicitly overwritten will be retained from the parent
+            citation.
         URL: The URL where a user can read this citation online
         authority: The Authority that this citation is a reference to.
             This attribute is not set until list_authorities() is run.
@@ -73,15 +80,15 @@ class Citation:
         # idForm and shortForm citations get values from parent citation
         # except where their regexes include space for those values
         if template.parent_citation:
-            self.tokens: dict = dict(template.parent_citation.tokens)
+            self._raw_tokens = dict(template.parent_citation._raw_tokens)
             for key, val in match.groupdict().items():
-                self.tokens[key] = val
+                self._raw_tokens[key] = val
         else:
-            self.tokens: dict = match.groupdict()
+            self._raw_tokens = match.groupdict()
         
         # get processed tokens and URL
-        tokens = self.template._process_tokens(self.tokens)
-        self.processed_tokens = {
+        tokens = self.template._process_tokens(self._raw_tokens)
+        self.tokens = {
             k:v for (k,v) in tokens.items() if v and not k.startswith('_')
         }
         if self.template.URL:
@@ -126,7 +133,7 @@ class Citation:
             else self.template.shortForms
         )
         # make a dictionary of the original tokens, or unique processed tokens
-        template_fillers = {**self.processed_tokens, **self.tokens}
+        template_fillers = {**self.tokens, **self._raw_tokens}
         for template in regex_templates:
             # Insert context values into template to make new regex
             regex = template
@@ -184,43 +191,43 @@ class Citation:
     def __eq__(self, other_citation):
         """
         Two citations are equal if they were matched by templates with
-        the same name, and if they have the same processed_tokens.
+        the same name, and if they have the same tokens.
         """
         if (
             self.template.name == other_citation.template.name and
-            self.processed_tokens == other_citation.processed_tokens
+            self.tokens == other_citation.tokens
         ):
             return True
         else:
             return False
 
-
 class Authority:
     """
-    A single source cited one or more times in a text.
+    A single source, such as a case or a section of a statute, cited one
+    or more times in a text. Two subtly-different citations may refer to
+    the same authority, because an authority is defined by two things:
+    
+    1. The name of the template that a citation was matched by, e.g.
+    "United States Code".
+    2. All of the citation's tokens that contain an upper-case letter.
+    Fully-lowercase tokens are discarded for this purpose, because they
+    are intended for subsections, pincites, and other details that
+    differentiate citations *within* an authority. 
     
     Attributes:
-        defining_tokens: A dictionary of tokens that define this
-            authority, such that any citations with incompatible
-            token values will not match it. Note that this uses
-            processed_tokens (those which have been modified by
-            the template's operations).
+        tokens: A dictionary of tokens that define this authority, such
+            that any citations with incompatible token values will not
+            match it.
         template: The template which found all the citations to this
             authority
         citations: The list of all the citations that refer to
             this authority.
-        base_citation: A citation object representing the hypothetical
-            generic citation to this authority.
         name: The text of base_citation
     """
-    def __init__(self, first_cite: Citation, allowed_differences: list=[]):
+    def __init__(self, first_cite: Citation, include_first_cite: bool=True):
         """
-        Define an authority by providing a single long-form citation,
-        and the list of tokens which, if present in the citation, should
-        be discarded from the definition of the authority.
-        
-        Generates a base_citation to represent the generic instance of
-        this authority.
+        Define an authority by providing a single example of a long-form
+        citation to that authority.
         
         Arguments:
             first_cite: A long-form citation object representing the
@@ -228,41 +235,34 @@ class Authority:
                 first_cite will be added as the first entry in the
                 authority's citation list, and it will be used as the
                 basis to generate the authority's base_citation.
-            allowed_differences: A list of tokens whose values can
-                differ among citations to the same authority
+            include_first_cite: Whether to run include() on the provided
+                citation.
         """
         long_cite = first_cite._original_cite()
         self.template: Template = long_cite.template
-        self.citations: list = [first_cite]
+        self.citations: list = []
         # List the token values that distinguish this authority from
         # others in the same template. This uses processed tokens, not
         # raw, so that a citation to "50 U.S. 5" will match
         # a citation to "50 U. S. 5", etc.
-        self.defining_tokens: dict = {}
-        for t in first_cite.processed_tokens:
-            if (
-                first_cite.processed_tokens[t] != None
-                and t not in allowed_differences
-            ):
-                self.defining_tokens[t] = first_cite.processed_tokens[t]
-        # Next, derive a base citation to represent this authority.
-        # If the first_citation to this authority isn't a longform, use
-        # whatever longform it's a child of.
-        self.base_citation: Citation = None
-        try:
-            self.base_citation = self._derive_base_citation(long_cite)
-        except TypeError:
-            self.base_citation = first_cite
-        # Set other instance variables
-        self.name: str = self.base_citation.text
-        self.URL: str = self.base_citation.URL
-        # finally, give the first citation a reference to this authority
-        first_cite.authority = self
+        
+        self.tokens = {
+            k:v for k,v in first_cite.tokens.items()
+            if not k.islower()
+        }
+        
+        self._parent_citation = first_cite
+        self._base_citation = None
+        
+        if include_first_cite:
+            self.include(first_cite)
     
     def include(self, citation):
-        """Adds the citation to this authority's list of citations. Also,
+        """
+        Adds the citation to this authority's list of citations. Also,
         adds the `authority` tag to the citation, referring back to this
-        authority."""
+        authority.
+        """
         self.citations.append(citation)
         citation.authority = self
     
@@ -273,39 +273,39 @@ class Authority:
         """
         if self.template.name != citation.template.name:
             return False
-        for key, value in self.defining_tokens.items():
-            if (key not in citation.processed_tokens
-                or citation.processed_tokens[key] != value):
+        for key, value in self.tokens.items():
+            if citation.tokens.get(key) != value:
                 return False
         return True
     
     def __str__(self):
-        return str(self.base_citation)
+        return str(self.base_citation())
     
     def __repr__(self):
-        if self.citations:
-            example_cite = self.citations[0]
-        else:
-            example_cite = self.base_citation
-        diffs = [
-            t for t in example_cite.processed_tokens.keys()
-            if t not in self.defining_tokens.keys()
-        ]
-        return (
-            f'citeurl.Authority(first_cite={repr(example_cite)}, '
-            + f'allowed_differences={diffs})'
-        )
+        return (f'citeurl.Authority(first_cite={repr(self._parent_citation)}')
     
-    def _derive_base_citation(self, parent: Citation) -> Citation:
+    def base_citation(self) -> Citation:
+        """
+        Return a citation object representing the hypothetical
+        generic citation to this authority. This code is a mess, and
+        will often give subpar results, but it's better than nothing.
+        One alternative would be to define a canonical citation format
+        for each template.
+        """
+        if self._base_citation:
+            return self._base_citation
+        
+        longform = self._parent_citation._original_cite()
+        
         replacement_tokens = {}
-        for key, value in self.citations[0].tokens.items():
-            if key in self.defining_tokens:
+        for key, value in self._parent_citation._raw_tokens.items():
+            if key in self.tokens:
                 replacement_tokens[key] = value
         # Check if the parent longform citation contains all the defining
         # tokens. If it doesn't, use the shortform that does.
         for key in replacement_tokens.keys():
-            if key not in parent.tokens or parent.tokens[key] == None:
-                parent = self.citations[0]
+            if not longform.tokens.get(key):
+                longform = self._parent_citation
                 break
         # Next, construct a regex pattern to pull out the defining
         # tokens, along with the non-token text preceding each one. The
@@ -313,16 +313,16 @@ class Authority:
         # token only when they appear in context. 
         pattern = ''
         for token in replacement_tokens:
-            regex = re.escape(parent.tokens[token])
+            regex = re.escape(longform._raw_tokens[token])
             segment = f"""((?P<{token}_prelude>.*?)(?P<{token}>{regex}))?"""
             if pattern:
                 pattern = pattern[:-2] + segment + ')?'
             else: pattern = segment
-        match = re.match(pattern, parent.text)
+        match = re.match(pattern, longform.text)
         # Slice off all the text after the last defining token. This will
         # remove things like subsections, etc. It assumes that optional
         # tokens are always after the mandatory ones.
-        base_cite_text = parent.text[:match.span(token)[1]]
+        base_cite_text = longform.text[:match.span(token)[1]]
         # For each token, replace the value from the longform citation
         # with the proper value for this authority.
         for token in replacement_tokens:
@@ -342,6 +342,9 @@ class Authority:
         if not base_cite:
             base_cite = self.citations[0]
         return base_cite
+    
+    def get_URL(self):
+        return self.base_citation().URL
 
 
 class Citator:
@@ -350,17 +353,13 @@ class Citator:
     to apply them to text, to find all kinds of citations in a text.
     
     Attributes:
-        templates: A list of template objects that this citator will try to
-            match against.
-        generic_id: A common regex the citator will append to each
-            template when it is loaded, to recognize a simple citation to
-            the most-recently cited source.
+        templates: A dictionary of citation templates that this citator
+            will try to match against.
     """
     def __init__(
         self,
         yaml_paths: list=[],
         defaults: bool=True,
-        generic_id: str=GENERIC_ID
     ):
         """
         Calls load_yaml one or more times, to load the citator with
@@ -369,61 +368,22 @@ class Citator:
         Arguments:
             defaults: Whether to load CiteURL's default templates
             yaml_paths: paths to additional YAML files with templates that
-                should be loaded to supplement or replace the defaults.
-            generic_id: a common regex to append to all templates, to
-                recognize a simple citation to the most-recently cited
-                source. Detects "id." or "ibid." by default. To
-                disable, set to None.
         """
-        self.generic_id: str = generic_id
-        self.templates: list = []
+        self.templates: dict = {}
         if defaults:
             self.load_yaml(DEFAULT_YAML_PATH.read_text())
         for path in yaml_paths:
-            self.load_yaml(path.read_text())
+            self.load_yaml(Path(path).read_text())
     
-    def load_yaml(self, yaml: str, use_generic_id: bool=True):
+    def load_yaml(self, yaml: str):
         """
         Import templates from the given YAML string into the citator.
         
         Arguments:
             path: path to the YAML file to load
-            use_generic_id: Whether to append the citator's generic_id
-            citation format to the loaded templates.
         """
-        yaml_dict = safe_load(yaml)
-        
-        # read each item in the YAML into a new template
-        for template_name, template_data in yaml_dict.items():
-            # if regex is specified in singular form, convert it to a
-            # list with one item, for sake of consistency with multiple-
-            # regex templates.
-            for key in ['regex', 'broadRegex']:
-                if key in template_data:
-                  template_data[key + 'es'] = [template_data.pop(key)]
-            
-            # unrelated: if an individual regex is given as a list of
-            # strings (convenient for reusing YAML anchors), concatenate
-            # it to one string.
-            for key in ['regexes', 'broadRegexes', 'idForms', 'shortForms']:
-                if key not in template_data:
-                    continue
-                for i, regex in enumerate(template_data[key]):
-                    if type(regex) is list:
-                        template_data[key][i] = ''.join(regex)
-                        
-            # make the template and add it to the citator, adding the
-            # generic id-form citation if applicable
-            new_template = Template(name=template_name, **template_data)
-            if (
-                use_generic_id and self.generic_id
-                # weird bug: without this next check, the generic id
-                # gets added upwards of 44 times even though the code
-                # appears to run only once
-                and self.generic_id not in new_template.idForms
-            ):
-                new_template.idForms.append(self.generic_id)
-            self.templates.append(new_template)
+        for name, values in safe_load(yaml).items():
+            self.templates[name] = Template.from_dict(name, values)
     
     def list_citations(self,
         text: str,
@@ -449,7 +409,7 @@ class Citator:
         """
         # First, get full citations:
         citations = []
-        for template in self.templates:
+        for template in self.templates.values():
             citations += template.get_citations(text)
         shortform_cites = []
         
@@ -505,7 +465,7 @@ class Citator:
         Returns:
             A single citation object, or None
         """
-        for template in self.templates:
+        for template in self.templates.values():
             citation = next(template.get_citations(query, broad=broad), None)
             if citation:
                 return citation
@@ -577,6 +537,7 @@ class Template:
         shortForms: list=[],
         defaults: dict={},
         operations: list=[],
+        use_generic_id: bool=True,
         parent_citation: Citation=None,
         _is_id=False
     ):
@@ -607,10 +568,11 @@ class Template:
                 values which should be set if the token's value is not
                 otherwise set by a regex capture group.
             
-            operations: A list of operations to perform on the tokens,
-                in sequence, to transform them from `captured_tokens` to
-                `processed_tokens`, the tokens that are used for URL
-                generation.
+            operations: A list of dicts, where each dict represents a
+                string modification to perform on a value captured by
+                a named capture group in the regex. Operations are
+                performed in order, and the end result of all operations
+                is saved as the citation's 'tokens' attribute.
                 
                 Each operation must specify a `token` for its input. It
                 will also be used as the output of the operation, unless
@@ -665,6 +627,9 @@ class Template:
                 engine, where user convenience is more important than
                 avoiding false positives.
             
+            use_generic_id: Whether this template should recognize the
+                generic "id." citation defined in GENERIC_ID
+            
             parent_citation: The citation, if any, that this template
                 was created as a shortform of. This argument is
                 for dynamically-generated templates, and there is usually
@@ -681,6 +646,8 @@ class Template:
         # Supplemental regexes
         self.broadRegexes: str = broadRegexes
         self.idForms: list = idForms
+        if use_generic_id and GENERIC_ID not in self.idForms:
+            self.idForms.append(GENERIC_ID)
         self.shortForms: list = shortForms
         # String operators
         self.defaults: dict = defaults
@@ -700,24 +667,44 @@ class Template:
         # dictionaries of compiled regexes
         self._compiled_regexes: dict = {}
         self._compiled_broadRegexes: dict = {}
+    
+    @classmethod
+    def from_dict(cls, name: str, values: dict):
+        """
+        Return a template from a dictionary of values, like a dictionary
+        created by parsing a template from YAML format.
+        """
+        values = copy(values)
+        # if regex is specified in singular form, convert it to a
+        # list with one item, for sake of consistency with multiple-
+        # regex templates.
+        for key in ['regex', 'broadRegex']:
+            if key in values:
+              values[key + 'es'] = [values.pop(key)]
         
+        # unrelated: if an individual regex is given as a list of
+        # strings (convenient for reusing YAML anchors), concatenate
+        # it to one string.
+        for key in ['regexes', 'broadRegexes', 'idForms', 'shortForms']:
+            if key not in values:
+                continue
+            for i, regex in enumerate(values[key]):
+                if type(regex) is list:
+                    values[key][i] = ''.join(regex)
+        return cls(name=name, **values)
+    
     def __str__(self):
         return self.name
     
     def __repr__(self):
         text = f'citeurl.Template(name="{self.name}", regexes={self.regexes}'
-        if self.URL:
-            text += f', URL={self.URL}'
-        if self.broadRegexes:
-            text += f', broadRegexes={self.broadRegexes}'
-        if self.idForms:
-            text += f', idForms={self.idForms}'
-        if self.shortForms:
-            text += f', shortForms={self.shortForms}'
-        if self.defaults:
-            text += f', defaults={self.defaults}'
-        if self.operations:
-            text += f', operations={self.operations}'
+        
+        for key in [
+            'URL', 'broadRegexes', 'idForms',
+            'shortForms', 'defaults', 'operations'
+        ]:
+            if self.__dict__[key]:
+                text += f', {key}={self.__dict__[key]}'
         if self.parent_citation:
             # don't use the parent cite's actual __repr__ because this gets
             # very recursive very fast
@@ -732,6 +719,8 @@ class Template:
     def to_yaml(self) -> str:
         "Convert this template to a loadable yaml"
         values = {}
+        
+        # Save regex or, where multiple, regexes
         if len(self.regexes) > 1:
             values['regexes'] = self.regexes
         else:
@@ -744,24 +733,18 @@ class Template:
         else:
             values['broadRegex'] = self.broadRegexes[0]
         
-        if self.operations:
-            values['operations'] = self.operations
-        
-        if self.defaults:
-            values['defaults'] = self.defaults
-        
-        if self.shortForms:
-            values['shortForms'] = self.shortForms
-        
-        if self.idForms:
-            values['idForms'] = self.idForms
-        
+        # Save URL to string if it's only one value
         if not self.URL:
             pass
         elif len(self.URL) > 1:
             values['URL'] = self.URL
         else:
             values['URL'] = self.URL[0]
+        
+        # these values can just be copied over
+        for key in ['operations', 'defaults', 'shortForms', 'idForms']:
+            if self.__dict__[key]:
+                values[key] = self.__dict__[key]
         
         return safe_dump(
             {self.name: values},
@@ -872,12 +855,12 @@ class Template:
                     )
         return target[index]
 
-    def _process_tokens(self, tokens: dict):
+    def _process_tokens(self, raw_tokens: dict):
         """
         Returns a copy of the given set of tokens, after applying the
         template's defaults and processing operations
         """
-        processed_tokens = dict(tokens)
+        processed_tokens = dict(raw_tokens)
         for key, val in self.defaults.items():
             if key not in processed_tokens or processed_tokens[key] is None:
                 processed_tokens[key] = val
