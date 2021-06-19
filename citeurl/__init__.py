@@ -14,7 +14,7 @@ DEFAULT_YAML_PATH = Path(__file__).parent.absolute() / 'builtin-templates.yaml'
 GENERIC_ID = r"(Ib)?[Ii]d\.(<\/(i|em|u)>)?"
 
 # regex to break chains of "Id."-type citations
-DEFAULT_ID_BREAKS = 'L\. ?Rev\.|J\. ?Law|\. ?([Cc]ode|[Cc]onst)'
+DEFAULT_ID_BREAKS = r'L\. ?Rev\.|J\. ?Law|\. ?([Cc]ode|[Cc]onst)'
 
 # these tokens can differ without being considered a different authority
 NON_AUTHORITY_TOKENS = [
@@ -98,7 +98,7 @@ class Citation:
                     if value is None:
                         continue
                     part = part.replace('{%s}' % key, value)
-                missing_value = re.search('\{.+\}', part)
+                missing_value = re.search(r'\{.+\}', part)
                 if not missing_value:
                     URL += part
             self.URL = URL
@@ -613,19 +613,20 @@ class Template:
                 the value of the corresponding token from the parent
                 citation. So if a template detects a longform citation to
                 "372 U.S. 335" and has a shortform `{volume} {reporter}
-                at (?P<pincite>\d+)`, it will generate the following
+                at (?P<pincite>\\d+)`, it will generate the following
                 regex: `372 U.S. at (?P<pincite>\d+)`.
                 
             idForms: Think "id.", not ID. Identical to shortForms,
                 except that these regexes will only match until the
                 next different citation or other interruption.
             
-            broadRegexes: Identical to regexes, except that they will be
-                matched in addition to the normal regexes, and only in
-                lookups where broad=True. This is meant to allow for
-                very permissive regexes in contexts like a search
-                engine, where user convenience is more important than
-                avoiding false positives.
+            broadRegexes: Identical to regexes, except that they will
+                only be matched in lookups where broad == True. In these
+                cases, broadRegexes will be used in addition to normal
+                regexes. This is meant to allow for very permissive
+                regexes in contexts like a search engine, where user
+                convenience is more important than avoiding false
+                positives.
             
             use_generic_id: Whether this template should recognize the
                 generic "id." citation defined in GENERIC_ID

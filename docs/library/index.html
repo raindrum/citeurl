@@ -1346,12 +1346,13 @@ next different citation or other interruption.</p>
 <td><code>broadRegexes</code></td>
 <td><code>list</code></td>
 <td>
-<p>Identical to regexes, except that they will be
-matched in addition to the normal regexes, and only in
-lookups where broad=True. This is meant to allow for
-very permissive regexes in contexts like a search
-engine, where user convenience is more important than
-avoiding false positives.</p>
+<p>Identical to regexes, except that they will
+only be matched in lookups where broad == True. In these
+cases, broadRegexes will be used in addition to normal
+regexes. This is meant to allow for very permissive
+regexes in contexts like a search engine, where user
+convenience is more important than avoiding false
+positives.</p>
 </td>
 <td><code>None</code></td>
 </tr>
@@ -1465,19 +1466,20 @@ no need to use it manually.</p>
 <span class="sd">            the value of the corresponding token from the parent</span>
 <span class="sd">            citation. So if a template detects a longform citation to</span>
 <span class="sd">            "372 U.S. 335" and has a shortform `{volume} {reporter}</span>
-<span class="sd">            at (?P&lt;pincite&gt;\d+)`, it will generate the following</span>
+<span class="sd">            at (?P&lt;pincite&gt;\\d+)`, it will generate the following</span>
 <span class="sd">            regex: `372 U.S. at (?P&lt;pincite&gt;\d+)`.</span>
 
 <span class="sd">        idForms: Think "id.", not ID. Identical to shortForms,</span>
 <span class="sd">            except that these regexes will only match until the</span>
 <span class="sd">            next different citation or other interruption.</span>
 
-<span class="sd">        broadRegexes: Identical to regexes, except that they will be</span>
-<span class="sd">            matched in addition to the normal regexes, and only in</span>
-<span class="sd">            lookups where broad=True. This is meant to allow for</span>
-<span class="sd">            very permissive regexes in contexts like a search</span>
-<span class="sd">            engine, where user convenience is more important than</span>
-<span class="sd">            avoiding false positives.</span>
+<span class="sd">        broadRegexes: Identical to regexes, except that they will</span>
+<span class="sd">            only be matched in lookups where broad == True. In these</span>
+<span class="sd">            cases, broadRegexes will be used in addition to normal</span>
+<span class="sd">            regexes. This is meant to allow for very permissive</span>
+<span class="sd">            regexes in contexts like a search engine, where user</span>
+<span class="sd">            convenience is more important than avoiding false</span>
+<span class="sd">            positives.</span>
 
 <span class="sd">        use_generic_id: Whether this template should recognize the</span>
 <span class="sd">            generic "id." citation defined in GENERIC_ID</span>
@@ -1984,7 +1986,7 @@ by means other than a Citator or Template object.</p>
                 <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">continue</span>
                 <span class="n">part</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'{</span><span class="si">%s</span><span class="s1">}'</span> <span class="o">%</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-            <span class="n">missing_value</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">'\{.+\}'</span><span class="p">,</span> <span class="n">part</span><span class="p">)</span>
+            <span class="n">missing_value</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">'\{.+\}'</span><span class="p">,</span> <span class="n">part</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">missing_value</span><span class="p">:</span>
                 <span class="n">URL</span> <span class="o">+=</span> <span class="n">part</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">URL</span> <span class="o">=</span> <span class="n">URL</span>
@@ -2617,7 +2619,7 @@ that refer to each, from most to least.</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": "9.0.1"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": "9.0.2"}</script>
     
     
       <script src="../assets/javascripts/bundle.a1609d9a.min.js"></script>
