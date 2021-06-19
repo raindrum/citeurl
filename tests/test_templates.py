@@ -17,6 +17,12 @@ TESTS = {
         "shortform": "Id. at cl. 2",
         "shortform_URL": "https://constitution.congress.gov/browse/article-3#III_S2_C2"
     },
+    "United States Constitution Amendments": {
+        "cite": "The Fourteenth Amendment to the U.S. Constitution",
+        "URL": "https://constitution.congress.gov/browse/amendment-14/",
+        "shortform": "Sec. 3 of the 14th Amdt.",
+        "shortform_URL": "https://constitution.congress.gov/browse/amendment-14/#14_S3"
+    },
     "U.S. Public Laws": {
         "cite": "Pub. L. 116-344",
         "URL": "https://uscode.house.gov/statutes/pl/116/344.pdf",
