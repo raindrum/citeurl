@@ -48,9 +48,9 @@ directly to the case or law that it references:</p>
 # <whatever code goes here>
 # */
 def _uncomment(blockname: str, source_js: str):
-    return sub(f' */\*{blockname}\n([^©]+?) *\*/\n', r'\1', source_js)
+    return sub(fr' */\*{blockname}\n([^©]+?) *\*/\n', r'\1', source_js)
 def _remove(blockname: str, source_js: str):
-    return sub(f' */\*{blockname}\n[^©]+? *\*/\n', '', source_js)
+    return sub(fr' */\*{blockname}\n[^©]+? *\*/\n', '', source_js)
 
 def makejs(
     citator: Citator,
