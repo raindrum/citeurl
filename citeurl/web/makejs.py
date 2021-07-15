@@ -78,33 +78,51 @@ def makejs(
     # translate each template to json
     json_templates = []
     for template in citator.templates.values():
-        # skip templates without URL templates
-        if 'URL' not in template.__dict__:
+        if not template.URL_builder:
             continue
         
         json = {}
         
         # some parts of a template can be copied over easily
-        for key in ['name', 'defaults', 'URL']:
-            json[key] = template.__dict__[key]
-        regexes_source = (
-            (template.broadRegexes + template.regexes) if template.broadRegexes
-            else template.regexes
-        )
-        json['regexes'] = list(map(
-            lambda x: x.replace('?P<', '?<'),
-            regexes_source
-        ))
+        json['name'] = template.name
+        
+        defaults = template.meta
+        for name, token in template.tokens.items():
+            if token.default:
+                defaults[name] = token.default
+        if defaults:
+            json['defaults'] = defaults
+        
+        json['regexes'] = [
+            r.pattern.replace('?P<', '?<') for r in template.broad_regexes
+        ]
+
         # only add the relevant information from each operation
-        if template.operations:
-            json['operations'] = []
-        for operation in template.operations:
-            json_op = {}
-            for key, value in operation.items():
-                if key == 'output' and value == 'token':
-                    continue
-                json_op[key] = value
-            json['operations'].append(json_op)
+        
+        json['operations'] = []
+        
+        for name, token in template.tokens.items():
+            for edit in token.edits:
+                edit_dict = {
+                    'token': name,
+                    edit.action: edit.data
+                }
+                if 'lookup' in edit_dict and not edit.mandatory:
+                    edit_dict['optionalLookup'] = edit_dict.pop('lookup')
+                json['operations'].append(edit_dict)
+        
+        for edit in template.URL_builder.edits:
+            edit_dict = {
+                'token': edit.token,
+                edit.action: edit.data
+            }
+            if edit.output:
+                edit_dict['output'] = edit.output
+            if 'lookup' in edit_dict and not edit.mandatory:
+                edit_dict['optionalLookup'] = edit_dict.pop('lookup')
+            json['operations'].append(edit_dict)
+        
+        json['URL'] = [p for p in template.URL_builder.parts]
 
         json_templates.append(json)
     

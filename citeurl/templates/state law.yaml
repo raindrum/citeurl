@@ -1,0 +1,1850 @@
+Code of Alabama, 1975: # model for title-chapter-section citations
+  meta:
+    name regex: Ala(bama|\.)|AL
+    abbreviation: Ala. Code
+  tokens:
+    title: &digits_dots_letter
+      regex: '\d+(\.\d+)?[A-Za-z]?'
+      edits: [case: upper]
+    chapter: *digits_dots_letter
+    section: *digits_dots_letter
+    subsection: &subsec_token
+      regex: '(\(\w{1,4}\))+'
+      severable: yes
+  pattern:
+    - '{name regex}'
+    - &rev_ann_code_stat '( ?Rev(ised|\.))?( ?Ann(otated|\.))?( ?Gen(eral|\.))? ?(C(odes?|\.)|Stat(utes|s?\.?))( Serv(ice|\.))?( ?Ann(otated|\.))?,? ?'
+    - &optional_section_sign '(([Ss]ec(tions?|t?s?\.?)|(&sect;|&#167|§){1,2}) ?)?'
+    - &title_dash_chapter_dash_section '{title}[-‑–]{chapter}[-‑–]{section}(,? ?{subsection})?'
+  idform patterns:
+    - - &optional_id_at '([Ii]d\.( at)? )?'
+      - *optional_section_sign
+      - '{title}[-‑–]{chapter}[-‑–]{section}'
+      - &subsec '(((,? )?sub(sections?|divisions?|(sec|d(iv)?)?s?\.))? ?{subsection})?'
+    - [*optional_id_at, *optional_section_sign, '{chapter}[-‑–]{section}', *subsec]
+    - [*optional_id_at, &section_sign '([Ss]ec(tions?|t?s?\.?)|(&sect;|&#167|§){1,2}) ?', '{section}', *subsec]
+    - &id_at_subsec '[Ii]d\.(,? at|,)? (sub(sections?|divisions?|(sec|d(iv)?)?s?\.))? ?{subsection}'
+  URL builder:
+    parts: ['http://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/{title}-{chapter}-{section}.htm']
+  name builder:
+    parts: ['{abbreviation} § {title}-{chapter}-{section}', '{subsection}']
+
+
+Alabama Constitution: # model for art. X, sec. Y, subd. (Z) constitutions
+  meta:
+    name regex: Ala(bama|\.)|AL
+    abbreviation: Ala.
+    ballotpedia slug: Alabama
+  tokens:
+    article:
+      regex: '[\dIVXivx]{1,8}'
+      edits:
+        - number style: digit
+    section:
+      regex: \d[\w.]*\w|\d
+      edits:
+        - case: upper
+    subsection: *subsec_token
+  patterns:
+    - - '{name regex} Const(itution|\.)?,? [Aa]rt(icle|\.)? ?{article}(,? '
+      - *section_sign
+      - '{section}'
+      - *subsec
+      - ')?'
+    - - '[Aa]rt(icle|\.)? ?{article}(,? '
+      - *section_sign
+      - '{section}'
+      - *subsec
+      - ')? [Oo]f [Tt]he {name regex} Const(itution|\.)?'
+  idform patterns:
+    - [*optional_id_at, '\b[Aa]rt(icle|\.)? ?{article}(,? ', *section_sign, '{section}', *subsec, ')?']
+    - [&id_at '[Ii]d\.( at)? ', *section_sign, '{section}', *subsec]
+    - *id_at_subsec
+  shortform pattern: [*section_sign, '{same section}(?! of )', *subsec, '(?! of )']
+  name builder:
+    parts:
+      - '{abbreviation} Const. Art. {article}'
+      - ', § {section}'
+      - '{subsection}'
+    edits:
+      - token: article
+        number style: roman
+  URL builder:
+    parts:
+      - https://ballotpedia.org/Article_{article},_{ballotpedia slug}_Constitution
+      - '#Section_{section}'
+    edits:
+      - token: article
+        number style: roman
+
+Alaska Statutes: # model for title.chapter.section citations (dots, not dashes)
+  meta:
+    name regex: Alaska|AK
+    abbreviation: Alaska Stat.
+  tokens:
+    title: &digits_letter
+      regex: '\d+[A-Zz-z]?'
+      edits: [case: upper]
+    chapter: *digits_letter
+    section: *digits_letter
+    subsection: *subsec_token
+  pattern: ['{name regex} ', *rev_ann_code_stat, *optional_section_sign, '{title}\.{chapter}\.{section}', *subsec]
+  idform patterns:
+    - - *optional_id_at
+      - '{title}\.{chapter}\.{section}'
+      - *subsec
+    - *id_at_subsec
+  URL builder:
+    parts: ['http://www.akleg.gov/basis/statutes.asp#{title}.{chapter}.{section}']
+  name builder:
+    parts: ['{abbreviation} § {title}.{chapter}.{section}', '{subsection}']
+
+
+Alaska Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Alaska|AK
+    abbreviation: Alaska
+    ballotpedia slug: Alaska
+
+
+American Samoa Code: # model for title.section citations
+  meta: {name regex: 'Am(erican|\.) ?Samoa'}
+  tokens:
+    title: {regex: '\d+[A-Z]?'}
+    section: {regex: \d+}
+    subsection: *subsec_token
+  pattern:
+    - '{name regex}'
+    - *rev_ann_code_stat
+    - *optional_section_sign
+    - '{title}\.{section}'
+    - *subsec
+  idform patterns: &id_title_sec_subsec
+    - ['[Ii]d\.( at)? ', *optional_section_sign, '({title}\.)?{section}', *subsec]
+    - [*section_sign, '{section}', *subsec, '(?! of)']
+    - *id_at_subsec
+  URL builder:
+    parts: ['https://new.asbar.org/code-annotated/{title}-{section}']
+
+
+American Samoa Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Am(erican|\.) ?Samoa
+    abbreviation: Am. Samoa
+    ballotpedia slug: American_Samoa
+
+
+Arkansas Code:
+  inherit: Code of Alabama, 1975
+  meta:
+    name regex: Ark(ansas|\.)|AR
+    abbreviation: Ark. Code
+  URL builder: no
+
+
+Arkansas Constitution:    # model for constitutions with article numbers as digits in URL
+  inherit: Alabama Constitution
+  meta:
+    name regex: Ark(ansas|\.)|AR
+    abbreviation: Ark.
+    ballotpedia slug: Arkansas
+  URL builder:
+    parts:
+      - https://ballotpedia.org/Article_{article},_{ballotpedia slug}_Constitution
+      - '#Section_{section}'
+    edits:
+      - token: article
+        number style: digit
+
+
+Arizona Revised Statutes: # model for title-section citations
+  meta:
+    name regex: Ariz(ona|\.)|AZ
+    abbreviation: Ariz. Rev. Stat.
+  tokens:
+    title: {regex: '\d+(\.\d+)?[A-Z]?'}
+    section: {regex: '\d+(\.\d+)?[A-Z]?'}
+    subsection: *subsec_token
+  pattern:
+    - '{name regex}'
+    - *rev_ann_code_stat
+    - *optional_section_sign
+    - '{title}[-‑–]{section}'
+    - *subsec
+  idform patterns: 
+    - ['[Ii]d\.( at)? ', *optional_section_sign, '{title}[-‑–]{section}( ?{subsection})?']
+    - ['[Ii]d\.( at)? ', *optional_section_sign, '{section}( ?{subsection})?']
+    - [*section_sign, '({title}[-‑–])?{section}', *subsec, '(?! of)']
+    - *id_at_subsec
+  URL builder:
+    edits:
+      - token: section
+        sub: ['\.', '-']
+      - token: section
+        lpad: 5
+    parts: ['https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/{title}/{section}.htm']
+  name builder:
+    parts: ['{abbreviation} § {title}-{section}', '{subsection}']
+
+
+Arizona Constitution:
+  inherit: Arkansas Constitution
+  meta:
+    name regex: Ariz(ona|\.)|AZ
+    abbreviation: Ariz.
+    ballotpedia slug: Arizona
+
+
+California Codes:
+  tokens:
+    code:
+      regex: 'Bus(iness|\.) (and|&) Prof(essions|s?\.)|B\.? ?& ?P\.?|BPC|Civ(il|\.)|CIV|(Code( of)? )?(Civil Procedure|Civ\. ?P(roc?)?\.)|CCP|Commercial|Comm?\.|COM|Corp(orations?|\.)|CORP|Educ(ation|\.)|EDU?C|Elec(tions|\.)|ELEC|Evid(ence|\.)|EVID|Fam(ily|\.)|FAM|Fin(ancial|\.)|FIN|Fish (and|&) Game|FGC|F&G|Food (and|&) Agric(ultural|\.)|FAC|Gov(ernment|''?t?\.?)|GOV|Harb(ors|\.) (and|&) Nav(igation|\.)|HNC|H&N|Health (and|&) Saf(ety|\.)|HSC|H&S|Ins(urance|\.)|INS|Lab(or|\.)|LAB|Mil(itary|\.) (and|&) Vet(erans|\.)|MVC|M&V|Penal|PEN|Prob(ate|\.)|PROB|Pub(lic|\.) Cont(ract|\.)|PCC|Pub(lic|\.) ?Res(ources|\.)|PRC|Pub(lic|\.) Util(ities|s?\.)|PUC|Rev(enue|\.) (and|&) Tax(ation|\.)|RTC|R&T|St(reets|s\.) (and|&) High(ways|\.)|SHC|S&H|Unemp(loyment|\.) Ins(urance|(ur)?\.)|UIC|Veh(icle|(ic)?\.)|VEH|Water|WAT|Welf(are|\.) (and|&) Inst(itutions|s?\.)|WIC'
+      edits:
+        - lookup: {'Bus(iness|\.) (and|&) Prof(essions|s?\.)|B\.? ?& ?P\.?|BPC':'BPC', 'Civ(il|\.)|CIV':'CIV', '(Code( of)? )?(Civil Procedure|Civ\. ?P(roc?)?\.)|CCP':'CCP', 'Commercial|Comm?\.|COM':'COM', 'Corp(orations?|\.)|CORP':'CORP', 'Educ(ation|\.)|EDU?C':'EDC', 'Elec(tions|\.)|ELEC':'ELEC', 'Evid(ence|\.)|EVID':'EVID', 'Fam(ily|\.)|FAM':'FAM', 'Fin(ancial|\.)|FIN':'FIN', 'Fish (and|&) Game|FGC|F&G':'FGC', 'Food (and|&) Agric(ultural|\.)|FAC':'FAC', 'Gov(ernment|''?t?\.?)|GOV':'GOV', 'Harb(ors|\.) (and|&) Nav(igation|\.)|HNC|H&N':'HNC', 'Health (and|&) Saf(ety|\.)|HSC|H&S':'HSC', 'Ins(urance|\.)|INS':'INS', 'Lab(or|\.)|LAB':'LAB', 'Mil(itary|\.) (and|&) Vet(erans|\.)|MVC|M&V':'MVC', 'Penal|PEN':'PEN', 'Prob(ate|\.)|PROB':'PROB', 'Pub(lic|\.) Cont(ract|\.)|PCC':'PCC', 'Pub(lic|\.) ?Res(ources|\.)|PRC':'PRC', 'Pub(lic|\.) Util(ities|s?\.)|PUC':'PUC', 'Rev(enue|\.) (and|&) Tax(ation|\.)|RTC|R&T':'RTC', 'St(reets|s\.) (and|&) High(ways|\.)|SHC|S&H':'SHC', 'Unemp(loyment|\.) Ins(urance|(ur)?\.)|UIC':'UIC', 'Veh(icle|(ic)?\.)|VEH':'VEH', 'Water|WAT':'WAT', 'Welf(are|\.) (and|&) Inst(itutions|s?\.)|WIC':'WIC'}
+    section: *digits_dots_letter
+    subsection: *subsec_token
+  pattern:
+    - '(Cal(ifornia|(if)?\.)|CAL?) ?{code}( ?C(ode|\.)( Ann(otated|\.))?,?)? '
+    - *optional_section_sign
+    - ' ?{section}'
+    - *subsec
+  idform patterns: &id_sec_subsec
+    - ['[Ii]d\.( at)? ', *optional_section_sign, '{section}( ?{subsection})?']
+    - [*section_sign, ' ?{section}(,? ?{subsection})?(?! of)']
+    - '{section} ?{subsection}'
+    - '[Ii]d\.( at)? {subsection}'
+  shortform pattern: ['{same code}( Code)? ', *optional_section_sign, ' ?{section}', *subsec]
+  URL builder:
+    parts: ['https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode={code}&sectionNum={section}']
+    edits:
+      - token: code
+        lookup: {'Bus(iness|\.) (and|&) Prof(essions|s?\.)|B\.? ?& ?P\.?|BPC':'BPC', 'Civ(il|\.)|CIV':'CIV', '(Code( of)? )?(Civil Procedure|Civ\. ?P(roc?)?\.)|CCP':'CCP', 'Commercial|Comm?\.|COM':'COM', 'Corp(orations?|\.)|CORP':'CORP', 'Educ(ation|\.)|EDU?C':'EDC', 'Elec(tions|\.)|ELEC':'ELEC', 'Evid(ence|\.)|EVID':'EVID', 'Fam(ily|\.)|FAM':'FAM', 'Fin(ancial|\.)|FIN':'FIN', 'Fish (and|&) Game|FGC|F&G':'FGC', 'Food (and|&) Agric(ultural|\.)|FAC':'FAC', 'Gov(ernment|''?t?\.?)|GOV':'GOV', 'Harb(ors|\.) (and|&) Nav(igation|\.)|HNC|H&N':'HNC', 'Health (and|&) Saf(ety|\.)|HSC|H&S':'HSC', 'Ins(urance|\.)|INS':'INS', 'Lab(or|\.)|LAB':'LAB', 'Mil(itary|\.) (and|&) Vet(erans|\.)|MVC|M&V':'MVC', 'Penal|PEN':'PEN', 'Prob(ate|\.)|PROB':'PROB', 'Pub(lic|\.) Cont(ract|\.)|PCC':'PCC', 'Pub(lic|\.) ?Res(ources|\.)|PRC':'PRC', 'Pub(lic|\.) Util(ities|s?\.)|PUC':'PUC', 'Rev(enue|\.) (and|&) Tax(ation|\.)|RTC|R&T':'RTC', 'St(reets|s\.) (and|&) High(ways|\.)|SHC|S&H':'SHC', 'Unemp(loyment|\.) Ins(urance|(ur)?\.)|UIC':'UIC', 'Veh(icle|(ic)?\.)|VEH':'VEH', 'Water|WAT':'WAT', 'Welf(are|\.) (and|&) Inst(itutions|s?\.)|WIC':'WIC'}
+  name builder:
+    parts: ['California {code} Code § {section}', '{subsection}']
+    edits:
+      - token: code
+        lookup:
+          BPC: Business & Professions
+          CIV: Civil
+          COM: Commercial
+          CORP: Corporations
+          EDC: Education
+          ELEC: Elections
+          EVID: Evidence
+          FAM: Family
+          FIN: Financial
+          FGC: Fish & Game
+          FAC: Food & Agricultural
+          GOV: Government
+          HNC: Harbors & Navigation
+          INS: Insurance
+          LAB: Labor
+          MVC: Military & Veterans
+          PEN: Penal
+          PROB: Probate
+          PCC: Public Contract
+          PRC: Public Resources
+          PUC: Public Utilities
+          RTC: Revenue & Taxation
+          SHC: Streets & Highways
+          UIC: Unemployment Insurance
+          VEH: Vehicle
+          WAT: Water
+          WIC: Welfare & Institutions
+
+
+California Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Cal(ifornia|(if)?\.)|CAL?
+    abbreviation: Cal.
+    display type: Text
+  URL builder:
+    parts:
+      - https://leginfo.legislature.ca.gov/faces/codes_display{display type}.xhtml?lawCode=CONS
+      - '&article={article}'
+      - '&sectionNum=SEC. {section}.'
+    edits:
+      - token: article
+        number style: roman
+      - token: section
+        output: display type
+        lookup: {'.+': 'Section'}
+        mandatory: no
+
+
+California Code of Regulations:
+  meta: {name regex: CA|Cal(ifornia|\.) Code of Reg(ulations|s\.)|CA ADR}
+  tokens:
+    title: {regex: \d+}
+    section: *digits_dots_letter
+    subsection: *subsec_token
+  pattern: ['{title} {name regex} ', *optional_section_sign, '{section}', *subsec]
+  URL builder:
+    parts: ['https://govt.westlaw.com/calregs/Search/Results?transitionType=Default&contextData=(sc.Default)&t_T1={title}&t_T2={section}&t_S1=CA ADC s&Page=1&query=advanced: CI("{title} CA ADC s {section}")&Template=Find']
+  name builder:
+    parts: ['{title} CA ADR § {section}', '{subsection}']
+
+
+Colorado Revised Statutes: # model for title-article-section citations needing yearly updates
+  meta:
+    name regex: Colo(rado|\.)|CO
+    abbreviation: Colo. Rev. Stat.
+  tokens:
+    year:
+      regex: \d+
+      default: '2020' # needs yearly updates
+    title: *digits_dots_letter
+    article: *digits_dots_letter
+    section: *digits_dots_letter
+    subsection: *subsec_token
+  pattern:
+    - '{name regex}'
+    - *rev_ann_code_stat
+    - *optional_section_sign
+    - &title_dash_article_dash_section '{title}[-‑–]{article}[-‑–]{section}'
+    - *subsec
+  idform patterns:
+    - [*optional_id_at, *optional_section_sign, '{title}[-‑–]{article}[-‑–]{section}', *subsec]
+    - [*optional_id_at, *optional_section_sign, '{article}[-‑–]{section}', *subsec]
+    - [*optional_id_at, *optional_section_sign, '{section}', *subsec]
+    - [*section_sign, '{section}', *subsec]
+    - *id_at_subsec
+  name builder:
+    parts: ['{abbreviation} § {title}-{article}-{section}', '{subsection}']
+  URL builder:
+    parts: ['https://leg.colorado.gov/sites/default/files/images/olls/crs{supported_year}-title-{lpad_title}.pdf#search={title}-{article}-{section}.']
+    edits:
+      - token: title
+        lpad: 2
+        output: lpad_title
+      - token: year
+        output: supported_year
+        sub: ['', '']
+      - token: supported_year # force pre-2013 to current year
+        lookup: {'1[89]\d{2}|200\d|201[0-2]':'2020'} # needs yearly updates
+        mandatory: no
+
+
+Colorado Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Colo(rado|\.)|CO
+    abbreviation: Colo.
+    ballotpedia slug: Colorado
+
+
+General Statutes of Connecticut:
+  tokens:
+    section:
+      regex: (\d[a-z\-]*[\w]+)
+    subsection: *subsec_token
+  pattern:
+    - '(Conn(ecticut|\.)|CT)'
+    - *rev_ann_code_stat
+    - *optional_section_sign
+    - '{section}'
+    - *subsec
+  idform patterns: *id_sec_subsec
+  name builder:
+    parts:
+      - 'Conn. Gen. Stat. § {section}'
+      - '{subsection}'
+  URL builder:
+    parts:
+      - https://www.lawserver.com/law/state/connecticut/ct-laws/connecticut_statutes_{section}
+
+
+Connecticut Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Conn(ecticut|\.)|CT
+    abbreviation: Conn.
+    ballotpedia slug: Connecticut
+
+
+Delaware Code:      # model for codes organized by title and section, similar to U.S. Code
+  meta:
+    name regex: Del(aware|\.)?
+    abbreviation: Del. Code
+  tokens:
+    title: {regex: '\d{1,2}'}
+    section: *digits_dots_letter
+    subsection: *subsec_token
+  patterns:
+    - ['([Tt]it(le |\. ?))?{title} {name regex}', *rev_ann_code_stat, *optional_section_sign, '{section}', *subsec]
+    - ['{name regex}', *rev_ann_code_stat, '[Tt]it(le |\. ?){title},? ', *section_sign, '{section}', *subsec]
+  idform patterns: *id_title_sec_subsec
+  name builder:
+    parts:
+      - '{title} {abbreviation} § {section}'
+      - '{subsection}'
+  URL builder:
+    parts: ['https://www.lawserver.com/law/state/delaware/de-code/delaware_code_title_{title}_{section}']
+
+
+Delaware Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Del(aware|\.)?
+    abbreviation: Del.
+    ballotpedia slug: Delaware
+    
+
+Delaware General Corporations Law:
+  inherit: Delaware Code
+  tokens:
+    title: {regex: '\d{1,2}', default: '8'}
+    section: *digits_dots_letter
+    subsection: *subsec_token
+  pattern: ['(D\.? ?G\.? ?C\.? ?L\.?|Del(aware|\.) ?Gen(eral|\.) ?Corp(orations?|s?\.) ?L(aw|\.)) ', *optional_section_sign, '{section}', *subsec]
+  idform patterns: *id_sec_subsec
+
+
+District of Columbia Official Code:
+  inherit: Arizona Revised Statutes
+  meta:
+    name regex: (District of Columbia|D\.? ?C\.?)( Official)?
+    abbreviation: D.C. Code
+  URL builder:
+    parts:
+      - https://code.dccouncil.us/dc/council/code/sections/{title}-{section}.html
+      - '#{subsection}'
+
+
+Florida Statutes:                # model for chapter.section citations
+  meta:
+    name regex: (Fl(orida|a?\.)|FL)
+    abbreviation: Fla. Stat.
+    year: '2020' # needs yearly updates
+  tokens:
+    chapter: *digits_letter
+    section: *digits_letter
+    subsection: *subsec_token
+  pattern:
+    - '{name regex}'
+    - *rev_ann_code_stat
+    - *optional_section_sign
+    - '{chapter}\.{section}'
+    - *subsec
+  idform patterns: &chapter_dot_section_id
+    - ['[Ii]d\.( at)? ', *optional_section_sign, '({chapter}\.)?{section}( ?{subsection})?']
+    - [*optional_section_sign, ' ?{chapter}\.{section}', *subsec, '(?! of)']
+    - [*section_sign, ' ?{section}', *subsec, '(?! of)']
+    - *id_at_subsec
+  URL builder:
+    parts: ['https://www.flsenate.gov/Laws/Statutes/{year}/{chapter}.{section}']
+    edits:
+      - token: chapter
+        lpad: 4
+  name builder:
+    parts: ['{abbreviation} § {chapter}.{section}', '{subsection}']
+
+
+Florida Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Fl(orida|a?\.)|FL
+    abbreviation: Fla.
+  URL builder:
+    parts:
+      - https://www.flsenate.gov/Laws/Constitution#A{article}
+      - S{section}
+    edits:
+      - token: section
+        lpad: 2
+      - token: article
+        number style: digit
+
+
+Georgia Code:
+  inherit: Code of Alabama, 1975
+  meta:
+    name regex: G(eorgia|a\.|A)
+    abbreviation: Ga. Code
+  URL builder: no
+
+
+Guam Code:
+  inherit: Delaware Code
+  meta:
+    name regex: Guam
+    abbreviation: Guam Code
+  URL builder: no
+  name builder:
+    parts: ['{title} {abbreviation} {section}', '{subsection}']
+
+
+Hawaii Revised Statutes:                        # model for chapter-section statutes
+  inherit: Florida Statutes
+  meta:
+    name regex: Haw(ai.?i|\.)|HI
+    abbreviation: Haw. Rev. Stat.
+  tokens:
+    chapter: *digits_dots_letter
+    section: *digits_dots_letter
+    subsection: *subsec_token
+  pattern:
+    - '{name regex}'
+    - *rev_ann_code_stat
+    - *optional_section_sign
+    - '{chapter}[-‑–]{section}'
+    - *subsec
+  idform patterns: 
+    - ['[Ii]d\.( at)? ', *optional_section_sign, '({chapter}[-‑–])?{section}( ?{subsection})?']
+    - [*section_sign, ' ?({chapter}[-‑–])?{section}', *subsec, '(?! of)']
+    - *id_at_subsec
+  name builder:
+    parts: ['{abbreviation} § {chapter}-{section}', '{subsection}']
+  URL builder:
+    parts: ['https://www.lawserver.com/law/state/hawaii/hi-statutes/hawaii_statutes_{chapter}-{section}']
+
+
+Hawaii Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Haw(ai.?i|\.)|HI
+    abbreviation: Haw.
+    ballotpedia slug: Hawaii
+
+
+Idaho Code:
+  inherit: Arizona Revised Statutes
+  meta:
+    name regex: I(daho|D)
+    abbreviation: Idaho Code
+  URL builder:
+    edits: # the first one or two digits of the section are the chapter number
+      - token: section
+        output: chapter
+        sub: ['\d{1,2}[A-Z]?$', '']
+    parts: ['https://legislature.idaho.gov/statutesrules/idstat/Title{title}/T{title}CH{chapter}/SECT{title}-{section}/']
+
+
+Idaho Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: I(daho|D)
+    abbreviation: Idaho
+    ballotpedia slug: Idaho
+
+
+Illinois Compiled Statutes:
+  tokens:
+    chapter: {regex: \d+}
+    act: {regex: \d+}
+    section: *digits_dots_letter
+    subsection: *subsec_token
+  pattern: ['([Cc]h(apter|\.) )?{chapter} (ILCS|Ill(inois|\.) Comp(iled|\.) Stat(utes|\.)) {act}/{section}', *subsec]
+  idform patterns: *id_sec_subsec
+  name builder:
+    parts: ['{chapter} Ill. Comp. Stat. {act}/{section}', '{subsection}']
+  URL builder:
+    parts: ['https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName={chapter}{act}0K{section}']
+    edits:
+      - token: chapter
+        lpad: 4
+      - token: act
+        lpad: 4
+
+
+Illinois Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Ill(inois|\.)?|IL
+    abbreviation: Ill.
+    ballotpedia slug: Illinois
+
+
+Indiana Code:     # model for title-article-chapter-section citations
+  meta:
+    name regex: Ind(iana|\.)|IN
+    abbreviation: Ind. Code
+    year: '2020' # needs yearly updates
+  tokens:
+    title: {regex: \d+}
+    article: *digits_dots_letter
+    chapter: *digits_dots_letter
+    section: *digits_dots_letter
+    subsection: *subsec_token
+  pattern:
+    - '{name regex}'
+    - *rev_ann_code_stat
+    - *optional_section_sign
+    - '{title}[-‑–]{article}[-‑–]{chapter}[-‑–]{section}'
+    - *subsec
+  idform patterns:
+    - [*optional_id_at, *optional_section_sign, '(({title}[-‑–])?{article}[-‑–])?{chapter}[-‑–]{section}', *subsec]
+    - [*section_sign, '{section}', *subsec]
+    - *id_at_subsec
+  name builder:
+    parts: ['{abbreviation} § {title}-{article}-{chapter}-{section}', '{subsection}']
+  URL builder:
+    parts: ['https://iga.in.gov/legislative/laws/{year}/ic/titles/{title}#{title}-{article}-{chapter}-{section}']
+    edits:
+      - token: title
+        lpad: 2
+
+
+Indiana Constitution:
+  inherit: Arkansas Constitution
+  meta:
+    name regex: Ind(iana|\.)|IN
+    abbreviation: Ind.
+    ballotpedia slug: Indiana
+
+
+Iowa Code:
+  inherit: Florida Statutes
+  meta:
+    name regex: I(owa|A)
+    abbreviation: Iowa Code
+  URL builder:
+    parts: ['https://www.legis.iowa.gov/docs/code/{chapter}.{section}.pdf']
+
+
+Iowa Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: I(owa|A)
+    abbreviation: Iowa
+    ballotpedia slug: Iowa
+
+
+Kansas Statutes:
+  inherit: Hawaii Revised Statutes
+  meta:
+    name regex: Kan(sas|\.)|KS
+    abbreviation: Kan. Stat.
+  URL builder:
+    parts: ['https://www.lawserver.com/law/state/kansas/ks-statutes/kansas_statutes_{chapter}-{section}']
+
+
+Kansas Constitution: # Model for constitutions with named parts. Meta and tokens must both be overwritten.
+  inherit: Alabama Constitution
+  meta:
+    abbreviation: Kan.
+    name regex: Kan(sas|\.)|KS
+    ballotpedia slug: Kansas
+  tokens:
+    article: &const_art_token
+      regex: '[\dIVXivx]{1,8}'
+      edits: [number style: digit]
+    part:
+      regex: Bill of Rights|Preamble|Ordinance
+      edits:
+        - case: title
+        - sub: ['Of', 'of']
+    section: &const_sec_token
+      regex: \d[\w.]*\w|\d
+      edits:
+        - case: upper
+    subsection: *subsec_token
+  patterns:
+    - - '{name regex} Const(itution|\.)?,? [Aa]rt(icle|\.)? ?{article}(,? '
+      - *section_sign
+      - '{section}(,? [Cc]l(ause|\.)? ?{clause})?)?'
+    - - '{name regex} Const(itution|\.)?,? {part}(,? '
+      - *section_sign
+      - '{section}'
+      - *subsec
+      - ')?'
+    - - '[Aa]rt(icle|\.)? ?{article}(,? '
+      - *section_sign
+      - '{section}'
+      - *subsec
+      - ')? [Oo]f [Tt]he {name regex} Const(itution|\.)?'
+  name builder:
+    parts:
+      - '{abbreviation} Const. '
+      - Art. {article}'
+      - '{part}'
+      - ', § {section}'
+      - '{subsection}'
+  URL builder:
+    parts:
+      - https://ballotpedia.org/
+      - Article_{article}
+      - '{part}'
+      - ',_{ballotpedia slug}_Constitution'
+      - '#Section_{section}'
+    edits:
+      - token: part
+        sub: [' ', '_']
+      - token: article
+        number style: roman
+
+
+Kentucky Revised Statutes:
+  inherit: Florida Statutes
+  meta:
+    name regex: K(entucky|y\.|Y)
+    abbreviation: Ky. Rev. Stat.
+  URL builder:
+    parts: ['https://www.lawserver.com/law/state/kentucky/ky-statutes/kentucky_statutes_{chapter}-{section}']
+    edits:
+      - token: chapter
+        case: lower
+      - token: chapter
+        sub: ['\.', '-']
+
+
+Kentucky Constitution:
+  inherit: Kansas Constitution
+  meta:
+    abbreviation: Ky.
+    name regex: K(entucky|y\.|Y)
+    ballotpedia slug: Kentucky
+  tokens:
+    article: *const_art_token
+    part:
+      regex: Bill of Rights|Rights of Victims of Crime|Dist(ribution|\.?) of the Powers of Gov(ernment|('t)?\.)|(The )?(Leg(islative|(is)?\.)|Exec(utive|\.)|Jud(icial|\.)) ?Dep(artment|('t)?\.?)|Counties (and|&) County Seats|Impeachments|(C(ounty|ty\.)|Fisc(al|\.?)) ?C(ourts|ts\.?)|Justices of the Peace|Suff(rage|\.?) ?(and|&) ?Elec(tions|s?\.?)|Mun(icipalities|i?\.?)|Rev(enue|\.?) ?(and|&) ?Tax(ation|\.?)|Educ(ation|\.)|Corp(orations?|s?\.)|R(ailroads|\.R\.) (and|&) Com(merce|m?\.)|(The )?Militia|Gen(eral|\.) ?Prov(isions|s?\.)|Mode of Rev(ision|\.)
+      edits:
+        - lookup:
+            Dist(ribution|\.?) of the Powers of Gov(ernment|('t)?\.?): Dist. of the Powers of Gov't
+            (The )?Leg(islative|(is)?\.) ?Dep(artment|('t)?\.?): Legis. Dep't
+            (The )?Jud(icial|\.) ?Dep(artment|('t)?\.?): Jud. Dep't
+            (The )?Exec(utive|\.) ?Dep(artment|('t)?\.?): Exec. Dep't
+            Counties (and|&) County Seats: Counties & Cty. Seats
+            C(ounty|ty\.): Cty.
+            Fisc(al|\.?): Fisc.
+            C(ourts|ts|\.?): Cts.
+            Suff(rage|\.?) ?(and|&) ?Elec(tions|s?\.?): Suff. & Elec.
+            Mun(icipalities|i?\.?): Muni.
+            Rev(enue|\.?) ?(and|&) ?Tax(ation|\.?): Rev. & Tax.
+            Educ(ation|\.): Educ.
+            Corp(orations?|s?\.): Corp.
+            R(ailroads|\.R\.) (and|&) Com(merce|m?\.): R.R. & Com.
+            (The )?Militia: Militia
+            Gen(eral|\.) ?Prov(isions|s?\.): Gen. Provs.
+            Mode of Rev(ision|\.): Mode of Rev.
+          mandatory: no
+    section:
+      regex: \d{1,3}[A-Za-z]?
+      edits:
+        - case: upper
+    subsection: *subsec_token
+  URL builder:
+    parts: ['https://apps.legislature.ky.gov/Law/Constitution/Constitution/ViewConstitution?rsn={section}']
+    edits:
+      - token: section
+        lookup: {'1':'3', '2':'4', '3':'5', '4':'6', '5':'7', '6':'8', '7':'9', '8':'10', '9':'11', '10':'12', '11':'13', '12':'14', '13':'15', '14':'16', '15':'17', '16':'18', '17':'19', '18':'20', '19':'21', '20':'22', '21':'23', '22':'24', '23':'25', '24':'26', '25':'27', '26':'28', '26A':'305', '27':'30', '28':'31', '29':'33', '30':'34', '31':'35', '32':'36', '33':'37', '34':'38', '35':'39', '36':'40', '37':'41', '38':'42', '39':'43', '40':'44', '41':'45', '42':'46', '43':'47', '44':'48', '45':'49', '46':'50', '47':'51', '48':'52', '49':'53', '50':'54', '51':'55', '52':'56', '53':'57', '54':'58', '55':'59', '56':'60', '57':'61', '58':'62', '59':'63', '60':'64', '61':'65', '62':'66', '63':'68', '64':'69', '65':'70', '66':'72', '67':'73', '68':'74', '69':'77', '70':'78', '71':'79', '72':'80', '73':'81', '74':'82', '75':'83', '76':'84', '77':'85', '78':'86', '79':'87', '80':'88', '81':'89', '82':'90', '83':'91', '84':'92', '85':'93', '86':'94', '87':'95', '88':'96', '89':'97', '90':'98', '91':'99', '92':'100', '93':'101', '94':'102', '95':'103', '96':'104', '97':'106', '98':'107', '99':'108', '100':'109', '101':'110', '102':'111', '103':'112', '104':'113', '105':'114', '106':'115', '107':'116', '108':'117', '109':'119', '110':'121', '111':'123', '112':'125', '113':'127', '114':'129', '115':'131', '116':'132', '117':'134', '118':'135', '119':'136', '120':'137', '121':'138', '122':'139', '123':'140', '124':'141', '125':'142', '126':'143', '127':'144', '128':'145', '129':'146', '130':'147', '131':'148', '132':'149', '133':'150', '134':'151', '135':'152', '136':'153', '137':'154', '138':'155', '139':'156', '140':'158', '141':'159', '142':'161', '143':'162', '144':'164', '145':'166', '146':'167', '147':'168', '148':'169', '149':'170', '150':'171', '151':'172', '152':'173', '153':'174', '154':'175', '155':'176', '156':'180', '156A':'177', '156B':'178', '157':'183', '157A':'181', '157B':'182', '158':'184', '159':'185', '160':'186', '161':'187', '162':'188', '163':'189', '164':'190', '165':'191', '166':'192', '167':'193', '168':'194', '169':'196', '170':'197', '171':'198', '172':'201', '172A':'199', '172B':'200', '173':'202', '174':'203', '175':'204', '176':'205', '177':'206', '178':'207', '179':'208', '180':'209', '181':'210', '182':'211', '183':'213', '184':'214', '185':'215', '186':'216', '187':'217', '188':'218', '189':'219', '190':'221', '191':'222', '192':'223', '193':'224', '194':'225', '195':'226', '196':'227', '197':'228', '198':'229', '199':'230', '200':'231', '201':'232', '202':'233', '203':'234', '204':'235', '205':'236', '206':'237', '207':'238', '208':'239', '210':'242', '211':'243', '212':'244', '213':'245', '214':'246', '215':'247', '216':'248', '217':'249', '218':'250', '219':'252', '220':'253', '221':'254', '222':'255', '223':'256', '224':'258', '225':'259', '226':'261', '226A':'260', '227':'262', '228':'263', '229':'264', '230':'265', '231':'266', '232':'267', '233':'269', '233A':'268', '234':'270', '235':'271', '236':'272', '237':'273', '238':'274', '239':'275', '240':'276', '241':'277', '242':'278', '243':'279', '244':'281', '244A':'280', '245':'282', '246':'283', '247':'284', '248':'285', '249':'286', '250':'287', '251':'288', '252':'289', '253':'290', '254':'291', '255':'292', '255A':'302', '256':'294', '257':'295', '258':'296', '259':'297', '260':'298', '261':'299', '252':'300', '263':'301'}
+
+
+Louisiana Statutes:
+  inherit: American Samoa Code
+  meta:
+    name regex: L(ouisiana|a\.|A)
+    abbreviation: La. Stat.
+  pattern:
+    - '{name regex}'
+    - *rev_ann_code_stat
+    - *optional_section_sign
+    - '{title}:{section}'
+    - *subsec
+  idform patterns:
+    - ['([Ii]d\. (at )?)?', *optional_section_sign, '{title}:{section}', *subsec]
+    - [*section_sign, '{section}', *subsec]
+    - *id_at_subsec
+  name builder:
+    parts: ['{abbreviation} § {title}:{section}', '{subsection}']
+  URL builder:
+    parts: ['https://www.lawserver.com/law/state/louisiana/la-laws/louisiana_revised_statutes_{title}-{section}']
+
+
+Louisiana Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: L(ouisiana|a\.|A)
+    abbreviation: La.
+    ballotpedia slug: Louisiana
+
+
+Maine Statutes:
+  inherit: Delaware Code
+  meta:
+    name regex: M(aine|e\.|E)
+    abbreviation: Me. Stat.
+  tokens:
+    title:
+      regex: '\d+([-‑–][A-Z])?'
+      edits:
+        - sub: ['[-‑–]', '-']
+        - case: upper
+    section: &digits_dots_dash_letter
+      regex: '\d+(\.\d+)?([-‑–][A-Za-z])?'
+      edits:
+        - case: upper
+        - sub: ['[-‑–]', '-']
+    subsection: *subsec_token
+  URL builder:
+    parts: ['https://legislature.maine.gov/legis/statutes/{title}/title{title}sec{section}.html']
+
+
+Maine Constitution: # model for Art. X, Sec. Y, cl. Z constitutions
+  inherit: Alabama Constitution
+  meta:
+    name regex: M(aine|e\.|E)
+    abbreviation: Me.
+    ballotpedia slug: Maine
+  tokens:
+    article:
+      regex: '[\dIVXivx]{1,4}([-‑–][1-3])?'
+      edits:
+        - case: upper
+        - sub: ['[-‑–]', '-']
+    section:
+      regex: \d([\w.]*\w)?
+      edits:
+        - case: upper
+        - sub: ['[-‑–]', '-']
+    clause:
+      regex: \d+
+  patterns:
+    - - '{name regex} Const(itution|\.)?,? [Aa]rt(icle|\.)? ?{article}(,? '
+      - *section_sign
+      - '{section}(,? [Cc]l(ause|\.)? ?{clause})?)?'
+    - - '[Aa]rt(icle|\.)? ?{article}(,? '
+      - *section_sign
+      - '{section}(,? [Cc]l(ause|\.)? ?{clause})?)?'
+      - ' [Oo]f [Tt]he {name regex} Const(itution|\.)?'
+  idform patterns:
+    - [*optional_id_at, '\b[Aa]rt(icle|\.)? ?{article}(,? ', *section_sign, '{section}(,? [Cc]l(ause|\.)? ?{clause})?)?']
+    - [*optional_id_at, *section_sign, '{section}(,? [Cc]l(ause|\.)? ?{clause})?']
+    - ([Ii]d\.( at)? )?[Cc]l(ause|\.)? ?{clause}
+  name builder:
+    parts:
+      - '{abbreviation} Const. Art. {article}'
+      - ', § {section}'
+      - ', cl. {clause}'
+    edits:
+      - token: article
+        number style: roman
+  URL builder:
+    parts:
+      - https://ballotpedia.org/Article_{article}
+      - '--Part_{pt}'
+      - ',_{ballotpedia slug}_Constitution'
+      - '#Section_{section}'
+    edits:
+      - token: article
+        output: pt
+        lookup: {'(.+-\d+)': 'First', '.+-2': 'Second', '.+-1': 'Third'}
+      - token: article
+        sub: ['-\d', '']
+
+
+Maryland Code:
+  inherit: Arizona Revised Statutes
+  meta:
+    abbreviation: Md. Code
+    name regex: M(aryland|d\.|D)
+  tokens:
+    article:
+      regex: (Ac|Al|[BCEFHILNPRST]).{4,38}?
+      edits: [lookup: {'Acric(ulture|\.)':'Agric.', 'Alco(holic|\.) ?Bev(erages|s?\.)':'Alc. Bev.', 'Bus(iness|\.) ?Occ(upations|\.) ?(and|&) ?Prof(essions|s?\.)':'Bus. Occ. & Prof.', 'Bus(iness|\.) ?Reg(ulation|\.)':'Bus. Reg.', 'Com(mercial|\.) ?Law':'Com. Law', 'Corp(orations|s\.) ?(and|&) Ass(ociations|''ns)':'Corps. & Ass''ns', 'Corr(ectional|\.) ?Serv(ices|s\.)':'Corr. Servs.', 'C(ourts|ts\.) ?(and|&) ?Jud(icial|\.) ?Proc(eedings|\.)':'Cts. & Jud. Proc.', 'Crim(inal|\.) ?Law':'Crim. Law', 'Crim(inal|\.) ?Proc(edure|\.)':'Crim. Proc.', 'Econ(omic|\.) ?Dev(elopment|\.)':'Econ. Dev.', 'Educ(ation|\.)':'Educ.', 'Elec(tion|\.) ?Law':'Elec. Law', 'Envir(onment|\.)':'Envir.', 'Est(ates|\.) ?(and|&) ?Trusts':'Est. & Trusts', 'Fam(ily|\.) ?Law':'Fam. Law', 'Fin(ancial|\.) Inst(itutions|\.)':'Fin. Inst.', 'Health ?[-–] ?Gen(eral|\.)':'Health-Gen.', 'Health Occ(upations|\.)':'Health Occ.', 'Hous(ing|\.) ?(and|&) ?C(ommunity|mty\.) ?Dev(elopment|''t|\.)':'Hous. & Cmty. Dev.', 'Hum(an|\.) ?Serv(ices|s\.)':'Hum. Servs.', 'Ins(urance|\.)':'Ins.', 'Lab(or|\.) ?(and|&) ?Empl(oyment|\.)':'Lab. & Empl.', 'Land Use':'Land Use', 'Local Gov(ernment|''t)':'Local Gov''t', 'Nat(ural|\.) ?Res(ources|\.)':'Nat. Res.', 'Pub(lic|\.) ?Saf(ety|\.)':'Pub. Safety', 'Pub(lic|\.) ?Util(ity|\.)':'Pub. Util.', 'Real Prop(erty|\.)':'Real Prop.', 'State Fin(ance|\.) (and|&) Proc(urement|\.)':'State Fin. & Proc.', 'State Gov(ernment|''t)':'State Gov''t', 'State Pers(onnel|\.) (and|&) Pens(ions|\.)':'State Pers. & Pens.', 'Tax ?[-–] ?Gen(eral|\.)':'Tax-Gen.', 'Tax ?[-–] ?Prop(erty|\.)':'Tax-Prop.', 'Transp(ortation|\.)':'Transp.'}]
+    title: *digits_dots_letter
+    section:
+      regex: '[\da-zA-Z\-–.]*[\da-zA-Z]'
+      edits:
+        - case: upper
+        - sub: ['[-‑–]', '-']
+    subsection: *subsec_token
+  pattern:
+    - '{name regex} (Code( Ann(otated|\.))? (of )?)?{article}( Code( Ann(otated|\.))?)?,? '
+    - *optional_section_sign
+    - '{title}-{section}'
+    - *subsec
+  shortform pattern: ['{same article}( Code( Ann(otated|\.))?)?', *optional_section_sign, '{title}[-‑–]{section}', *subsec]
+  name builder:
+    parts: ['Md. Code {article} § {title}-{section}', '{subsection}']
+  URL builder:
+    parts: ['https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article={article}&section={title}-{section}']
+    edits:
+      - token: article
+        lookup: {'Agric\.': 'gab', 'Alc\. Bev\.': 'gab', 'Bus\. Occ\. & Prof\.': 'gbo', 'Bus\. Reg\.': 'gbr', 'Com\. Law': 'gcr', 'Corps\. & Ass''ns': 'gca', 'Corr\. Servs\.': 'gcs', 'Cts\. & Jud\. Proc\.': 'gcj', 'Crim\. Proc\.': 'gcp', 'Econ\. Dev\.': 'gec', 'Educ\.': 'ged', 'Elec\. Law': 'gel', 'Envir\.': 'gen', 'Est\. & Trusts': 'get', 'Fam\. Law': 'gfl', 'Fin\. Inst\.': 'gfi', 'Health-Gen\.': 'ggp', 'Health Occ\.': 'gho', 'Hous\. & Cmty\. Dev\.': 'ghs', 'Hum\. Servs\.': 'ghu', 'Ins\.': 'gin', 'Lab\. & Empl\.': 'gle', 'Land Use': 'glu', 'Local Gov''t': 'glg', 'Nat\. Res\.': 'gnr', 'Pub\. Safety': 'gps', 'Pub\. Util\.': 'gpu', 'Real Prop\.': 'grp', 'State Fin\. & Proc\.': 'gsf', 'State Gov''t': 'gsg', 'State Pers\. & Pens\.': 'gsp', 'Tax-Gen\.': 'gtg', 'Tax-Prop\.': 'gtp', 'Transp\.': 'gtr'}
+
+
+Maryland Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: M(aryland|d\.|D)
+    abbreviation: Md.
+    ballotpedia slug: Maryland
+
+
+Massachusetts General Laws:
+  tokens:
+    chapter:
+      regex: \d+[A-Z]?
+      edits:
+        - case: upper
+    section:
+      regex: \d+[A-Z]?\d*([/]\d+[A-Z])?
+      edits:
+        - case: upper
+    subsection: *subsec_token
+  pattern:
+    - ((Mass(achusetts|\.)?|MA) ?(Gen(eral|\.)|Ann(otated|\.)) ?Laws( Ann(otated|\.))?|M\.?G\.?L\.?(A\.?)?|A\.?L\.?M\.?)
+    - ',? [Cc](hapter|h?\.) ?{chapter},? '
+    - *optional_section_sign
+    - '{section}'
+    - *subsec
+  idform patterns: *id_sec_subsec
+  URL builder:
+    parts: ['https://malegislature.gov/GeneralLaws/GoTo?ChapterGoTo={chapter}&SectionGoTo={section}']
+    edits:
+      - token: section
+        sub: ['/', '~']
+  name builder:
+    parts: ['Mass\. Gen\. Laws ch. {chapter}, § {section}', '{subsection}']
+
+
+Massachusetts Constitution: # model for constitutions divided into part I and part II
+  meta:
+    name regex: Mass(achusetts|\.)?|MA
+    output_ch: I
+    output_sec: I
+  tokens:
+    part: &const_pt_token
+      regex: II?|[Ff]irst|[Ss]econd|1|2
+      edits:
+        - number style: digit
+    chapter:
+      regex: \d+|[IVXivx]{1,7}
+      edits:
+        - number style: digit
+    section: *const_sec_token
+    article: *const_art_token
+  patterns:
+    - - '{name regex} Const(itution|\.)?,? [Pp](art|t\.?)( [Tt]he)? ?{part}(,? [Cc](hapter|h?\.?) ?{chapter})?(,? '
+      - *section_sign
+      - '{section}(,? [Aa]rt(icle|\.?) ?{article})?)?'
+    - - '[Pp](art|t\.?)( [Tt]he)? ?{part}(,? [Cc](hapter|h?\.?) ?{chapter})?(,? '
+      - *section_sign
+      - '{section})?'
+      - ' [Oo]f [Tt]he {name regex} Const(itution|\.)?'
+  idform patterns:
+    - [*optional_id_at, '\b[Pp](art|t\.?)( [Tt]he)? ?{part}(,? [Cc](hapter|h?\.?) ?{chapter})?(,? ', *section_sign, '{section}(,? [Aa]rt(icle|\.?) ?{article})?)?']
+    - [*optional_id_at, '\b[Cc](hapter|h?\.?) ?{chapter}(?! of )(,? ', *section_sign, '{section}(?! of )(,? [Aa]rt(icle|\.?) ?{article}(?! of ))?)?']
+    - [*optional_id_at, *section_sign, '{section}(?! of )(,? [Aa]rt(icle|\.?) ?{article})?(?! of )']
+    - [*optional_id_at, '[Aa]rt(icle|\.?) ?{article}(?! of )']
+  name builder:
+    parts:
+      - 'Mass. Const. Pt. {part}'
+      - ', ch. {chapter}'
+      - ', § {section}'
+      - ', art. {article}'
+    edits:
+      - token: part
+        number style: roman
+      - token: chapter
+        number style: roman
+      - token: article
+        number style: roman
+  URL builder:
+    parts: 
+      - https://malegislature.gov/Laws/Constitution
+      - '{is_first}#article{article}'
+      - '{is_second}#chapter{output_ch}Section{output_sec}'
+      - '{is_second}Article{article}'
+    edits:
+      - token: chapter
+        output: output_ch
+        number style: roman
+      - token: output_ch
+        number style: roman
+      - token: article
+        number style: roman
+      - token: section
+        output: output_sec
+        number style: roman
+      - token: part
+        output: is_first
+        lookup: {'1': ''}
+      - token: part
+        output: is_second
+        lookup: {'2': ''}
+  
+
+Michigan Compiled Laws:
+  inherit: Florida Statutes
+  meta:
+    name regex: (Mich(igan|\.)?|MI)? ?Comp(iled|\.)? Laws( (Serv(ice|\.)|Ann(otated|\.)))?
+    abbreviation: Michigan Compiled Laws
+  pattern:
+    - '{name regex},? ?'
+    - *optional_section_sign
+    - '{chapter}\.{section}'
+    - *subsec
+  URL builder:
+    parts: ['https://legislature.mi.gov/doc.aspx?mcl-{chapter}-{section}']
+
+
+Michigan Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Mich(igan|\.)?|MI
+    abbreviation: Mich.
+    ballotpedia slug: Michigan
+
+
+Minnesota Statutes:
+  inherit: Florida Statutes
+  meta:
+    name regex: Minn(esota|\.)?|MN
+    abbreviation: Minn. Stat.
+  URL builder:
+    parts:
+      - https://www.revisor.mn.gov/statutes/cite/{chapter}.{section}
+      - '{has_subsec}#stat.{chapter}.{section}.{subsection}'
+    edits:
+      - token: subsection
+        lookup: {'^\(\d.*': ''}
+        output: has_subsec
+      - token: subsection
+        sub: ['\(|\).*', '']
+
+
+Minnesota Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Minn(esota|\.)?|MN
+    abbreviation: Minn.
+    ballotpedia slug: Minnesota
+
+
+Mississippi Code:
+  inherit: Code of Alabama, 1975
+  meta:
+    name regex: Miss(issippi|\.)?|MS
+    abbreviation: Miss. Code
+    year: '2019'
+  URL builder:
+    parts: ['https://law.justia.com/codes/mississippi/{year}/title-{title}/chapter-{chapter}/section-{title}-{chapter}-{section}/index.html']
+
+
+Mississippi Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Miss(issippi|\.)?|MS
+    abbreviation: Miss.
+    ballotpedia slug: Mississippi
+
+
+Missouri Revised Statutes:
+  inherit: Florida Statutes
+  meta:
+    name regex: M(issouri|o\.|O)
+    abbreviation: Mo. Rev. Stat.
+  URL builder:
+    parts: ['https://revisor.mo.gov/main/OneSection.aspx?section={chapter}.{section}']
+
+
+Missouri Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: M(issouri|o\.|O)
+    abbreviation: Mo.
+    ballotpedia slug: Missouri
+
+
+Montana Code:
+  inherit: Code of Alabama, 1975
+  meta:
+    name regex: Mont(ana|\.)?|MT
+    abberviation: Mont. Code
+  URL builder:
+    parts: ['https://www.lawserver.com/law/state/montana/mt-code/montana_code_{title}-{chapter}-{section}']
+
+
+Montana Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Mont(ana|\.)?|MT
+    abbreviation: Mont.
+    ballotpedia slug: Montana
+
+
+Revised Statutes of Nebraska:
+  inherit: Hawaii Revised Statutes
+  meta:
+    name regex: Neb(raska|\.)?|NE
+    abbreviation: Neb. Rev. Stat.
+  URL builder:
+    parts: ['https://www.nebraskalegislature.gov/laws/statutes.php?statute={chapter}-{section}']
+
+
+Nebraska Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Neb(raska|\.)?|NE
+    abbreviation: Neb.
+    ballotpedia slug: Nebraska
+
+
+Nevada Revised Statutes:
+  inherit: Florida Statutes
+  meta:
+    name regex: Nev(ada|\.)?|NV
+    abbreviation: Nev. Rev. Stat.
+  URL builder:
+    parts: ['https://www.leg.state.nv.us/NRS/NRS-{lpad_chapter}.html#NRS{chapter}Sec{section}']
+    edits:
+      - token: chapter
+        output: lpad_chapter
+        lpad: 3
+
+
+Nevada Constitution:
+  inherit: Arkansas Constitution
+  meta:
+    name regex: Nev(ada|\.)?|NV
+    abbreviation: Nev.
+    ballotpedia slug: Nevada
+
+
+New Hampshire Revised Statutes:   # model for chapter:section citations
+  meta:
+    name regex: New Hampshire|N\.? ?H\.?
+    abbreviation: N.H. Rev. Stat.
+  tokens:
+    chapter: *digits_dots_dash_letter
+    section: *digits_dots_dash_letter
+    subsection: *subsec_token
+  pattern:
+    - '{name regex}'
+    - *rev_ann_code_stat
+    - *optional_section_sign
+    - '{chapter}:{section}'
+    - *subsec
+  idform patterns:
+    - ['([Ii]d\. (at )?)?', *optional_section_sign, '{chapter}:{section}', *subsec]
+    - ['[Ii]d\. (at )?', *optional_section_sign, '{section}', *subsec]
+    - [*section_sign, '{section}', *subsec]
+    - *id_at_subsec
+  name builder:
+    parts: ['{abbreviation} § {chapter}:{section}', '{subsection}']
+  URL builder:
+    parts: ['https://www.lawserver.com/law/state/new-hampshire/nh-statutes/new_hampshire_revised_statutes_{chapter}_{section}']
+
+
+New Hampshire Constitution:
+  meta:
+    part2_section: Part_Second
+    name regex: New Hampshire|N\.? ?H\.?
+  tokens:
+    part: *const_pt_token
+    article: *const_art_token
+  patterns:
+    - '{name regex} Const(itution|\.)?,? [Pp](art|t\.?)( [Tt]he)? ?{part}(,? [Aa]rt(icle|\.)? ?{article})?'
+    - '[Pp](art|t\.?)( [Tt]he)? ?{part}(,? [Aa]rt(icle|\.)? ?{article})?,? [Oo]f [Tt]he {name regex} Const(itution|\.)?'
+  idform patterns:
+      - ([Ii]d\.( at)? )?[Aa]rt(icle|\.?) ?{article}
+  name builder:
+    parts:
+      - 'N.H. Const. pt. {part}'
+      - ', art. {article}'
+    edits:
+      - token: article
+        number style: roman
+  URL builder:
+    parts:
+      - 'https://ballotpedia.org/'
+      - '{is_part1}Part_First'
+      - '{is_part2}{part2_section}'
+      - ',_New_Hampshire_Constitution'
+      - '#Article_{article}'
+    edits:
+      - token: part
+        output: is_part1
+        lookup: {'1': ''}
+      - token: part
+        output: is_part2
+        lookup: {'2': ''}
+      - token: article
+        output: part2_section
+        lookup: {'[1-8](-[ab])?':'Part_Second', '(9|2[0-4])(-[ab])?':'House_of_Representatives', '(2[5-9]|3\d|40)(-[ab])?':'Senate', '(4[1-9]|5\d)(-[ab])?':'Executive_Power_-_Governor', '6[0-6]':'Council', '(6[7-9]|70)':'Secretary', '7[12]':'County_Treasurer', '(7[3-9](-[ab])?|8[01])':'Judiciary_Power', '82':'Clerks_of_Courts', '83':'Encouragement_of_Literature,_Trade,_Etc.', '(8[4-9]|9\d|10[01])':'Oaths_and_Subscriptions_Exclusion_from_Offices,_Etc.'}
+
+
+New Jersey Statutes:
+  tokens:
+    title: *digits_letter
+    chapter: *digits_letter
+    section: *digits_dots_letter
+  pattern:
+    - ((New Jersey|N\.? ?J\.?)
+    - *rev_ann_code_stat
+    - '|N\.?J\.?S\.?A )'
+    - *optional_section_sign
+    - '{title}:{chapter}[-‑–]{section}'
+    - *subsec
+  idform patterns:
+    - ['([Ii]d\. (at )?)?', *optional_section_sign, '{title}:{chapter}[-‑–]{section}', *subsec]
+    - ['([Ii]d\. (at )?)?', *optional_section_sign, '{chapter}[-‑–]{section}', *subsec]
+    - ['[Ii]d\. (at )?', *optional_section_sign, '{section}', *subsec]
+    - [*section_sign, '{section}', *subsec]
+    - *id_at_subsec
+  name builder:
+    parts: ['N.J. Stat. § {title}:{chapter}-{section}', '{subsection}']
+  URL builder:
+    parts: ['https://njlaw.rutgers.edu/collections/njstats/showsect.php?title={title}&chapter={chapter}&section={section}&actn=getsect']
+
+
+New Jersey Constitution:
+  tokens:
+    article: *const_art_token
+    section: *const_sec_token
+    paragraph:
+      regex: \d+
+  patterns:
+    - - '(N\.? ?J\.?|New Jersey) ?Const(itution|\.)?,? ?'
+      - '[Aa]rt(icle|\.) ?{article}(,? '
+      - &nj_sec_or_para '((&sect;|&#167|§|[Ss]ec(tion|t?\.)) ?{section}|([Pp](ar(agraph|a?\.)|¶)) ?{paragraph})'
+      - ')?'
+    - - '[Aa]rt(icle|\.) ?{article}(,? '
+      - *nj_sec_or_para
+      - ')? [Oo]f [Tt]he (N\.? ?J\.?|New Jersey) ?Const(itution|\.)?'
+  idform patterns:
+    - ['([Ii]d\.,?( at)? )?[Aa]rt(icle|\.) ?{article}(,? ', *nj_sec_or_para, ')?']
+    - ['([Ii]d\.,?( at)? )?', *nj_sec_or_para]
+  name builder:
+    parts:
+      - 'N.J. Const. art. {article}'
+      - ', § {section}'
+      - ', para. {paragraph}'
+    edits:
+      - token: article
+        number style: roman
+  URL builder:
+    parts:
+      - https://ballotpedia.org/Article_{article},_New_Jersey_Constitution
+      - '#Section_{section}'
+      - '#Paragraph_{paragraph}'
+    edits:
+      - token: article
+        number style: roman
+      - token: section
+        number style: roman
+
+
+New Mexico Statutes Annotated 1978: # model for chapter-article-section citations
+  meta:
+    name regex: New Mexico|N\.? ?M\.?
+    abbreviation: N.M. Stat.
+  tokens:
+    chapter: *digits_letter
+    article: *digits_letter
+    section: *digits_dots_letter
+  pattern:
+    - '{name regex}'
+    - *rev_ann_code_stat
+    - *optional_section_sign
+    - '{chapter}[-‑–]{article}[-‑–]{section}'
+    - *subsec
+  idform patterns:
+    - ['([Ii]d\. (at )?)?', *optional_section_sign, '{chapter}[-‑–]{article}[-‑–]{section}', *subsec]
+    - ['([Ii]d\. (at )?)?', *optional_section_sign, '{article}[-‑–]{section}', *subsec]
+    - ['[Ii]d\. (at )?', *optional_section_sign, '{section}', *subsec]
+    - [*section_sign, '{section}', *subsec]
+    - *id_at_subsec
+  name builder:
+    parts: ['{abbreviation} § {chapter}-{article}-{section}', '{subsection}']
+  URL builder:
+    parts: ['https://nmonesource.com/nmos/nmsa/en/item/{chapter_code}/index.do#!b/{chapter}-{article}-{section}']
+    edits:
+      - token: chapter
+        output: chapter_code
+        lookup: {'1':'4351', '2':'4359', '3':'4362', '4':'4372', '5':'4376', '6':'4381', '7':'4340', '8':'4354', '9':'4357', '10':'4364', '11':'4370', '12':'4374', '13':'4378', '14':'4384', '15':'4387', '16':'4390', '17':'4341', '18':'4346', '19':'4350', '20':'4356', '21':'4361', '22':'4368', '22A':'4377', '23':'4380', '24':'4384', '25':'4391', '26':'4355', '27':'4358', '28':'4365', '29':'4367', '30':'4371', '31':'4379', '32':'4385', '32A':'4389', '33':'4396', '34':'4399', '35':'4360', '36':'4363', '37':'4366', '38':'4369', '39':'4373', '40':'4375', '41':'4382', '42':'4386', '42A':'4392', '43':'4395', '44':'4388', '45':'4393', '46':'4401', '46A':'4405', '46B':'4406', '47':'4408', '48':'4413', '49':'4416', '50':'4420', '51':'4425', '52':'4394', '53':'4400', '54':'4404', '55':'4411', '56':'4418', '57':'4423', '58':'4426', '59':'4435', '59A':'4438', '60':'4443', '61':'4397', '62':'4407', '63':'4412', '64':'4414', '65':'4417', '66':'4422', '67':'4429', '68':'4434', '69':'4437', '70':'4440', '71':'4398', '72':'4402', '73':'4409', '74':'4415', '75':'4421', '76':'4424', '77':'4427'}
+
+
+New Mexico Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: New Mexico|N\.? ?M\.?
+    abbreviation: N.M.
+    ballotpedia slug: New_Mexico
+
+
+Consolidated Laws of New York:
+  meta:
+    name regex: New York|N\.? ?Y\.?
+    abbreviation: N.Y.
+  tokens:
+    chapter:
+      regex: .{2,40}?
+      edits:
+        - lookup:
+            Abandoned Property|ABP: Aband. Prop.
+            Agric(ulture|\.) (and|&) M(arkets|kts)|AGM: Agric. & Mkts.
+            Alc(oholic|o?\.) Bev(erage|\.) Cont(rol|\.)|ABC: Alco. Bev. Cont.
+            Alt(ernative\.) C(ounty|ty\.) Gov(ernment|.t)|ACG: Alt. County Gov't
+            Arts (and|&) Cult(ural|\.) Aff(airs|\.)|ACA: Arts & Cult. Aff.
+            Banking|BNK: Banking
+            Ben(evolent|\.) Ord(ers|\.)|BVO: Ben. Ord.
+            Bus(iness|\.) Corp(orations?|s?)|BSC|BCL: Bus. Corp.
+            Canal|CAL: Canal
+            Civil Practice Law (and|&) Rules|CVP|CPLR|C\. ?P\. ?L\. ?R: C.P.L.R.
+            Civ(il|\.) Serv(ice|\.)|CIV: Civ. Serv.
+            Coop(erative|\.) Corp(orations|s?)|CCO: Coop. Corp.
+            Correct(ion|\.)|COR: Correct.
+            County|CNT: County
+            Crim(inal|\.) Pro(cedure|c?)|CPL: Crim. Proc.
+            Debt(or|\.) (and|&) Cred(itor|\.)|DCD: Debt. & Cred.
+            Dom(estic|\.) Rel(ations|\.)|DOM: Dom. Rel.
+            Econ(omic|\.) Dev(elopment|\.)|COM: Econ. Dev.
+            Educ(ation|\.)|EDN: Educ.
+            Elder|ELD: Elder
+            Elec(tion|\.)|ELN: Elec.
+            Em(inent|\.) Dom(ain|\.) Proc(edure|\.)|EDP: Em. Dom. Proc.
+            Emp(loyer(s''?)?|l''rs) Liab(ility|\.)|EML: Empl'rs Liab.
+            Energy|ENG: Energy
+            Env(ironmental|(tl)?\.) Conserv(ation|\.)|ENV: Envtl. Conserv.
+            Est(ates,|\.) Powers (and|&) Trusts|EPT: Est. Powers & Trusts
+            Exec(utive|\.)|EXC: Exec.
+            Fin(ancial|\.) Serv(ices|s?)|FIS: Fin. Serv.
+            Gen(eral|\.) Associations|GAS: Gen. Ass'ns
+            Gen(eral|\.) Bus(iness|\.)|GBS: Gen. Bus.
+            Gen(eral|\.) City|GCT: Gen. City
+            Gen(eral|\.) Constr(uction|\.)|GCN: Gen. Constr.
+            Gen(eral|\.) Mun(icipal|\.)|GMU: Gen. Mun.
+            Gen(eral|\.) Oblig(ations|\.)|GOB: Gen. Oblig.
+            High(way|\.)|HAY: High.
+            Indian|IND: Indian
+            Ins(urance|(ur)?\.)|ISC: Ins.
+            Jud(iciary|\.)|JUD: Jud.
+            Lab(or|\.)|LAB: Lab.
+            Legis(lative|\.)|LEG: Legis.
+            Lien|LIE: Lien
+            L(imited|td\.) Liab(ility|\.) Co(mpany|\.)|LLC: Ltd. Liab. Co.
+            Local Fin(ance|\.)|LFN: Local Fin.
+            Mental Hyg(iene|\.)|MHY: Mental Hyg.
+            Mil(itary|\.)|MIL: Mil.
+            Mult(iple|\.) Dwell(ing|\.)|MDW: Mult. Dwell.
+            Mult(iple|\.) Resid(ence|\.)|MRE: Mult. Resid.
+            Mun(icipal|\.) Home Rule|MHR: Mun. Home Rule
+            Mun(icipal|i?\.) Housing Authorities|MHA: Mun. Hous. Auth.
+            Nav(igation|\.)|NAV: Nav.
+            (State )?Print(ing|\.)? (and|&) Pub(lic|\.) Doc(uments|s?)|PPD: State Print. & Pub. Docs.
+            Parks,? Rec(reation|\.) (and|&) Hist(oric|\.) Preserv(ation|\.)|PAR: Parks Rec. & Hist. Preserv.
+            P(artnership|'ship)|PTR: P'ship
+            Penal|PEN: Penal
+            Pers(onal|\.) Prop(erty|\.)|PEP: Pers. Prop.
+            Priv(ate|\.) Hous(ing|\.) Fin(ance|\.)|PVH: Priv. Hous. Fin.
+            Pub(lic|\.) Auth(orities|\.)|PBA: Pub. Auth.
+            Pub(lic|\.) B(uildings|ldgs\.)|PBB: Pub. Bldgs.
+            Pub(lic|\.) Health|PBH: Pub. Health
+            Pub(lic|\.) Housing|PBG: Pub. Hous.
+            Pub(lic|\.) Lands|PBL: Pub. Lands
+            Pub(lic|\.) Off(icers|\.)|PBO: Pub. Off.
+            Rac(ing,|\.) Pari-Mut(uel|\.) Wag(ering|\.) (and|&) Breed(ing|\.)|PML: Rac. Pari-Mut. Wag. & Breed
+            Railroad|R\.R\.|RRD: R.R.
+            Rapid Trans(it|\.)|RAT: Rapid Trans.
+            Real Prop(erty|\.) Act(ions|s\.)( (and|&) Proceedings)?|RPA: Real Prop. Acts.
+            Real Prop(erty|\.) Tax\.?|RPT: Real Prop. Tax
+            Real Prop(erty|\.)|RPP: Real Prop.
+            Relig(ious|\.) Corp(orations|s?\.)|RCO: Relig. Corp.
+            Retire(ment|\.) (and|&) Soc(ial|\.) Sec(urity|\.)|RSS: Retire. & Soc. Sec.
+            Rural Elec(tric|\.) Coop(eratives?|s?\.)|REL: Rural Elec. Coop.
+            Second Class Cities|SCC: Second Class Cities
+            Soil (and|&) Water Conserv(ation|\.) Dist(ricts|s?\.)|SWC: Soil & Water Conserv. Dist.
+            State Administrative Procedure Act|A\.P\.A\.|SAP: A.P.A.
+            State Fin(ance|\.)|STF: State Fin.
+            State|STL: State
+            Statute of Local Gov(ernments|s?\.)|SLG: Stat. Local Gov'ts
+            Town|TWN: Town
+            Trans(portation|p?\.) Corp(orations|s?\.)|TCP: Transp. Corp.
+            Trans(portation|p?\.)|TRA: Transp.
+            Uniform Commercial Code|U\.?C\.?C\.?: U.C.C.
+            Vill(age|\.)|VIL: Village
+            Vol(unteer|\.) Ambul(ance|\.) Workers''? Benefit|VAW: Vol. Ambul. Workers' Ben.
+            Vol(unteer|\.) Fire(fighters''?|\.) Ben(efit|\.)|VOL: Vol. Fire. Ben.
+            Workers''? Comp(ensation|\.)|WKC: Workers' Comp.
+    section: *digits_dots_letter
+    subsection: *subsec_token
+  pattern: ['{name regex} ?{chapter}( Law)? ?', *optional_section_sign, '{section}', *subsec]
+  idform patterns: *id_sec_subsec
+  name builder:
+    parts: ['{abbreviation} {chapter} Law § {section}', '{subsection}']
+  URL builder:
+    parts: ['https://www.nysenate.gov/legislation/laws/{chapter}/{section}']
+    edits:
+      - token: chapter
+        lookup: {Aband\. Prop\.: ABP, Agric\. & Mkts\.: AGM, Alco\. Bev\. Cont\.: ABC, Alt\. County Gov't: ACG, Arts & Cult\. Aff\.: ACA, Banking: BNK, Ben\. Ord\.: BVO, Bus\. Corp\.: BSC, Canal: CAL, C\.P\.L\.R\.: CVP, Civ\. Serv\.: CIV, Coop\. Corp\.: CCO, Correct\.: COR, County: CNT, Crim\. Proc\.: CPL, Debt\. & Cred\.: DCD, Dom\. Rel\.: DOM, Econ\. Dev\.: COM, Educ\.: EDN, Elder: ELD, Elec\.: ELN, Em\. Dom\. Proc\.: EDP, Empl'rs Liab\.: EML, Energy: ENG, Envtl\. Conserv\.: ENV, Est\. Powers & Trusts: EPT, Exec\.: EXC, Fin\. Serv\.: FIS, Gen\. Ass'ns: GAS, Gen\. Bus\.: GBS, Gen\. City: GCT, Gen\. Constr\.: GCN, Gen\. Mun\.: GMU, Gen\. Oblig\.: GOB, High\.: HAY, Indian: IND, Ins\.: ISC, Jud\.: JUD, Lab\.: LAB, Legis\.: LEG, Lien: LIE, Ltd\. Liab\. Co\.: LLC, Local Fin\.: LFN, Mental Hyg\.: MHY, Mil\.: MIL, Mult\. Dwell\.: MDW, Mult\. Resid\.: MRE, Mun\. Home Rule: MHR, Mun\. Hous\. Auth\.: MHA, Nav\.: NAV, State Print\. & Pub\. Docs\.: PPD, Parks Rec\. & Hist\. Preserv\.: PAR, P'ship: PTR, Penal: PEN, Pers\. Prop\.: PEP, Priv\. Hous\. Fin\.: PVH, Pub\. Auth\.: PBA, Pub\. Bldgs\.: PBB, Pub\. Health: PBH, Pub\. Hous\.: PBG, Pub\. Lands: PBL, Pub\. Off\.: PBO, Rac\. Pari-Mut\. Wag\. & Breed: PML, R\.R\.: RRD, Rapid Trans\.: RAT, Real Prop\. Acts\.: RPA, Real Prop\. Tax: RPT, Real Prop\.: RPP, Relig\. Corp\.: RCO, Retire\. & Soc\. Sec\.: RSS, Rural Elec\. Coop\.: REL, Second Class Cities: SCC, Soil & Water Conserv\. Dist\.: SWC, A\.P\.A\.: SAP, State Fin\.: STF, State: STL, Stat\. Local Gov'ts: SLG, Town: TWN, Transp\. Corp\.: TCP, Transp\.: TRA, U\.C\.C\.: UCC, Village: VIL, Vol\. Ambul\. Workers' Ben\.: VAW, Vol\. Fire\. Ben\.: VOL, Workers' Comp\.: WKC}
+
+
+New York Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: New York|N\.? ?Y\.?
+    abbreviation: N.Y.
+    ballotpedia slug: New_York
+
+
+North Carolina General Statutes:
+  inherit: Hawaii Revised Statutes
+  meta:
+    name regex: (North Carolina|N\.? ?C\.?) ?Gen(eral|\.)
+    abbreviation: N.C. Gen. Stat.
+  URL builder:
+    parts: ['https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_{chapter}/GS_{chapter}-{section}.html']
+
+
+North Carolina Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: North Carolina|N\.? ?C\.?
+    abbreviation: N.C.
+    ballotpedia slug: North_Carolina
+
+
+North Dakota Century Code:
+  inherit: Code of Alabama, 1975
+  meta:
+    name regex: (North Dakota|N\.? ?D\.?) ?Cent(ury|\.)
+    abbreviation: N.D. Cent. Code
+  URL builder:
+    parts: ['https://www.lawserver.com/law/state/north-dakota/nd-code/north_dakota_code_{title}_{chapter}_{section}']
+    edits:
+      - token: title
+        sub: ['\.', '-']
+      - token: chapter
+        sub: ['\.', '-']
+      - token: chapter
+        lpad: 2
+      - token: section
+        lpad: 2
+
+
+North Dakota Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: North Dakota|N\.? ?D\.?
+    abbreviation: N.D.
+    ballotpedia slug: North_Dakota
+
+
+Northern Mariana Islands Commonwealth Code:
+  inherit: Delaware Code
+  meta:
+    name regex: N(orthern|\.) ?Mar(iana||\.) ?I(slands|\.)
+    abbreviation: N. Mar. I. Code
+  URL builder:
+    parts: ['https://cnmilaw.org/pdf/cmc_section/T{title}/{section}.pdf']
+
+
+Northern Mariana Islands Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: N(orthern|\.) ?Mar(iana||\.) ?I(slands|\.)
+    abbreviation: N. Mar. I.
+    ballotpedia slug: Northern_Mariana_Islands
+
+
+Ohio Revised Code:
+  inherit: Florida Statutes
+  meta:
+    name regex: O(hio|H)
+    abbreviation: Ohio Rev. Code
+  URL builder:
+    parts: ['https://codes.ohio.gov/orc/{chapter}', '.{section}v1']
+
+
+Ohio Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: O(hio|H)
+    abbreviation: Ohio
+    ballotpedia slug: Ohio
+
+
+Oklahoma Statutes:
+  inherit: Delaware Code
+  meta:
+    name regex: Okla(homa|\.)?|OK
+    abbreviation: 
+    year: '2020' # needs yearly updates
+  URL builder:
+    parts: ['https://law.justia.com/codes/oklahoma/{year}/title-{title}/section-{title}-{section}/index.html']
+
+
+Oklahoma Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Okla(homa|\.)?|OK
+    abbreviation: Okla.
+    ballotpedia slug: Oklahoma
+
+
+Oregon Revised Statutes:
+  inherit: Florida Statutes
+  meta:
+    name regex: Or(egon|e?\.)|OR
+    abbreviation: Or. Rev. Stat.
+  URL builder:
+    parts: ['https://www.oregonlaws.org/ors/{chapter}.{section}']
+
+
+Oregon Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Or(egon|e?\.)|OR
+    abbreviation: Or.
+    ballotpedia slug: Oregon
+  tokens:
+    article:
+      regex: '[IVXivx]{1,5}(-\w(\(\d\))?)?'
+      edits:
+        - case: upper
+    section:
+      regex: \d[\w.]*\w|\d
+      edits:
+        - case: upper
+    clause:
+      regex: \d+
+
+
+Pennsylvania Consolidated Statutes:
+  inherit: Delaware Code
+  meta:
+    name regex: (Penn(sylvania|\.)|Pa\.|PA)( ?Stat\. [Aa]nd)? ?Cons(olidated|\.)
+    abbreviation: Pa. Cons. Stat.
+  URL builder:
+    parts: ['https://law.onecle.com/pennsylvania/title-{title}/{section}.html']
+
+
+Pennsylvania Code:
+  inherit: Delaware Code
+  meta:
+    name regex: Penn(sylvania|\.)|Pa\.|PA
+    abbreviation: Pa. Code
+  URL builder:
+    parts: ['https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/{title}/chapter{chapter}/s{chapter}.{section}.html']
+    edits:
+      - token: title
+        lpad: 3
+
+
+Pennsylvania Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Penn(sylvania|\.)|Pa\.|PA
+    abbreviation: Pa.
+    ballotpedia slug: Pennsylvania
+
+
+Laws of Puerto Rico:
+  inherit: Delaware Code
+  meta:
+    name regex: Puerto Rico|P\.? ?R\.?
+    abbreviation: P.R. Laws
+  URL builder: no # they use LexisNexis
+  name builder:
+    parts: ['{abbreviation} tit. {title}, § {section}', '{subsection}']
+
+
+Puerto Rico Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Puerto Rico|P\.? ?R\.?
+    abbreviation: P.R.
+    ballotpedia slug: Puerto_Rico
+
+
+General Laws of Rhode Island:
+  inherit: Code of Alabama, 1975
+  meta:
+    name regex: (Rhode Island|R\.? ?I\.?) ?Gen(eral|\.)
+    abbreviation: R.I. Gen. Laws
+  URL builder:
+    parts: ['http://webserver.rilin.state.ri.us/Statutes/TITLE{title}/{title}-{chapter}/{title}-{chapter}-{section}.HTM']
+
+
+Rhode Island Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Rhode Island|R\.? ?I\.?
+    abbreviation: R.I.
+    ballotpedia slug: Rhode_Island
+
+
+South Carolina Code of Laws:
+  inherit: Code of Alabama, 1975
+  meta:
+    name regex: South Carolina|S\.? ?C\.?
+    abbreviation: S.C. Code
+  URL builder:
+    parts: ['https://www.scstatehouse.gov/code/t{Title}c{lpad_chapter}.php#{title}-{chapter}-{section}']
+    edits:
+      - token: chapter
+        lpad: 3
+
+
+South Carolina Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: South Carolina|S\.? ?C\.?
+    abbreviation: S.C.
+    ballotpedia slug: South_Carolina
+
+
+South Dakota Codified Laws:
+  inherit: Code of Alabama, 1975
+  meta:
+    name regex: (South Dakota|S\.? ?D\.?) ?(Codified|Comp(iled|\.)?)
+    abbreviation: S.D. Codified Laws
+  URL builder:
+    parts: ['https://sdlegislature.gov/Statutes/Codified_Laws/DisplayStatute.aspx?Type=Statute&Statute={title}-{chapter}-{section}']
+
+
+South Dakota Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: South Dakota|S\.? ?D\.?
+    abbreviation: S.D.
+    ballotpedia slug: South_Dakota
+
+
+Tennessee Code:
+  inherit: Code of Alabama, 1975
+  meta:
+    name regex: Tenn(essee|\.)?|TN
+    abbreviation: Tenn. Code
+  URL builder:
+    parts: ['https://www.lawserver.com/law/state/tennessee/tn-code/tennessee_code_{title}-{chapter}-{section}']
+
+
+Tennessee Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Tenn(essee|\.)?|TN
+    abbreviation: Tenn.
+    ballotpedia slug: Tennessee
+
+
+Texas Codes:
+  inherit: Florida Statutes
+  tokens:
+    code:
+      regex: '\w.{2,40}?'
+      edits:
+        - lookup: {'Agric(ulture|\.)|AGC?': 'Agric.', 'Alc(oholic|o?\.) Bev(erage|\.)|ABC?': 'Alco. Bev.', 'Aux(iliary|\.) Water Laws|A?WL': 'Aux. Water Laws', 'Bus(iness|\.) (and|&) Com(merce|m?\.)|B&C|BCC?': 'Bus\. & Com\.', 'Bus(iness|\.) Org(anizations|s\.)|BOC?': 'Bus. Orgs.', 'Civ(il|\.) Prac(tice|\.) (and|&) Rem(edies|s?\.)|CPR?C?': 'Civ. Prac. & Rem.', 'Code( of)? Crim(inal|\.) ?Pro(cedure|c?\.)|CCrP|CRC?': 'Crim. Proc.', 'Educ(ation|\.)|EDC?': 'Educ.', 'Elec(tion|\.)|ELC?': 'Elec.', 'Est(ates|\.)|ESC?': 'Est.', 'Fam(ily|\.)|FAC?|FAM': 'Fam.', 'Fin(ance|\.)|FIC?|FIN': 'Fin.', 'Gov(ernment|(''?t)?\.?)?|GO?VC?': 'Gov''t', 'Health (and|&) Saf(ety|\.)|H&?SC?': 'Health & Safety', 'Hum(an|\.) Res(ources|\.)|HRC?': 'Hum. Res.', 'Ins(urance|\.)|INC?': 'Ins.', 'Labor|LA': 'Lab\.', 'Local Gov(ernment|''t)|LGC?': 'Loc. Gov''t', 'Nat(ural|\.) Res(ources|\.)|NRC?': 'Nat. Res.', 'Occ(upations|\.)|OC': 'Occ.', 'Parks (and|&) Wild(life|\.)|PWC?': 'Parks & Wild.', 'Penal|PEN?|PC': 'Penal', 'Prop(erty|\.)|PR|PC': 'Prop.', 'Special Dist(rict|\.) Local Laws|Spec\. Dists\.|SDC?': 'Spec. Dists.', 'Tax\.?|TX?C': 'Tax', 'Trans(portation|p?\.)|TNC?': 'Transp.', 'Util(ities|\.)|UTC?': 'Util.', 'Water|WAC?': 'Water', 'Vernon’s Civ(il|\.) Stat(utes|s?\.)': 'Vernon''s Civ. Stat.'}
+    chapter: *digits_letter
+    section: *digits_letter
+    subsection: *subsec_token
+  pattern:
+    - '(Tex(as|\.)?|TX) {code}( Code)? ?'
+    - *optional_section_sign
+    - '{chapter}\.{section}'
+    - *subsec
+  name builder:
+    parts: ['Tex. {code} Code § {chapter}.{section}', '{subsection}']
+  URL builder:
+    parts: ['https://statutes.capitol.texas.gov/Docs/{code}/htm/{code}.{chapter}.htm#{chapter}.{section}']
+    edits:
+      - token: code
+        lookup: {Agric\.: AG, Alco\. Bev\.: AL, Aux\. Water Laws: WL, Bus\. & Com\.: BC, Bus\. Orgs\.: BO, Civ\. Prac\. & Rem\.: CP, Crim\. Proc\.: CR, Educ\.: ED, Elec\.: EL, Est\.: ES, Fam\.: FA, Fin\.: FI, Gov't: GV, Health & Safety: HS, Hum\. Res\.: HR, Ins\.: IN, Lab\.: LA, Loc\. Gov't: LG, Nat\. Res\.: NR, Occ\.: OC, Parks & Wild\.: PW, Penal: PE, Prop\.: PR, Spec\. Dists\.: SD, Tax: TX, Transp\.: TN, Util\.: UT, Water: WA, Vernon's Civ\. Stat\.: VC}
+
+
+Texas Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Tex(as|\.)?|TX
+    abbreviation: Tex.
+  URL builder:
+    parts:
+      - https://statutes.capitol.texas.gov/Docs/CN/htm/CN.{article}
+      - /CN.{article}.{section}
+      - .htm
+
+
+Utah Code:
+  inherit: Code of Alabama, 1975
+  meta:
+    name regex: Utah|UT
+    abbreviation: Utah Code
+  URL builder:
+    parts:
+      - https://le.utah.gov/xcode/Title{title}/Chapter{chapter}/{title}-{chapter}-S{section}.html
+      - '#{title}-{chapter}-{section}{subsection}'
+
+
+Utah Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Utah|UT
+    abbreviation: Utah
+    ballotpedia slug: Utah
+
+
+Vermont Statutes:
+  inherit: Delaware Code
+  meta:
+    name regex: V(ermont|t\.?)|VT
+    abbreviation: Vt. Stat.
+  URL builder:
+    parts: ['https://www.lawserver.com/law/state/vermont/vt-statutes/vermont_statutes_title_{title}_{section}']
+
+
+Vermont Constitution:
+  tokens:
+    chapter:
+      regex: '[Ii]{1,2}'
+      edits:
+        - number style: digit
+    article:
+      regex: '[\dIVXivx]{1,8}(st|nd|th)?'
+      edits:
+        - number style: digit
+  patterns:
+    - - '(V(ermont|t\.?)|VT) ?Const(itution|\.?) ?[Cc](hapter|h?\.?) ?{chapter}(,? ('
+      - *section_sign
+      - '|[Aa]rt(icle|\.?) ?){article})?'
+    - - '[Cc](hapter|h?\.?) ?{chapter}(,? ('
+      - *section_sign
+      - '|[Aa]rt(icle|\.?) ?){article})? [Oo]f [Tt]he (V(ermont|t\.?)|VT) ?Const(itution|\.?)'
+  idform patterns:
+    - ['([Ii]d\.( at)? )?[Cc](hapter|h?\.?) {chapter}(?! of )(,? (', *section_sign, '|[Aa]rt(icle|\.?) ?){article})?(?! of )']
+    - ['([Ii]d\.( at)? )?(', *section_sign, '|[Aa]rt(icle|\.?) ){article}(?! of )']
+  name builder:
+    parts: ['Vt. Const. ch. {chapter}', ', art. {article}']
+    edits:
+      - token: chapter
+        number style: roman
+      - token: article
+        number style: roman
+  URL builder:
+    parts:
+      - https://ballotpedia.org/
+      - '{is_chapter1}Chapter_I'
+      - '{is_chapter2}{chapter2_section}'
+      - ',_Vermont_Constitution'
+      - '{is_chapter1}#Article_{article}{article_suffix}'
+      - '{is_chapter2}#Section_{article}'
+    edits:
+      - token: chapter
+        output: is_chapter1
+        lookup: {'1':''}
+      - token: chapter
+        output: is_chapter2
+        lookup: {'2':''}
+      - token: article
+        output: article_suffix
+        number style: ordinal
+      - token: article_suffix
+        sub: ['.+(?=..)', '']
+      - token: article
+        output: chapter2_section
+        lookup: {'[1-5]':'Delegation_and_Distribution_of_Powers', '[6-9]|1\d':'Legislative_Department', '2[0-7]':'Executive_Department', '2[89]|3\d|4[01]':'Judiciary_Department', '42':'Qualifications_of_Freemen_and_Freewomen', '4[3-9]|5[0-5]':'Elections;_Officers;_Terms_of_Office', '56':'Oath_of_Allegiance;_Oath_of_Office', '5[78]':'Impeachment', '59':'Militia', '6\d|7[01]':'General_Provisions', '7[23]':'Amendment_of_the_Constitution', '7[4-6]':'Temporary_Provisions'}
+
+
+Virginia Code:
+  inherit: Arizona Revised Statutes
+  meta:
+    name regex: (?<!W\. )(?<!West )(?<!W\.)V(irginia|a\.|A)
+    abbreviation: Va. Code
+  URL builder:
+    parts: ['https://law.lis.virginia.gov/vacode/title{Title}/section{title}-{section}']
+
+
+Virginia Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: (?<!W\. )(?<!West )(?<!W\.)V(irginia|a\.|A)
+    abbreviation: Va.
+    ballotpedia slug: Virginia
+
+
+Virgin Islands Code:
+  inherit: Code of Alabama, 1975
+  meta:
+    name regex: Virgin Islands|V\.? ?I\.?
+    abbreviation: V.I. Code
+    year: '2019' # needs yearly updates
+  pattern:
+    - '{name regex}'
+    - *rev_ann_code_stat
+    - '[Tt]it(le|\.) {title},? '
+    - *optional_section_sign
+    - '{chapter}[-‑–]{section}'
+    - *subsec
+  name builder:
+    parts: ['{abbreviation} tit. {title}, § {chapter}-{section}', '{subsection}']
+  URL builder:
+    parts: ['https://law.justia.com/codes/virgin-islands/{year}/title-{title}/chapter-{chapter}/{section}/']
+
+
+Revised Code of Washington:
+  inherit: Alaska Statutes
+  meta:
+    name regex: Wash(ington|\.)?|WA
+    abbreviation: Wash. Rev. Code
+  URL builder:
+    parts: ['https://app.leg.wa.gov/RCW/default.aspx?cite={title}.{chapter}.{section}']
+
+
+Washington Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Wash(ington|\.)?|WA
+    abbreviation: Wash.
+    ballotpedia slug: Washington_State
+
+
+West Virginia Code:
+  inherit: New Mexico Statutes Annotated 1978
+  meta:
+    name regex: West Virginia|W\. ?Va?\.|WV
+    abbreviation: W. Va. Code
+  URL builder:
+    parts: ['http://www.wvlegislature.gov/wvcode/ChapterEntire.cfm?chap={chapter}&art={article}&section={section}']
+
+
+Washington Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: West Virginia|W\. ?Va?\.|WV
+    abbreviation: W. Va.
+    ballotpedia slug: West_Virginia
+
+
+Wisconsin Statutes:
+  inherit: Florida Statutes
+  meta:
+    name regex: Wis(consin|\.)?|WI
+    abbreviation: Wis. Stat.
+  URL builder:
+    parts:
+      - https://docs.legis.wisconsin.gov/document/statutes/{chapter}.{section}
+      - '{subsection}'
+
+
+Wisconsin Constitution:
+  inherit: Alabama Constitution
+  meta:
+    name regex: Wis(consin|\.)?|WI
+    abbreviation: Wis.
+    ballotpedia slug: Wisconsin
+
+
+Wyoming Statutes:
+  inherit: Code of Alabama, 1975
+  meta:
+    name regex: Wyo(ming|\.)?|WY
+    abbreviation: Wyo. Stat.
+  URL builder:
+    parts: ['https://wyoleg.gov/statutes/compress/title{lpad_title}.pdf#search={title}-{chapter}-{section}.']
+    edits:
+      - token: title
+        output: lpad_title
+        lpad: 2
+
+
+Wyoming Constitution:
+  inherit: Arkansas Constitution
+  meta:
+    name regex: Wyo(ming|\.)?|WY
+    abbreviation: Wyo.
+    ballotpedia slug: Wyoming

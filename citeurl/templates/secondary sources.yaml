@@ -1,0 +1,34 @@
+Model Penal Code:
+  meta:
+    name: Model Penal Code
+    name regex: 'M\.? ?P\.? ?C\.?|Model Pen(al|\.) Code'
+  tokens: &art_sec_subsec_tokens
+    article: {regex: \d+}
+    section: {regex: \d+}
+    subsection: 
+      regex: '(\(\w{1,4}\))+'
+      severable: yes
+  pattern: '{name regex} § {article}\.{section}( ?{subsection})?'
+  name builder:
+    parts: ['{name} § {article}.{section}', '{subsection}']
+
+
+Revised Model Business Corporation Act:
+  inherit: Model Penal Code
+  meta:
+    name: Revised Model Business Corporation Act
+    name regex: Rev(ised|\.) ?Model Bus(iness|\.) ?Corp(orations?|s?\.) Act|R\.M\.B\.C\.A|RMBCA
+
+
+Uniform Commercial Code:
+  tokens: *art_sec_subsec_tokens
+  pattern: '(U\.? ?C\.? ?C\.?|Uniform Com(mercial|m?\.) Code) (§§? ?)?{article}[–‑-]{section}( ?{subsection})?'
+  name builder:
+    parts: ['{name} § {article}-{section}', '{subsection}']
+  URL builder:
+    parts:
+      - https://www.law.cornell.edu/ucc/{article}/{article}-{section}
+      - '#{article}-{section}{subsection}'
+    edits: # only use the first part of the subsection
+      - token: subsection
+        sub: ['\).+', ')']

@@ -6,7 +6,7 @@ from markdown.extensions import Extension
 from markdown.postprocessors import Postprocessor
 
 # internal imports
-from . import Citator, DEFAULT_ID_BREAKS
+from . import Citator, insert_links
 
 # store citator in a global variable so it isn't remade each document
 CITATOR: Citator = None
@@ -16,23 +16,27 @@ class CitationPostprocessor(Postprocessor):
         self,
         citator,
         attributes: dict,
-        link_detailed_ids: bool,
-        link_plain_ids: bool,
+        redundant_links: bool,
+        URL_optional: bool,
         break_id_on_regex: str
     ):
         super().__init__()
         self.citator = citator
         self.attributes = attributes
-        self.link_detailed_ids = link_detailed_ids
-        self.link_plain_ids = link_plain_ids
-        self.id_break_regex=break_id_on_regex
+        self.redundant_links = redundant_links
+        self.URL_optional = URL_optional
+        self.break_id_on_regex=break_id_on_regex
     def run(self, text):
-        return self.citator.insert_links(
+        citations = self.citator.list_cites(
             text,
-            attrs=self.attributes,
-            link_detailed_ids=self.link_detailed_ids,
-            link_plain_ids=self.link_plain_ids,
-            id_break_regex=self.id_break_regex
+            id_breaks=self.break_id_on_regex
+        )
+        return insert_links(
+            citations,
+            text,
+            attrs = self.attributes,
+            redundant_links = self.redundant_links,
+            URL_optional = self.URL_optional,
         )
 
 class CiteURLExtension(Extension):
@@ -48,20 +52,26 @@ class CiteURLExtension(Extension):
                 True,
                 "Load CiteURL's default citation templates? - Default: True"
             ],
-            'link_detailed_ids': [
-                True,
-                "Whether to link citations like 'Id. at 3' - Default: True"
-            ],
-            'link_plain_ids': [
+            'redundant_links': [
                 False,
-                "Whether to link citations like 'Id.' - Default: False"
+                (
+                    "Whether to insert links links whose URLs are identical "
+                    "to the previous URL"
+                )
+            ],
+            'URL_optional': [
+                False,
+                (
+                    "Whether to add <a> elements for citations that have "
+                    "no URL"
+                )
             ],
             'break_id_on_regex': [
-                DEFAULT_ID_BREAKS,
+                None,
                 "Anywhere this string (parsed as regex) appears in the text, "
                 + "chains of citations like 'id.' will be interrupted. Note "
                 + "that this is based on the output HTML, *not* the original "
-                + f"Markdown text. - Default: {DEFAULT_ID_BREAKS}"
+                + f"Markdown text."
             ],
             'attributes': [
                 {'class': 'citation'},
@@ -74,16 +84,19 @@ class CiteURLExtension(Extension):
     def extendMarkdown(self, md):
         global CITATOR
         if not CITATOR:
-            CITATOR = Citator(
-                yaml_paths = self.config['custom_templates'][0] or [],
-                defaults = self.config['use_defaults'][0]
-            )
+            if self.config['use_defaults'][0]:
+                CITATOR = Citator()
+            else:
+                CITATOR = Citator(defaults=None)
+        for path in self.config['custom_templates'][0] or []:
+            CITATOR.load_yaml(Path(path).read_text())
+            
         md.postprocessors.register(
             CitationPostprocessor(
                 CITATOR,
                 self.config['attributes'][0],
-                self.config['link_detailed_ids'][0],
-                self.config['link_plain_ids'][0],
+                self.config['redundant_links'][0],
+                self.config['URL_optional'][0],
                 self.config['break_id_on_regex'][0],
             ),
             "CiteURL",

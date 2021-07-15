@@ -9,12 +9,13 @@ https://raindrum.github.io/citeurl."""
 # python standard imports
 from sys import stdin
 from argparse import ArgumentParser, SUPPRESS
+from pathlib import Path
 # import webbrowser
 # from tempfile import NamedTemporaryFile
 # from time import sleep
 
 # internal imports
-from . import Citator
+from . import Citator, insert_links
 # from .web.server import serve, App
 # from .web.makejs import makejs
 
@@ -81,14 +82,12 @@ def main():
         default=(None if stdin.isatty() else [''.join(stdin.read()[0:-1])])
     )
     process_parser.add_argument(
-        '-I', '--link-ids',
-        action='store',
-        type=str,
-        default='detailed',
-        choices=['all', 'detailed', 'none'],
-        help='which "id" citations to hyperlink. Options are "all", "none", '
-            + 'and "detailed". Defaults to detailed, which links "id. at 35" '
-            + 'but not "id."'
+        '-r', '--no-redundant-links',
+        action='store_true',
+        help=(
+            "Don't add a hyperlink if it would point to the same URL as the "
+            "last hyperlink."
+        )
     )
     process_parser.add_argument(
         '-c', '--css-class',
@@ -252,11 +251,13 @@ def main():
             return
         
     # create citator
-    defaults = not args.no_default_templates
-    citator = Citator(
-        yaml_paths=args.template_file if 'template_file' in args else [],
-        defaults=defaults
-    )
+    if args.no_default_templates:
+        citator = Citator(defaults=None)
+    else:
+        citator = Citator()
+    if 'template_file' in args:
+        for path in args.template_file:
+            citator.load_yaml(Path(path).read_text())
     if not citator.templates:
         raise SystemExit("Can't use '-n' without specifying a template file.")
     
@@ -281,11 +282,11 @@ def main():
             print('\n\n'.join(outputs))
         
         else:
-            out_text = citator.insert_links(
-                text,
-                attrs={'class': args.css_class},
-                link_detailed_ids=False if args.link_ids == 'none' else True,
-                link_plain_ids=True if args.link_ids == 'all' else False
+            out_text = insert_links(
+                citations = citator.list_cites(text),
+                text = text,
+                attrs = {'class': args.css_class},
+                redundant_links = not args.no_redundant_links,
             )
         
             if args.output: #write processed text to file
@@ -309,7 +310,7 @@ def main():
     ####################################################################
     
     elif args.command == 'lookup':
-        citation = citator.lookup(text, broad=False if args.strict else True)
+        citation = citator.cite(text, broad=False if args.strict else True)
         
         # cancel if no citation found
         if not citation:

@@ -1,0 +1,225 @@
+U.S. Constitution:
+  meta:
+    name regex: (United States|U\.? ?S\.?) ?Const(itution|\.?)
+  tokens:
+    article:
+      regex: &cardinals_to_20 '\d|[ivIV]{1,3}|[Oo]ne|[Tt](woo|hree|welve|hirteen)|[Ff](our(teen)?|ive|ifteen)|[Ss](ix(teen)?|even(teen)?)|[Ee]ight(een)?|[Nn]ine(teen)?|[Tt]en|[Ee]leven'
+      edits: [number style: digit]
+    section:
+      regex: \d+|[IVXivx]+
+      edits: [number style: digit]
+    clause: {regex: '\d+'}
+  patterns:
+    - - '{name regex},? '
+      - &art_sec_cl '[Aa]rt(icle|\.?) ?{article}(,? ([Ss]ec(tions?|t?s?\.?)|§§?) ?{section}(,? [Cc]l(ause|\.?) ?{clause})?)?'
+    - [*art_sec_cl, ' [Oo]f [Tt]he {name regex}']
+  shortform patterns:
+    - [&standalone_art_sec_cl '[Aa]rt(icle|\.?) ?{article}(?! of )(,? ([Ss]ec(tions?|t?s?\.?)|§§?) ?{section}(?! of )(,? [Cc]l(ause|\.?) ?{clause}(?! of ))?)?']
+  idform patterns: &sec_cl_idforms
+    - '([Ii]d\. (at )?)?([Ss]ec(tions?|t?s?\.?)|§§?) ?{section},? [Cc]l(ause|\.?) ?{clause}?(?! of )'
+    - '([Ii]d\. (at )?)?[Cc]l(ause|\.?) ?{clause}(?! of )'
+  #broad patterns:
+  #  - ['^', *standalone_art_sec_cl]
+  name builder:
+    parts:
+      - 'U.S. Constitution'
+      - ' Article {article}'
+      - ', Section {section}'
+      - ', Clause {clause}'
+    edits:
+      - token: article
+        number style: roman
+  URL builder:
+    parts:
+      - https://constitution.congress.gov/browse/
+      - article-{article}
+      - '#{article_roman}_S{section}'
+      - _C{clause}
+    edits:
+      - token: article
+        number style: roman
+        output: article_roman
+
+
+U.S. Constitution Amendments:
+  meta:
+    name regex: (United States|U\.? ?S\.?) ?Const(itution|\.?)
+  tokens:
+    amendment:
+      regex: &ordinals_to_20 '\d{1,2}(st|nd|rd|th)?|[xivXIV]+|([Tt]wenty(-| )?)?([Ff]irst|[Ss]econd|[Tt]hird|[Ff]ourth|[Ff]ifth|[Ss]ixth|[Ss]eventh|[Ee]ighth|[Nn]inth)|[Tt]enth|[Ee]leventh|[Tt]welfth|([Tt]hir|[Ff]our|[Ff]if|[Ss]ix|[Ss]even|[Ee]igh|[Nn]ine)teenth|[Tt]wentieth'
+      edits: [number style: digit]
+    section:
+      regex: \d{1,2}|[ivxIVX]{1,5}
+      edits: [number style: digit]
+    clause: {regex: '\d+'}
+  patterns:
+    - - '{name regex},? '
+      - &amdt_sec_cl '[Aa]m(end(ment|\.)|dt?\.?) ?{amendment}(,? ([Ss]ec(tions?|s?\.?)|§§?) ?{section}(,? [Cc]l(ause|\.?) ?{clause})?)?'
+    - - &sec_cl_of_the_amdt '(([Ss]ec(tions?|t?s?\.?)|§§?) ?{section}(,? [Cc]l(ause|\.?) ?{clause})? of )?([Tt]he )?{amendment} [Aa]mendment'
+      - ' ([Oo]f|[Tt]o) the {name regex}'
+  broad patterns:
+    - &bare_amdt_sec_cl [*amdt_sec_cl, '(?! of)']
+    - [*sec_cl_of_the_amdt, '(?! to)']
+  shortform patterns:
+    - *bare_amdt_sec_cl
+  idform patterns: *sec_cl_idforms
+  name builder:
+    parts:
+      - 'Section {section}'
+      - ', Clause {clause}'
+      - '{amdt_prefix}{amendment} Amendment to the U.S. Constitution'
+    edits:
+      - token: amendment
+        number style: ordinal
+      - token: amendment
+        case: title
+      - token: amendment
+        sub: ['.+', 'The ']
+        output: amdt_prefix
+      - token: section
+        sub: ['.+', ' of the ']
+        output: 'amdt_prefix'
+  URL builder:
+    parts:
+      - https://constitution.congress.gov/browse/
+      - amendment-{amendment}/
+      - '#{amendment}_S{section}'
+      - _C{clause}
+    edits:
+      - token: article
+        number style: roman
+        output: article_roman
+
+
+U.S. Code:
+  meta: {name regex: 'U\. ?S\. ?C(ode|\.)( ?A(nn(otated|\.)|\.)| ?S(erv(ice|\.)|\.?))?|USC[AS]?|United States Code'}
+  tokens: &title_sec_subsec_tokens
+    title: {regex: \d+}
+    section: {regex: '\d[\w.-]*\w|\d'}
+    subsection: &subsec_token
+      regex: '(\(\w{1,4}\))+'
+      severable: yes
+  patterns: &title_sec_subsec_patterns
+    - - &title ([Tt]itle )?{title}
+      - ',? {name regex}(,? )?('
+      - &section_sign ((&sect;|&#167|§){1,2}|[Ss]ec(tions?|t?s?\.))
+      - ')? ?{section}'
+      - &subsec '(((,? )?sub(sections?|divisions?|(sec|d(iv)?)?s?\.))? ?{subsection})?'
+    - ['[Tt]itle {title},? (', *section_sign, ')? ?{section}', *subsec, ' of the {name regex}']
+    - ['(', *section_sign, ')? ?{section}', *subsec, ' of [Tt]itle {title} of the {name regex}']
+  idform patterns: &id_sec_subsec
+    - '[Ii]d\.( at)?( §§?)? ?{section}( ?{subsection})?'
+    - '((&sect;|&#167|§){1,2}|[Ss]ec(tions?|t?s?\.)) {section}( ?{subsection})?(?! of)'
+    - '[Ii]d\. at {subsection}'
+  shortform pattern: [*section_sign, '{same section}(?! of )', *subsec, '(?! of )']
+  name builder:
+    parts:
+      - '{title} U.S.C. § {section}'
+      - '{subsection}'
+  URL builder:
+    parts:
+      - https://www.law.cornell.edu/uscode/text/{title}/{section}
+      - '#{subsection}'
+    edits:
+      - token: subsection
+        sub: ['\)\(', '_']
+      - token: subsection
+        sub: ['[()]', '']
+
+
+U.S. Public Laws:
+  tokens:
+    congress: {regex: \d+}
+    law: {regex: \d+}
+  pattern: Pub(\.?|lic) ?L(\.?|aw) ?(No\.?)? ?{congress}[–‑-]{law}
+  name builder:
+    parts: ['Public Law No. {congress}–{law}']
+  URL builder:
+    parts: ['https://uscode.house.gov/statutes/pl/{congress}/{law}.pdf']
+
+
+U.S. Statutes at Large:
+  tokens: &vol_page_pin_tokens
+    volume: {regex: \d+}
+    page:
+      regex: '\d([,\d]*\d)?'
+      edits: [sub: [',', '']]
+    pincite: {regex: \d+}
+  pattern: '{volume} Stat\.? {page}(,? {pincite})?'
+  idform pattern: '[Ii]d\. at {pincite}'
+  URL builder:
+    parts: ['https://www.govinfo.gov/content/pkg/STATUTE-{volume}/pdf/STATUTE-{volume}-Pg{page}.pdf']
+
+
+Federal Register:
+  tokens: *vol_page_pin_tokens
+  pattern: '{volume} (Fed\. ?Reg\.|F\.? ?R\.?) {page}(,? {pincite})?'
+  idform pattern: '[Ii]d\. at {pincite}'
+  URL builder:
+    parts: ['https://www.federalregister.gov/documents/search?conditions[term]={volume}+FR+{page}']
+
+
+Code of Federal Regulations:
+  inherit: U.S. Code
+  meta: {name regex: 'C\.? ?F\.? ?R\.?|Code of Federal Regulations'}
+  name builder:
+    parts:
+      - '{title} C.F.R. § {section}'
+      - '{subsection}'
+  URL builder:
+    parts:
+      - https://ecfr.federalregister.gov/cfr-reference?cfr%5Bdate%5D=current&cfr%5Breference%5D={title} CFR {section}
+      - '#p-{section}{subsection}'
+
+
+Federal Rules of Civil Procedure:
+  meta:
+    acronym: frcp
+    name: Fed. R. Civ. P.
+    name regex: Civ(il|\.) ?P(rocedure|(roc?)?\.)|C\.? ?P\.?
+  tokens:
+    rule:
+      regex: '\d+(\.\d+)?[a-z]?'
+    subsection: *subsec_token
+  patterns: 
+    - (Fed(eral|\.) ?R(ules?|\.)|F\.? ?R\.?)( of)? ?{name regex}( [Rr]ule)? {rule}( ?{subsection})?
+    - '[Rr]ule {rule}( ?{subsection})? [Oo]f [Tt]he Fed(eral|\.) Rules of {name regex}'
+  idform patterns:
+    - '([Ii]d\. (at )?)?[Rr]ule {rule}( ?{subsection}?)?(?! of)'
+    - '[Ii]d\. (at )?{subsection}'
+  shortform pattern: ['[Rr]ule {same rule}(?! of )', *subsec, '(?! of )']
+  name builder:
+    parts: ['{name} {rule}', '{subsection}']
+  URL builder:
+    parts:
+      - https://www.law.cornell.edu/rules/{acronym}/rule_{rule}
+      - '#rule_{rule}_{subsection}'
+    edits:
+      - token: subsection
+        sub: ['\)\(', '_']
+      - token: subsection
+        sub: ['\W', '']
+
+
+Federal Rules of Appellate Procedure:
+  inherit: Federal Rules of Civil Procedure
+  meta:
+    acronym: frap
+    name: Fed. R. App. Proc.
+    name regex: App(ellate|\.) ?P(rocedure|(roc?)?\.)|A\.? ?P\.?
+
+
+Federal Rules of Criminal Procedure:
+  inherit: Federal Rules of Civil Procedure
+  meta:
+    acronym: frcrmp
+    name: Fed. R. Crim. Proc.
+    name regex: Crim(inal|\.) ?P(rocedure|(roc?)?\.)|Cr\.? ?P\.?
+
+
+Federal Rules of Evidence:
+  inherit: Federal Rules of Civil Procedure
+  meta:
+    acronym: fre
+    name: Fed. R. Evid.
+    name regex: Evid(ence|\.)|E\.?

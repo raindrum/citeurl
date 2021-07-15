@@ -6,7 +6,7 @@ from html import escape
 
 # internal imports
 from .resources import format_page, sources_table, SOURCES_INTRO
-from .. import Citator, insert_links, list_authorities
+from .. import Citator, insert_links
 
 # third-party imports
 from flask import Flask, redirect, make_response, send_file, request
@@ -56,26 +56,6 @@ parser">{given_text}</textarea>
 {output}
 """
 
-AUTHORITIES_TABLE = """
-<h2 id="authorities">Authorities Cited</h2>
-<div class="table-wrapper"><table>
-  <thead>
-    <th style="width: 80%;">Authority</th>
-    <th style="width: 20%'">References</th>
-  </thead>
-  <tbody>
-    {rows}
-  </tbody>
-</table></div>
-"""
-
-AUTHORITIES_TABLE_ROW = """
-    <tr>
-      <td>{name}</td>
-      <td>{references}</td>
-    </tr>
-"""
-
 # Errors
 
 ERROR_400 = """
@@ -112,14 +92,15 @@ def _handle_query(query: str):
         return format_page(ERROR_501)
     
     query = escape(unquote(query))
-    cite = _APP.citator.lookup(query)
-    if cite and cite.URL:
-        return redirect(cite.URL, code=301)
-    elif cite:
-        return make_response(
-            format_page(ERROR_501, template=cite.template.name),
-            501
-        )
+    cite = _APP.citator.cite(query)
+    if cite:
+        if cite.URL:
+            return redirect(cite.URL, code=301)
+        else:
+            return make_response(
+                format_page(ERROR_501, template=cite.template.name),
+                501
+            )
     else:
         return make_response(format_page(ERROR_400, query=query), 400)
 
@@ -151,7 +132,7 @@ def _linker():
     given_text = escape(request.form['text'])
     if _APP.max_chars and len(given_text) > _APP.max_chars:
         return format_page(ERROR_501)
-    citations = _APP.citator.list_citations(given_text)
+    citations = _APP.citator.list_cites(given_text)
     
     if not citations:
         return format_page(
@@ -160,19 +141,8 @@ def _linker():
             output="<p>Sorry, I couldn't find any citations in that.</p>"
         )
     
-    output = insert_links(citations, given_text)
+    output = insert_links(citations, given_text, redundant_links=True)
     output = '<p>' + sub(r'\n+', '</p>\n<p>', output) + '</p>'
-    rows = [
-        AUTHORITIES_TABLE_ROW.format(
-            name=(
-                f'<a href="{a.get_URL()}">{a}</a>' if a.get_URL()
-                else f'{a}'
-            ),
-            references=len(a.citations)
-        )
-        for a in list_authorities(citations)
-    ]
-    authorities_section = AUTHORITIES_TABLE.format(rows='\n'.join(rows))
     
     return format_page(
         PARSER_PAGE,
@@ -180,7 +150,6 @@ def _linker():
         output=(
             '<h2 id="output">Output</h2>\n'
             + f'<form><div class="output-box">{output}</div></form>'
-            + (authorities_section if rows else '')
         ),
     )
 

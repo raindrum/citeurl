@@ -175,57 +175,102 @@ class Citation {
       // Bidirectional conversion between digits and roman numerals. This method
       // is lazy and only goes up to 100, but if you need it to go higher, you
       // can just add more numeral-digit pairs to the list.
-      if ('numberFormat' in operation) {
+      if ('number_style' in operation) {
         let numerals = [
-          ['I', '1'], ['II', '2'], ['III', '3'], ['IV', '4'], ['V', '5'],
-          ['VI', '6'], ['VII', '7'], ['VIII', '8'], ['IX', '9'], ['X', '10'],
-          ['XI', '11'], ['XII', '12'], ['XIII', '13'], ['XIV', '14'],
-          ['XV', '15'], ['XVI', '16'], ['XVII', '17'], ['XVIII', '18'],
-          ['XIX', '19'], ['XX', '20'], ['XXI', '21'], ['XXII', '22'],
-          ['XXIII', '23'], ['XXIV', '24'], ['XXV', '25'], ['XXVI', '26'], 
-          ['XXVII', '27'], ['XXVIII', '28'], ['XXIX', '29'], ['XXX', '30'],
-          ['XXXI', '31'], ['XXXII', '32'], ['XXXIII', '33'], ['XXXIV', '34'],
-          ['XXXV', '35'], ['XXXVI', '36'], ['XXXVII', '37'], ['XXXVIII', '38'],
-          ['XXXIX', '39'], ['XL', '40'], ['XLI', '41'], ['XLII', '42'],
-          ['XLIII', '43'], ['XLIV', '44'], ['XLV', '45'], ['XLVI', '46'],
-          ['XLVII', '47'], ['XLVIII', '48'], ['XLIX', '49'], ['L', '50'],
-          ['LI', '51'], ['LII', '52'], ['LIII', '53'], ['LIV', '54'],
-          ['LV', '55'], ['LVI', '56'], ['LVII', '57'], ['LVIII', '58'],
-          ['LIX', '59'], ['LX', '60'], ['LXI', '61'], ['LXII', '62'],
-          ['LXIII', '63'], ['LXIV', '64'], ['LXV', '65'], ['LXVI', '66'],
-          ['LXVII', '67'], ['LXVIII', '68'], ['LXIX', '69'], ['LXX', '70'],
-          ['LXXI', '71'], ['LXXII', '72'], ['LXXIII', '73'], ['LXXIV', '74'],
-          ['LXXV', '75'], ['LXXVI', '76'], ['LXXVII', '77'], ['LXXVIII', '78'],
-          ['LXXIX', '79'], ['LXXX', '80'], ['LXXXI', '81'], ['LXXXII', '82'],
-          ['LXXXIII', '83'], ['LXXXIV', '84'], ['LXXXV', '85'],
-          ['LXXXVI', '86'], ['LXXXVII', '87'], ['LXXXVIII', '88'],
-          ['LXXXIX', '89'], ['XC', '90'], ['XCI', '91'], ['XCII', '92'],
-          ['XCIII', '93'], ['XCIV', '94'], ['XCV', '95'], ['XCVI', '96'],
-          ['XCVII', '97'], ['XCVIII', '98'], ['XCIX', '99'], ['C', '100']
+          ['i', '1', 'one', 'first'], ['ii', '2', 'two', 'second'],
+          ['iii', '3', 'three', 'third'], ['iv', '4', 'four', 'fourth'],
+          ['v', '5', 'five', 'fifth'], ['vi', '6', 'six', 'sixth'],
+          ['vii', '7', 'seven', 'seventh'], ['viii', '8', 'eight', 'eighth'],
+          ['ix', '9', 'nine', 'ninth'], ['x', '10', 'ten', 'tenth'],
+          ['xi', '11', 'eleven', 'eleventh'],
+          ['xii', '12', 'twelve', 'twelfth'],
+          ['xiii', '13', 'thirteen', 'thirteenth'],
+          ['xiv', '14', 'fourteen', 'fourteenth'],
+          ['xv', '15', 'fifteen', 'fifteenth'],
+          ['xvi', '16', 'sixteen', 'sixteenth'],
+          ['xvii', '17', 'seventeen', 'seventeenth'],
+          ['xviii', '18', 'eighteen', 'eighteenth'],
+          ['xix', '19', 'nineteen', 'nineteenth'],
+          ['xx', '20', 'twenty', 'twentieth'], ['xxi', '21'], ['xxii', '22'],
+          ['xxiii', '23'], ['xxiv', '24'], ['xxv', '25'], ['xxvi', '26'],
+          ['xxvii', '27'], ['xxviii', '28'], ['xxix', '29'],
+          ['xxx', '30', 'thirty', 'thirtieth'], ['xxxi', '31'],
+          ['xxxii', '32'], ['xxxiii', '33'], ['xxxiv', '34'], ['xxxv', '35'],
+          ['xxxvi', '36'], ['xxxvii', '37'], ['xxxviii', '38'],
+          ['xxxix', '39'], ['xl', '40', 'forty', 'fortieth'], ['xli', '41'],
+          ['xlii', '42'], ['xliii', '43'],['xliv', '44'], ['xlv', '45'],
+          ['xlvi', '46'], ['xlvii', '47'], ['xlviii', '48'], ['xlix', '49'],
+          ['l', '50', 'fifty', 'fiftieth'], ['li', '51'], ['lii', '52'],
+          ['liii', '53'], ['liv', '54'], ['lv', '55'], ['lvi', '56'],
+          ['lvii', '57'], ['lviii', '58'], ['lix', '59'],
+          ['lx', '60', 'sixty', 'sixtieth'], ['lxi', '61'], ['lxii', '62'],
+          ['lxiii', '63'], ['lxiv', '64'], ['lxv', '65'], ['lxvi', '66'],
+          ['lxvii', '67'], ['lxviii', '68'], ['lxix', '69'],
+          ['lxx', '70', 'seventy', 'seventieth'], ['lxxi', '71'],
+          ['lxxii', '72'], ['lxxiii', '73'], ['lxxiv', '74'], ['lxxv', '75'],
+          ['lxxvi', '76'], ['lxxvii', '77'], ['lxxviii', '78'],
+          ['lxxix', '79'], ['lxxx', '80', 'eighty', 'eightieth'],
+          ['lxxxi', '81'], ['lxxxii', '82'], ['lxxxiii', '83'],
+          ['lxxxiv', '84'], ['lxxxv', '85'], ['lxxxvi', '86'],
+          ['lxxxvii', '87'], ['lxxxviii', '88'], ['lxxxix', '89'],
+          ['xc', '90', 'ninety', 'ninetieth'], ['xci', '91'], ['xcii', '92'],
+          ['xciii', '93'], ['xciv', '94'], ['xcv', '95'], ['xcvi', '96'],
+          ['xcvii', '97'], ['xcviii', '98'], ['xcix', '99'],
+          ['c', '100', 'one-hundred', 'one-hundredth']
         ];
-        // determine which format is being used to look up the other
-        let key, value;
-        if (operation.numberFormat == 'roman') {
-          key = 1;
-          value = 0;
+        // write the rest of the cardinal and ordinal numbers
+        let tensPlace;
+        let onesPlace;
+        for (row in numerals) {
+          if (numerals[row].length > 2) {
+            tensPlace = numerals[row][2];
+          }
+          else {
+            onesPlace = (row + 1) % 10;
+            numerals[row] = [
+              numerals[row][0],
+              numerals[row][1],
+              tensPlace + '-' + numerals[onesPlace][2],
+              tensPlace + '-' + numerals[onesPlace][3],
+            ];
+          }
         }
-        else if (operation.numberFormat == 'digit') {
-          key = 0;
-          value = 1;
+        
+        // determine which format is being used to look up the other
+        let target;
+        if (operation.number_style == 'roman') {
+          target = 0;
+        }
+        else if (operation.number_style == 'digit') {
+          target = 1;
+        }
+        else if (operation.number_style == 'cardinal') {
+          target = 2;
+        }
+        else if (operation.number_style == 'ordinal') {
+          target = 3;
         }
         // perform the appropriate lookup, outputting the input value
         // unchanged if the lookup fails
         tokens[output] = inputValue;
-        for (var pair in numerals) {
-          if (numerals[pair][key].match(inputValue.toUpperCase())) {
-            tokens[output] = numerals[pair][value];
-            /*LOGS
-            log(
-              'translated ' + operation.token + ' to '
-              + operation.numberFormat + " format if it wasn't already, and"
-              + ' saved the result (' + tokens[output] + ') to ' + output
-            );
-            */
+        let key = inputValue.toLowerCase();
+        let matched = false;
+        for (var row in numerals) {
+          for (var col in numerals[row]) {
+            if (numerals[row][col] == key) {
+              tokens[output] = numerals[row][target];
+              /*LOGS
+              log(
+                'translated ' + operation.token + ' to '
+                + operation.number_style + " format if it wasn't already, and"
+                + ' saved the result (' + tokens[output] + ') to ' + output
+              );
+              */
+              matched = true;
+              break;
+            }
+          }
+          if (matched) {
             break;
           }
         }

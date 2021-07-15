@@ -120,10 +120,10 @@ def sources_table(citator):
     rows = []
     for template in citator.templates.values():
         # skip templates that can't make URLs
-        if not template.__dict__.get('URL'):
+        if not template.__dict__.get('URL_builder'):
             continue
         
-        URL = urlsplit(''.join(template.URL))
+        URL = urlsplit(''.join(template.URL_builder.parts))
         domain_URL = f'{URL.scheme}://{URL.netloc}'
         domain_name = URL.hostname
         regex = unify_regex(template, simplify_for_regexper=True)
@@ -152,7 +152,7 @@ def unify_regex(template, simplify_for_regexper: bool=False):
             compatible with regexper.com. Note that if this is false,
             duplicated capture groups will be renamed to avoid conflict.
     """
-    regexes = template.regexes.copy()
+    regexes = [p.pattern for p in template.regexes.copy()]
     # append numbers to repeated capture group names to prevent conflict
     for i, regex in enumerate(regexes[1:]):
         regexes[i+1] = sub(r'\?P<(.+?)>', '?P<\1' + f'{i}>', regex)
@@ -162,30 +162,28 @@ def unify_regex(template, simplify_for_regexper: bool=False):
     # and that token hasn't been modified by another operation yet,
     # insert the lookup's regexes where the token goes, to make the
     # final regex more specific.
-    for i, operation in enumerate(template.operations):
-        # only lookup operations are used here
-        if 'lookup' not in operation:
-            continue
-        
-        # don't bother if the lookup's input token is modified before
-        # the lookup
-        already_modified = False
-        for prior_op in template.operations[:i-1]:
-            if prior_op == operation:
+    for token_name, token in template.tokens.items():
+        for i, edit in enumerate(token.edits):
+            # only lookup operations are used here
+            if edit.action is not 'lookup':
                 continue
-            prior_op_output = prior_op.get('output') or prior_op['token']
-            if prior_op_output == operation['token']:
-                already_modified = True
-                break
-        if already_modified:
-            continue
+            
+            # don't bother if the lookup's input token is modified before
+            # the lookup
+            already_modified = False
+            for prior_op in token.edits[:i-1]:
+                if prior_op != edit:
+                    already_modified = True
+                    break
+            if already_modified:
+                continue
         
-        # modify the regex
-        pattern = '\(\?P<' + operation['token'] + '\d*>.+?(?<!\\\)\)'
-        repl = '(' + '|'.join(operation['lookup'].keys()) + ')'
-        regex = sub(pattern, 'PlAcEhOlDeR122360', regex)
-        regex = regex.replace('PlAcEhOlDeR122360', repl)
-    
+            # modify the regex
+            pattern = '\(\?P<' + token_name + '\d*>.+?(?<!\\\)\)'
+            repl = '(' + '|'.join(edit.data.keys()) + ')'
+            regex = sub(pattern, 'PlAcEhOlDeR122360', regex)
+            regex = regex.replace('PlAcEhOlDeR122360', repl)
+        
     if simplify_for_regexper:
         # remove lookaheads and lookbehinds
         regex = sub(r'\(\?(<!|<=|!|=).+?\)', '', regex)

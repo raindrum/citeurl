@@ -5,23 +5,23 @@ from citeurl import Citator
 #from time import sleep
 
 TESTS = {
-    "United States Code": {
+    "U.S. Code": {
         "cite": "42 U.S.C. § 1983",
         "URL": "https://www.law.cornell.edu/uscode/text/42/1983",
         "shortform": "§ 1988(b)",
         "shortform_URL": "https://www.law.cornell.edu/uscode/text/42/1988#b"
     },
-    "United States Constitution": {
+    "U.S. Constitution": {
         "cite": "U.S. Constitution Art. III § 2, cl. 1",
         "URL": "https://constitution.congress.gov/browse/article-3#III_S2_C1",
         "shortform": "Id. at cl. 2",
         "shortform_URL": "https://constitution.congress.gov/browse/article-3#III_S2_C2"
     },
-    "United States Constitution Amendments": {
+    "U.S. Constitution Amendments": {
         "cite": "The Fourteenth Amendment to the U.S. Constitution",
         "URL": "https://constitution.congress.gov/browse/amendment-14/",
-        "shortform": "Sec. 3 of the 14th Amdt.",
-        "shortform_URL": "https://constitution.congress.gov/browse/amendment-14/#14_S3"
+        "shortform": "Amdt. XIV § 3",
+        "shortform_URL": "https://constitution.congress.gov/browse/amendment-14/#14_S3",
     },
     "U.S. Public Laws": {
         "cite": "Pub. L. 116-344",
@@ -43,9 +43,9 @@ TESTS = {
     },
     "Code of Federal Regulations": {
         "cite": "40 CFR § 70.11(a)",
-        "URL": "https://ecfr.federalregister.gov/cfr-reference?cfr%5Bdate%5D=current&cfr%5Breference%5D=40 CFR 70.11#p-70.11(a)",
+        "URL": "https://ecfr.federalregister.gov/cfr-reference?cfr%5Bdate%5D=current&cfr%5Breference%5D=40%20CFR%2070.11#p-70.11(a)",
         "shortform": "Id. at (b)",
-        "shortform_URL": "https://ecfr.federalregister.gov/cfr-reference?cfr%5Bdate%5D=current&cfr%5Breference%5D=40 CFR 70.11#p-70.11(b)"
+        "shortform_URL": "https://ecfr.federalregister.gov/cfr-reference?cfr%5Bdate%5D=current&cfr%5Breference%5D=40%20CFR%2070.11#p-70.11(b)"
     },
     "Federal Rules of Civil Procedure": {
         "cite": "Fed. R. Civ. P. 12(b)(6)",
@@ -69,7 +69,7 @@ TESTS = {
         "cite": "Fed. R. Evid. 403",
         "URL": "https://www.law.cornell.edu/rules/fre/rule_403",
         "shortform": "Rule 404(b)",
-        "shortform_URL": "https://www.law.cornell.edu/rules/fre/rule_404#rule_404_(b)"
+        "shortform_URL": "https://www.law.cornell.edu/rules/fre/rule_404#rule_404_b"
     },
     "Immigration and Nationality Act": {
         "cite": "INA § 101(11)",
@@ -85,9 +85,9 @@ TESTS = {
     },
     "Treasury Regulations": {
         "cite": "Treas. Reg. 1.42-1T",
-        "URL": "https://ecfr.federalregister.gov/cfr-reference?cfr%5Bdate%5D=current&cfr%5Breference%5D=26 CFR 1.42-1T",
+        "URL": "https://ecfr.federalregister.gov/cfr-reference?cfr%5Bdate%5D=current&cfr%5Breference%5D=26%20CFR%201.42-1T",
         "shortform": "Id. at (b)",
-        "shortform_URL": "https://ecfr.federalregister.gov/cfr-reference?cfr%5Bdate%5D=current&cfr%5Breference%5D=26 CFR 1.42-1T#p-1.42-1T(b)"
+        "shortform_URL": "https://ecfr.federalregister.gov/cfr-reference?cfr%5Bdate%5D=current&cfr%5Breference%5D=26%20CFR%201.42-1T#p-1.42-1T(b)"
     },
     "National Labor Relations Act": {
         "cite": "NLRA § 8(b)(4)",
@@ -164,7 +164,7 @@ TESTS = {
     "Alaska Constitution": {
         "cite": "Alaska Const. Art. I § 1",
         "URL": "https://ballotpedia.org/Article_I,_Alaska_Constitution#Section_1",
-        "shortform": "§ 3",
+        "shortform": "Id. § 3",
         "shortform_URL": "https://ballotpedia.org/Article_I,_Alaska_Constitution#Section_3"
     },
     "American Samoa Code": {
@@ -176,7 +176,7 @@ TESTS = {
     "American Samoa Constitution": {
         "cite": "Am. Samoa Const. Art. II § 2",
         "URL": "https://ballotpedia.org/Article_II,_American_Samoa_Constitution#Section_2",
-        "shortform": "§ 3",
+        "shortform": "Id. § 3",
         "shortform_URL": "https://ballotpedia.org/Article_II,_American_Samoa_Constitution#Section_3"
     },
     "Arkansas Code": {
@@ -200,7 +200,7 @@ TESTS = {
     "Arizona Constitution": {
         "cite": "Arizona Constitution Article XII, section 3",
         "URL": "https://ballotpedia.org/Article_12,_Arizona_Constitution#Section_3",
-        "shortform": "§ 2",
+        "shortform": "Art. XII § 2",
         "shortform_URL": "https://ballotpedia.org/Article_12,_Arizona_Constitution#Section_2"
     },
     "California Codes": {
@@ -211,9 +211,9 @@ TESTS = {
     },
     "California Constitution": {
         "cite": "Cal. Const. Art. XI § 1",
-        "URL": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CONS&article=XI&sectionNum=SEC. 1.",
-        "shortform": "§ 2",
-        "shortform_URL": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CONS&article=XI&sectionNum=SEC. 2."
+        "URL": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CONS&article=XI&sectionNum=SEC.%201.",
+        "shortform": "§ 1",
+        "shortform_URL": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CONS&article=XI&sectionNum=SEC.%201."
     },
     "Colorado Revised Statutes": {
         "cite": "Colo. Rev. Stat. § 8-2-113",
@@ -224,8 +224,8 @@ TESTS = {
     "Colorado Constitution": {
         "cite": "Colo. Const. Art. XIX, Sec. 2",
         "URL": "https://ballotpedia.org/Article_XIX,_Colorado_Constitution#Section_2",
-        "shortform": "§ 3",
-        "shortform_URL": "https://ballotpedia.org/Article_XIX,_Colorado_Constitution#Section_3"
+        "shortform": "Art. IX § 3",
+        "shortform_URL": "https://ballotpedia.org/Article_IX,_Colorado_Constitution#Section_3"
     },
     "General Statutes of Connecticut": {
         "cite": "Conn. Gen. Stat. § 46b-137",
@@ -247,9 +247,9 @@ TESTS = {
     },
     "Delaware General Corporations Law": {
         "cite": "DGCL § 203",
-        "URL": "https://delcode.delaware.gov/title8/c001/sc06/index.shtml#203.",
+        "URL": "https://www.lawserver.com/law/state/delaware/de-code/delaware_code_title_8_203",
         "shortform": "§ 244",
-        "shortform_URL": "https://delcode.delaware.gov/title8/c001/sc08/index.shtml#244."
+        "shortform_URL": "https://www.lawserver.com/law/state/delaware/de-code/delaware_code_title_8_244"
     },
     "Delaware Constitution": {
         "cite": "Del. Const. Art. XVI",
@@ -272,7 +272,7 @@ TESTS = {
     "Florida Constitution": {
         "cite": "Florida Constitution Article X, Section 2",
         "URL": "https://www.flsenate.gov/Laws/Constitution#A10S02",
-        "shortform": "Section 6",
+        "shortform": "Id. at Section 6",
         "shortform_URL": "https://www.flsenate.gov/Laws/Constitution#A10S06"
     },
     "Georgia Code": {
@@ -302,7 +302,7 @@ TESTS = {
     "Hawaii Constitution": {
         "cite": "Hawaii Constitution Article VIII, Section 2",
         "URL": "https://ballotpedia.org/Article_VIII,_Hawaii_Constitution#Section_2",
-        "shortform": "§ 6",
+        "shortform": "Id. § 6",
         "shortform_URL": "https://ballotpedia.org/Article_VIII,_Hawaii_Constitution#Section_6"
     },
     "Idaho Code": {
@@ -326,7 +326,7 @@ TESTS = {
     "Illinois Constitution": {
         "cite": "Ill. Const. Art. VII, Sec. 2",
         "URL": "https://ballotpedia.org/Article_VII,_Illinois_Constitution#Section_2",
-        "shortform": "§ 3",
+        "shortform": "Id. § 3",
         "shortform_URL": "https://ballotpedia.org/Article_VII,_Illinois_Constitution#Section_3"
     },
     "Indiana Code": {
@@ -358,7 +358,7 @@ def test_url_generation():
         # try parsing a text where the shortform follows the longform
         test = TESTS[template.name]
         test_string = f"{test['cite']}. {test['shortform'] or ''}"
-        found_cites = citator.list_citations(test_string)
+        found_cites = citator.list_cites(test_string)
         
         print(f'{template.name}: "{test_string}" ... ', end='')
         

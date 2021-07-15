@@ -5,7 +5,7 @@ with open('README.md', 'r') as f:
 
 setuptools.setup(
     name='citeurl',
-    version='9.0.2',
+    version='10.0.0',
     description='an extensible tool to process legal citations in text',
     author='Simon Raindrum Sherred',
     author_email='simonraindrum@gmail.com',
