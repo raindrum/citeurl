@@ -33,7 +33,7 @@ def insert_links(
         
         if not (cite.URL or URL_optional):
             continue
-        if not (redundant_links or cite.URL != last_URL):
+        if not redundant_links and cite.URL != last_URL:
             continue
         
         if add_title:

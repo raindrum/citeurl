@@ -15,7 +15,8 @@ from pathlib import Path
 # from time import sleep
 
 # internal imports
-from . import Citator, insert_links
+from .citator import Citator
+from .hyperlink import insert_links
 # from .web.server import serve, App
 # from .web.makejs import makejs
 

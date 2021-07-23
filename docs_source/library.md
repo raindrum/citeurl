@@ -61,19 +61,19 @@ assert art_I_sec_3 in art_I
 
 ## TokenType
 
-::: citeurl.tokens.TokenType
+::: citeurl.TokenType
 
 ## TokenOperation
 
-::: citeurl.tokens.TokenOperation
+::: citeurl.TokenOperation
 
 ## StringBuilder
 
-::: citeurl.tokens.StringBuilder
+::: citeurl.StringBuilder
 
 ## insert_links()
 
-::: citeurl.hyperlink.insert_links
+::: citeurl.insert_links
 
 ## cite()
 

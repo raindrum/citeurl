@@ -6,7 +6,8 @@ from markdown.extensions import Extension
 from markdown.postprocessors import Postprocessor
 
 # internal imports
-from . import Citator, insert_links
+from .citator import Citator
+from .hyperlink import insert_links
 
 # store citator in a global variable so it isn't remade each document
 CITATOR: Citator = None

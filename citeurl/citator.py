@@ -1,6 +1,5 @@
 # python standard imports
 import re
-from typing import Iterable
 from copy import copy
 from pathlib import Path
 
@@ -9,237 +8,10 @@ from yaml import safe_load, safe_dump
 
 # internal imports
 from .tokens import TokenType, StringBuilder
+from .citation import Citation
+from .regex_mods import process_pattern, match_regexes
 
 _DEFAULT_CITATOR = None
-
-BASIC_ID_REGEX = re.compile(r'(?<!\w)[Ii](bi)?d\.(?!=\w)')
-
-class Citation:
-    """
-    A legal reference found in text.
-    
-    Attributes:
-        tokens: dictionary of the values that define this citation, such
-            as its volume and page number, or its title, section, and
-            subsection, etc
-        
-        URL: the location, if any, where this citation can be found
-            online, defined by the template's URL_builder
-        
-        name: a uniform, human-readable representation of this citation,
-            written by the template's name_builder
-        
-        text: the actual text of this citation as found in the source
-            text
-        
-        source_text: the full text that this citation was found in
-        
-        template: the template whose regexes found this citation or its
-            parent
-        
-        parent: the earlier citation, if any, that this citation is a
-            shortform or idform child of
-        
-        raw_tokens: dictionary of tokens as captured in the original
-            regex match, before normalization. Note that for child
-            citations, raw_tokens will include any raw_tokens inferred
-            from the parent citation.
-        
-        idform_regexes: list of regex pattern objects to find child
-            citations later in the text, valid until the next different
-            citation appears.
-        
-        shortform_regexes: list of regex pattern objects to find
-            child citations anywhere in the subsequent text
-    """
-    
-    def __init__(
-        self,
-        match: re.match,
-        template,
-        parent = None,
-    ):
-        self.match = match
-        self.text = match.group(0)
-        self.source_text = match.string
-        self.span = match.span()
-        self.template = template
-        self.parent = parent
-        self.tokens = {}
-        self.raw_tokens = match.groupdict()
-        
-        # copy raw_tokens (in order) from the parent citation, but
-        # stop at the first one that the child citation overwrites
-        if parent:
-            merged_tokens = {}
-            for k in template.tokens.keys():
-                if self.raw_tokens.get(k):
-                    merged_tokens.update(self.raw_tokens)
-                    break
-                else:
-                    merged_tokens[k] = parent.raw_tokens.get(k)
-            self.raw_tokens = merged_tokens
-        
-        # normalize raw_tokens to get consistent token values across
-        # differently-formatted citations to the same source.
-        # This will raise a SyntaxError if a mandatory edit fails
-        for name, ttype in template.tokens.items():
-            value = self.raw_tokens.get(name)
-            self.tokens[name] = ttype.normalize(value)
-        
-        # Finally, compile the citation's idform and shortform regexes.
-        # To avoid unneccessary work, first try to copy regexes from the
-        # parent citation if applicable.
-        
-        if parent and parent.raw_tokens == self.raw_tokens:
-        # then we can safely copy the parent's regexes to the child
-            self.idform_regexes = parent.idform_regexes
-            self.shortform_regexes = parent.shortform_regexes
-            return
-        
-        # otherwise we'll need to compile new shortform regexes,
-        # but we can still copy some of them from the parent
-        
-        kwargs = {'replacements': self.raw_tokens, 'token_prefix': 'same'}
-        if parent:
-        # we can copy regexes, but only if they do not reference a
-        # specific value from the citation, e.g. {same volume}.
-            self.shortform_regexes = [
-                (
-                    re.compile(_process_pattern(pattern, **kwargs))
-                    if '{same ' in pattern else parent.shortform_regexes[i]
-                )
-                for i, pattern in enumerate(template._processed_shortforms)
-            ]
-            
-            self.idform_regexes = [
-                (
-                    re.compile(_process_pattern(pattern, **kwargs))
-                    if '{same ' in pattern else parent.idform_regexes[i]
-                )
-                for i, pattern in enumerate(template._processed_idforms)
-            ]
-            
-        else: # compile all-new idforms and shortforms
-            self.shortform_regexes = [
-                re.compile(_process_pattern(pattern, **kwargs))
-                for pattern in self.template._processed_shortforms
-            ]
-            self.idform_regexes = [
-                re.compile(_process_pattern(pattern, **kwargs))
-                for pattern in self.template._processed_idforms
-            ]
-        self.idform_regexes.append(BASIC_ID_REGEX)
-    
-    @property
-    def URL(self) -> str:
-        if self.template.URL_builder:
-            url =  self.template.URL_builder(self.tokens)
-            if url:
-                url = url.replace(' ', '%20')
-        else:
-            url = None
-        return url
-    
-    @property
-    def name(self) -> str:
-        if self.template.name_builder:
-            return self.template.name_builder(self.tokens)
-        else:
-            return None
-    
-    def get_shortform_cites(self) -> Iterable:
-        keep_trying = True
-        span_start = self.span[1]
-        while keep_trying:
-            try:
-                match = next(_match_regexes(
-                    regexes=self.shortform_regexes,
-                    text=self.source_text,
-                    span=(span_start,),
-                ))
-                span_start = match.span()[1]
-                try:
-                    yield Citation(
-                        match=match,
-                        template=self.template,
-                        parent=self,
-                    )
-                except SyntaxError: # it's an invalid citation
-                    pass
-            except StopIteration:
-                keep_trying = False
-    
-    def get_idform_cite(self, until_index: int=None):
-        try:
-            match = next(_match_regexes(
-                regexes = self.idform_regexes,
-                text = self.source_text,
-                span = (self.span[1], until_index)
-            ))
-            return Citation(match=match, template=self.template, parent=self)
-        except StopIteration:
-            return None
-        except SyntaxError:
-            return None
-    
-    def get_next_child(self, span: tuple=None):
-        try:
-            match = next(_match_regexes(
-                regexes = self.shortform_regexes + self.idform_regexes,
-                text = self.source_text,
-                span = span if span else (self.span[1], ),
-            ))
-            return Citation(match=match, template=self.template, parent=self)
-        except StopIteration:
-            return None
-    
-    def __str__(self):
-        return str(self.text)
-    
-    def __repr__(self):
-        return (
-            f'Citation(match={self.match}, template={repr(self.template)}'
-            + (f', parent={repr(self.parent)}' if self.parent else '')
-        )
-    
-    def __contains__(self, other_cite):
-        """
-        Returns True if both citations are from templates with the same
-        name, and the only difference between their tokens is that the
-        other one has a more specific (i.e. higher-indexed) token than
-        any of this one's. Severable tokens are considered a match if
-        the other token's value *starts with* this one's.
-        """
-        if (
-            other_cite.template.name != self.template.name
-            or other_cite.tokens == self.tokens
-        ):
-            return False
-        for key, value in self.tokens.items():
-            if value and other_cite.tokens.get(key) != value:
-                if (
-                    self.template.tokens[key].severable
-                    and other_cite.tokens[key]
-                    and other_cite.tokens[key].startswith(value)
-                ):
-                    continue
-                else:
-                    return False
-        else:
-            return True
-    
-    def __eq__(self, other_cite):
-        return (
-            other_cite.template.name == self.template.name
-            and other_cite.tokens == self.tokens
-        )
-    
-    
-    def __len__(self):
-        return len(self.text)
-
-
 
 class Template:
     """
@@ -362,7 +134,7 @@ class Template:
                 flags = 0
             
             for p in pattern_list:
-                pattern = _process_pattern(
+                pattern = process_pattern(
                     p,
                     replacements,
                     add_word_breaks=True)
@@ -377,11 +149,11 @@ class Template:
                     )
         
         self._processed_shortforms = [
-            _process_pattern(p, replacements, add_word_breaks=True)
+            process_pattern(p, replacements, add_word_breaks=True)
             for p in self.shortform_patterns
         ]
         self._processed_idforms = [
-            _process_pattern(p, replacements, add_word_breaks=True)
+            process_pattern(p, replacements, add_word_breaks=True)
             for p in self.idform_patterns
         ]
     
@@ -481,7 +253,7 @@ class Template:
         be used. If no matches are found, return None.
         """
         regexes = self.broad_regexes if broad else self.regexes
-        matches = _match_regexes(text, regexes, span=span)
+        matches = match_regexes(text, regexes, span=span)
         for match in matches:
             try:
                 return Citation(match, self)
@@ -497,7 +269,7 @@ class Template:
         """
         cites = []
         regexes = self.broad_regexes if broad else self.regexes
-        for match in _match_regexes(text, regexes, span=span):
+        for match in match_regexes(text, regexes, span=span):
             try:
                 cites.append(Citation(match, self))
             except SyntaxError:
@@ -741,36 +513,6 @@ def list_cites(text, citator: Citator='DEFAULT', id_breaks=None):
 # INTERNAL FUNCTIONS
 ########################################################################
 
-def _process_pattern(
-    pattern: str,
-    replacements: dict[str, str],
-    token_prefix: str=None,
-    add_word_breaks: bool=False,
-):
-    """
-    Fill placeholders in regex patterns with the corresponding
-    replacements. If token_prefix is provided, it will only replace
-    placeholders that start with that prefix, e.g. the 'same' in
-    "{same volume} {same reporter}".
-    
-    If add_word_breaks is True, a mandatory word break will be added at
-    the beginning and end of the pattern. 
-    """
-    
-    for key, value in replacements.items():
-        if not value:
-            continue
-        if token_prefix:
-            marker = '{%s %s}' % (token_prefix, key)
-        else:
-            marker = '{%s}' % key
-        if not (value.startswith('(') and value.endswith(')')):
-            value = f'({value})'
-        pattern = pattern.replace(marker, f'{value}')
-    if add_word_breaks:
-        pattern = f'(?<!\w){pattern}(?!=\w)'
-    return pattern
-
 def _sort_and_remove_overlaps(citations: list[Citation]):
     """
     For a given list of citations found in the same text, sort them by
@@ -788,34 +530,6 @@ def _sort_and_remove_overlaps(citations: list[Citation]):
         else:
             i += 1
 
-def _match_regexes(text: str, regexes: list, span: tuple=(0,)) -> Iterable:
-    """
-    For a given text and set of regex Pattern objects, generate each
-    non-overlapping match found for any regex. Regexes earlier in
-    the list take priority over later ones, such that a span of text
-    that matches the first regex cannot also match the second.
-    """
-    start = span[0]
-    if len(span) > 1:
-        end = span[1]
-    else:
-        end = None
-    
-    keep_trying = True
-    while keep_trying:
-        span = (start, end) if end else (start,)
-        matches = []
-        for regex in regexes:
-            match = regex.search(text, *span)
-            if match:
-                matches.append(match)
-        if matches:
-            matches.sort(key=lambda x: (x.span()[0], -len(x.group())))
-            start = matches[0].span()[1]
-            yield matches[0]
-        else:
-            keep_trying = False
-        
 def _get_default_citator():
     "Instantiate a citator if needed, and reuse it otherwise."
     global _DEFAULT_CITATOR
