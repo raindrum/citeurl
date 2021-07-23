@@ -67,7 +67,7 @@ U.S. Constitution Amendments:
     parts:
       - 'U.S. Const. Amdt. {amendment}'
       - ' § {section}'
-      - ', cl. {clause}''
+      - ', cl. {clause}'
     edits:
       - token: amendment
         number style: roman

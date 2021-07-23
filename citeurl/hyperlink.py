@@ -24,16 +24,15 @@ def insert_links(
     
     Returns:
         text, with an HTML `a` element for each citation. 
-    """
-    
+    """    
     offset = 0
     last_URL = None
     for cite in citations:
         attrs['href'] = cite.URL
         
-        if not (cite.URL or URL_optional):
+        if not cite.URL and not URL_optional:
             continue
-        if not redundant_links and cite.URL != last_URL:
+        if not redundant_links and cite.URL == last_URL:
             continue
         
         if add_title:

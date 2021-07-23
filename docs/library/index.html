@@ -2531,16 +2531,15 @@ the same URL as the previous link</p>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        text, with an HTML `a` element for each citation. </span>
-<span class="sd">    """</span>
-
-    <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="sd">    """</span>  <br />
+<span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">last_URL</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">cite</span> <span class="ow">in</span> <span class="n">citations</span><span class="p">:</span>
         <span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">cite</span><span class="o">.</span><span class="n">URL</span> <span class="ow">or</span> <span class="n">URL_optional</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">URL_optional</span><span class="p">:</span>
             <span class="k">continue</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">redundant_links</span> <span class="ow">and</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span> <span class="o">!=</span> <span class="n">last_URL</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">redundant_links</span> <span class="ow">and</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span> <span class="o">==</span> <span class="n">last_URL</span><span class="p">:</span>
             <span class="k">continue</span>
 
         <span class="k">if</span> <span class="n">add_title</span><span class="p">:</span>

@@ -6,8 +6,7 @@ from markdown.extensions import Extension
 from markdown.postprocessors import Postprocessor
 
 # internal imports
-from .citator import Citator
-from .hyperlink import insert_links
+from . import Citator, insert_links
 
 # store citator in a global variable so it isn't remade each document
 CITATOR: Citator = None
@@ -27,6 +26,7 @@ class CitationPostprocessor(Postprocessor):
         self.redundant_links = redundant_links
         self.URL_optional = URL_optional
         self.break_id_on_regex=break_id_on_regex
+    
     def run(self, text):
         citations = self.citator.list_cites(
             text,
@@ -91,7 +91,7 @@ class CiteURLExtension(Extension):
                 CITATOR = Citator(defaults=None)
         for path in self.config['custom_templates'][0] or []:
             CITATOR.load_yaml(Path(path).read_text())
-            
+        
         md.postprocessors.register(
             CitationPostprocessor(
                 CITATOR,
