@@ -8,10 +8,13 @@ def process_pattern(
     add_word_breaks: bool=False,
 ):
     """
-    Fill placeholders in regex patterns with the corresponding
-    replacements. If token_prefix is provided, it will only replace
-    placeholders that start with that prefix, e.g. the 'same' in
-    "{same volume} {same reporter}".
+    For a given regex pattern, find all the places that a key in the
+    replacements dict appears, enclosed in curly braces. Replace each
+    one with the corresponding value, enclosed in parentheses.
+    
+    If token_prefix is provided, it will only replace placeholders that
+    that start with that prefix, e.g. the 'same' in "{same volume}" or
+    "{same reporter}".
     
     If add_word_breaks is True, a mandatory word break will be added at
     the beginning and end of the pattern. 

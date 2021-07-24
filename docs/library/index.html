@@ -10,7 +10,7 @@
       
       
       <link rel="icon" href="../assets/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.5">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.1.4">
     
     
       
@@ -39,6 +39,8 @@
       
     
     
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
     
       
@@ -863,113 +865,129 @@
 <span class="k">assert</span> <span class="n">art_I_sec_3</span> <span class="ow">in</span> <span class="n">art_I</span>
 </code></pre></div>
 <h2 id="citator">Citator</h2>
-<div class="doc doc-object doc-class">
-<div class="doc doc-contents first">
-<p>A collection of citation templates, and the tools to match text
+
+
+  <div class="doc doc-object doc-class">
+
+
+    <div class="doc doc-contents first">
+
+      <p>A collection of citation templates, and the tools to match text
 against them en masse.</p>
+
 <p><strong>Attributes:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>templates</code></td>
-<td><code></code></td>
-<td>
-<p>a dictionary of citation templates that this citator
-will try to match against</p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>templates</code></td>
+        <td><code></code></td>
+        <td><p>a dictionary of citation templates that this citator
+will try to match against</p></td>
+      </tr>
+  </tbody>
 </table>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.citator.Citator.__init__">
 
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">[</span><span class="s1">'caselaw'</span><span class="p">,</span> <span class="s1">'general federal law'</span><span class="p">,</span> <span class="s1">'specific federal laws'</span><span class="p">,</span> <span class="s1">'state law'</span><span class="p">,</span> <span class="s1">'secondary sources'</span><span class="p">],</span> <span class="n">yaml_paths</span><span class="o">=</span><span class="p">[],</span> <span class="n">templates</span><span class="o">=</span><span class="p">{})</span></code>
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.citator.Citator.__init__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;caselaw&#39;</span><span class="p">,</span> <span class="s1">&#39;general federal law&#39;</span><span class="p">,</span> <span class="s1">&#39;specific federal laws&#39;</span><span class="p">,</span> <span class="s1">&#39;state law&#39;</span><span class="p">,</span> <span class="s1">&#39;secondary sources&#39;</span><span class="p">],</span> <span class="n">yaml_paths</span><span class="o">=</span><span class="p">[],</span> <span class="n">templates</span><span class="o">=</span><span class="p">{})</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
   </span>
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Create a citator from any combination of CiteURL's default
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Create a citator from any combination of CiteURL's default
 template sets (by default, all of them), plus any custom
 templates you want, either by pointing to custom YAML files or
 making Template objects at runtime.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>defaults</code></td>
-<td><code></code></td>
-<td>
-<p>names of files to load from the citeurl/templates
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>defaults</code></td>
+        <td><code></code></td>
+        <td><p>names of files to load from the citeurl/templates
 folder. Each file contains one or more of CiteURL's
-built-in templates relevant to the given topic.</p>
-</td>
-<td><code>['caselaw', 'general federal law', 'specific federal laws', 'state law', 'secondary sources']</code></td>
-</tr>
-<tr>
-<td><code>yaml_paths</code></td>
-<td><code>list</code></td>
-<td>
-<p>paths to custom YAML files to load templates
+built-in templates relevant to the given topic.</p></td>
+        <td><code>[&#39;caselaw&#39;, &#39;general federal law&#39;, &#39;specific federal laws&#39;, &#39;state law&#39;, &#39;secondary sources&#39;]</code></td>
+      </tr>
+      <tr>
+        <td><code>yaml_paths</code></td>
+        <td><code>list</code></td>
+        <td><p>paths to custom YAML files to load templates
 from. These are loaded after the defaults, so they can
-inherit and/or overwrite them.</p>
-</td>
-<td><code>[]</code></td>
-</tr>
-<tr>
-<td><code>templates</code></td>
-<td><code>dict</code></td>
-<td>
-<p>optional list of Template objects to load
+inherit and/or overwrite them.</p></td>
+        <td><code>[]</code></td>
+      </tr>
+      <tr>
+        <td><code>templates</code></td>
+        <td><code>dict</code></td>
+        <td><p>optional list of Template objects to load
 directly. These are loaded last, after the defaults and
-any yaml_paths.</p>
-</td>
-<td><code>{}</code></td>
-</tr>
-</tbody>
+any yaml_paths.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
 </table>
-<details class="quote">
+        <details class="quote">
           <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">defaults</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s1">'caselaw'</span><span class="p">,</span>
-        <span class="s1">'general federal law'</span><span class="p">,</span>
-        <span class="s1">'specific federal laws'</span><span class="p">,</span>
-        <span class="s1">'state law'</span><span class="p">,</span>
-        <span class="s1">'secondary sources'</span><span class="p">,</span>
+        <span class="s1">&#39;caselaw&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;general federal law&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;specific federal laws&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;state law&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;secondary sources&#39;</span><span class="p">,</span>
     <span class="p">],</span>
     <span class="n">yaml_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
     <span class="n">templates</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Template</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
 <span class="p">):</span>
-    <span class="sd">"""</span>
-<span class="sd">    Create a citator from any combination of CiteURL's default</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a citator from any combination of CiteURL&#39;s default</span>
 <span class="sd">    template sets (by default, all of them), plus any custom</span>
 <span class="sd">    templates you want, either by pointing to custom YAML files or</span>
 <span class="sd">    making Template objects at runtime.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        defaults: names of files to load from the citeurl/templates</span>
-<span class="sd">            folder. Each file contains one or more of CiteURL's</span>
+<span class="sd">            folder. Each file contains one or more of CiteURL&#39;s</span>
 <span class="sd">            built-in templates relevant to the given topic.</span>
 <span class="sd">        yaml_paths: paths to custom YAML files to load templates</span>
 <span class="sd">            from. These are loaded after the defaults, so they can</span>
@@ -977,111 +995,134 @@ any yaml_paths.</p>
 <span class="sd">        templates: optional list of Template objects to load</span>
 <span class="sd">            directly. These are loaded last, after the defaults and</span>
 <span class="sd">            any yaml_paths.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">templates</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="n">yamls_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span> <span class="o">/</span> <span class="s1">'templates'</span>  <br />
-<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">defaults</span> <span class="ow">or</span> <span class="p">[]:</span>
-        <span class="n">yaml_file</span> <span class="o">=</span> <span class="n">yamls_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.yaml'</span>
+    <span class="n">yamls_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span> <span class="o">/</span> <span class="s1">&#39;templates&#39;</span>    
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">defaults</span> <span class="ow">or</span> <span class="p">[]:</span>
+        <span class="n">yaml_file</span> <span class="o">=</span> <span class="n">yamls_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">.yaml&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">yaml_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
 
     <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">yaml_paths</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">templates</span><span class="p">)</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.citator.Citator.cite">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.citator.Citator.cite" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">cite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Check the given text against each of the citator's templates and
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Check the given text against each of the citator's templates and
 return the first citation detected, or None.</p>
 <p>If broad is true, matching is case-insensitive and each
 template's broad regexes are used in addition to its normal
 regexes.</p>
-<details class="quote">
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">cite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Citation</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Check the given text against each of the citator's templates and</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">cite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Citation</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check the given text against each of the citator&#39;s templates and</span>
 <span class="sd">    return the first citation detected, or None.</span>
 
 <span class="sd">    If broad is true, matching is case-insensitive and each</span>
-<span class="sd">    template's broad regexes are used in addition to its normal</span>
+<span class="sd">    template&#39;s broad regexes are used in addition to its normal</span>
 <span class="sd">    regexes.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="n">cite</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">cite</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="n">broad</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">cite</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">cite</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.citator.Citator.from_yaml">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.citator.Citator.from_yaml" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">from_yaml</span><span class="p">(</span><span class="n">yaml</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
   </span>
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Create a citator from scratch (i.e. without the default
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Create a citator from scratch (i.e. without the default
 templates) by loading templates from the specified YAML string.</p>
-<details class="quote">
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="nd">@classmethod</span>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_yaml</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a citator from scratch (i.e. without the default</span>
 <span class="sd">    templates) by loading templates from the specified YAML string.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">citator</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">defaults</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="n">citator</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">yaml</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">citator</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.citator.Citator.list_cites">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.citator.Citator.list_cites" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">list_cites</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">id_breaks</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Find all citations in the given text, whether longform,
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Find all citations in the given text, whether longform,
 shortform, or idform. They will be listed in order of
 appearance. If any two citations overlap, the shorter one will
 be deleted. </p>
 <p>Wherever the id_breaks pattern matches, it will interrupt chains
 of idform citations. This is helpful </p>
-<details class="quote">
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">list_cites</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">list_cites</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">id_breaks</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Citation</span><span class="p">]:</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Find all citations in the given text, whether longform,</span>
 <span class="sd">    shortform, or idform. They will be listed in order of</span>
 <span class="sd">    appearance. If any two citations overlap, the shorter one will</span>
@@ -1089,7 +1130,7 @@ of idform citations. This is helpful </p>
 
 <span class="sd">    Wherever the id_breaks pattern matches, it will interrupt chains</span>
 <span class="sd">    of idform citations. This is helpful </span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># first get a list of all long and shortform (not id.) citations</span>
     <span class="n">longforms</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -1139,189 +1180,215 @@ of idform citations. This is helpful </p>
     <span class="n">citations</span> <span class="o">+=</span> <span class="n">idforms</span>
     <span class="n">_sort_and_remove_overlaps</span><span class="p">(</span><span class="n">citations</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">citations</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.citator.Citator.load_yaml">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.citator.Citator.load_yaml" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Load templates from the given YAML, overwriting any existing
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Load templates from the given YAML, overwriting any existing
 templates with the same name.</p>
-<details class="quote">
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="sd">"""</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load templates from the given YAML, overwriting any existing</span>
 <span class="sd">    templates with the same name.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">yaml</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Template</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
             <span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">inheritables</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">templates</span>
         <span class="p">)</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.citator.Citator.to_yaml">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.citator.Citator.to_yaml" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Save this citator to a YAML string to load later</p>
-<details class="quote">
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Save this citator to a YAML string to load later</p>
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="s2">"Save this citator to a YAML string to load later"</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="s2">&quot;Save this citator to a YAML string to load later&quot;</span>
     <span class="n">yamls</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
-    <span class="k">return</span> <span class="s1">'</span><span class="se">\n\n</span><span class="s1">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">yamls</span><span class="p">)</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-</div>
-</div>
-</div>
+    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">yamls</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
 <h2 id="citation">Citation</h2>
-<div class="doc doc-object doc-class">
-<div class="doc doc-contents first">
-<p>A legal reference found in text.</p>
+
+
+  <div class="doc doc-object doc-class">
+
+
+    <div class="doc doc-contents first">
+
+      <p>A legal reference found in text.</p>
+
 <p><strong>Attributes:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>tokens</code></td>
-<td><code></code></td>
-<td>
-<p>dictionary of the values that define this citation, such
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>tokens</code></td>
+        <td><code></code></td>
+        <td><p>dictionary of the values that define this citation, such
 as its volume and page number, or its title, section, and
-subsection, etc</p>
-</td>
-</tr>
-<tr>
-<td><code>URL</code></td>
-<td><code></code></td>
-<td>
-<p>the location, if any, where this citation can be found
-online, defined by the template's URL_builder</p>
-</td>
-</tr>
-<tr>
-<td><code>name</code></td>
-<td><code></code></td>
-<td>
-<p>a uniform, human-readable representation of this citation,
-written by the template's name_builder</p>
-</td>
-</tr>
-<tr>
-<td><code>text</code></td>
-<td><code></code></td>
-<td>
-<p>the actual text of this citation as found in the source
-text</p>
-</td>
-</tr>
-<tr>
-<td><code>source_text</code></td>
-<td><code></code></td>
-<td>
-<p>the full text that this citation was found in</p>
-</td>
-</tr>
-<tr>
-<td><code>template</code></td>
-<td><code></code></td>
-<td>
-<p>the template whose regexes found this citation or its
-parent</p>
-</td>
-</tr>
-<tr>
-<td><code>parent</code></td>
-<td><code></code></td>
-<td>
-<p>the earlier citation, if any, that this citation is a
-shortform or idform child of</p>
-</td>
-</tr>
-<tr>
-<td><code>raw_tokens</code></td>
-<td><code></code></td>
-<td>
-<p>dictionary of tokens as captured in the original
+subsection, etc</p></td>
+      </tr>
+      <tr>
+        <td><code>URL</code></td>
+        <td><code></code></td>
+        <td><p>the location, if any, where this citation can be found
+online, defined by the template's URL_builder</p></td>
+      </tr>
+      <tr>
+        <td><code>name</code></td>
+        <td><code></code></td>
+        <td><p>a uniform, human-readable representation of this citation,
+written by the template's name_builder</p></td>
+      </tr>
+      <tr>
+        <td><code>text</code></td>
+        <td><code></code></td>
+        <td><p>the actual text of this citation as found in the source
+text</p></td>
+      </tr>
+      <tr>
+        <td><code>source_text</code></td>
+        <td><code></code></td>
+        <td><p>the full text that this citation was found in</p></td>
+      </tr>
+      <tr>
+        <td><code>template</code></td>
+        <td><code></code></td>
+        <td><p>the template whose regexes found this citation or its
+parent</p></td>
+      </tr>
+      <tr>
+        <td><code>parent</code></td>
+        <td><code></code></td>
+        <td><p>the earlier citation, if any, that this citation is a
+shortform or idform child of</p></td>
+      </tr>
+      <tr>
+        <td><code>raw_tokens</code></td>
+        <td><code></code></td>
+        <td><p>dictionary of tokens as captured in the original
 regex match, before normalization. Note that for child
 citations, raw_tokens will include any raw_tokens inferred
-from the parent citation.</p>
-</td>
-</tr>
-<tr>
-<td><code>idform_regexes</code></td>
-<td><code></code></td>
-<td>
-<p>list of regex pattern objects to find child
+from the parent citation.</p></td>
+      </tr>
+      <tr>
+        <td><code>idform_regexes</code></td>
+        <td><code></code></td>
+        <td><p>list of regex pattern objects to find child
 citations later in the text, valid until the next different
-citation appears.</p>
-</td>
-</tr>
-<tr>
-<td><code>shortform_regexes</code></td>
-<td><code></code></td>
-<td>
-<p>list of regex pattern objects to find
-child citations anywhere in the subsequent text</p>
-</td>
-</tr>
-</tbody>
+citation appears.</p></td>
+      </tr>
+      <tr>
+        <td><code>shortform_regexes</code></td>
+        <td><code></code></td>
+        <td><p>list of regex pattern objects to find
+child citations anywhere in the subsequent text</p></td>
+      </tr>
+  </tbody>
 </table>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.citation.Citation.__contains__">
 
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.citation.Citation.__contains__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_cite</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
   </span>
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Returns True if both citations are from templates with the same
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns True if both citations are from templates with the same
 name, and the only difference between their tokens is that the
 other one has a more specific (i.e. higher-indexed) token than
 any of this one's. Severable tokens are considered a match if
 the other token's value <em>starts with</em> this one's.</p>
-<details class="quote">
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/citation.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_cite</span><span class="p">):</span>
-    <span class="sd">"""</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_cite</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns True if both citations are from templates with the same</span>
 <span class="sd">    name, and the only difference between their tokens is that the</span>
 <span class="sd">    other one has a more specific (i.e. higher-indexed) token than</span>
-<span class="sd">    any of this one's. Severable tokens are considered a match if</span>
-<span class="sd">    the other token's value *starts with* this one's.</span>
-<span class="sd">    """</span>
+<span class="sd">    any of this one&#39;s. Severable tokens are considered a match if</span>
+<span class="sd">    the other token&#39;s value *starts with* this one&#39;s.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">other_cite</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span>
         <span class="ow">or</span> <span class="n">other_cite</span><span class="o">.</span><span class="n">tokens</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span>
@@ -1339,98 +1406,140 @@ the other token's value <em>starts with</em> this one's.</p>
                 <span class="k">return</span> <span class="kc">False</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.citation.Citation.__eq__">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.citation.Citation.__eq__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_cite</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
   </span>
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Returns True if both citations are from templates with the same
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Returns True if both citations are from templates with the same
 name, and they have the exact same token values.</p>
-<details class="quote">
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/citation.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_cite</span><span class="p">):</span>
-    <span class="sd">"""</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_cite</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns True if both citations are from templates with the same</span>
 <span class="sd">    name, and they have the exact same token values.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">(</span>
         <span class="n">other_cite</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="o">.</span><span class="n">name</span>
         <span class="ow">and</span> <span class="n">other_cite</span><span class="o">.</span><span class="n">tokens</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span>
     <span class="p">)</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-</div>
-</div>
-</div>
-<h2 id="template">Template</h2>
-<div class="doc doc-object doc-class">
-<div class="doc doc-contents first">
-<p>A pattern to recognize a single kind of citation and extract
-information from it.</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.citator.Template.__init__">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+<h2 id="template">Template</h2>
+
+
+  <div class="doc doc-object doc-class">
+
+
+    <div class="doc doc-contents first">
+
+      <p>A pattern to recognize a single kind of citation and extract
+information from it.</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.citator.Template.__init__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tokens</span><span class="o">=</span><span class="p">{},</span> <span class="n">meta</span><span class="o">=</span><span class="p">{},</span> <span class="n">patterns</span><span class="o">=</span><span class="p">[],</span> <span class="n">broad_patterns</span><span class="o">=</span><span class="p">[],</span> <span class="n">shortform_patterns</span><span class="o">=</span><span class="p">[],</span> <span class="n">idform_patterns</span><span class="o">=</span><span class="p">[],</span> <span class="n">name_builder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">URL_builder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inherit_template</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
   </span>
 
-      </h3>
-<div class="doc doc-contents ">
+</h3>
+
+    <div class="doc doc-contents ">
+
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>name</code></td>
-<td><code>str</code></td>
-<td>
-<p>the name of this template</p>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>tokens</code></td>
-<td><code>dict</code></td>
-<td>
-<p>The full dictionary of TokenTypes that citations from
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>name</code></td>
+        <td><code>str</code></td>
+        <td><p>the name of this template</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>tokens</code></td>
+        <td><code>dict</code></td>
+        <td><p>The full dictionary of TokenTypes that citations from
 this template can contain. These must be listed in order
 from least-specific to most. For instance, the U.S.
 Constitution's template puts 'article' before 'section'
 before 'clause', because articles contain sections, and
-sections contain clauses.</p>
-</td>
-<td><code>{}</code></td>
-</tr>
-<tr>
-<td><code>patterns</code></td>
-<td><code>list</code></td>
-<td>
-<p>Patterns are essentially regexes to recognize
+sections contain clauses.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+      <tr>
+        <td><code>patterns</code></td>
+        <td><code>list</code></td>
+        <td><p>Patterns are essentially regexes to recognize
 recognize long-form citations to this template. However,
 wherever a token would appear in the regex, it should be
 replaced by the name of the token, enclosed in curly
@@ -1438,90 +1547,74 @@ braces.</p>
 <p>Patterns are matched in the order that they are listed,
 so if there is a pattern that can only find a subset of
 tokens, it should be listed after the more-complete
-pattern so that the better match won't be precluded.</p>
-</td>
-<td><code>[]</code></td>
-</tr>
-<tr>
-<td><code>broad_patterns</code></td>
-<td><code>list</code></td>
-<td>
-<p>Same as <code>patterns</code>, except that they will
+pattern so that the better match won't be precluded.</p></td>
+        <td><code>[]</code></td>
+      </tr>
+      <tr>
+        <td><code>broad_patterns</code></td>
+        <td><code>list</code></td>
+        <td><p>Same as <code>patterns</code>, except that they will
 only be used in contexts like search engines, where
 convenience is more important than avoiding false
 positive matches. When used, they will be used in
-addition to the normal patterns.</p>
-</td>
-<td><code>[]</code></td>
-</tr>
-<tr>
-<td><code>shortform_patterns</code></td>
-<td><code>list</code></td>
-<td>
-<p>Same as <code>patterns</code>, but these will only
+addition to the normal patterns.</p></td>
+        <td><code>[]</code></td>
+      </tr>
+      <tr>
+        <td><code>shortform_patterns</code></td>
+        <td><code>list</code></td>
+        <td><p>Same as <code>patterns</code>, but these will only
 go into effect after a longform citation has been
 recognized. If a shortform pattern includes "same
 TOKEN_NAME" in curly braces, e.g. "{same volume}", the
 bracketed portion will be replaced with the exact text
 of the corresponding <code>raw_token</code> from the long-form
-citation.</p>
-</td>
-<td><code>[]</code></td>
-</tr>
-<tr>
-<td><code>idform_patterns</code></td>
-<td><code>list</code></td>
-<td>
-<p>Same as <code>shortform_patterns</code>, except that
+citation.</p></td>
+        <td><code>[]</code></td>
+      </tr>
+      <tr>
+        <td><code>idform_patterns</code></td>
+        <td><code>list</code></td>
+        <td><p>Same as <code>shortform_patterns</code>, except that
 they will only be used to scan text until the next
-different citation occurs.</p>
-</td>
-<td><code>[]</code></td>
-</tr>
-<tr>
-<td><code>URL_builder</code></td>
-<td><code>StringBuilder</code></td>
-<td>
-<p><code>StringBuilder</code> to construct URLs for found
-citations</p>
-</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>name_builder</code></td>
-<td><code>StringBuilder</code></td>
-<td>
-<p><code>StringBuilder</code> to construct canonical names
-of found citations</p>
-</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>meta</code></td>
-<td><code>dict</code></td>
-<td>
-<p>Optional metadata relating to this template. Patterns
+different citation occurs.</p></td>
+        <td><code>[]</code></td>
+      </tr>
+      <tr>
+        <td><code>URL_builder</code></td>
+        <td><code>StringBuilder</code></td>
+        <td><p><code>StringBuilder</code> to construct URLs for found
+citations</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>name_builder</code></td>
+        <td><code>StringBuilder</code></td>
+        <td><p><code>StringBuilder</code> to construct canonical names
+of found citations</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>meta</code></td>
+        <td><code>dict</code></td>
+        <td><p>Optional metadata relating to this template. Patterns
 and StringBuilders can access metadata fields as if they
 were tokens, though fields can be overridden by tokens
-with the same name.</p>
-</td>
-<td><code>{}</code></td>
-</tr>
-<tr>
-<td><code>inherit_template</code></td>
-<td><code></code></td>
-<td>
-<p>another <code>Template</code> whose values this one
-should copy unless expressly overwritten.</p>
-</td>
-<td><code>None</code></td>
-</tr>
-</tbody>
+with the same name.</p></td>
+        <td><code>{}</code></td>
+      </tr>
+      <tr>
+        <td><code>inherit_template</code></td>
+        <td><code></code></td>
+        <td><p>another <code>Template</code> whose values this one
+should copy unless expressly overwritten.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
 </table>
-<details class="quote">
+        <details class="quote">
           <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">tokens</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TokenType</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
@@ -1534,15 +1627,15 @@ should copy unless expressly overwritten.</p>
     <span class="n">URL_builder</span><span class="p">:</span> <span class="n">StringBuilder</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">inherit_template</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Arguments:</span>
 <span class="sd">        name: the name of this template</span>
 
 <span class="sd">        tokens: The full dictionary of TokenTypes that citations from</span>
 <span class="sd">            this template can contain. These must be listed in order</span>
 <span class="sd">            from least-specific to most. For instance, the U.S.</span>
-<span class="sd">            Constitution's template puts 'article' before 'section'</span>
-<span class="sd">            before 'clause', because articles contain sections, and</span>
+<span class="sd">            Constitution&#39;s template puts &#39;article&#39; before &#39;section&#39;</span>
+<span class="sd">            before &#39;clause&#39;, because articles contain sections, and</span>
 <span class="sd">            sections contain clauses.</span>
 
 <span class="sd">        patterns: Patterns are essentially regexes to recognize</span>
@@ -1554,7 +1647,7 @@ should copy unless expressly overwritten.</p>
 <span class="sd">            Patterns are matched in the order that they are listed,</span>
 <span class="sd">            so if there is a pattern that can only find a subset of</span>
 <span class="sd">            tokens, it should be listed after the more-complete</span>
-<span class="sd">            pattern so that the better match won't be precluded.</span>
+<span class="sd">            pattern so that the better match won&#39;t be precluded.</span>
 
 <span class="sd">        broad_patterns: Same as `patterns`, except that they will</span>
 <span class="sd">            only be used in contexts like search engines, where</span>
@@ -1564,8 +1657,8 @@ should copy unless expressly overwritten.</p>
 
 <span class="sd">        shortform_patterns: Same as `patterns`, but these will only</span>
 <span class="sd">            go into effect after a longform citation has been</span>
-<span class="sd">            recognized. If a shortform pattern includes "same</span>
-<span class="sd">            TOKEN_NAME" in curly braces, e.g. "{same volume}", the</span>
+<span class="sd">            recognized. If a shortform pattern includes &quot;same</span>
+<span class="sd">            TOKEN_NAME&quot; in curly braces, e.g. &quot;{same volume}&quot;, the</span>
 <span class="sd">            bracketed portion will be replaced with the exact text</span>
 <span class="sd">            of the corresponding `raw_token` from the long-form</span>
 <span class="sd">            citation.</span>
@@ -1587,22 +1680,22 @@ should copy unless expressly overwritten.</p>
 
 <span class="sd">        inherit_template: another `Template` whose values this one</span>
 <span class="sd">            should copy unless expressly overwritten.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">default</span> <span class="ow">in</span> <span class="p">{</span>
-        <span class="s1">'name'</span><span class="p">:</span>               <span class="kc">None</span><span class="p">,</span>
-        <span class="s1">'tokens'</span><span class="p">:</span>             <span class="p">{},</span>
-        <span class="s1">'patterns'</span><span class="p">:</span>           <span class="p">[],</span>
-        <span class="s1">'broad_patterns'</span><span class="p">:</span>     <span class="p">[],</span>
-        <span class="s1">'shortform_patterns'</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s1">'idform_patterns'</span><span class="p">:</span>    <span class="p">[],</span>
-        <span class="s1">'URL_builder'</span><span class="p">:</span>        <span class="kc">None</span><span class="p">,</span>
-        <span class="s1">'name_builder'</span><span class="p">:</span>       <span class="kc">None</span><span class="p">,</span>
-        <span class="s1">'meta'</span><span class="p">:</span>               <span class="p">{},</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span>               <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;tokens&#39;</span><span class="p">:</span>             <span class="p">{},</span>
+        <span class="s1">&#39;patterns&#39;</span><span class="p">:</span>           <span class="p">[],</span>
+        <span class="s1">&#39;broad_patterns&#39;</span><span class="p">:</span>     <span class="p">[],</span>
+        <span class="s1">&#39;shortform_patterns&#39;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s1">&#39;idform_patterns&#39;</span><span class="p">:</span>    <span class="p">[],</span>
+        <span class="s1">&#39;URL_builder&#39;</span><span class="p">:</span>        <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;name_builder&#39;</span><span class="p">:</span>       <span class="kc">None</span><span class="p">,</span>
+        <span class="s1">&#39;meta&#39;</span><span class="p">:</span>               <span class="p">{},</span>
     <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">inherit_template</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">==</span> <span class="n">default</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">inherit_template</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">'patterns'</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">attr</span><span class="p">]:</span>
+        <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;patterns&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">attr</span><span class="p">]:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span>
@@ -1617,19 +1710,19 @@ should copy unless expressly overwritten.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">name_builder</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name_builder</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name_builder</span><span class="o">.</span><span class="n">defaults</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span>
 
-    <span class="c1"># use the template's metadata and tokens to make a dictionary</span>
+    <span class="c1"># use the template&#39;s metadata and tokens to make a dictionary</span>
     <span class="c1"># of replacements to insert into the regexes before compilation</span>
     <span class="n">replacements</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
     <span class="n">replacements</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
-        <span class="n">k</span><span class="p">:</span><span class="sa">fr</span><span class="s1">'(?P&lt;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">&gt;</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">regex</span><span class="si">}</span><span class="s1">)(?!\w)'</span>
+        <span class="n">k</span><span class="p">:</span><span class="sa">fr</span><span class="s1">&#39;(?P&lt;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">&gt;</span><span class="si">{</span><span class="n">v</span><span class="o">.</span><span class="n">regex</span><span class="si">}</span><span class="s1">)(?!\w)&#39;</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
     <span class="p">})</span>
 
-    <span class="c1"># compile the template's regexes and broad_regexes</span>
+    <span class="c1"># compile the template&#39;s regexes and broad_regexes</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">regexes</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">broad_regexes</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'regexes'</span><span class="p">,</span> <span class="s1">'broad_regexes'</span><span class="p">]:</span>
-        <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">'broad_regexes'</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">kind</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;regexes&#39;</span><span class="p">,</span> <span class="s1">&#39;broad_regexes&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;broad_regexes&#39;</span><span class="p">:</span>
             <span class="n">pattern_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">patterns</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">broad_patterns</span>
             <span class="n">flags</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1645,10 +1738,10 @@ should copy unless expressly overwritten.</p>
                 <span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">flags</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">kind</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">regex</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">re</span><span class="o">.</span><span class="n">error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">i</span> <span class="o">=</span> <span class="s1">'broad '</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">'broad_regexes'</span> <span class="k">else</span> <span class="s1">''</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="s1">&#39;broad &#39;</span> <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;broad_regexes&#39;</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
                 <span class="k">raise</span> <span class="n">re</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s1"> template</span><span class="se">\'</span><span class="s1">s </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">pattern "</span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s1">" has '</span>
-                    <span class="sa">f</span><span class="s1">'an error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">'</span>
+                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s1"> template</span><span class="se">\&#39;</span><span class="s1">s </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">pattern &quot;</span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s1">&quot; has &#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;an error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span>
                 <span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">_processed_shortforms</span> <span class="o">=</span> <span class="p">[</span>
@@ -1659,31 +1752,40 @@ should copy unless expressly overwritten.</p>
         <span class="n">process_pattern</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">replacements</span><span class="p">,</span> <span class="n">add_word_breaks</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">idform_patterns</span>
     <span class="p">]</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.citator.Template.cite">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.citator.Template.cite" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">cite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Return the first citation that matches this template. If 'broad'
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Return the first citation that matches this template. If 'broad'
 is True, case-insensitive matching and broad regex patterns will
 be used. If no matches are found, return None.</p>
-<details class="quote">
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">cite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">span</span><span class="p">:</span> <span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span> <span class="o">-&gt;</span> <span class="n">Citation</span><span class="p">:</span>
-    <span class="sd">"""</span>
-<span class="sd">    Return the first citation that matches this template. If 'broad'</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">cite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">span</span><span class="p">:</span> <span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span> <span class="o">-&gt;</span> <span class="n">Citation</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the first citation that matches this template. If &#39;broad&#39;</span>
 <span class="sd">    is True, case-insensitive matching and broad regex patterns will</span>
 <span class="sd">    be used. If no matches are found, return None.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">regexes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">broad_regexes</span> <span class="k">if</span> <span class="n">broad</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">regexes</span>
     <span class="n">matches</span> <span class="o">=</span> <span class="n">match_regexes</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">regexes</span><span class="p">,</span> <span class="n">span</span><span class="o">=</span><span class="n">span</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
@@ -1693,35 +1795,42 @@ be used. If no matches are found, return None.</p>
             <span class="k">continue</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.citator.Template.from_dict">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.citator.Template.from_dict" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">inheritables</span><span class="o">=</span><span class="p">{})</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
   </span>
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Return a template from a dictionary of values, like a dictionary
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Return a template from a dictionary of values, like a dictionary
 created by parsing a template from YAML format.</p>
-<details class="quote">
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="nd">@classmethod</span>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">inheritables</span><span class="p">:</span> <span class="nb">dict</span><span class="o">=</span><span class="p">{}):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return a template from a dictionary of values, like a dictionary</span>
 <span class="sd">    created by parsing a template from YAML format.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">values</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="s1">'_'</span><span class="p">):</span><span class="n">v</span>
+        <span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">):</span><span class="n">v</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
     <span class="p">}</span>
 
@@ -1730,8 +1839,8 @@ created by parsing a template from YAML format.</p>
     <span class="n">items</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
     <span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">'pattern'</span><span class="p">):</span>
-            <span class="n">values</span><span class="p">[</span><span class="n">key</span> <span class="o">+</span> <span class="s1">'s'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;pattern&#39;</span><span class="p">):</span>
+            <span class="n">values</span><span class="p">[</span><span class="n">key</span> <span class="o">+</span> <span class="s1">&#39;s&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
@@ -1739,60 +1848,67 @@ created by parsing a template from YAML format.</p>
     <span class="c1"># into a list (likely to take advantage of</span>
     <span class="c1"># YAML anchors), join it into one string</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">'patterns'</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;patterns&#39;</span><span class="p">):</span>
             <span class="k">continue</span>
         <span class="k">elif</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">values</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">continue</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
-                <span class="n">values</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+                <span class="n">values</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
 
-    <span class="n">inherit</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'inherit'</span><span class="p">)</span>
+    <span class="n">inherit</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;inherit&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">inherit</span><span class="p">:</span>
-        <span class="n">values</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'inherit'</span><span class="p">)</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;inherit&#39;</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">values</span><span class="p">[</span><span class="s1">'inherit_template'</span><span class="p">]</span> <span class="o">=</span> <span class="n">inheritables</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">inherit</span><span class="p">)</span>
+            <span class="n">values</span><span class="p">[</span><span class="s1">&#39;inherit_template&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inheritables</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">inherit</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">'Template "</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">" tried to inherit unknown '</span>
-                <span class="o">+</span> <span class="sa">f</span><span class="s1">'template "</span><span class="si">{</span><span class="n">inherit</span><span class="si">}</span><span class="s1">"'</span>
+                <span class="sa">f</span><span class="s1">&#39;Template &quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&quot; tried to inherit unknown &#39;</span>
+                <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;template &quot;</span><span class="si">{</span><span class="n">inherit</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
             <span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'name_builder'</span><span class="p">,</span> <span class="s1">'URL_builder'</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;name_builder&#39;</span><span class="p">,</span> <span class="s1">&#39;URL_builder&#39;</span><span class="p">]:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="s1">'defaults'</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'meta'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;defaults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;meta&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
             <span class="n">values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">StringBuilder</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="n">values</span><span class="p">[</span><span class="s1">'tokens'</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">values</span><span class="p">[</span><span class="s1">&#39;tokens&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">k</span><span class="p">:</span> <span class="n">TokenType</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'tokens'</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tokens&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">values</span><span class="p">)</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.citator.Template.list_longform_cites">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.citator.Template.list_longform_cites" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">list_longform_cites</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>Get a list of all long-form citations to this template found in
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>Get a list of all long-form citations to this template found in
 the given text.</p>
-<details class="quote">
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">list_longform_cites</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">span</span><span class="p">:</span> <span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,)):</span>
-    <span class="sd">"""</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">list_longform_cites</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">span</span><span class="p">:</span> <span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,)):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get a list of all long-form citations to this template found in</span>
 <span class="sd">    the given text.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">cites</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">regexes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">broad_regexes</span> <span class="k">if</span> <span class="n">broad</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">regexes</span>
     <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">match_regexes</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">regexes</span><span class="p">,</span> <span class="n">span</span><span class="o">=</span><span class="n">span</span><span class="p">):</span>
@@ -1801,32 +1917,39 @@ the given text.</p>
         <span class="k">except</span> <span class="ne">SyntaxError</span><span class="p">:</span>
             <span class="k">continue</span>
     <span class="k">return</span> <span class="n">cites</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.citator.Template.to_dict">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.citator.Template.to_dict" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>save this Template to a dictionary of values</p>
-<details class="quote">
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>save this Template to a dictionary of values</p>
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="s2">"save this Template to a dictionary of values"</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="s2">&quot;save this Template to a dictionary of values&quot;</span>
     <span class="n">output</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
-        <span class="n">output</span><span class="p">[</span><span class="s1">'meta'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span>
-    <span class="n">output</span><span class="p">[</span><span class="s1">'tokens'</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">output</span><span class="p">[</span><span class="s1">&#39;meta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span>
+    <span class="n">output</span><span class="p">[</span><span class="s1">&#39;tokens&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">k</span><span class="p">:</span><span class="n">v</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
     <span class="p">}</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'patterns'</span><span class="p">,</span> <span class="s1">'shortform_patterns'</span><span class="p">,</span> <span class="s1">'idform_patterns'</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;patterns&#39;</span><span class="p">,</span> <span class="s1">&#39;shortform_patterns&#39;</span><span class="p">,</span> <span class="s1">&#39;idform_patterns&#39;</span><span class="p">]:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
             <span class="k">continue</span>
@@ -1834,197 +1957,268 @@ the given text.</p>
             <span class="n">output</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
         <span class="k">else</span><span class="p">:</span> <span class="c1"># de-pluralize lists that contain only one pattern</span>
             <span class="n">output</span><span class="p">[</span><span class="n">key</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'name_builder'</span><span class="p">,</span> <span class="s1">'URL_builder'</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;name_builder&#39;</span><span class="p">,</span> <span class="s1">&#39;URL_builder&#39;</span><span class="p">]:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
             <span class="n">output</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
 
-    <span class="n">spaced_output</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'_'</span><span class="p">,</span> <span class="s1">' '</span><span class="p">):</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">spaced_output</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">):</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
     <span class="k">return</span> <span class="n">spaced_output</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.citator.Template.to_yaml">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.citator.Template.to_yaml" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>save this Template to a YAML string</p>
-<details class="quote">
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>save this Template to a YAML string</p>
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="s2">"save this Template to a YAML string"</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="s2">&quot;save this Template to a YAML string&quot;</span>
     <span class="k">return</span> <span class="n">safe_dump</span><span class="p">(</span>
         <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()},</span>
         <span class="n">sort_keys</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">allow_unicode</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-</div>
-</div>
-</div>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
 <h2 id="tokentype">TokenType</h2>
-<div class="doc doc-object doc-class">
-<div class="doc doc-contents first">
-<p>These objects represent categories of tokens that might be found in
+
+
+  <div class="doc doc-object doc-class">
+
+
+    <div class="doc doc-contents first">
+
+      <p>These objects represent categories of tokens that might be found in
 a citation.</p>
+
 <p><strong>Attributes:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>regex</code></td>
-<td><code></code></td>
-<td>
-<p>A regular expression that matches the actual text of the
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>regex</code></td>
+        <td><code></code></td>
+        <td><p>A regular expression that matches the actual text of the
 token as found in any document, like the "42" in "42 USC §
 1983" or the "Fourteenth" in "The Fourteenth Amendment".
 This regex will automatically be enclosed in a named capture
 group and inserted into any of the template's match patterns
-wherever the token's name appears in curly braces.</p>
-</td>
-</tr>
-<tr>
-<td><code>edits</code></td>
-<td><code></code></td>
-<td>
-<p>Steps to normalize the token as captured in the regex
-into a value that is consistent across multiple styles.</p>
-</td>
-</tr>
-<tr>
-<td><code>default</code></td>
-<td><code></code></td>
-<td>
-<p>Set the token to this value if it is not found in the
-citation.</p>
-</td>
-</tr>
-<tr>
-<td><code>severable</code></td>
-<td><code></code></td>
-<td>
-<p>If two citations only differ based on this token,
+wherever the token's name appears in curly braces.</p></td>
+      </tr>
+      <tr>
+        <td><code>edits</code></td>
+        <td><code></code></td>
+        <td><p>Steps to normalize the token as captured in the regex
+into a value that is consistent across multiple styles.</p></td>
+      </tr>
+      <tr>
+        <td><code>default</code></td>
+        <td><code></code></td>
+        <td><p>Set the token to this value if it is not found in the
+citation.</p></td>
+      </tr>
+      <tr>
+        <td><code>severable</code></td>
+        <td><code></code></td>
+        <td><p>If two citations only differ based on this token,
 and only because one of the tokens extends longer than the
 other, e.g. "(b)(2)" and "(b)(2)(A)", then <code>severable</code> means
-that the former citation is thought to encompass the latter.</p>
-</td>
-</tr>
-</tbody>
+that the former citation is thought to encompass the latter.</p></td>
+      </tr>
+  </tbody>
 </table>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.tokens.TokenType.from_dict">
 
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.tokens.TokenType.from_dict" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
   </span>
 
-      </h3>
-<div class="doc doc-contents ">
-<p>load a TokenType from a dictionary of values</p>
-<details class="quote">
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>load a TokenType from a dictionary of values</p>
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/tokens.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="nd">@classmethod</span>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="s2">"load a TokenType from a dictionary of values"</span>
+    <span class="s2">&quot;load a TokenType from a dictionary of values&quot;</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-        <span class="n">regex</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'regex'</span><span class="p">],</span>
-        <span class="n">default</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'default'</span><span class="p">),</span>
+        <span class="n">regex</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;regex&#39;</span><span class="p">],</span>
+        <span class="n">default</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">),</span>
         <span class="n">edits</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">TokenOperation</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'edits'</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;edits&#39;</span><span class="p">,</span> <span class="p">[])</span>
         <span class="p">],</span>
-        <span class="n">severable</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'severable'</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">severable</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;severable&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
     <span class="p">)</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.tokens.TokenType.to_dict">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.tokens.TokenType.to_dict" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>save this TokenType to a dictionary for storage in YAML format</p>
-<details class="quote">
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>save this TokenType to a dictionary for storage in YAML format</p>
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/tokens.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="s2">"save this TokenType to a dictionary for storage in YAML format"</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'regex'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="p">}</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="s2">&quot;save this TokenType to a dictionary for storage in YAML format&quot;</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;regex&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="p">}</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">edits</span><span class="p">:</span>
-        <span class="n">output</span><span class="p">[</span><span class="s1">'edits'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">output</span><span class="p">[</span><span class="s1">&#39;edits&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">e</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edits</span>
         <span class="p">]</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">:</span>
-        <span class="n">output</span><span class="p">[</span><span class="s1">'default'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span>
+        <span class="n">output</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">severable</span><span class="p">:</span>
-        <span class="n">output</span><span class="p">[</span><span class="s1">'severable'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">output</span><span class="p">[</span><span class="s1">&#39;severable&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">return</span> <span class="n">output</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-</div>
-</div>
-</div>
-<h2 id="tokenoperation">TokenOperation</h2>
-<div class="doc doc-object doc-class">
-<div class="doc doc-contents first">
-<p>A function to perform a predefined string manipulation</p>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.tokens.TokenOperation.__init__">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
+<h2 id="tokenoperation">TokenOperation</h2>
+
+
+  <div class="doc doc-object doc-class">
+
+
+    <div class="doc doc-contents first">
+
+      <p>A function to perform a predefined string manipulation</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.tokens.TokenOperation.__init__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-special"><code>special</code></small>
   </span>
 
-      </h3>
-<div class="doc doc-contents ">
+</h3>
+
+    <div class="doc doc-contents ">
+
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>action</code></td>
-<td><code>str</code></td>
-<td>
-<p>The kind of string manipulation that this operation
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>action</code></td>
+        <td><code>str</code></td>
+        <td><p>The kind of string manipulation that this operation
 will perform, using the given data. There are a few
 different options:</p>
 <p>'sub': Regex substitution to perform on the text. Needs
@@ -2045,74 +2239,62 @@ different options:</p>
     number words like "thirty-seven". Convert it into
     the specified number format, which can be any of
     these:</p>
-<div class="highlight">
-<pre><span></span><code>'cardinal', e.g. "twenty-seven"
+<div class="highlight"><pre><span></span><code>&#39;cardinal&#39;, e.g. &quot;twenty-seven&quot;
 
-'cardinal spaced', e.g. "twenty seven"
+&#39;cardinal spaced&#39;, e.g. &quot;twenty seven&quot;
 
-'cardinal unspaced', e.g. "twentyseven"
+&#39;cardinal unspaced&#39;, e.g. &quot;twentyseven&quot;
 
-'ordinal', e.g. "twenty-seventh"
+&#39;ordinal&#39;, e.g. &quot;twenty-seventh&quot;
 
-'ordinal spaced', e.g. "twenty seventh"
+&#39;ordinal spaced&#39;, e.g. &quot;twenty seventh&quot;
 
-'ordinal unspaced', e.g. "twentyseventh"
+&#39;ordinal unspaced&#39;, e.g. &quot;twentyseventh&quot;
 
-'roman numeral', e.g. 'xxvii'
+&#39;roman numeral&#39;, e.g. &#39;xxvii&#39;
 
-'digit', e.g. '27'
+&#39;digit&#39;, e.g. &#39;27&#39;
 
 Note that number formatting only works for positive
 whole numbers that do not exceed 40.
-</code></pre>
-</div>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>data</code></td>
-<td><code></code></td>
-<td>
-<p>any data that a given action needs specified, as
-described above</p>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>mandatory</code></td>
-<td><code>bool</code></td>
-<td>
-<p>whether a failed lookup or format action should
-invalidate the entire citation</p>
-</td>
-<td><code>True</code></td>
-</tr>
-<tr>
-<td><code>token</code></td>
-<td><code>str</code></td>
-<td>
-<p>Necessary for operations in StringBuilders. This
+</code></pre></div></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>data</code></td>
+        <td><code></code></td>
+        <td><p>any data that a given action needs specified, as
+described above</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>mandatory</code></td>
+        <td><code>bool</code></td>
+        <td><p>whether a failed lookup or format action should
+invalidate the entire citation</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>token</code></td>
+        <td><code>str</code></td>
+        <td><p>Necessary for operations in StringBuilders. This
 value lets you provide the name of input token to use,
-allowing you to then use the modify_dict() method.</p>
-</td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>output</code></td>
-<td><code>str</code></td>
-<td>
-<p>If this value is set, modify_dict() will save the
+allowing you to then use the modify_dict() method.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>output</code></td>
+        <td><code>str</code></td>
+        <td><p>If this value is set, modify_dict() will save the
 operation's output to the dictionary key with this name
-instead of modifying the input token in place.</p>
-</td>
-<td><code>None</code></td>
-</tr>
-</tbody>
+instead of modifying the input token in place.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
 </table>
-<details class="quote">
+        <details class="quote">
           <summary>Source code in <code>citeurl/tokens.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">action</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">data</span><span class="p">,</span>
@@ -2120,50 +2302,50 @@ instead of modifying the input token in place.</p>
     <span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">output</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Arguments:</span>
 <span class="sd">        action: The kind of string manipulation that this operation</span>
 <span class="sd">            will perform, using the given data. There are a few</span>
 <span class="sd">            different options:</span>
 
-<span class="sd">            'sub': Regex substitution to perform on the text. Needs</span>
+<span class="sd">            &#39;sub&#39;: Regex substitution to perform on the text. Needs</span>
 <span class="sd">                a list of two values: [PATTERN, REPLACEMENT]</span>
 
-<span class="sd">            'lookup': Check if the token matches any of the given</span>
+<span class="sd">            &#39;lookup&#39;: Check if the token matches any of the given</span>
 <span class="sd">                regexes (via case-insensitive matching), and if so,</span>
 <span class="sd">                replace it with the corresponding value. Needs a</span>
 <span class="sd">                dictionary of `regex`: `replacement` pairs.</span>
 
-<span class="sd">            'case': Capitalize the token in the specified way.</span>
-<span class="sd">                Options are 'upper', 'lower', and 'title'.</span>
+<span class="sd">            &#39;case&#39;: Capitalize the token in the specified way.</span>
+<span class="sd">                Options are &#39;upper&#39;, &#39;lower&#39;, and &#39;title&#39;.</span>
 
-<span class="sd">            'lpad': Left pad the token with zeros until it is the</span>
+<span class="sd">            &#39;lpad&#39;: Left pad the token with zeros until it is the</span>
 <span class="sd">                specified number of characters long. Requires an</span>
 <span class="sd">                int specifying the number of characters. You can</span>
 <span class="sd">                also specify the padding character by providing a</span>
 <span class="sd">                tuple: (MINIMUM_LENGTH, PADDING_CHARACTER).</span>
 
-<span class="sd">            'number_style': Assume that the token is a number,</span>
+<span class="sd">            &#39;number_style&#39;: Assume that the token is a number,</span>
 <span class="sd">                either in the form of digits, Roman numerals, or</span>
-<span class="sd">                number words like "thirty-seven". Convert it into</span>
+<span class="sd">                number words like &quot;thirty-seven&quot;. Convert it into</span>
 <span class="sd">                the specified number format, which can be any of</span>
 <span class="sd">                these:</span>
 
-<span class="sd">                'cardinal', e.g. "twenty-seven"</span>
+<span class="sd">                &#39;cardinal&#39;, e.g. &quot;twenty-seven&quot;</span>
 
-<span class="sd">                'cardinal spaced', e.g. "twenty seven"</span>
+<span class="sd">                &#39;cardinal spaced&#39;, e.g. &quot;twenty seven&quot;</span>
 
-<span class="sd">                'cardinal unspaced', e.g. "twentyseven"</span>
+<span class="sd">                &#39;cardinal unspaced&#39;, e.g. &quot;twentyseven&quot;</span>
 
-<span class="sd">                'ordinal', e.g. "twenty-seventh"</span>
+<span class="sd">                &#39;ordinal&#39;, e.g. &quot;twenty-seventh&quot;</span>
 
-<span class="sd">                'ordinal spaced', e.g. "twenty seventh"</span>
+<span class="sd">                &#39;ordinal spaced&#39;, e.g. &quot;twenty seventh&quot;</span>
 
-<span class="sd">                'ordinal unspaced', e.g. "twentyseventh"</span>
+<span class="sd">                &#39;ordinal unspaced&#39;, e.g. &quot;twentyseventh&quot;</span>
 
-<span class="sd">                'roman numeral', e.g. 'xxvii'</span>
+<span class="sd">                &#39;roman numeral&#39;, e.g. &#39;xxvii&#39;</span>
 
-<span class="sd">                'digit', e.g. '27'</span>
+<span class="sd">                &#39;digit&#39;, e.g. &#39;27&#39;</span>
 
 <span class="sd">                Note that number formatting only works for positive</span>
 <span class="sd">                whole numbers that do not exceed 40.</span>
@@ -2179,32 +2361,32 @@ instead of modifying the input token in place.</p>
 <span class="sd">            allowing you to then use the modify_dict() method.</span>
 
 <span class="sd">        output: If this value is set, modify_dict() will save the</span>
-<span class="sd">            operation's output to the dictionary key with this name</span>
+<span class="sd">            operation&#39;s output to the dictionary key with this name</span>
 <span class="sd">            instead of modifying the input token in place.</span>
-<span class="sd">    """</span>
-    <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">'sub'</span><span class="p">:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;sub&#39;</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">'lookup'</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;lookup&#39;</span><span class="p">:</span>
         <span class="n">table</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">):</span><span class="n">v</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lookup</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">'case'</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;case&#39;</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_case</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">'lpad'</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;lpad&#39;</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_left_pad</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">'number_style'</span><span class="p">:</span>
-        <span class="n">action_options</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'cardinal'</span><span class="p">,</span> <span class="s1">'ordinal'</span><span class="p">,</span> <span class="s1">'roman'</span><span class="p">,</span> <span class="s1">'digit'</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s1">&#39;number_style&#39;</span><span class="p">:</span>
+        <span class="n">action_options</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;cardinal&#39;</span><span class="p">,</span> <span class="s1">&#39;ordinal&#39;</span><span class="p">,</span> <span class="s1">&#39;roman&#39;</span><span class="p">,</span> <span class="s1">&#39;digit&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">data</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">action_options</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s1"> is not a valid number style. Valid options: '</span>
-                <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">action_options</span><span class="si">}</span><span class="s1">'</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">data</span><span class="si">}</span><span class="s1"> is not a valid number style. Valid options: &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">action_options</span><span class="si">}</span><span class="s1">&#39;</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_style</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">SyntaxError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">action</span><span class="si">}</span><span class="s1"> is not a defined token operation.'</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">action</span><span class="si">}</span><span class="s1"> is not a defined token operation.&#39;</span>
         <span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">action</span>
@@ -2212,310 +2394,365 @@ instead of modifying the input token in place.</p>
     <span class="bp">self</span><span class="o">.</span><span class="n">mandatory</span> <span class="o">=</span> <span class="n">mandatory</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">token</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">output</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.tokens.TokenOperation.from_dict">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.tokens.TokenOperation.from_dict" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
   </span>
 
-      </h3>
-<div class="doc doc-contents ">
-<p>load a TokenOperation from a dictionary of values</p>
-<details class="quote">
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>load a TokenOperation from a dictionary of values</p>
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/tokens.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="nd">@classmethod</span>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="s2">"load a TokenOperation from a dictionary of values"</span>
+    <span class="s2">&quot;load a TokenOperation from a dictionary of values&quot;</span>
     <span class="n">operations</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'sub'</span><span class="p">,</span> <span class="s1">'lookup'</span><span class="p">,</span> <span class="s1">'case'</span><span class="p">,</span> <span class="s1">'lpad'</span><span class="p">,</span> <span class="s1">'number style'</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;sub&#39;</span><span class="p">,</span> <span class="s1">&#39;lookup&#39;</span><span class="p">,</span> <span class="s1">&#39;case&#39;</span><span class="p">,</span> <span class="s1">&#39;lpad&#39;</span><span class="p">,</span> <span class="s1">&#39;number style&#39;</span><span class="p">]:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
-            <span class="n">action</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span> <span class="s1">'_'</span><span class="p">)</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
             <span class="n">action_data</span> <span class="o">=</span> <span class="n">value</span>
             <span class="k">break</span>
-    <span class="n">mandatory</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'mandatory'</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-    <span class="n">token</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'token'</span><span class="p">)</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'output'</span><span class="p">)</span>
+    <span class="n">mandatory</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mandatory&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;token&#39;</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;output&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">action_data</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.tokens.TokenOperation.modify_dict">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.tokens.TokenOperation.modify_dict" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">modify_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>apply this operation to a dictionary of tokens,
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>apply this operation to a dictionary of tokens,
 editing them as appropriate</p>
-<details class="quote">
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/tokens.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">modify_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="sd">"""</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">modify_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    apply this operation to a dictionary of tokens,</span>
 <span class="sd">    editing them as appropriate</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">):</span>
         <span class="k">return</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
         <span class="n">tokens</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">tokens</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">])</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.tokens.TokenOperation.to_dict">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.tokens.TokenOperation.to_dict" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>save this TokenOperation to a dictionary of values</p>
-<details class="quote">
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>save this TokenOperation to a dictionary of values</p>
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/tokens.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="s2">"save this TokenOperation to a dictionary of values"</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="s2">&quot;save this TokenOperation to a dictionary of values&quot;</span>
     <span class="n">output</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'token'</span><span class="p">,</span> <span class="s1">'output'</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;token&#39;</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">]:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
             <span class="n">output</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
     <span class="n">output</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">action</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">mandatory</span><span class="p">:</span>
-        <span class="n">output</span><span class="p">[</span><span class="s1">'mandatory'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">output</span><span class="p">[</span><span class="s1">&#39;mandatory&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="n">spaced_output</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'_'</span><span class="p">,</span> <span class="s1">' '</span><span class="p">):</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">spaced_output</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">):</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">output</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
     <span class="k">return</span> <span class="n">spaced_output</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-</div>
-</div>
-</div>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
 <h2 id="stringbuilder">StringBuilder</h2>
-<div class="doc doc-object doc-class">
-<div class="doc doc-contents first">
-<p>A function to take a dictionary of values and use it to construct a
+
+
+  <div class="doc doc-object doc-class">
+
+
+    <div class="doc doc-contents first">
+
+      <p>A function to take a dictionary of values and use it to construct a
 piece of text from them. This is used for citation templates' name
 builders and URL builders. </p>
+
 <p><strong>Attributes:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>parts</code></td>
-<td><code></code></td>
-<td>
-<p>A list of strings that will be concatenated to create the
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>parts</code></td>
+        <td><code></code></td>
+        <td><p>A list of strings that will be concatenated to create the
 string. Parts may contain bracketed references to citations'
 token values as well as templates' metadata. If a part
 references a token whose value is not set, the part will be
-omitted from the created string.</p>
-</td>
-</tr>
-<tr>
-<td><code>edits</code></td>
-<td><code></code></td>
-<td>
-<p>A list of TokenOperations that will be performed on the
+omitted from the created string.</p></td>
+      </tr>
+      <tr>
+        <td><code>edits</code></td>
+        <td><code></code></td>
+        <td><p>A list of TokenOperations that will be performed on the
 provided tokens before the string is constructed. If the
 edits have <code>output</code> values, it is possible for them to
 define entirely new tokens for the sole purpose of building
-the string.</p>
-</td>
-</tr>
-<tr>
-<td><code>defaults</code></td>
-<td><code></code></td>
-<td>
-<p>A dictionary of default token values to use when not
+the string.</p></td>
+      </tr>
+      <tr>
+        <td><code>defaults</code></td>
+        <td><code></code></td>
+        <td><p>A dictionary of default token values to use when not
 overwritten by the citation. Generally these are provided by
-the template's meta attribute.</p>
-</td>
-</tr>
-</tbody>
+the template's meta attribute.</p></td>
+      </tr>
+  </tbody>
 </table>
-<div class="doc doc-children">
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.tokens.StringBuilder.from_dict">
 
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.tokens.StringBuilder.from_dict" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
 
   <span class="doc doc-properties">
       <small class="doc doc-property doc-property-classmethod"><code>classmethod</code></small>
   </span>
 
-      </h3>
-<div class="doc doc-contents ">
-<p>load StringBuilder from dictionary of values</p>
-<details class="quote">
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>load StringBuilder from dictionary of values</p>
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/tokens.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="nd">@classmethod</span>
+          <div class="highlight"><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="s2">"load StringBuilder from dictionary of values"</span>
+    <span class="s2">&quot;load StringBuilder from dictionary of values&quot;</span>
     <span class="n">edits</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">TokenOperation</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'edits'</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;edits&#39;</span><span class="p">,</span> <span class="p">[])</span>
     <span class="p">]</span>
-    <span class="n">parts</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'parts'</span><span class="p">]</span>
-    <span class="n">defaults</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'defaults'</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;parts&#39;</span><span class="p">]</span>
+    <span class="n">defaults</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;defaults&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">parts</span><span class="p">,</span> <span class="n">edits</span><span class="p">,</span> <span class="n">defaults</span><span class="p">)</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-<div class="doc doc-object doc-method">
-<h3 class="doc doc-heading" id="citeurl.tokens.StringBuilder.to_dict">
+</code></pre></div>
+        </details>
+    </div>
 
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h3 id="citeurl.tokens.StringBuilder.to_dict" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
-      </h3>
-<div class="doc doc-contents ">
-<p>save StringBuilder to a dictionary of values</p>
-<details class="quote">
+</h3>
+
+    <div class="doc doc-contents ">
+
+      <p>save StringBuilder to a dictionary of values</p>
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/tokens.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-    <span class="s2">"save StringBuilder to a dictionary of values"</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'parts'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="p">}</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="s2">&quot;save StringBuilder to a dictionary of values&quot;</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;parts&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="p">}</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">edits</span><span class="p">:</span>
-        <span class="n">output</span><span class="p">[</span><span class="s1">'edits'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">op</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edits</span><span class="p">]</span>
+        <span class="n">output</span><span class="p">[</span><span class="s1">&#39;edits&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">op</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edits</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">output</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
-</div>
-</div>
-</div>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
+
 <h2 id="insert_links">insert_links()</h2>
-<div class="doc doc-object doc-function">
-<div class="doc doc-contents first">
-<p>Add each citation back into the given text as HTML hyperlinks,
+
+
+  <div class="doc doc-object doc-function">
+
+
+    <div class="doc doc-contents first">
+
+      <p>Add each citation back into the given text as HTML hyperlinks,
 placed via the spans where they were initially found.</p>
+
 <p><strong>Parameters:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>citations</code></td>
-<td><code>list</code></td>
-<td>
-<p>list of citation objects to insert back into the text</p>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>text</code></td>
-<td><code>str</code></td>
-<td>
-<p>the string where all the citations were found.</p>
-</td>
-<td><em>required</em></td>
-</tr>
-<tr>
-<td><code>attrs</code></td>
-<td><code>dict</code></td>
-<td>
-<p>various HTML link attributes to give each inserted link</p>
-</td>
-<td><code>{'class': 'citation'}</code></td>
-</tr>
-<tr>
-<td><code>add_title</code></td>
-<td><code>bool</code></td>
-<td>
-<p>whether to use citation.name for link titles</p>
-</td>
-<td><code>True</code></td>
-</tr>
-<tr>
-<td><code>URL_optional</code></td>
-<td><code>bool</code></td>
-<td>
-<p>whether to insert a hyperlink even when the
-citation does not have an associated URL</p>
-</td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>redundant_links</code></td>
-<td><code>bool</code></td>
-<td>
-<p>whether to insert a hyperlink if it would go to
-the same URL as the previous link</p>
-</td>
-<td><code>True</code></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>citations</code></td>
+        <td><code>list</code></td>
+        <td><p>list of citation objects to insert back into the text</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>text</code></td>
+        <td><code>str</code></td>
+        <td><p>the string where all the citations were found.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>attrs</code></td>
+        <td><code>dict</code></td>
+        <td><p>various HTML link attributes to give each inserted link</p></td>
+        <td><code>{&#39;class&#39;: &#39;citation&#39;}</code></td>
+      </tr>
+      <tr>
+        <td><code>add_title</code></td>
+        <td><code>bool</code></td>
+        <td><p>whether to use citation.name for link titles</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>URL_optional</code></td>
+        <td><code>bool</code></td>
+        <td><p>whether to insert a hyperlink even when the
+citation does not have an associated URL</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>redundant_links</code></td>
+        <td><code>bool</code></td>
+        <td><p>whether to insert a hyperlink if it would go to
+the same URL as the previous link</p></td>
+        <td><code>True</code></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>Returns:</strong></p>
 <table>
-<thead>
-<tr>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>str</code></td>
-<td>
-<p>text, with an HTML <code>a</code> element for each citation. </p>
-</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>str</code></td>
+      <td><p>text, with an HTML <code>a</code> element for each citation. </p></td>
+    </tr>
+  </tbody>
 </table>
-<details class="quote">
+        <details class="quote">
           <summary>Source code in <code>citeurl/hyperlink.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">insert_links</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">insert_links</span><span class="p">(</span>
     <span class="n">citations</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Citation</span><span class="p">],</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">attrs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'class'</span><span class="p">:</span> <span class="s1">'citation'</span><span class="p">},</span>
+    <span class="n">attrs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;citation&#39;</span><span class="p">},</span>
     <span class="n">add_title</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">URL_optional</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">redundant_links</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add each citation back into the given text as HTML hyperlinks,</span>
 <span class="sd">    placed via the spans where they were initially found.</span>
 
@@ -2531,11 +2768,11 @@ the same URL as the previous link</p>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        text, with an HTML `a` element for each citation. </span>
-<span class="sd">    """</span>  <br />
-<span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">last_URL</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">cite</span> <span class="ow">in</span> <span class="n">citations</span><span class="p">:</span>
-        <span class="n">attrs</span><span class="p">[</span><span class="s1">'href'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span>
+        <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">URL_optional</span><span class="p">:</span>
             <span class="k">continue</span>
@@ -2543,13 +2780,13 @@ the same URL as the previous link</p>
             <span class="k">continue</span>
 
         <span class="k">if</span> <span class="n">add_title</span><span class="p">:</span>
-            <span class="n">attrs</span><span class="p">[</span><span class="s1">'title'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cite</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cite</span><span class="o">.</span><span class="n">name</span>
 
-        <span class="n">attr_str</span> <span class="o">=</span> <span class="s1">''</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
-            <span class="sa">f</span><span class="s1">' </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">="</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s1">"'</span>
+        <span class="n">attr_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+            <span class="sa">f</span><span class="s1">&#39; </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">=&quot;</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
             <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span>
         <span class="p">])</span>
-        <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'&lt;a</span><span class="si">{</span><span class="n">attr_str</span><span class="si">}</span><span class="s1">&gt;</span><span class="si">{</span><span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s1">&lt;/a&gt;'</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&lt;a</span><span class="si">{</span><span class="n">attr_str</span><span class="si">}</span><span class="s1">&gt;</span><span class="si">{</span><span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s1">&lt;/a&gt;&#39;</span>
 
         <span class="n">span</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">cite</span><span class="o">.</span><span class="n">span</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">,</span>
@@ -2560,57 +2797,69 @@ the same URL as the previous link</p>
         <span class="n">offset</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">link</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
         <span class="n">last_URL</span> <span class="o">=</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span>
     <span class="k">return</span> <span class="n">text</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
 <h2 id="cite">cite()</h2>
-<div class="doc doc-object doc-function">
-<div class="doc doc-contents first">
-<p>Convenience function to find a single citation in text, or None. See
+
+
+  <div class="doc doc-object doc-function">
+
+
+    <div class="doc doc-contents first">
+
+      <p>Convenience function to find a single citation in text, or None. See
 Citator.cite() for more info.</p>
-<details class="quote">
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">cite</span><span class="p">(</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">cite</span><span class="p">(</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">citator</span><span class="p">:</span> <span class="n">Citator</span><span class="o">=</span><span class="s1">'DEFAULT'</span>
+    <span class="n">citator</span><span class="p">:</span> <span class="n">Citator</span><span class="o">=</span><span class="s1">&#39;DEFAULT&#39;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Citation</span><span class="p">:</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convenience function to find a single citation in text, or None. See</span>
 <span class="sd">    Citator.cite() for more info.</span>
-<span class="sd">    """</span>
-    <span class="k">if</span> <span class="n">citator</span> <span class="o">==</span> <span class="s1">'DEFAULT'</span><span class="p">:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">citator</span> <span class="o">==</span> <span class="s1">&#39;DEFAULT&#39;</span><span class="p">:</span>
         <span class="n">citator</span> <span class="o">=</span> <span class="n">_get_default_citator</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">citator</span><span class="o">.</span><span class="n">cite</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="n">broad</span><span class="p">)</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
 <h2 id="list_cites">list_cites()</h2>
-<div class="doc doc-object doc-function">
-<div class="doc doc-contents first">
-<p>Convenience function to list all citations in a text. For more info,
+
+
+  <div class="doc doc-object doc-function">
+
+
+    <div class="doc doc-contents first">
+
+      <p>Convenience function to list all citations in a text. For more info,
 see Citator.list_cites().</p>
-<details class="quote">
+
+        <details class="quote">
           <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight">
-<pre><span></span><code><span class="k">def</span> <span class="nf">list_cites</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citator</span><span class="p">:</span> <span class="n">Citator</span><span class="o">=</span><span class="s1">'DEFAULT'</span><span class="p">,</span> <span class="n">id_breaks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">list_cites</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citator</span><span class="p">:</span> <span class="n">Citator</span><span class="o">=</span><span class="s1">&#39;DEFAULT&#39;</span><span class="p">,</span> <span class="n">id_breaks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convenience function to list all citations in a text. For more info,</span>
 <span class="sd">    see Citator.list_cites().</span>
-<span class="sd">    """</span>
-    <span class="k">if</span> <span class="n">citator</span> <span class="o">==</span> <span class="s1">'DEFAULT'</span><span class="p">:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">citator</span> <span class="o">==</span> <span class="s1">&#39;DEFAULT&#39;</span><span class="p">:</span>
         <span class="n">citator</span> <span class="o">=</span> <span class="n">_get_default_citator</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">citator</span><span class="o">.</span><span class="n">list_cites</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">id_breaks</span><span class="o">=</span><span class="n">id_breaks</span><span class="p">)</span>
-</code></pre>
-</div>
-</details>
-</div>
-</div>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
                 
               
               
@@ -2679,10 +2928,10 @@ see Citator.list_cites().</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.d351de03.min.js", "version": "10.0.2"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.4fa0e4ee.min.js", "version": "10.0.3"}</script>
     
     
-      <script src="../assets/javascripts/bundle.a1609d9a.min.js"></script>
+      <script src="../assets/javascripts/bundle.1d3bfcf1.min.js"></script>
       
     
   </body>

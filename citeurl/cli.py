@@ -1,8 +1,8 @@
-#!/usr/bin/python
 """
 This is a tool to detect legal citations in text, and
 generate relevant hyperlinks. For more information, see
-https://raindrum.github.io/citeurl."""
+https://raindrum.github.io/citeurl.
+"""
 
 # NOTE: the commented-out imports are imported conditionally later on
 

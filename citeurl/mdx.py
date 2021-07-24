@@ -1,3 +1,8 @@
+"""
+A Python-Markdown extension to detect citations and insert them into
+the processed text as hyperlinks.
+"""
+
 # python standard imports
 import xml.etree.ElementTree as etree
 
