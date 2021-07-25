@@ -15,7 +15,7 @@ Code of Alabama, 1975: # model for title-chapter-section citations
     - '{name regex}'
     - &rev_ann_code_stat '( ?Rev(ised|\.))?( ?Ann(otated|\.))?( ?Gen(eral|\.))? ?(C(odes?|\.)|Stat(utes|s?\.?))( Serv(ice|\.))?( ?Ann(otated|\.))?,? ?'
     - &optional_section_sign '(([Ss]ec(tions?|t?s?\.?)|(&sect;|&#167|§){1,2}) ?)?'
-    - &title_dash_chapter_dash_section '{title}[-‑–]{chapter}[-‑–]{section}(,? ?{subsection})?'
+    - &title_dash_chapter_dash_section '{title}[-‑–]{chapter}[-‑–]{section}(((,? )?sub(sections?|divisions?|(sec|d(iv)?)?s?\.))? ?{subsection})?'
   idform patterns:
     - - &optional_id_at '([Ii]d\.,?( at)? )?'
       - *optional_section_sign
@@ -174,8 +174,8 @@ Arizona Revised Statutes: # model for title-section citations
     - '{title}[-‑–]{section}'
     - *subsec
   idform patterns: 
-    - ['[Ii]d\.,?( at)? ', *optional_section_sign, '{title}[-‑–]{section}( ?{subsection})?']
-    - ['[Ii]d\.,?( at)? ', *optional_section_sign, '{section}( ?{subsection})?']
+    - ['[Ii]d\.,?( at)? ', *optional_section_sign, '{title}[-‑–]{section}', *subsec]
+    - ['[Ii]d\.,?( at)? ', *optional_section_sign, '{section}', *subsec]
     - [*section_sign, '({title}[-‑–])?{section}', *subsec, '(?! of)']
     - *id_at_subsec
   URL builder:
@@ -211,10 +211,10 @@ California Codes:
     - ' ?{section}'
     - *subsec
   idform patterns: &id_sec_subsec
-    - ['[Ii]d\.,?( at)? ', *optional_section_sign, '{section}( ?{subsection})?']
-    - [*section_sign, ' ?{section}(,? ?{subsection})?(?! of)']
-    - '{section} ?{subsection}'
-    - '[Ii]d\.( at)? {subsection}'
+    - ['[Ii]d\.,?( at)? ', *optional_section_sign, '{section}', *subsec]
+    - [*section_sign, ' ?{section}(', *subsec, ')?(?! of)']
+    - '{section}((,? )?sub(sections?|divisions?|(sec|d(iv)?)?s?\.))? ?{subsection}'
+    - *id_at_subsec
   shortform pattern: ['{same code}( Code)? ', *optional_section_sign, ' ?{section}', *subsec]
   URL builder:
     parts: ['https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode={code}&sectionNum={section}']
@@ -431,7 +431,7 @@ Florida Statutes:                # model for chapter.section citations
     - '{chapter}\.{section}'
     - *subsec
   idform patterns: &chapter_dot_section_id
-    - ['[Ii]d\.,?( at)? ', *optional_section_sign, '({chapter}\.)?{section}( ?{subsection})?']
+    - ['[Ii]d\.,?( at)? ', *optional_section_sign, '({chapter}\.)?{section}', *subsec]
     - [*optional_section_sign, ' ?{chapter}\.{section}', *subsec, '(?! of)']
     - [*section_sign, ' ?{section}', *subsec, '(?! of)']
     - *id_at_subsec
@@ -494,7 +494,7 @@ Hawaii Revised Statutes:                        # model for chapter-section stat
     - '{chapter}[-‑–]{section}'
     - *subsec
   idform patterns: 
-    - ['[Ii]d\.,?( at)? ', *optional_section_sign, '({chapter}[-‑–])?{section}( ?{subsection})?']
+    - ['[Ii]d\.,?( at)? ', *optional_section_sign, '({chapter}[-‑–])?{section}', *subsec]
     - [*section_sign, ' ?({chapter}[-‑–])?{section}', *subsec, '(?! of)']
     - *id_at_subsec
   name builder:

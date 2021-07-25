@@ -15,7 +15,7 @@ Here's a sample of the links CiteURL can make:
 
 ---
 
-By default, CiteURL supports Bluebook-style citations to [over 130 sources](https://github.com/raindrum/citeurl/blob/main/citeurl/builtin-templates.yaml) of U.S. law, including:
+By default, CiteURL supports Bluebook-style citations to [over 130 sources](https://github.com/raindrum/citeurl/blob/main/citeurl/templates) of U.S. law, including:
 
 - most state and federal court cases
 - the U.S. Code and Code of Federal Regulations
@@ -74,7 +74,8 @@ CiteURL is also available in a few other forms besides the command-line tool:
 
 Many thanks to these websites, which CiteURL's default templates frequently link to:
 
-- Harvard's [Caselaw Access Project](https://cite.case.law/) - for court cases
+- Harvard's [Caselaw Access Project](https://cite.case.law/) - for most court cases
+- [CourtListener](https://www.courtlistener.com/) - for other court cases
 - Cornell's [Legal Information Institute](https://www.law.cornell.edu/) - for the U.S. Code and many federal rules
 - [Ballotpedia](https://ballotpedia.org) - for the vast majority of state constitutions
 - [LawServer.com](https://www.lawserver.com/tools/laws) - for statutes in about a dozen states and territories whose websites don't have a compatible URL scheme
