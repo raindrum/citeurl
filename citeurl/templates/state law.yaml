@@ -126,6 +126,8 @@ American Samoa Code: # model for title.section citations
     - *id_at_subsec
   URL builder:
     parts: ['https://new.asbar.org/code-annotated/{title}-{section}']
+  name builder:
+    parts: ['Am. Samoa Code § {title}.{section}', '{subsection}']
 
 
 American Samoa Constitution:

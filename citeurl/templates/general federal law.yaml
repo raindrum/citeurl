@@ -141,6 +141,8 @@ U.S. Statutes at Large:
   idform pattern: '[Ii]d\.,? at {pincite}'
   URL builder:
     parts: ['https://www.govinfo.gov/content/pkg/STATUTE-{volume}/pdf/STATUTE-{volume}-Pg{page}.pdf']
+  name builder:
+    parts: ['{volume} Stat. {page}', ', {pincite}']
 
 
 Federal Register:
