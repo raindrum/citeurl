@@ -17,7 +17,7 @@ body {
   color: var(--font-color);
   margin: 0;
   font-size: var(--font-size);
-  font-family: Sans;
+  font-family: Sans-Serif;
   height: calc(100vh - 4rem);
   text-align: center;
 }
