@@ -149,6 +149,8 @@ Federal Register:
   idform pattern: '[Ii]d\.,? at {pincite}'
   URL builder:
     parts: ['https://www.federalregister.gov/documents/search?conditions[term]={volume}+FR+{page}']
+  name builder:
+    parts: ['{volume} FR {page}', ', {pincite}']
 
 
 Code of Federal Regulations:
