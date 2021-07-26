@@ -5,6 +5,7 @@ the processed text as hyperlinks.
 
 # python standard imports
 import xml.etree.ElementTree as etree
+from pathlib import Path
 
 # markdown imports
 from markdown.extensions import Extension
