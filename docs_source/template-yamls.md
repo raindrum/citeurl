@@ -38,7 +38,7 @@ Next, the template provides a `pattern` for what citations need to look like. Th
 
 That regex lets the template know that "42 U.S.C. § 1988" is a reference to section 1988 of Title 42 of the U.S. Code, and so are a few similar-looking things like "42 USC 1988".
 
-Either way, "42" and "1988" will be stored as tokens and can be inserted into the `URL builder` to make [this link](https://www.law.cornell.edu/uscode/text/42/1988). The `name builder` works the same way. Regardless of any formatting differences in the text that was matched, the it lets CiteURL display that citation as "42 U.S.C. § 1988."
+Either way, "42" and "1988" will be stored as tokens and can be inserted into the `URL builder` to make [this link](https://www.law.cornell.edu/uscode/text/42/1988). The `name builder` works the same way. Regardless of any formatting differences in the text that was matched, it lets CiteURL display that citation as "42 U.S.C. § 1988."
 
 Now that you've got the basic concept, let's go over the parts in more detail.
 

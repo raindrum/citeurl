@@ -596,7 +596,7 @@
 <div class="highlight"><pre><span></span><code>(?P&lt;title&gt;\d+) U\.?S\.?C\.? §? ?(?P&lt;section&gt;\d+[A-Z]?)
 </code></pre></div>
 <p>That regex lets the template know that "42 U.S.C. § 1988" is a reference to section 1988 of Title 42 of the U.S. Code, and so are a few similar-looking things like "42 USC 1988".</p>
-<p>Either way, "42" and "1988" will be stored as tokens and can be inserted into the <code>URL builder</code> to make <a href="https://www.law.cornell.edu/uscode/text/42/1988">this link</a>. The <code>name builder</code> works the same way. Regardless of any formatting differences in the text that was matched, the it lets CiteURL display that citation as "42 U.S.C. § 1988."</p>
+<p>Either way, "42" and "1988" will be stored as tokens and can be inserted into the <code>URL builder</code> to make <a href="https://www.law.cornell.edu/uscode/text/42/1988">this link</a>. The <code>name builder</code> works the same way. Regardless of any formatting differences in the text that was matched, it lets CiteURL display that citation as "42 U.S.C. § 1988."</p>
 <p>Now that you've got the basic concept, let's go over the parts in more detail.</p>
 <h2 id="tokens">Tokens</h2>
 <p>Tokens are the discrete pieces of information found in a citation. They can represent anything from a page number to a named chapter of law. Each token must have a <code>regex</code> indicating what text is valid input for that token, and it may also have a list of <a href="#edits">edits</a> used to process and normalize the token text as soon as it is matched.</p>
@@ -865,7 +865,7 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.4fa0e4ee.min.js", "version": "10.0.5"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.4fa0e4ee.min.js", "version": "10.0.6"}</script>
     
     
       <script src="../assets/javascripts/bundle.1d3bfcf1.min.js"></script>

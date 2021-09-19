@@ -4,7 +4,7 @@ Code of Alabama, 1975: # model for title-chapter-section citations
     abbreviation: Ala. Code
   tokens:
     title: &digits_dots_letter
-      regex: '\d+(\.\d+)?[A-Za-z]?'
+      regex: '\d+((\.\d+)*[A-Za-z]?)?'
       edits: [case: upper]
     chapter: *digits_dots_letter
     section: *digits_dots_letter
