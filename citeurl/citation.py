@@ -93,7 +93,10 @@ class Citation:
         # otherwise we'll need to compile new shortform regexes,
         # but we can still copy some of them from the parent
         
-        kwargs = {'replacements': self.raw_tokens, 'token_prefix': 'same'}
+        kwargs = {
+            'replacements': self.raw_tokens,
+            'token_prefix': 'same',
+        }
         if parent:
         # we can copy regexes, but only if they do not reference a
         # specific value from the citation, e.g. {same volume}.

@@ -208,7 +208,7 @@ California Codes:
     section: *digits_dots_letter
     subsection: *subsec_token
   pattern:
-    - '(Cal(ifornia|(if)?\.)|CAL?) ?{code}( ?C(ode|\.)( Ann(otated|\.))?,?)? '
+    - '(Cal(ifornia|(if)?\.)|CAL?) ?{code}( ?C(ode|\.)( Ann(otated|\.))?)?,? '
     - *optional_section_sign
     - ' ?{section}'
     - *subsec

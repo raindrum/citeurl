@@ -1,5 +1,6 @@
 # python standard imports
 from typing import Iterable
+import re
 
 def process_pattern(
     pattern: str,
@@ -29,9 +30,10 @@ def process_pattern(
             marker = '{%s}' % key
         if not (value.startswith('(') and value.endswith(')')):
             value = f'({value})'
-        pattern = pattern.replace(marker, f'{value}')
+        value = fr'{value}(?=\W|$)'
+        pattern = pattern.replace(marker, value)
     if add_word_breaks:
-        pattern = f'(?<!\w){pattern}(?!=\w)'
+        pattern = rf'(?<!\w){pattern}(?!=\w)'
     return pattern
 
 

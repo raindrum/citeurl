@@ -137,7 +137,8 @@ class Template:
                 pattern = process_pattern(
                     p,
                     replacements,
-                    add_word_breaks=True)
+                    add_word_breaks=True
+                )
                 try:
                     regex = re.compile(pattern, flags)
                     self.__dict__[kind].append(regex)
