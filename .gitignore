@@ -8,3 +8,4 @@ build/
 demo/
 dist/
 custom_templates/
+.coverage

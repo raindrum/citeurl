@@ -472,6 +472,111 @@ class Citator:
         _sort_and_remove_overlaps(citations)
         return citations
     
+    def insert_links(
+        self,
+        text: str,
+        attrs: dict = {'class': 'citation'},
+        add_title: bool = True,
+        URL_optional: bool = False,
+        redundant_links: bool = True,
+        id_breaks: re.Pattern = None,
+        ignore_markup: bool = True,
+    ) -> str:
+        """
+        Scan a text for citations, and return a text with each citation
+        converted to a hyperlink.
+        
+        Arguments:
+            text: the string to scan for citations.
+            attrs: various HTML link attributes to give to each link
+            add_title: whether to use citation.name for link titles
+            URL_optional: whether to insert a hyperlink even when the
+                citation does not have an associated URL
+            redundant_links: whether to insert a hyperlink if it would
+                point to the same URL as the previous link
+            id_breaks: wherever this regex appears, interrupt chains of
+                "Id."-type citations.
+            ignore_markup: whether to preprocess and postprocess the
+                text so that CiteURL can detect citations even when
+                they contain inline markup, like "<i>Id.</i> at 32"
+        
+        Returns:
+            text, with an HTML `a` element for each citation. 
+        """
+        
+        # pull out all the inline HTML tags, e.g. <b>,
+        # so they don't interfere with citation matching
+        if ignore_markup:
+            text, stored_tags = _strip_inline_tags(text)
+        
+        cite_offsets = []
+        running_offset = 0
+        
+        last_URL = None
+        for cite in self.list_cites(text, id_breaks = id_breaks):
+            attrs['href'] = cite.URL
+            if not cite.URL and not URL_optional:
+                continue
+            if not redundant_links and cite.URL == last_URL:
+                continue
+            if add_title:
+                attrs['title'] = cite.name
+            
+            attr_str = ''.join([
+                f' {k}="{v}"'
+                for k, v in attrs.items() if v
+            ])
+            link = f'<a{attr_str}>{cite.text}</a>'
+            
+            cite_offset = len(link) - len(cite.text)
+                    
+            cite_offsets.append((
+                cite.span[0], # beginning of citation
+                cite_offset,
+                cite.text,
+            ))
+            
+            span = (
+                cite.span[0] + running_offset,
+                cite.span[1] + running_offset
+            )
+            
+            text = text[:span[0]] + link + text[span[1]:]
+            
+            running_offset += cite_offset
+            last_URL = cite.URL
+        
+        if ignore_markup:
+            running_offset = 0
+            for tag in stored_tags:
+                temp_offset = 0
+                while len(cite_offsets) > 0:
+                    # only offset by a cite if the tag
+                    # is after the cite start
+                    if tag[1] >= cite_offsets[0][0]:
+                        offset = cite_offsets[0]
+                        # check if the tag is after the cite end
+                        tag_start = tag[1]
+                        cite_end = offset[0] + len(offset[2])
+                        
+                        if tag_start >= cite_end:
+                            running_offset += offset[1]
+                            cite_offsets.pop(0)
+                        # otherwise, don't offset by the length of
+                        # the cite's closing </a> tag (length of 4)
+                        else:
+                            temp_offset = offset[1] - 4
+                            break
+                    else:
+                        break
+                tag_pos = tag[1] + running_offset + temp_offset
+                
+                text = text[:tag_pos] + tag[0] + text[tag_pos:]
+                
+                running_offset += tag[2]
+        
+        return text
+    
     def __iter__(self):
         return self.templates.values().__iter__()
     
@@ -491,24 +596,46 @@ class Citator:
 def cite(
     text: str,
     broad: bool = True,
-    citator: Citator='DEFAULT'
+    citator: Citator = None,
 ) -> Citation:
     """
     Convenience function to find a single citation in text, or None. See
     Citator.cite() for more info.
     """
-    if citator == 'DEFAULT':
-        citator = _get_default_citator()
+    citator = citator or _get_default_citator()
     return citator.cite(text, broad=broad)
 
-def list_cites(text, citator: Citator='DEFAULT', id_breaks=None):
+def list_cites(text, citator: Citator = None, id_breaks=None):
     """
     Convenience function to list all citations in a text. For more info,
     see Citator.list_cites().
     """
-    if citator == 'DEFAULT':
-        citator = _get_default_citator()
+    citator = citator or _get_default_citator()
     return citator.list_cites(text, id_breaks=id_breaks)
+
+def insert_links(
+    text: str,
+    attrs: dict = {'class': 'citation'},
+    add_title: bool = True,
+    URL_optional: bool = False,
+    redundant_links: bool = True,
+    id_breaks: re.Pattern = None,
+    ignore_markup: bool = True,
+    citator: Citator = None,
+):
+    """
+    Convenience function to hyperlink all citations in a text. For more
+    info, see Citator.insert_links().
+    """
+    citator = citator or _get_default_citator()
+    return citator.insert_links(
+        text = text,
+        attrs = attrs,
+        add_title = add_title,
+        redundant_links = redundant_links,
+        id_breaks = id_breaks,
+        ignore_markup = ignore_markup,
+    )
 
 ########################################################################
 # INTERNAL FUNCTIONS
@@ -537,3 +664,29 @@ def _get_default_citator():
     if not _DEFAULT_CITATOR:
         _DEFAULT_CITATOR = Citator()
     return _DEFAULT_CITATOR
+
+
+def _strip_inline_tags(text: str) -> tuple[str, list[tuple]]:
+    inline_tag_regex = '|'.join([
+        'a', 'abbr', 'acronym', 'b', 'bdo', 'big', 'br', 'button', 'cite',
+        'code', 'dfn', 'em', 'i', 'img', 'input', 'kbd', 'label', 'map',
+        'object', 'output', 'q', 'samp', 'script', 'select', 'small', 'span',
+        'strong', 'sub', 'sup', 'textarea', 'time', 'tt', 'var', 
+    ])
+    stored_tags = []
+    offset = 0
+    inline_tag_regex = f'</?({inline_tag_regex})(>| .+?>)'
+    def store_tag(match):
+        nonlocal offset
+        tag_text = match.group(0)
+        tag_length = len(tag_text)
+        tag_start = match.span()[0] - offset
+        stored_tags.append((
+            tag_text,
+            tag_start,
+            tag_length,
+        ))
+        offset += tag_length
+        return ''
+    text = re.sub(inline_tag_regex, store_tag, text)
+    return text, stored_tags

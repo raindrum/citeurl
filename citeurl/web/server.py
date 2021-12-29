@@ -141,7 +141,12 @@ def _linker():
             output="<p>Sorry, I couldn't find any citations in that.</p>"
         )
     
-    output = insert_links(citations, given_text, redundant_links=True)
+    output = insert_links(
+        text = given_text,
+        redundant_links = True,
+        ignore_markup = False,
+        citator = _APP.citator,
+    )
     output = '<p>' + sub(r'\n+', '</p>\n<p>', output) + '</p>'
     
     return format_page(

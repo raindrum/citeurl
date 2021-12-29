@@ -31,7 +31,7 @@ def test_list_citations():
 
 def test_insert_links():
     citations = list_cites(TEXT)
-    output = insert_links(citations, TEXT)
+    output = insert_links(TEXT)
     assert output == """Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, <a class="citation" href="https://www.law.cornell.edu/uscode/text/42/1988#b" title="42 U.S.C. § 1988(b)">42 USC § 1988(b)</a>, and, by discretion, expert fees, <a class="citation" href="https://www.law.cornell.edu/uscode/text/42/1988#c" title="42 U.S.C. § 1988(c)">id. at (c)</a>. This is because the importance of civil rights litigation cannot be measured by a damages judgment. See Riverside v. Rivera, <a class="citation" href="https://cite.case.law/us/477/561" title="477 U.S. 561">477 U.S. 561</a> (1986). But Evans v. Jeff D. upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys\' fees. <a class="citation" href="https://cite.case.law/us/475/717" title="475 U.S. 717">475 U.S. 717</a> (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court\'s logic in Riverside, <a class="citation" href="https://cite.case.law/us/477/561#p574" title="477 U.S. 561, 574">477 U.S. at 574</a>-78."""
 
 #def test_list_authorities():
@@ -48,7 +48,7 @@ def test_lookup():
 def test_redundant_links():
     text = '42 U.S.C. § 1983. Id.'
     cites = list_cites(text)
-    output = insert_links(cites, text, redundant_links=True)
+    output = insert_links(text, redundant_links=True)
     assert 'Id.</a>' in output
 
 def test_require_wordbreaks_after_tokens():
@@ -57,3 +57,8 @@ def test_require_wordbreaks_after_tokens():
     Intervening cite: 56 U.S. 365.
     False shortform: Section 778a."""
     assert len(list_cites(text)) == 2
+
+def test_ignore_markup():
+    text = '42 <strong>USC</strong> § 1983. <i>Id.</i> at (b)'
+    output = insert_links(text)
+    assert '(b)</a>' in output

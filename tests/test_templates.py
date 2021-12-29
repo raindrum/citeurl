@@ -1,8 +1,9 @@
 "tests for individual citation templates. not all of them are ready yet"
 
+import requests
+import time
+
 from citeurl import Citator
-#from requests import get
-#from time import sleep
 
 TESTS = {
     "U.S. Code": {
@@ -27,19 +28,19 @@ TESTS = {
         "cite": "Pub. L. 116-344",
         "URL": "https://uscode.house.gov/statutes/pl/116/344.pdf",
         "shortform": None,
-        "shortform_URL": None
+        "shortform_URL": None,
     },
     "U.S. Statutes at Large": {
         "cite": "120 Stat. 3754",
         "URL": "https://www.govinfo.gov/content/pkg/STATUTE-120/pdf/STATUTE-120-Pg3754.pdf",
         "shortform": None,
-        "shortform_URL": None
+        "shortform_URL": None,
     },
     "Federal Register": {
         "cite": "85 FR 55292",
         "URL": "https://www.federalregister.gov/documents/search?conditions[term]=85+FR+55292",
         "shortform": None,
-        "shortform_URL": None
+        "shortform_URL": None,
     },
     "Code of Federal Regulations": {
         "cite": "40 CFR § 70.11(a)",
@@ -215,11 +216,11 @@ TESTS = {
         "shortform": "§ 1",
         "shortform_URL": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CONS&article=XI&sectionNum=SEC.%201."
     },
-    "Colorado Revised Statutes": {
+    "Colorado Revised Statutes": { # needs yearly updates
         "cite": "Colo. Rev. Stat. § 8-2-113",
-        "URL": "https://leg.colorado.gov/sites/default/files/images/olls/crs2020-title-08.pdf#search=8-2-113.",
+        "URL": "https://leg.colorado.gov/sites/default/files/images/olls/crs2021-title-08.pdf#search=8-2-113.",
         "shortform": "§ 8-2-112",
-        "shortform_URL": "https://leg.colorado.gov/sites/default/files/images/olls/crs2020-title-08.pdf#search=8-2-112."
+        "shortform_URL": "https://leg.colorado.gov/sites/default/files/images/olls/crs2021-title-08.pdf#search=8-2-112."
     },
     "Colorado Constitution": {
         "cite": "Colo. Const. Art. XIX, Sec. 2",
@@ -263,11 +264,11 @@ TESTS = {
         "shortform": "§ 40-103",
         "shortform_URL": "https://code.dccouncil.us/dc/council/code/sections/40-103.html"
     },
-    "Florida Statutes": {
+    "Florida Statutes": { # needs yearly updates
         "cite": "Fla. Stat. § 285.16",
-        "URL": "https://www.flsenate.gov/Laws/Statutes/2020/0285.16",
+        "URL": "https://www.flsenate.gov/Laws/Statutes/2021/0285.16",
         "shortform": "§ 285.20",
-        "shortform_URL": "https://www.flsenate.gov/Laws/Statutes/2020/0285.20"
+        "shortform_URL": "https://www.flsenate.gov/Laws/Statutes/2021/0285.20"
     },
     "Florida Constitution": {
         "cite": "Florida Constitution Article X, Section 2",
@@ -329,11 +330,11 @@ TESTS = {
         "shortform": "Id. § 3",
         "shortform_URL": "https://ballotpedia.org/Article_VII,_Illinois_Constitution#Section_3"
     },
-    "Indiana Code": {
+    "Indiana Code": { # needs yearly updates
         "cite": "Ind. Code § 9-22-3-2.5",
-        "URL": "https://iga.in.gov/legislative/laws/2020/ic/titles/09#09-22-3-2.5",
+        "URL": "https://iga.in.gov/legislative/laws/2021/ic/titles/09#09-22-3-2.5",
         "shortform": "§ 9-22-3-3",
-        "shortform_URL": "https://iga.in.gov/legislative/laws/2020/ic/titles/09#09-22-3-3"
+        "shortform_URL": "https://iga.in.gov/legislative/laws/2021/ic/titles/09#09-22-3-3"
     },
     "Indiana Constitution": {
         "cite": "Indiana Constitution Article XIII, Section 1",
@@ -377,14 +378,19 @@ def test_url_generation():
         
         print('OK')
 
-#def test_urls_validity():
-#    "make sure CiteURL's URLs generally don't go to error pages"
-#    print('Checking whether test URLs still return valid response codes...')
-#    for template in TESTS.values():
-#        print(f"{template['cite']} ... ", end='')
-#        if not template['URL']:
-#            continue
-#        response = get(template['URL'])
-#        assert response.ok
-#        print('OK')
-#        sleep(1)
+def do_not_test_urls_validity(): # disabled to avoid server load
+    "make sure CiteURL's URLs generally don't go to error pages"
+    print('Checking whether test URLs still return valid response codes...')
+    for template_name, template in TESTS.items():
+        print(f"{template['cite']} ... ", end='')
+        if not template.get('URL'):
+            print('SKIPPED (no url to test)')
+            continue
+        try:
+            response = requests.get(template['URL'])
+        except requests.exceptions.SSLError:
+            print('SKIPPED (SSL error)')
+            continue
+        print(f'RETURNED {response.status_code} RESPONSE')
+        assert response.status_code != 404
+        time.sleep(0.5)

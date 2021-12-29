@@ -43,6 +43,7 @@ CiteURL can also be used as an extension to [Python-Markdown](https://python-mar
 - `redundant_links`: Whether to insert a link even when its URL would be the same as the last one.
 - `URL_optional`: Whether to insert a link even when it doesn't have a URL.
 - `break_id_on_regex`: Anywhere this string (parsed as regex) appears in the text, chains of citations like `id.` will be interrupted. Note that this is based on the output HTML, *not* the original Markdown text. Defaults to `L\. ?Rev\.|J\. ?Law|\. ?([Cc]ode|[Cc]onst)`
+- `ignore_markup`: Whether CiteURL should detect citations even when they are interrupted by markup, like "\<i>Id.\</i> at 37." Defaults to `True`.
 
 ## GNOME Shell Search Provider
 

@@ -4,6 +4,7 @@ the processed text as hyperlinks.
 """
 
 # python standard imports
+import re
 import xml.etree.ElementTree as etree
 from pathlib import Path
 
@@ -24,26 +25,30 @@ class CitationPostprocessor(Postprocessor):
         attributes: dict,
         redundant_links: bool,
         URL_optional: bool,
-        break_id_on_regex: str
+        break_id_on_regex: str,
+        ignore_markup: bool,
     ):
         super().__init__()
         self.citator = citator
         self.attributes = attributes
         self.redundant_links = redundant_links
         self.URL_optional = URL_optional
-        self.break_id_on_regex=break_id_on_regex
+        self.ignore_markup = ignore_markup,
+        
+        if break_id_on_regex:
+            self.id_breaks = re.compile(break_id_on_regex)
+        else:
+            self.id_breaks = None
     
     def run(self, text):
-        citations = self.citator.list_cites(
-            text,
-            id_breaks=self.break_id_on_regex
-        )
         return insert_links(
-            citations,
-            text,
+            text = text,
             attrs = self.attributes,
             redundant_links = self.redundant_links,
             URL_optional = self.URL_optional,
+            id_breaks = self.id_breaks,
+            ignore_markup = self.ignore_markup,
+            citator = self.citator,
         )
 
 class CiteURLExtension(Extension):
@@ -84,7 +89,15 @@ class CiteURLExtension(Extension):
                 {'class': 'citation'},
                 ("A dictionary of attributes (besides href) that the inserted"
                 + " links should have. - Default: '{'class': 'citation'}'")
-            ]
+            ],
+            'ignore_markup': [
+                True,
+                (
+                    "Whether to detect citations even when they are "
+                    'interrupted by inline markup, like "<i>Id.</i> at 32. '
+                    'Default: True'
+                )
+            ],
         }
         super(CiteURLExtension, self).__init__(**kwargs)
     
@@ -105,6 +118,7 @@ class CiteURLExtension(Extension):
                 self.config['redundant_links'][0],
                 self.config['URL_optional'][0],
                 self.config['break_id_on_regex'][0],
+                self.config['ignore_markup'][0],
             ),
             "CiteURL",
             1

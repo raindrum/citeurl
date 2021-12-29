@@ -13,7 +13,7 @@ Code of Alabama, 1975: # model for title-chapter-section citations
       severable: yes
   pattern:
     - '{name regex}'
-    - &rev_ann_code_stat '( ?Rev(ised|\.))?( ?Ann(otated|\.))?( ?Gen(eral|\.))? ?(C(odes?|\.)|Stat(utes|s?\.?))( Serv(ice|\.))?( ?Ann(otated|\.))?,? ?'
+    - &rev_ann_code_stat '( ?Rev(ised|\.)?)?( ?Ann(otated|\.)?)?( ?Gen(eral|\.))? ?(C(odes?|\.)|Stat(utes|s?\.?))( Serv(ice|\.))?( ?Ann(otated|\.))?,? ?'
     - &optional_section_sign '(([Ss]ec(tions?|t?s?\.?)|(&sect;|&#167|§){1,2}) ?)?'
     - &title_dash_chapter_dash_section '{title}[-‑–]{chapter}[-‑–]{section}(((,? )?sub(sections?|divisions?|(sec|d(iv)?)?s?\.))? ?{subsection})?'
   idform patterns:
@@ -46,7 +46,7 @@ Alabama Constitution: # model for art. X, sec. Y, subd. (Z) constitutions
         - case: upper
     subsection: *subsec_token
   patterns:
-    - - '{name regex} Const(itution|\.)?,? [Aa]rt(icle|\.)? ?{article}(,? '
+    - - '{name regex} Const(itution|\.)?( \(\d{4}\))?,? [Aa]rt(icle|\.)? ?{article}(,? '
       - *section_sign
       - '{section}'
       - *subsec
@@ -298,7 +298,7 @@ Colorado Revised Statutes: # model for title-article-section citations needing y
   tokens:
     year:
       regex: \d+
-      default: '2020' # needs yearly updates
+      default: '2021' # needs yearly updates
     title: *digits_dots_letter
     article: *digits_dots_letter
     section: *digits_dots_letter
@@ -327,7 +327,7 @@ Colorado Revised Statutes: # model for title-article-section citations needing y
         output: supported_year
         sub: ['', '']
       - token: supported_year # force pre-2013 to current year
-        lookup: {'1[89]\d{2}|200\d|201[0-2]':'2020'} # needs yearly updates
+        lookup: {'1[89]\d{2}|200\d|201[0-2]':'2021'} # needs yearly updates
         mandatory: no
 
 
@@ -421,7 +421,7 @@ Florida Statutes:                # model for chapter.section citations
   meta:
     name regex: (Fl(orida|a?\.)|FL)
     abbreviation: Fla. Stat.
-    year: '2020' # needs yearly updates
+    year: '2021' # needs yearly updates
   tokens:
     chapter: *digits_letter
     section: *digits_letter
@@ -565,7 +565,7 @@ Indiana Code:     # model for title-article-chapter-section citations
   meta:
     name regex: Ind(iana|\.)|IN
     abbreviation: Ind. Code
-    year: '2020' # needs yearly updates
+    year: '2021' # needs yearly updates
   tokens:
     title: {regex: \d+}
     article: *digits_dots_letter
@@ -741,6 +741,10 @@ Louisiana Statutes:
   meta:
     name regex: L(ouisiana|a\.|A)
     abbreviation: La. Stat.
+  tokens:
+    title: {regex: '\d+[A-Z]?'}
+    section: {regex: \d+(\.\d+)*}
+    subsection: *subsec_token
   pattern:
     - '{name regex}'
     - *rev_ann_code_stat
@@ -806,7 +810,7 @@ Maine Constitution: # model for Art. X, Sec. Y, cl. Z constitutions
     clause:
       regex: \d+
   patterns:
-    - - '{name regex} Const(itution|\.)?,? [Aa]rt(icle|\.)? ?{article}(,? '
+    - - '{name regex} Const(itution|\.)?( \(\d{4}\))?,? [Aa]rt(icle|\.)? ?{article}(,? '
       - *section_sign
       - '{section}(,? [Cc]l(ause|\.)? ?{clause})?)?'
     - - '[Aa]rt(icle|\.)? ?{article}(,? '
@@ -922,7 +926,7 @@ Massachusetts Constitution: # model for constitutions divided into part I and pa
     section: *const_sec_token
     article: *const_art_token
   patterns:
-    - - '{name regex} Const(itution|\.)?,? [Pp](art|t\.?)( [Tt]he)? ?{part}(,? [Cc](hapter|h?\.?) ?{chapter})?(,? '
+    - - '{name regex} Const(itution|\.)?( \(\d{4}\))?,? [Pp](art|t\.?)( [Tt]he)? ?{part}(,? [Cc](hapter|h?\.?) ?{chapter})?(,? '
       - *section_sign
       - '{section}(,? [Aa]rt(icle|\.?) ?{article})?)?'
     - - '[Pp](art|t\.?)( [Tt]he)? ?{part}(,? [Cc](hapter|h?\.?) ?{chapter})?(,? '
@@ -1142,7 +1146,7 @@ New Hampshire Constitution:
     part: *const_pt_token
     article: *const_art_token
   patterns:
-    - '{name regex} Const(itution|\.)?,? [Pp](art|t\.?)( [Tt]he)? ?{part}(,? [Aa]rt(icle|\.)? ?{article})?'
+    - '{name regex} Const(itution|\.)?( \(\d{4}\))?,? [Pp](art|t\.?)( [Tt]he)? ?{part}(,? [Aa]rt(icle|\.)? ?{article})?'
     - '[Pp](art|t\.?)( [Tt]he)? ?{part}(,? [Aa]rt(icle|\.)? ?{article})?,? [Oo]f [Tt]he {name regex} Const(itution|\.)?'
   idform patterns:
       - ([Ii]d\.( at)? )?[Aa]rt(icle|\.?) ?{article}
@@ -1203,7 +1207,7 @@ New Jersey Constitution:
     paragraph:
       regex: \d+
   patterns:
-    - - '(N\.? ?J\.?|New Jersey) ?Const(itution|\.)?,? ?'
+    - - '(N\.? ?J\.?|New Jersey) ?Const(itution|\.)?( \(\d{4}\))?,? ?'
       - '[Aa]rt(icle|\.) ?{article}(,? '
       - &nj_sec_or_para '((&sect;|&#167|§|[Ss]ec(tion|t?\.)) ?{section}|([Pp](ar(agraph|a?\.)|¶)) ?{paragraph})'
       - ')?'
@@ -1468,7 +1472,7 @@ Oklahoma Statutes:
   meta:
     name regex: Okla(homa|\.)?|OK
     abbreviation: 
-    year: '2020' # needs yearly updates
+    year: '2021' # needs yearly updates
   URL builder:
     parts: ['https://law.justia.com/codes/oklahoma/{year}/title-{title}/section-{title}-{section}/index.html']
 
@@ -1702,7 +1706,7 @@ Vermont Constitution:
       edits:
         - number style: digit
   patterns:
-    - - '(V(ermont|t\.?)|VT) ?Const(itution|\.?) ?[Cc](hapter|h?\.?) ?{chapter}(,? ('
+    - - '(V(ermont|t\.?)|VT) ?Const(itution|\.?)( \(\d{4}\))?,? ?[Cc](hapter|h?\.?) ?{chapter}(,? ('
       - *section_sign
       - '|[Aa]rt(icle|\.?) ?){article})?'
     - - '[Cc](hapter|h?\.?) ?{chapter}(,? ('

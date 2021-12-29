@@ -15,8 +15,7 @@ from pathlib import Path
 # from time import sleep
 
 # internal imports
-from .citator import Citator
-from .hyperlink import insert_links
+from .citator import Citator, insert_links
 # from .web.server import serve, App
 # from .web.makejs import makejs
 
@@ -114,19 +113,19 @@ def main():
             + 'and open it in a browser.'
         )
     )
-    output.add_argument(
-        '-a', '--authorities',
-        metavar='NUMBER',
-        action='store',
-        nargs='?',
-        const=-1,
-        type=int,
-        help=(
-            'return list of all the authorities cited in the text, '
-            + 'with information about each one. If a number is given, '
-            + 'return only the X authorities with the most citations.'
-        )
-    )
+    #output.add_argument(
+    #    '-a', '--authorities',
+    #    metavar='NUMBER',
+    #    action='store',
+    #    nargs='?',
+    #    const=-1,
+    #    type=int,
+    #    help=(
+    #        'return list of all the authorities cited in the text, '
+    #        + 'with information about each one. If a number is given, '
+    #        + 'return only the X authorities with the most citations.'
+    #    )
+    #)
     
     ####################################################################
     # LOOKUP COMMAND OPTIONS
@@ -268,7 +267,7 @@ def main():
     
     if args.command == 'process':
                   
-        if args.authorities: # print list of
+        if 1 == 0 and args.authorities: # disabled for now
             authorities = citator.list_authorities(text)
             if args.authorities != -1:
                 authorities = authorities[:args.authorities]
@@ -284,8 +283,8 @@ def main():
         
         else:
             out_text = insert_links(
-                citations = citator.list_cites(text),
                 text = text,
+                citator = citator,
                 attrs = {'class': args.css_class},
                 redundant_links = not args.no_redundant_links,
             )

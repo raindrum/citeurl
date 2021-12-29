@@ -29,13 +29,6 @@ print(citations[0].URL)
 # https://www.law.cornell.edu/uscode/text/42/1988#b
 ```
 
-You can also use [insert_links()](#insert_links) to insert the citations back into the source text as HTML hyperlinks:
-
-``` python
-from citeurl import insert_links
-output = insert_links(citations, text)
-```
-
 You can also compare citations to one another, to determine whether they reference the same material or a subsection thereof:
 
 ```python
@@ -45,6 +38,17 @@ art_I_sec_3 = citator.cite('U.S. Const. Art. I, § 3')
 
 assert art_I == also_art_I
 assert art_I_sec_3 in art_I
+```
+
+Finally, if you don't want to bother with all the details, you can also just use [insert_links()](#insert_links) to turn all the citations in a text into hyperlinks:
+
+```python
+from citeurl import insert_links
+
+text = "42 USC § 1988. <i>Id.</i> at (b)."
+output = insert_links(text)
+
+assert output == '<a class="citation" href="https://www.law.cornell.edu/uscode/text/42/1988" title="42 U.S.C. § 1988">42 USC § 1988</a>. <a class="citation" href="https://www.law.cornell.edu/uscode/text/42/1988#b" title="42 U.S.C. § 1988(b)"><i>Id.</i> at (b)</a>.'
 ```
 
 ## Citator
