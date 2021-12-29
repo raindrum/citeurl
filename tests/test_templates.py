@@ -1,7 +1,7 @@
 "tests for individual citation templates. not all of them are ready yet"
 
-import requests
-import time
+#import requests
+#import time
 
 from citeurl import Citator
 
