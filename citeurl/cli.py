@@ -16,6 +16,7 @@ from pathlib import Path
 
 # internal imports
 from .citator import Citator, insert_links
+from .authority import list_authorities
 # from .web.server import serve, App
 # from .web.makejs import makejs
 
@@ -113,19 +114,19 @@ def main():
             + 'and open it in a browser.'
         )
     )
-    #output.add_argument(
-    #    '-a', '--authorities',
-    #    metavar='NUMBER',
-    #    action='store',
-    #    nargs='?',
-    #    const=-1,
-    #    type=int,
-    #    help=(
-    #        'return list of all the authorities cited in the text, '
-    #        + 'with information about each one. If a number is given, '
-    #        + 'return only the X authorities with the most citations.'
-    #    )
-    #)
+    output.add_argument(
+        '-a', '--authorities',
+        metavar='NUMBER',
+        action='store',
+        nargs='?',
+        const=-1,
+        type=int,
+        help=(
+            'return list of all the authorities cited in the text, '
+            + 'with information about each one. If a number is given, '
+            + 'return only the X authorities with the most citations.'
+        )
+    )
     
     ####################################################################
     # LOOKUP COMMAND OPTIONS
@@ -267,16 +268,16 @@ def main():
     
     if args.command == 'process':
                   
-        if 1 == 0 and args.authorities: # disabled for now
-            authorities = citator.list_authorities(text)
+        if args.authorities:
+            authorities = list_authorities(citator.list_cites(text))
             if args.authorities != -1:
                 authorities = authorities[:args.authorities]
             outputs = []
             for authority in authorities:
                 output = f"Authority:  {authority}"
                 output += f"\nSource:     {authority.template}"
-                if authority.base_citation().URL:
-                    output += "\nURL:        " + authority.base_citation().URL
+                if authority.URL:
+                    output += "\nURL:        " + authority.URL
                 output += f"\nReferences: {len(authority.citations)}"
                 outputs.append(output)
             print('\n\n'.join(outputs))

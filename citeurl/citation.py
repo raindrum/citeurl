@@ -194,6 +194,7 @@ class Citation:
         return str(self.text)
     
     def __repr__(self):
+        return str(self.text)
         return (
             f'Citation(match={self.match}, template={repr(self.template)}'
             + (f', parent={repr(self.parent)}' if self.parent else '')
