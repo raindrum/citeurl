@@ -5,8 +5,8 @@ import re
 def process_pattern(
     pattern: str,
     replacements: dict[str, str],
-    token_prefix: str=None,
-    add_word_breaks: bool=False,
+    token_prefix: str = None,
+    add_word_breaks: bool = False,
 ):
     """
     For a given regex pattern, find all the places that a key in the
@@ -14,13 +14,12 @@ def process_pattern(
     one with the corresponding value, enclosed in parentheses.
     
     If token_prefix is provided, it will only replace placeholders that
-    that start with that prefix, e.g. the 'same' in "{same volume}" or
+    start with that prefix, e.g. the 'same' in "{same volume}" or
     "{same reporter}".
     
     If add_word_breaks is True, a mandatory word break will be added at
     the beginning and end of the pattern. 
     """
-    
     for key, value in replacements.items():
         if not value:
             continue

@@ -419,8 +419,10 @@ class Citator:
         appearance. If any two citations overlap, the shorter one will
         be deleted. 
         
-        Wherever the id_breaks pattern matches, it will interrupt chains
-        of idform citations. This is helpful 
+        Wherever the id_breaks pattern appears, it will interrupt chains
+        of id-form citations. This is helpful for handling unrecognized
+        citations that would otherwise cause CiteURL's notion of "id."
+        to get out of sync with what the text is talking about.
         """
         # first get a list of all long and shortform (not id.) citations
         longforms = []

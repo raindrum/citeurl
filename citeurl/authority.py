@@ -53,7 +53,7 @@ class Authority:
         if self.template.name_builder:
             return self.template.name_builder(self.tokens)
         
-        # otherwise use horrible regex magic to reverse-engineer a name
+        # otherwise use horrible regex magic to reverse-engineer a name.
         # first find a longform citation to use as a starting point
         base_cite = self.citations[0]
         while base_cite.parent:

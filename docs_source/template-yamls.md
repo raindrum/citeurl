@@ -106,8 +106,8 @@ Edits can be chained, and they will take effect in the order they are listed. Fo
     article:
       regex: [1-7]|[IV]{1,3}|One|Two|Three|Four|Five|Six|Seven
       edits:
-        number style: roman
-        case: lower
+        - number style: roman
+        - case: lower
 ```
 
 ### Severability
@@ -194,13 +194,13 @@ U.S. Caselaw:
   idform pattern: 'Id\. at {pincite}'
 ```
 
-This template will recognize longform citations like "413 F. Supp. 1281". Once it has found such a citation, it can detect immediate repeat citations like "*Id.* at \<any number\>", because of its `idform pattern`. The `shortform pattern`, meanwhile, will match any subsequent occurrence of "413 F. Supp. \<any number\>" anywhere in the text.
+This template will recognize longform citations like "413 F. Supp. 1281". Once it has found such a citation, it can detect immediate repeat citations like "*Id.* at <any number\>", because of its `idform pattern`. The `shortform pattern`, meanwhile, will match any subsequent occurrence of "413 F. Supp. <any number\>" anywhere in the text.
 
 ## String Builders
 
 The two kinds of string builder are a template's `name builder` and its `URL builder`, and they both work the same way. They use a citation's [tokens](#tokens) to fill placeholders in a pattern and output a uniform string representation of that citation. This is the source of each citation's `name` and `URL` properties.
 
-A string builder is made up of one or more `parts`, and optionally a list of `edits`. The first value,`parts`, is a list of strings that will be concatenated to make the result. Each part can contain placeholder values in curly braces. The placeholders will be replaced with the corresponding token values or [metadata](#metadata) values. If a part references a blank token, that part will be omitted from the overall string.
+A string builder is made up of one or more `parts`, and optionally a list of `edits`. The first value, `parts`, is a list of strings that will be concatenated to make the result. Each part can contain placeholder values in curly braces. The placeholders will be replaced with the corresponding token values or [metadata](#metadata) values. If a part references a blank token, that part will be omitted from the overall string.
 
 `edits` is a list of token edits that will be performed on the tokens and metadata just before they are inserted into the string. They work just like the [token edits](#edits) described earlier, except for two differences.
 
