@@ -40,7 +40,7 @@ assert art_I == also_art_I
 assert art_I_sec_3 in art_I
 ```
 
-Finally, if you don't want to bother with all the details, you can also just use [insert_links()](#insert_links) to turn all the citations in a text into hyperlinks:
+If you don't want to bother with all the details, you can also just use [insert_links()](#insert_links) to turn all the citations in a text into hyperlinks:
 
 ```python
 from citeurl import insert_links
@@ -87,3 +87,12 @@ assert output == '<a class="citation" href="https://www.law.cornell.edu/uscode/t
 
 ::: citeurl.list_cites
 
+## DEFAULT_CITATOR
+
+The [insert_links](#insert_links), [cite](#cite), and [list_cites](#list_cites) functions all make use of a built-in [citator](#Citator) that is not defined by the library user. By default, this is the citator that is returned when you run `Citator()`. However, it is possible to add additional templates to this default citator, by installing the wonderful [AppDirs](https://pypi.org/project/appdirs) library and placing the templates in one of the following directories:
+
+Linux: `~/.config/citeurl`
+
+Mac: `~/Library/Preferences/citeurl`
+
+Windows 7+: `C:\Users\<username>\AppData\Local\raindrum\citeurl`

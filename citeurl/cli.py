@@ -15,7 +15,7 @@ from pathlib import Path
 # from time import sleep
 
 # internal imports
-from .citator import Citator, insert_links
+from .citator import Citator, insert_links, _get_default_citator
 from .authority import list_authorities
 # from .web.server import serve, App
 # from .web.makejs import makejs
@@ -255,7 +255,7 @@ def main():
     if args.no_default_templates:
         citator = Citator(defaults=None)
     else:
-        citator = Citator()
+        citator = _get_default_citator()
     if 'template_file' in args:
         for path in args.template_file:
             citator.load_yaml(Path(path).read_text())

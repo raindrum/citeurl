@@ -388,7 +388,7 @@
 <p align="center"><a href="https://www.citation.link"><img src="https://raw.githubusercontent.com/raindrum/citeurl/main/citeurl/web/logo.svg" alt="CiteURL Logo" width=200px></a></p>
 <p align="center"><a href="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml"><img src="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml/badge.svg" alt="pytest" /></a> <a href="https://github.com/raindrum/citeurl/issues"><img src="https://img.shields.io/github/issues/raindrum/citeurl" alt="GitHub issues" /></a> <a href="https://github.com/raindrum/citeurl/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/raindrum/citeurl" alt="GitHub license" /></a> <a href="https://pypi.org/project/citeurl/"><img src="https://img.shields.io/pypi/v/citeurl" alt="PyPI" /></a></p>
 
-<p>CiteURL is an extensible tool that parses legal citations and makes links to websites where you can read the cited language for free. It can be used to quickly look up a reference, or to insert a hyperlink for every long- or short-form citation in a longer text.</p>
+<p>CiteURL is an extensible tool that parses legal citations and makes links to websites where you can read the relevant law for free. It can be used to quickly look up a reference, or to insert a hyperlink for every long- or short-form citation found in a longer text.</p>
 <p>If you want to quickly try it out, it's available as a web app at <a href="https://www.citation.link">citation.link</a>.</p>
 <hr />
 <p>Here's a sample of the links CiteURL can make:</p>
@@ -398,15 +398,17 @@
 <hr />
 <p>By default, CiteURL supports Bluebook-style citations to <a href="https://github.com/raindrum/citeurl/blob/main/citeurl/templates">over 130 sources</a> of U.S. law, including:</p>
 <ul>
-<li>most state and federal court cases</li>
+<li>most reported state and federal court opinions</li>
 <li>the U.S. Code and Code of Federal Regulations</li>
 <li>the U.S. Constitution and all state constitutions</li>
 <li>the codified laws for every state and territory except Arkansas, Georgia, Guam, and Puerto Rico.</li>
 </ul>
 <p>You can also add more sources of law by <a href="https://raindrum.github.io/citeurl/template-yamls/">writing your own citation templates</a> in YAML format.</p>
 <h2 id="installation">Installation</h2>
+<p>To install just enough to make CiteURL work, run this command:</p>
 <div class="highlight"><pre><span></span><code>python3 -m pip install citeurl
 </code></pre></div>
+<p>Substitute <code>citeurl[full]</code> for <code>citeurl</code> if you want to install the optional dependencies <code>flask</code> and <code>appdirs</code>, necessary for hosting citeurl as a website and reading custom templates from the user's home directory.</p>
 <h2 id="usage">Usage</h2>
 <p>CiteURL provides four command-line tools:</p>
 <ul>
@@ -498,7 +500,7 @@ citeurl host -t PATH_TO_YOUR_TEMPLATES.YAML -s
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": "11.0.3"}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": "11.0.4"}</script>
     
     
       <script src="assets/javascripts/bundle.a6c66575.min.js"></script>

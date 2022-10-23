@@ -3,7 +3,7 @@
 <p align="center"><a href="https://www.citation.link"><img src="https://raw.githubusercontent.com/raindrum/citeurl/main/citeurl/web/logo.svg" alt="CiteURL Logo" width=200px></a></p>
 <p align="center"><a href="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml"><img src="https://github.com/raindrum/citeurl/actions/workflows/pytest.yml/badge.svg" alt="pytest" /></a> <a href="https://github.com/raindrum/citeurl/issues"><img src="https://img.shields.io/github/issues/raindrum/citeurl" alt="GitHub issues" /></a> <a href="https://github.com/raindrum/citeurl/blob/main/LICENSE.md"><img src="https://img.shields.io/github/license/raindrum/citeurl" alt="GitHub license" /></a> <a href="https://pypi.org/project/citeurl/"><img src="https://img.shields.io/pypi/v/citeurl" alt="PyPI" /></a></p>
 
-CiteURL is an extensible tool that parses legal citations and makes links to websites where you can read the cited language for free. It can be used to quickly look up a reference, or to insert a hyperlink for every long- or short-form citation in a longer text.
+CiteURL is an extensible tool that parses legal citations and makes links to websites where you can read the relevant law for free. It can be used to quickly look up a reference, or to insert a hyperlink for every long- or short-form citation found in a longer text.
 
 If you want to quickly try it out, it's available as a web app at [citation.link](https://www.citation.link).
 
@@ -17,7 +17,7 @@ Here's a sample of the links CiteURL can make:
 
 By default, CiteURL supports Bluebook-style citations to [over 130 sources](https://github.com/raindrum/citeurl/blob/main/citeurl/templates) of U.S. law, including:
 
-- most state and federal court cases
+- most reported state and federal court opinions
 - the U.S. Code and Code of Federal Regulations
 - the U.S. Constitution and all state constitutions
 - the codified laws for every state and territory except Arkansas, Georgia, Guam, and Puerto Rico.
@@ -26,9 +26,15 @@ You can also add more sources of law by [writing your own citation templates](ht
 
 ## Installation
 
+To install just enough to make CiteURL work, run this command:
+
 ```bash
 python3 -m pip install citeurl
 ```
+
+Substitute `citeurl[full]` for `citeurl` if you want to install the optional dependencies `flask` and `appdirs`, necessary for hosting citeurl as a website and reading custom templates from the user's home directory.
+
+
 
 ## Usage
 

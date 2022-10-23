@@ -209,7 +209,12 @@ class TokenOperation:
         if form == 'digit':
             return str(value)
         forms = ['roman', 'cardinal', 'ordinal']
-        output = number_words[value - 1][forms.index(form)]
+        try:
+            output = number_words[value - 1][forms.index(form)]
+        except IndexError:
+            return NotImplementedError(
+                f"CiteURL cannot process a number as high as {value}"
+            )
         if form == 'roman':
             return output.upper()
         return output
@@ -413,7 +418,25 @@ number_words = [
     ('xxx', 'thirty', 'thirtieth'),
     'xxxi', 'xxxii', 'xxxiii', 'xxxiv', 'xxxv',
     'xxxvi', 'xxxvii', 'xxxviii', 'xxxix',
-    ('xL', 'forty', 'fortieth'),
+    ('xl', 'forty', 'fortieth'),
+    'xli', 'xlii', 'xliii', 'xliv', 'xlv',
+    'xlvi', 'xlvii', 'xlviii', 'xlix',
+    ('l', 'fifty', 'fiftieth'),
+    'li', 'lii', 'liii', 'liv', 'lv',
+    'lvi', 'lvii', 'lviii', 'lix',
+    ('lx', 'sixty', 'sixtieth'),
+    'lxi', 'lxii', 'lxiii', 'lxiv',
+    'lxv', 'lxvi', 'lxvii', 'lxviii', 'lxix',
+    ('lxx', 'seventy', 'seventieth'),
+    'lxxi', 'lxxii', 'lxxiii', 'lxxiv', 'lxxv',
+    'lxxvi', 'lxxvii', 'lxxviii', 'lxxix',
+    ('lxxx', 'eighty', 'eightieth'),
+    'lxxxi', 'lxxxii', 'lxxxiii', 'lxxxiv', 'lxxxv',
+    'lxxxvi', 'lxxxvii', 'lxxxviii', 'lxxxix',
+    ('xc', 'ninety', 'ninetieth'),
+    'xci', 'xcii', 'xciii', 'xciv', 'xcv',
+    'xcvi', 'xcvii', 'xcviii', 'xcix',
+    ('c', 'one-hundred', 'one-hundredth'),
 ]
 for i, entry in enumerate(number_words):
     if type(entry) is tuple:

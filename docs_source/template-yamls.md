@@ -144,9 +144,9 @@ Often a citation may be valid even if it does not contain all tokens that it pos
 
 ## Patterns
 
-Patterns are essentially the regular expressions that a template uses to detect overall citations. However, a pattern is not a pure regex---instead of including a regex for each token the pattern can recognize, the pattern simply contains a reference to the token itself. This is useful as a way to avoid redefining a token's regex when it is used in multiple patterns. As such.
+Patterns are essentially the regular expressions that a template uses to detect overall citations. However, a pattern is not a pure regex---instead of including a regex for each token the pattern can recognize, the pattern simply contains a reference to the token itself. This is useful as a way to avoid redefining a token's regex when it is used in multiple patterns.
 
-A template's `patterns` are responsible for recognizing one or more formats of typical long-form citations to the given body of law. In addition to these, a template can also have `shortform patterns` and `idform patterns`, which are triggered once a longform citation has already been recognized. When this occurs, CiteURL looks for "idform" citations until it encounters a different intervening citation, and it looks for shortforms anywhere until the end of the document. In addition, a template can have `broad patterns`, which are exactly like longform patterns except that they are only used in search engine-like contexts, where user convenience is more important than avoiding false positives.
+A template's `patterns` are responsible for recognizing one or more formats of typical long-form citations to the given body of law. In addition to these, a template can also have `shortform patterns` and `idform patterns`, which go into effect after an ordinary `pattern` has been matched. When this happens, CiteURL looks for "idform" citations until it encounters a different intervening citation, and it looks for shortforms anywhere until the end of the document. In addition, a template can have `broad patterns`, which are exactly like longform patterns except that they are only used in search engine-like contexts, where user convenience is more important than avoiding false positives.
 
 ### Pattern Format
 
@@ -228,9 +228,9 @@ U.S. Code:
         sub: ['[()]', '']
 ```
 
-If this template is given the citation, "42 usc 1988", the `name builder` will use the title and section numbers to write "42 U.S.C. § 1983". The '{subsection}' part is omitted because the citation has no subsection. Likewise, the `URL builder` will make [this URL](https://www.law.cornell.edu/uscode/text/42/1988), ignoring the blank token and the edits that rely on it.
+If this template is given the citation, "42 usc 1988", the `name builder` will use the title and section numbers to write "42 U.S.C. § 1988". The '{subsection}' part is omitted because the citation has no subsection. Likewise, the `URL builder` will make [this URL](https://www.law.cornell.edu/uscode/text/42/1988), ignoring the blank token and the edits that rely on it.
 
-Given the citation "29 USC § 158(b)(4)", however, the `URL builder` will take the subsection and subject it to two edits, first to change it from '(b)(4)' to '(b_4)', and then to change that to 'b_4'. Having done that, it can fill in the '#{subsection}' part, and create [this URL](https://www.law.cornell.edu/uscode/text/29/158#b_4).
+Given the citation "29 USC § 158(b)(4)", however, the `URL builder` will take the subsection and subject it to two `edits`, first to change it from '(b)(4)' to '(b_4)', and then to change that to 'b_4'. Having done that, it can fill in the '#{subsection}' part, and append it to the first part to make [this URL](https://www.law.cornell.edu/uscode/text/29/158#b_4).
 
 ## Miscellaneous
 
@@ -244,7 +244,7 @@ A template can have a `meta` attribute that contains a dictionary of values that
 
 A template can `inherit` any already-defined template, such that it will copy any characteristics of that template except for those that are expressly overwritten. This is useful when two templates are both very, very complicated, but they are largely similar in format.
 
-For instance, citations to the Code of Federal Regulations are very similar to the U.S. code, so most of this horrible mess only needs to be written once:
+For instance, citations to the Code of Federal Regulations are very similar to the U.S. code: They both fit the "title, section, optional subsections in parentheses" format, so most of this horrible mess only needs to be written once:
 
 ```yaml
 U.S. Code:

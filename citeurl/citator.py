@@ -5,6 +5,7 @@ from pathlib import Path
 
 # third-party imports
 from yaml import safe_load, safe_dump
+# from appdirs import AppDirs        conditionally loaded later on
 
 # internal imports
 from .tokens import TokenType, StringBuilder
@@ -351,7 +352,7 @@ class Citator:
                 built-in templates relevant to the given topic.
             yaml_paths: paths to custom YAML files to load templates
                 from. These are loaded after the defaults, so they can
-                inherit and/or overwrite them.
+                inherit and/or overwrite them. If 
             templates: optional list of Template objects to load
                 directly. These are loaded last, after the defaults and
                 any yaml_paths.
@@ -661,12 +662,26 @@ def _sort_and_remove_overlaps(citations: list[Citation]):
             i += 1
 
 def _get_default_citator():
-    "Instantiate a citator if needed, and reuse it otherwise."
+    """
+    Instantiate a citator if needed, and reuse it otherwise. If appdirs
+    is installed, load default templates from your config directory
+    """
     global _DEFAULT_CITATOR
-    if not _DEFAULT_CITATOR:
-        _DEFAULT_CITATOR = Citator()
+    if _DEFAULT_CITATOR:
+        return _DEFAULT_CITATOR
+    # load custom templates from config dir, if possible
+    try:
+        from appdirs import AppDirs
+        _appdirs = AppDirs('citeurl', 'raindrum')
+        _user_config_dir = Path(_appdirs.user_config_dir)
+        user_templates = set([
+            file for file in _user_config_dir.iterdir()
+            if file.suffix.lower() in ['.yaml', '.yml']
+        ])
+    except ImportError:
+        user_templates = {}
+    _DEFAULT_CITATOR = Citator(yaml_paths=user_templates)
     return _DEFAULT_CITATOR
-
 
 def _strip_inline_tags(text: str) -> tuple[str, list[tuple]]:
     inline_tag_regex = '|'.join([

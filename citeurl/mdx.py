@@ -14,6 +14,7 @@ from markdown.postprocessors import Postprocessor
 
 # internal imports
 from . import Citator, insert_links
+from .citator import _get_default_citator
 
 # store citator in a global variable so it isn't remade each document
 CITATOR: Citator = None
@@ -105,7 +106,7 @@ class CiteURLExtension(Extension):
         global CITATOR
         if not CITATOR:
             if self.config['use_defaults'][0]:
-                CITATOR = Citator()
+                CITATOR = _get_default_citator()
             else:
                 CITATOR = Citator(defaults=None)
         for path in self.config['custom_templates'][0] or []:
