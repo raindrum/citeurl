@@ -4,7 +4,7 @@ import re
 
 def process_pattern(
     pattern: str,
-    replacements: dict[str, str],
+    replacements: dict,
     token_prefix: str = None,
     add_word_breaks: bool = False,
 ):
