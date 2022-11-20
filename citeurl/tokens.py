@@ -59,7 +59,7 @@ class TokenOperation:
                     'digit', e.g. '27'
                     
                     Note that number formatting only works for positive
-                    whole numbers that do not exceed 100.
+                    whole numbers that do not exceed 40.
                 
             data: any data that a given action needs specified, as
                 described above
@@ -389,7 +389,9 @@ class StringBuilder:
 
 
 
-# This list is needed for the 'number_style' token operation
+# The number_words list is needed for the
+# 'number_style' token operation
+
 number_words = [
     ('i', 'one', 'first'),
     ('ii', 'two', 'second'),
