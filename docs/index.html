@@ -406,7 +406,7 @@
 <p>You can also add more sources of law by <a href="https://raindrum.github.io/citeurl/template-yamls/">writing your own citation templates</a> in YAML format.</p>
 <h2 id="installation">Installation</h2>
 <p>To install just enough to make CiteURL work, run this command:</p>
-<div class="highlight"><pre><span></span><code>python3 -m pip install citeurl
+<div class="highlight"><pre><span></span><code>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>citeurl
 </code></pre></div>
 <p>Substitute <code>citeurl[full]</code> for <code>citeurl</code> if you want to install the optional dependencies <code>flask</code> and <code>appdirs</code>, necessary for hosting citeurl as a website and reading custom templates from the user's home directory.</p>
 <h2 id="usage">Usage</h2>
@@ -420,16 +420,16 @@
 <p>Each command has its own command-line arguments you can view with the <code>-h</code> option. They all share the <code>-t</code> option, which allows you to load a list of custom <a href="https://raindrum.github.io/citeurl/template-yamls/">citation templates</a> in YAML form.</p>
 <p>Here are a few common use cases:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Process a court opinion and output a version where each citation is hyperlinked:</span>
-citeurl process -i INPUT_FILE.html -o OUTPUT_FILE.html
+citeurl<span class="w"> </span>process<span class="w"> </span>-i<span class="w"> </span>INPUT_FILE.html<span class="w"> </span>-o<span class="w"> </span>OUTPUT_FILE.html
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># Look up a single citation and open it directly in a browser</span>
-citeurl lookup <span class="s2">&quot;42 USC 1983&quot;</span> -b
+citeurl<span class="w"> </span>lookup<span class="w"> </span><span class="s2">&quot;42 USC 1983&quot;</span><span class="w"> </span>-b
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># List the top ten authorities cited in a text, from most citations to least:</span>
-cat INPUT_FILE.html <span class="p">|</span> citeurl process -a <span class="m">10</span>
+cat<span class="w"> </span>INPUT_FILE.html<span class="w"> </span><span class="p">|</span><span class="w"> </span>citeurl<span class="w"> </span>process<span class="w"> </span>-a<span class="w"> </span><span class="m">10</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># Host a lookup tool with custom templates, and serve it on the local network:</span>
-citeurl host -t PATH_TO_YOUR_TEMPLATES.YAML -s
+citeurl<span class="w"> </span>host<span class="w"> </span>-t<span class="w"> </span>PATH_TO_YOUR_TEMPLATES.YAML<span class="w"> </span>-s
 </code></pre></div>
 <p>CiteURL is also available in a few other forms besides the command-line tool: </p>
 <ul>
@@ -500,7 +500,7 @@ citeurl host -t PATH_TO_YOUR_TEMPLATES.YAML -s
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": "11.0.5"}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": "11.1.0"}</script>
     
     
       <script src="assets/javascripts/bundle.a6c66575.min.js"></script>

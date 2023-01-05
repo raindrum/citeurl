@@ -10,6 +10,7 @@ from yaml import safe_load, safe_dump
 # internal imports
 from .tokens import TokenType, StringBuilder
 from .citation import Citation
+from .authority import Authority, list_authorities
 from .regex_mods import process_pattern, match_regexes
 
 _DEFAULT_CITATOR = None
@@ -474,6 +475,36 @@ class Citator:
         citations += idforms
         _sort_and_remove_overlaps(citations)
         return citations
+    
+    def list_authorities(
+        self,
+        text: str,
+        ignored_tokens = ['subsection', 'clause', 'pincite', 'paragraph'],
+        known_authorities: list = [],
+        sort_by_cites: bool = True,
+        id_breaks: re.Pattern = None,
+    ) -> list[Authority]:
+        """
+        Find each distinct authority mentioned in the given text, and 
+        return Authority objects whose `citations` attribute lists the
+        references to each.
+        
+        Arguments:
+            text: The string to be scanned for citations
+            ignored_tokens: the names of tokens whose values are
+                irrelevant to whether the citation matches an authority,
+                because they  just designate portions within a single
+                authority
+            sort_by_cites: Whether to sort the resulting list of
+                authorities by the number of citations to each one
+        """
+        cites = self.list_cites(text, id_breaks=id_breaks)
+        return list_authorities(
+            cites,
+            ignored_tokens = ignored_tokens,
+            known_authorities = known_authorities,
+            sort_by_cites = sort_by_cites,
+        )        
     
     def insert_links(
         self,

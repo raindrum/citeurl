@@ -3,14 +3,19 @@ from typing import Union
 from functools import cached_property
 from copy import copy
 
-from .citator import list_cites
 from .citation import Citation
 
 class Authority:
     def __init__(
         self,
-        model_cite: Citation,
-        ignored_tokens = ['subsection', 'clause', 'pincite', 'paragraph'],
+        model_cite: Union[Citation, str],
+        ignored_tokens = [
+            'subsection',
+            'subdivision',
+            'clause',
+            'pincite',
+            'paragraph',
+        ],
     ):
         self.template = model_cite.template
         self.ignored_tokens = ignored_tokens
@@ -32,20 +37,23 @@ class Authority:
         )
     
     def __contains__(self, cite: Citation):
+        """
+        Whether the citation is a reference to this authority, i.e. 
+        """
         if cite.template.name != self.template.name:
             return False
         for key, value in self.tokens.items():
-            if value and cite.tokens.get(key) != value:
-                if (
-                    self.template.tokens[key].severable
-                    and cite.tokens[key]
-                    and cite.tokens[key].startswith(value)
-                ):
-                    continue
-                else:
-                    return False
-        else:
-            return True
+            counterpart_value = cite.tokens.get(key)
+            if counterpart_value == value:
+                continue
+            elif (
+                self.template.tokens[key].severable
+                and type(counterpart_value) is str
+                and counterpart_value.startswith(value)
+            ):
+                continue
+            return False
+        return True
     
     @cached_property
     def name(self):
@@ -103,24 +111,25 @@ class Authority:
         
 
 def list_authorities(
-    source: Union[list[Citation], str],
+    cites: list[Citation],
     ignored_tokens = ['subsection', 'clause', 'pincite', 'paragraph'],
+    known_authorities: list[Authority] = [],
+    sort_by_cites: bool = True,
 ) -> list[Authority]:
     """
     Get a list of all the authorities that appear in the given list of
     citations. An authority represents a distinct section of law or
     court case. Two citations to the same authority can have different
-    tokens, as long as those tokens are in the list of ignored_tokens
+    tokens, as long as those tokens are in the list of ignored_tokens.
     """
-    authorities = []
-    if type(source) is str:
-        source = list_cites(source)
-    for cite in source:
+    authorities = copy(known_authorities) or []
+    for cite in cites:
         for authority in authorities:
             if cite in authority:
                 authority.citations.append(cite)
                 break
         else:
             authorities.append(Authority(cite, ignored_tokens))
-    authorities.sort(key=lambda x: -len(x.citations))
+    if sort_by_cites:
+        authorities.sort(key=lambda x: -len(x.citations))
     return authorities

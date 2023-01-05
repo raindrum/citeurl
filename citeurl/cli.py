@@ -351,7 +351,7 @@ def main():
                 localhost=not args.serve,
                 port=args.port,
             )
-        except ModuleNotFoundError:
+        except FileNotFoundError: # ModuleNotFoundError:
             print(
                 'Server features depend on flask and gevent. You can '
                 + 'probably install them with the following command:'

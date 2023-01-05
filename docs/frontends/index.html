@@ -414,7 +414,7 @@
 <h2 id="javascript">JavaScript</h2>
 <p>Although CiteURL is primarily a Python program, you can also use it to generate a JavaScript implementation of its citation lookup functionality, including any extra citation templates you've written. This allows it to be hosted on a static website (like <a href="https://raindrum.github.io/lawsearch">mine</a>, for example), or distributed as an HTML file that people can save to their own computers and bookmark as a <a href="https://www.howtogeek.com/114176/HOW-TO-EASILY-CREATE-SEARCH-PLUGINS-ADD-ANY-SEARCH-ENGINE-TO-YOUR-BROWSER/">custom search engine</a>.</p>
 <p>To make a JavaScript implementation, first <a href="template-yamls">make a YAML file</a> with any custom citation templates you'd like to support. Next, open a command line and run the following command:</p>
-<div class="highlight"><pre><span></span><code>citeurl makejs -e -o output.html -t PATH_TO_YOUR_TEMPLATES.YAML
+<div class="highlight"><pre><span></span><code>citeurl<span class="w"> </span>makejs<span class="w"> </span>-e<span class="w"> </span>-o<span class="w"> </span>output.html<span class="w"> </span>-t<span class="w"> </span>PATH_TO_YOUR_TEMPLATES.YAML
 </code></pre></div>
 <p>Alternatively, to omit CiteURL's default templates, include the <code>-n</code> option in that command. For more info, run <code>citeurl makejs -h</code>.</p>
 <h2 id="markdown-extension">Markdown Extension</h2>
@@ -495,7 +495,7 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": "11.0.5"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": "11.1.0"}</script>
     
     
       <script src="../assets/javascripts/bundle.a6c66575.min.js"></script>
