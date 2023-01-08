@@ -77,13 +77,46 @@ Alabama Constitution: # model for art. X, sec. Y, subd. (Z) constitutions
       - token: article
         number style: roman
 
+Alabama Administrative Code:
+  meta:
+    name regex: (Ala(bama|\.)|AL) Admin(istrative|\.?) Code|AAC|A\.|A\.|C\.
+    code abbreviation: Ala. Admin. Code
+  tokens:
+    title:
+      regex: \d{1,3}
+    chapter:
+      regex: (\d{1,4}|X)[-‑–]\d{1,4}
+      edits:
+        - case: upper
+        - sub: ['[-‑–]', '-']
+    section:
+      regex: \d{1,4}
+    subsection: *subsec_token
+  patterns:
+    - ['{name regex} (r\.|', *section_sign, ')? ?{title}[-‑–]{chapter}[-‑–]?\.{section}', *subsec]
+    - ['{title} {name regex} ', *optional_section_sign, '{chapter}[-‑–]?\.{section}', *subsec]
+    - [&title_comma_chapter_comma_section_comma_subsection '[Tt]it(le|\.) {title},? [Cc]h(apter|\.) {chapter},? ([Ss]ec(tions?|t?s?\.?)|(&sect;|&#167|§){1,2}) ?{section}((,? [Ss]ub(section|sec\.?|division|div\.|d\.|\.) )?{subsection})?', ' of the {name regex}']
+    - ['{name regex},? ', *title_comma_chapter_comma_section_comma_subsection, '(?! of )']
+    - [*section_sign, '{section}', *subsec, ' of [Cc]h(apter|\.) {chapter} of [Tt]it(le|\.) {title} of the {name regex}']
+    - ['[Ss]ub(section|sec\.?|division|div\.|d\.|\.) {subsection} of ?', *section_sign, '{section} of [Cc]h(apter|\.) {chapter} of [Tt]it(le|\.) {title} of the {name regex}']
+  idform patterns:
+    - [*id_at, *optional_section_sign, '{section}', *subsec]
+    - *id_at_subsec
+  name builder:
+    parts:
+      - '{code abbreviation} r. {title}-{chapter}-.{section}'
+      - '{subsection}'
+  URL builder:
+    parts: ['https://www.law.cornell.edu/regulations/alabama/Ala-Admin-Code-r-{title}-{chapter}-.{section}']   
+
+
 Alaska Statutes: # model for title.chapter.section citations (dots, not dashes)
   meta:
     name regex: Alaska|AK
     abbreviation: Alaska Stat.
   tokens:
     title: &digits_letter
-      regex: '\d+[A-Zz-z]?'
+      regex: '\d+[A-Za-z]?'
       edits: [case: upper]
     chapter: *digits_letter
     section: *digits_letter
@@ -106,6 +139,37 @@ Alaska Constitution:
     name regex: Alaska|AK
     abbreviation: Alaska
     ballotpedia slug: Alaska
+
+
+Alaska Administrative Code:
+  inherit: Alabama Administrative Code
+  meta:
+    name regex: (Alaska|AK) Admin(istrative|\.?) Code|AAC|A\.|A\.|C\.
+    code abbreviation: AAC
+  tokens:
+    title:
+      regex: \d{1,3}
+    chapter:
+      regex: \d{1,3}[A-Z]?
+      edits:
+        - case: upper
+        - lpad: 2
+    section:
+      regex: \d{1,4}
+    subsection: *subsec_token
+  patterns:
+    - ['{title} {name regex} ', *optional_section_sign, '{chapter}\.{section}', *subsec]
+    - [*title_comma_chapter_comma_section_comma_subsection, ' of the {name regex}']
+    - ['{name regex},? ', *title_comma_chapter_comma_section_comma_subsection, '(?! of )']
+    - [*section_sign, '{section}', *subsec, ' of [Cc]h(apter|\.) {chapter} of [Tt]it(le|\.) {title} of the {name regex}']
+    - ['[Ss]ub(section|sec\.?|division|div\.|d\.|\.) {subsection} of ?', *section_sign, '{section} of [Cc]h(apter|\.) {chapter} of [Tt]it(le|\.) {title} of the {name regex}']
+  name builder:
+    parts:
+      - '{title} {code abbreviation} {chapter}.{section}'
+      - '{subsection}'
+  URL builder:
+    parts: ['https://www.law.cornell.edu/regulations/alaska/{title}-AAC-{chapter}.{section}']
+      
 
 
 American Samoa Code: # model for title.section citations
@@ -136,29 +200,6 @@ American Samoa Constitution:
     name regex: Am(erican|\.) ?Samoa
     abbreviation: Am. Samoa
     ballotpedia slug: American_Samoa
-
-
-Arkansas Code:
-  inherit: Code of Alabama, 1975
-  meta:
-    name regex: Ark(ansas|\.)|AR
-    abbreviation: Ark. Code
-  URL builder: no
-
-
-Arkansas Constitution:    # model for constitutions with article numbers as digits in URL
-  inherit: Alabama Constitution
-  meta:
-    name regex: Ark(ansas|\.)|AR
-    abbreviation: Ark.
-    ballotpedia slug: Arkansas
-  URL builder:
-    parts:
-      - https://ballotpedia.org/Article_{article},_{ballotpedia slug}_Constitution
-      - '#Section_{section}'
-    edits:
-      - token: article
-        number style: digit
 
 
 Arizona Revised Statutes: # model for title-section citations
@@ -197,6 +238,79 @@ Arizona Constitution:
     name regex: Ariz(ona|\.)|AZ
     abbreviation: Ariz.
     ballotpedia slug: Arizona
+
+
+Arizona Administrative Code:
+  inherit: Alaska Administrative Code
+  meta:
+    name regex: (Ariz(ona|\.?)|AZ) Admin(istrative|\.?) Code
+    code abbreviation: Ariz. Admin. Code
+  tokens:
+    title:
+      regex: \d{1,3}
+    chapter:
+      regex: \d{1,3}[A-Z]?
+      edits:
+        - case: upper
+    section:
+      regex: \d{1,4}
+    subsection: *subsec_token
+  patterns:
+    - ['{name regex} ', *optional_section_sign, 'R{title}[-‑–]{chapter}[-‑–]{section}', *subsec]
+    - [*title_comma_chapter_comma_section_comma_subsection, ' of the {name regex}']
+    - ['{name regex},? ', *title_comma_chapter_comma_section_comma_subsection, '(?! of )']
+    - [*section_sign, '{section}', *subsec, ' of [Cc]h(apter|\.) {chapter} of [Tt]it(le|\.) {title} of the {name regex}']
+    - ['[Ss]ub(section|sec\.?|division|div\.|d\.|\.) {subsection} of ?', *section_sign, '{section} of [Cc]h(apter|\.) {chapter} of [Tt]it(le|\.) {title} of the {name regex}']
+  name builder:
+    parts:
+      - '{code abbreviation} § R{title}-{chapter}-{section}'
+      - '{subsection}'
+  URL builder:
+    parts: ['https://www.law.cornell.edu/regulations/arizona/Ariz-Admin-Code-SS-R{title}-{chapter}-{section}']
+
+
+Arkansas Code:
+  inherit: Code of Alabama, 1975
+  meta:
+    name regex: Ark(ansas|\.)|AR
+    abbreviation: Ark. Code
+  URL builder: no
+
+
+Arkansas Constitution:    # model for constitutions with article numbers as digits in URL
+  inherit: Alabama Constitution
+  meta:
+    name regex: Ark(ansas|\.)|AR
+    abbreviation: Ark.
+    ballotpedia slug: Arkansas
+  URL builder:
+    parts:
+      - https://ballotpedia.org/Article_{article},_{ballotpedia slug}_Constitution
+      - '#Section_{section}'
+    edits:
+      - token: article
+        number style: digit
+
+
+Arkansas Administrative Code:
+  meta:
+    name regex: (Arkansas|Ark\.?|AK) (Admin(istrative|\.?) Code|Code R\.)
+  tokens:
+    agency:
+      regex: '\d{3}'
+    division:
+      regex: '\d{2}'
+    part:
+      regex: '\d{2}'
+    rule:
+      regex: '\d{3}'
+  patterns:
+    - ['{name regex} (Rule )?{agency}\.{division}\.{part}\.{rule}']
+    - ['{agency}\.{division}\.{part} {name regex} ', *optional_section_sign, '{rule}']
+  name builder:
+    parts: ['{agency}.{division}.{part} Ark. Code R. § {rule}']
+  URL builder:
+    parts: ['https://www.law.cornell.edu/regulations/arkansas/{agency}-{division}-{part}-Ark-Code-R-SS-{rule}']
 
 
 California Codes:
@@ -279,16 +393,113 @@ California Constitution:
 
 
 California Code of Regulations:
-  meta: {name regex: CA|Cal(ifornia|\.) Code of Reg(ulations|s\.)|CA ADR}
+  meta:
+    name regex: CA|Cal(ifornia|\.) Code (of )?Reg(ulations|s\.)|CCR
+    abbreviation: Cal. Code Regs.
   tokens:
-    title: {regex: \d+}
+    title:
+      regex: (?!24)\d{1,2} # all titles except 24 (building standards)
     section: *digits_dots_letter
     subsection: *subsec_token
-  pattern: ['{title} {name regex} ', *optional_section_sign, '{section}', *subsec]
+  patterns:
+    - ['{title} {name regex} ', *optional_section_sign, '{section}', *subsec]
+    - ['{name regex},? [Tt]it(le|\.) {title},? ', *section_sign, '{section}', *subsec]
+    - ['[Tt]itle {title},? ', *section_sign, '{section}', *subsec, ',? of the {name regex}']
+  idform patterns:
+    - [*id_at, *optional_section_sign, '{section}', *subsec]
+    - *id_at_subsec
   URL builder:
-    parts: ['https://govt.westlaw.com/calregs/Search/Results?transitionType=Default&contextData=(sc.Default)&t_T1={title}&t_T2={section}&t_S1=CA ADC s&Page=1&query=advanced: CI("{title} CA ADC s {section}")&Template=Find']
+    parts: ['https://www.law.cornell.edu/regulations/california', '/{title}-CCR-{section}']
   name builder:
-    parts: ['{title} CA ADR § {section}', '{subsection}']
+    parts: ['{abbreviation} Tit. {title}, § {section}', '{subsection}']
+
+
+California Building Code:
+  meta:
+    code regex: CA|Cal(ifornia|\.?) B(uilding|ldn?g\.) Code
+    abbreviation: Cal. Building Code
+    edition: CABC2022P1 # needs yearly updates
+    title: 24
+    part: 2
+  tokens:
+    section:
+      regex: \d{1,5}[A-Z]?((-|\.)\d{1,4}|\d{1,5})?
+      edits:
+        - case: upper
+  patterns:
+    - ['(24 (CA|Cal(ifornia|\.?) Code (of )?Reg(ulations|s\.)|CCR)|{code regex}),? ', *optional_section_sign, '{section}']
+    - ['(CA|Cal(ifornia|\.?) Code (of )?Reg(ulations|s\.)|CCR),? [Tt]it(le|\.) {title},? [Pp](art|t\.?) ?{part},? ', *optional_section_sign, '{section}']
+    - [*section_sign, '{section}', 'of the {code regex}']
+    - '[Tt]itle 24,? [Pp](art|t\.?) {part},? ([Ss]ec(tions?|t?s?\.?)|(&sect;|&#167|§){1,2}) ?{section},? of the (CA|Cal(ifornia|\.?) Code (of )?Reg(ulations|s\.)|CCR)'
+  idform patterns:
+    - [*id_at, *optional_section_sign, '{section}']
+  name builder:
+    parts: ['{abbreviation} § {section}']
+  URL builder:
+    parts:
+      - 'https://codes.iccsafe.org/content/{edition}/chapter-{chapter}-{chapter slug}#{edition}_Ch{chapter lpad}_Sec{section}'
+    edits:
+      - token: section
+        output: chapter
+        sub: ['(\d\d?)\d\d([A-Z])?.*$', '\1\2']
+      - token: chapter
+        output: chapter slug
+        lookup:
+          '1': scope-and-administration
+          '2': definitions
+          '3': occupancy-classification-and-use
+          '4': special-detailed-requirements-based-on-occupancy-and-use
+          '5': general-building-heights-and-areas
+          '6': types-of-construction
+          '7': fire-and-smoke-protection-features
+          '7A': sfm-materials-and-construction-methods-for-exterior-wildfire-exposure
+          '8': interior-finishes
+          '9': fire-protection-and-life-safety-systems
+          '10': means-of-egress
+          '11': reserved
+          '11A': housing-accessibility
+          '11B': accessibility-to-public-buildings-public-accommodations-commercial-buildings-and-public-housing
+          '12': interior-environment
+          '13': energy-efficiency
+          '14': exterior-walls-
+          '15': roof-assemblies-and-rooftop-structures
+          '16': structural-design
+          '16A': structural-design
+          '17': special-inspections-and-tests
+          '17A': special-inspections-and-tests
+          '18': soils-and-foundations
+          '18A': soils-and-foundations
+          '19': concrete
+          '19A': concrete
+          '20': aluminum
+          '21': masonry
+          '21A': masonry
+          '22': steel
+          '22A': steel
+          '23': wood
+          '24': glass-and-glazing
+          '25': gypsum-board-gypsum-panel-products-and-plaster
+          '26': plastic
+          '27': electrical
+          '28': mechanical-systems
+          '29': plumbing-systems
+          '30': elevators-and-conveying-systems
+          '31': special-construction
+          '31A': systems-for-window-cleaning-or-exterior-building-maintenance
+          '31B': dph-public-pools
+          '31C': dph-radiation
+          '31D': dph-food-establishments
+          '31E': reserved
+          '31F': slc-marine-oil-terminals
+          '32': encroachments-into-the-public-right-of-way
+          '33': safeguards-during-construction
+          '34': reserved
+          '35': referenced-standards
+      - token: chapter
+        case: lower
+      - token: chapter
+        output: chapter lpad
+        lpad: 2
 
 
 Colorado Revised Statutes: # model for title-article-section citations needing yearly updates
@@ -460,6 +671,28 @@ Florida Constitution:
         lpad: 2
       - token: article
         number style: digit
+
+
+Florida Administrative Code:
+  meta:
+    name regex: (Fl(orida|a\.?)|FL) Admin(istrative|\.?) Code( Ann(otated|\.))?
+    abbreviation: Fla. Admin. Code Ann.
+  tokens:
+    division:
+      regex: \d\d?[A-Z]?\d{0,3}
+      edits:
+        - case: upper
+    chapter:
+      regex: \d{1,4}
+    section:
+      regex: \d{3,5}
+    subsection: *subsec_token
+  pattern: ['{name regex} (R(ule|\.)|', *section_sign, ') ?{division}[-‑–]{chapter}\.{section}', *subsec]
+  idform patterns: *id_sec_subsec
+  URL builder:
+    parts: ['https://www.law.cornell.edu/regulations/florida/Fla-Admin-Code-Ann-R-{division}-{chapter}.{section}']
+  name builder:
+    parts: ['{abbeviation} R. {division}-{chapter}.{section}', '{subsection}']
 
 
 Georgia Code:
@@ -1390,6 +1623,29 @@ New York Constitution:
     ballotpedia slug: New_York
 
 
+New York Codes, Rules, and Regulations:
+  meta:
+    name regex: (New York|N\.Y\.|NY)( Comp(iled|\.?))? Codes,? R(ules|\.) (and|&) Reg(ulations|s?\.?)|NYCRR
+    abbreviation: N.Y. Comp. Codes R. & Regs.
+  tokens:
+    title:
+      regex: \d{1,3}
+    section:
+      regex: \d{1,4}(\.?\d+)?
+    subsection: *subsec_token
+  patterns:
+    - ['{title} {name regex} ', *optional_section_sign, '{section}', *subsec]
+    - ['{name regex},? [Tt]it(le|\.) {title},? ', *section_sign, '{section}', *subsec]
+    - ['[Tt]itle {title},? ', *section_sign, '{section}', *subsec, ',? of the {name regex}']
+    - [*section_sign, '{section}', *subsec, ' of [Tt]it(le|\.) {title} of the {name regex}']
+    - ['[Ss]ub(section|sec\.?|division|div\.|d\.|\.) {subsection} of ?', *section_sign, '{section} of [Tt]it(le|\.) {title} of the {name regex}']
+  idform patterns: *id_sec_subsec
+  name builder:
+    parts: ['{abbreviation} Tit. {title} § {section}', '{subsection}']
+  URL builder:
+    parts: ['https://www.law.cornell.edu/regulations/new-york/{title}-NYCRR-{section}']
+
+
 North Carolina General Statutes:
   inherit: Hawaii Revised Statutes
   meta:
@@ -1665,6 +1921,22 @@ Texas Constitution:
       - https://statutes.capitol.texas.gov/Docs/CN/htm/CN.{article}
       - /CN.{article}.{section}
       - .htm
+
+
+Texas Administrative Code:
+  inherit: New York Codes, Rules, and Regulations
+  meta:
+    name regex: (Tex(as|\.?)|AZ) Admin(istrative|\.?) Code
+    abbreviation: Tex. Admin. Code
+  name builder:
+    parts:
+      - '{title} {abbreviation} § {section}'
+      - '{subsection}'
+  URL builder:
+    parts: ['https://www.law.cornell.edu/regulations/texas/{title}-Tex-Admin-Code-SS-{section}']
+    edits:
+      - token: section
+        sub: ['\.', '-']
 
 
 Utah Code:
