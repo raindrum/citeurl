@@ -199,11 +199,13 @@ class Template:
         if inherit:
             values.pop('inherit')
             try:
-                values['inherit_template'] = inheritables.get(inherit)
+                values['inherit_template'] = inheritables[inherit]
             except KeyError:
                 raise KeyError(
-                    f'Template "{name}" tried to inherit unknown '
-                    + f'template "{inherit}"'
+                    f'The {name} template tried to reference template '
+                    f'"{inherit}" but could not find it. Note that '
+                    f'templates can only reference others that are '
+                    f'defined higher up in the list, not lower.'
                 )
         
         for key in ['name_builder', 'URL_builder']:

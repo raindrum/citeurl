@@ -232,12 +232,19 @@ Arizona Revised Statutes: # model for title-section citations
     parts: ['{abbreviation} § {title}-{section}', '{subsection}']
 
 
-Arizona Constitution:
-  inherit: Arkansas Constitution
+Arizona Constitution:    # model for constitutions with article numbers as digits in URL
+  inherit: Alabama Constitution
   meta:
     name regex: Ariz(ona|\.)|AZ
     abbreviation: Ariz.
     ballotpedia slug: Arizona
+  URL builder:
+    parts:
+      - https://ballotpedia.org/Article_{article},_{ballotpedia slug}_Constitution
+      - '#Section_{section}'
+    edits:
+      - token: article
+        number style: digit
 
 
 Arizona Administrative Code:
@@ -277,19 +284,12 @@ Arkansas Code:
   URL builder: no
 
 
-Arkansas Constitution:    # model for constitutions with article numbers as digits in URL
-  inherit: Alabama Constitution
+Arkansas Constitution:
+  inherit: Arizona Constitution
   meta:
     name regex: Ark(ansas|\.)|AR
     abbreviation: Ark.
     ballotpedia slug: Arkansas
-  URL builder:
-    parts:
-      - https://ballotpedia.org/Article_{article},_{ballotpedia slug}_Constitution
-      - '#Section_{section}'
-    edits:
-      - token: article
-        number style: digit
 
 
 Arkansas Administrative Code:
@@ -429,7 +429,7 @@ California Building Code:
   patterns:
     - ['(24 (CA|Cal(ifornia|\.?) Code (of )?Reg(ulations|s\.)|CCR)|{code regex}),? ', *optional_section_sign, '{section}']
     - ['(CA|Cal(ifornia|\.?) Code (of )?Reg(ulations|s\.)|CCR),? [Tt]it(le|\.) {title},? [Pp](art|t\.?) ?{part},? ', *optional_section_sign, '{section}']
-    - [*section_sign, '{section}', 'of the {code regex}']
+    - [*section_sign, '{section}', ' of the {code regex}']
     - '[Tt]itle 24,? [Pp](art|t\.?) {part},? ([Ss]ec(tions?|t?s?\.?)|(&sect;|&#167|§){1,2}) ?{section},? of the (CA|Cal(ifornia|\.?) Code (of )?Reg(ulations|s\.)|CCR)'
   idform patterns:
     - [*id_at, *optional_section_sign, '{section}']
@@ -825,7 +825,7 @@ Indiana Code:     # model for title-article-chapter-section citations
 
 
 Indiana Constitution:
-  inherit: Arkansas Constitution
+  inherit: Arizona Constitution
   meta:
     name regex: Ind(iana|\.)|IN
     abbreviation: Ind.
@@ -1339,7 +1339,7 @@ Nevada Revised Statutes:
 
 
 Nevada Constitution:
-  inherit: Arkansas Constitution
+  inherit: Arizona Constitution
   meta:
     name regex: Nev(ada|\.)?|NV
     abbreviation: Nev.
@@ -2122,7 +2122,7 @@ Wyoming Statutes:
 
 
 Wyoming Constitution:
-  inherit: Arkansas Constitution
+  inherit: Arizona Constitution
   meta:
     name regex: Wyo(ming|\.)?|WY
     abbreviation: Wyo.
