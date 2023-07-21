@@ -342,6 +342,24 @@ TESTS = {
         "shortform": "Art. 4, § 2",
         "shortform_URL": "https://ballotpedia.org/Article_4,_Indiana_Constitution#Section_2"
     },
+    "Alabama Administrative Code": {
+        "cite": "Ala. Admin. Code r. 130-X-1-.06 - Freedom Of Information",
+        "URL": "https://www.law.cornell.edu/regulations/alabama/Ala-Admin-Code-r-130-X-1-.06",
+        "shortform": None,
+        "shortform_URL": None
+    },
+    "Alaska Administrative Code": {
+        "cite": "5 AAC 93.324",
+        "URL": "https://www.law.cornell.edu/regulations/alaska/5-AAC-93.324",
+        "shortform": None,
+        "shortform_URL": None
+    },
+    "Arkansas Administrative Code": {
+        "cite": "005.19.02 Ark. Code R. § 004 - ADE 139",
+        "URL": "https://www.law.cornell.edu/regulations/arkansas/005-19-02-Ark-Code-R-SS-004",
+        "shortform": None,
+        "shortform_URL": None
+    },
     "Arizona Administrative Code": {
         "cite": "Arizona Admin. Code R12-1-424",
         "URL": "https://www.law.cornell.edu/regulations/arizona/Ariz-Admin-Code-SS-R12-1-424",
