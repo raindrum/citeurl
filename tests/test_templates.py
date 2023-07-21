@@ -366,6 +366,18 @@ TESTS = {
         "shortform": None,
         "shortform_URL": None
     },
+    "California Code of Regulations": {
+        "cite": "CCR Tit. 4, § 1687",
+        "URL": "https://www.law.cornell.edu/regulations/california/4-CCR-1687",
+        "shortform": None,
+        "shortform_URL": None
+    },
+    "Florida Administrative Code": {
+        "cite": "FL Admin. Code Rule 12B-6.0021",
+        "URL": "https://www.law.cornell.edu/regulations/florida/Fla-Admin-Code-Ann-R-12B-6.0021",
+        "shortform": None,
+        "shortform_URL": None
+    },
     "Texas Administrative Code": {
         "cite": "22 Tex. Admin. Code § 72.10",
         "URL": "https://www.law.cornell.edu/regulations/texas/22-Tex-Admin-Code-SS-72-10",
