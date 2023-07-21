@@ -341,7 +341,19 @@ TESTS = {
         "URL": "https://ballotpedia.org/Article_13,_Indiana_Constitution#Section_1",
         "shortform": "Art. 4, § 2",
         "shortform_URL": "https://ballotpedia.org/Article_4,_Indiana_Constitution#Section_2"
-    }
+    },
+    "Arizona Administrative Code": {
+        "cite": "Arizona Admin. Code R12-1-424",
+        "URL": "https://www.law.cornell.edu/regulations/arizona/Ariz-Admin-Code-SS-R12-1-424",
+        "shortform": None,
+        "shortform_URL": None
+    },
+    "Texas Administrative Code": {
+        "cite": "22 Tex. Admin. Code § 72.10",
+        "URL": "https://www.law.cornell.edu/regulations/texas/22-Tex-Admin-Code-SS-72-10",
+        "shortform": None,
+        "shortform_URL": None
+    },
 }
 
 def test_url_generation():
