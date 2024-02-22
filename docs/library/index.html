@@ -1552,8 +1552,7 @@ will try to match against</p>
 <span class="normal">635</span>
 <span class="normal">636</span>
 <span class="normal">637</span>
-<span class="normal">638</span>
-<span class="normal">639</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Citator</span><span class="p">:</span>
+<span class="normal">638</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Citator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A collection of citation templates, and the tools to match text</span>
 <span class="sd">    against them en masse.</span>
@@ -1682,6 +1681,7 @@ will try to match against</p>
                 <span class="n">id_breaks</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
             <span class="p">]</span>
         <span class="n">breakpoints</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">breakpoints</span><span class="p">))</span>
+        <span class="n">breakpoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
 
         <span class="c1"># for each cite, look for idform citations until the next cite</span>
         <span class="c1"># or until the next breakpoint</span>
@@ -1783,7 +1783,7 @@ will try to match against</p>
         <span class="c1"># pull out all the inline HTML tags, e.g. &lt;b&gt;,</span>
         <span class="c1"># so they don&#39;t interfere with citation matching</span>
         <span class="k">if</span> <span class="n">ignore_markup</span><span class="p">:</span>
-            <span class="n">text</span><span class="p">,</span> <span class="n">stored_tags</span> <span class="o">=</span> <span class="n">_strip_inline_tags</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">text</span><span class="p">,</span> <span class="n">stored_tags</span> <span class="o">=</span> <span class="n">_strip_inline_tags</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">markup_format</span><span class="p">)</span>
 
         <span class="n">cite_offsets</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">running_offset</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1843,12 +1843,10 @@ will try to match against</p>
                             <span class="n">running_offset</span> <span class="o">+=</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                             <span class="n">cite_offsets</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
-                            <span class="c1"># reduce offset by length of a closing tag,</span>
-                            <span class="c1"># either &#39;&lt;/a&gt;&#39; for html or &#39;)&#39; for markdown</span>
                             <span class="k">if</span> <span class="n">markup_format</span> <span class="o">==</span> <span class="s1">&#39;html&#39;</span><span class="p">:</span>
                                 <span class="n">temp_offset</span> <span class="o">=</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">4</span>
                             <span class="k">elif</span> <span class="n">markup_format</span> <span class="o">==</span> <span class="s1">&#39;markdown&#39;</span><span class="p">:</span>
-                                <span class="n">temp_offset</span> <span class="o">=</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+                                <span class="n">temp_offset</span> <span class="o">=</span> <span class="mi">1</span>
                             <span class="k">break</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">break</span>
@@ -2333,8 +2331,7 @@ for inserted links.</p>
 
           <details class="quote">
             <summary>Source code in <code>citeurl/citator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">509</span>
-<span class="normal">510</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">510</span>
 <span class="normal">511</span>
 <span class="normal">512</span>
 <span class="normal">513</span>
@@ -2450,8 +2447,7 @@ for inserted links.</p>
 <span class="normal">623</span>
 <span class="normal">624</span>
 <span class="normal">625</span>
-<span class="normal">626</span>
-<span class="normal">627</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">insert_links</span><span class="p">(</span>
+<span class="normal">626</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">insert_links</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">attrs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;citation&#39;</span><span class="p">},</span>
@@ -2494,7 +2490,7 @@ for inserted links.</p>
     <span class="c1"># pull out all the inline HTML tags, e.g. &lt;b&gt;,</span>
     <span class="c1"># so they don&#39;t interfere with citation matching</span>
     <span class="k">if</span> <span class="n">ignore_markup</span><span class="p">:</span>
-        <span class="n">text</span><span class="p">,</span> <span class="n">stored_tags</span> <span class="o">=</span> <span class="n">_strip_inline_tags</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">text</span><span class="p">,</span> <span class="n">stored_tags</span> <span class="o">=</span> <span class="n">_strip_inline_tags</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">markup_format</span><span class="p">)</span>
 
     <span class="n">cite_offsets</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">running_offset</span> <span class="o">=</span> <span class="mi">0</span>
@@ -2554,12 +2550,10 @@ for inserted links.</p>
                         <span class="n">running_offset</span> <span class="o">+=</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                         <span class="n">cite_offsets</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="c1"># reduce offset by length of a closing tag,</span>
-                        <span class="c1"># either &#39;&lt;/a&gt;&#39; for html or &#39;)&#39; for markdown</span>
                         <span class="k">if</span> <span class="n">markup_format</span> <span class="o">==</span> <span class="s1">&#39;html&#39;</span><span class="p">:</span>
                             <span class="n">temp_offset</span> <span class="o">=</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">4</span>
                         <span class="k">elif</span> <span class="n">markup_format</span> <span class="o">==</span> <span class="s1">&#39;markdown&#39;</span><span class="p">:</span>
-                            <span class="n">temp_offset</span> <span class="o">=</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+                            <span class="n">temp_offset</span> <span class="o">=</span> <span class="mi">1</span>
                         <span class="k">break</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">break</span>
@@ -2656,8 +2650,7 @@ authorities by the number of citations to each one</p>
 
           <details class="quote">
             <summary>Source code in <code>citeurl/citator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">479</span>
-<span class="normal">480</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">480</span>
 <span class="normal">481</span>
 <span class="normal">482</span>
 <span class="normal">483</span>
@@ -2684,7 +2677,8 @@ authorities by the number of citations to each one</p>
 <span class="normal">504</span>
 <span class="normal">505</span>
 <span class="normal">506</span>
-<span class="normal">507</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list_authorities</span><span class="p">(</span>
+<span class="normal">507</span>
+<span class="normal">508</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list_authorities</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">ignored_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;subsection&#39;</span><span class="p">,</span> <span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="s1">&#39;pincite&#39;</span><span class="p">,</span> <span class="s1">&#39;paragraph&#39;</span><span class="p">],</span>
@@ -2807,7 +2801,8 @@ to get out of sync with what the text is talking about.</p>
 <span class="normal">474</span>
 <span class="normal">475</span>
 <span class="normal">476</span>
-<span class="normal">477</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list_cites</span><span class="p">(</span>
+<span class="normal">477</span>
+<span class="normal">478</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list_cites</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">id_breaks</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2845,6 +2840,7 @@ to get out of sync with what the text is talking about.</p>
             <span class="n">id_breaks</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
         <span class="p">]</span>
     <span class="n">breakpoints</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">breakpoints</span><span class="p">))</span>
+    <span class="n">breakpoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
 
     <span class="c1"># for each cite, look for idform citations until the next cite</span>
     <span class="c1"># or until the next breakpoint</span>
@@ -6859,7 +6855,8 @@ info, see Citator.insert_links().</p>
 
           <details class="quote">
             <summary>Source code in <code>citeurl/citator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">665</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">664</span>
+<span class="normal">665</span>
 <span class="normal">666</span>
 <span class="normal">667</span>
 <span class="normal">668</span>
@@ -6882,8 +6879,7 @@ info, see Citator.insert_links().</p>
 <span class="normal">685</span>
 <span class="normal">686</span>
 <span class="normal">687</span>
-<span class="normal">688</span>
-<span class="normal">689</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">insert_links</span><span class="p">(</span>
+<span class="normal">688</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">insert_links</span><span class="p">(</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">attrs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;citation&#39;</span><span class="p">},</span>
     <span class="n">add_title</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -6929,7 +6925,8 @@ Citator.cite() for more info.</p>
 
           <details class="quote">
             <summary>Source code in <code>citeurl/citator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">645</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">644</span>
+<span class="normal">645</span>
 <span class="normal">646</span>
 <span class="normal">647</span>
 <span class="normal">648</span>
@@ -6938,8 +6935,7 @@ Citator.cite() for more info.</p>
 <span class="normal">651</span>
 <span class="normal">652</span>
 <span class="normal">653</span>
-<span class="normal">654</span>
-<span class="normal">655</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cite</span><span class="p">(</span>
+<span class="normal">654</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cite</span><span class="p">(</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">citator</span><span class="p">:</span> <span class="n">Citator</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -6971,13 +6967,13 @@ see Citator.list_cites().</p>
 
           <details class="quote">
             <summary>Source code in <code>citeurl/citator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">657</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">656</span>
+<span class="normal">657</span>
 <span class="normal">658</span>
 <span class="normal">659</span>
 <span class="normal">660</span>
 <span class="normal">661</span>
-<span class="normal">662</span>
-<span class="normal">663</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list_cites</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citator</span><span class="p">:</span> <span class="n">Citator</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">id_breaks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="normal">662</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list_cites</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citator</span><span class="p">:</span> <span class="n">Citator</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">id_breaks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convenience function to list all citations in a text. For more info,</span>
 <span class="sd">    see Citator.list_cites().</span>
@@ -7039,7 +7035,7 @@ see Citator.list_cites().</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "11.3.1"}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "11.3.2"}</script>
     
     
       <script src="../assets/javascripts/bundle.8fd75fb4.min.js"></script>

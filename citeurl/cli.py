@@ -99,20 +99,20 @@ def main():
             'Defaults to "citation". Ignored in markdown mode.'
         ),
     )
-    output = process_parser.add_mutually_exclusive_group(required=False)
-    
-    output.add_argument(
-        '-o', '--output',
-        metavar = 'FILE',
-        help = 'write hyperlinked text to a file instead of stdout',
-    )
-    output.add_argument(
+    process_parser.add_argument(
         '-m', '--markdown',
         action = 'store_true',
         help = (
             'parse the input text as markdown rather than HTML. Omit to '
             'infer it from the input filename (.md or .MD)'
         )
+    )
+    output = process_parser.add_mutually_exclusive_group(required=False)
+    
+    output.add_argument(
+        '-o', '--output',
+        metavar = 'FILE',
+        help = 'write hyperlinked text to a file instead of stdout',
     )
     output.add_argument(
         '-b', '--browse',

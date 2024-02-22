@@ -448,6 +448,7 @@ class Citator:
                 id_breaks.finditer(text)
             ]
         breakpoints = sorted(set(breakpoints))
+        breakpoints.append(len(text))
         
         # for each cite, look for idform citations until the next cite
         # or until the next breakpoint
@@ -549,7 +550,7 @@ class Citator:
         # pull out all the inline HTML tags, e.g. <b>,
         # so they don't interfere with citation matching
         if ignore_markup:
-            text, stored_tags = _strip_inline_tags(text)
+            text, stored_tags = _strip_inline_tags(text, markup_format)
         
         cite_offsets = []
         running_offset = 0
@@ -609,12 +610,10 @@ class Citator:
                             running_offset += offset[1]
                             cite_offsets.pop(0)
                         else:
-                            # reduce offset by length of a closing tag,
-                            # either '</a>' for html or ')' for markdown
                             if markup_format == 'html':
                                 temp_offset = offset[1] - 4
                             elif markup_format == 'markdown':
-                                temp_offset = offset[1] - 1
+                                temp_offset = 1
                             break
                     else:
                         break
@@ -733,16 +732,22 @@ def _get_default_citator():
     _DEFAULT_CITATOR = Citator(yaml_paths=user_templates)
     return _DEFAULT_CITATOR
 
-def _strip_inline_tags(text: str) -> tuple[str, list[tuple]]:
-    inline_tag_regex = '|'.join([
-        'a', 'abbr', 'acronym', 'b', 'bdo', 'big', 'br', 'button', 'cite',
-        'code', 'dfn', 'em', 'i', 'img', 'input', 'kbd', 'label', 'map',
-        'object', 'output', 'q', 'samp', 'script', 'select', 'small', 'span',
-        'strong', 'sub', 'sup', 'textarea', 'time', 'tt', 'var', 
-    ])
+def _strip_inline_tags(
+    text: str, markup_format: str
+) -> tuple[str, list[tuple]]:
+    if markup_format == 'html':
+        inline_tag_regex = '|'.join([
+            'a', 'abbr', 'acronym', 'b', 'bdo', 'big', 'br', 'button', 'cite',
+            'code', 'dfn', 'em', 'i', 'img', 'input', 'kbd', 'label', 'map',
+            'object', 'output', 'q', 'samp', 'script', 'select', 'small',
+            'span', 'strong', 'sub', 'sup', 'textarea', 'time', 'tt', 'var', 
+        ])
+        inline_tag_regex = f'</?({inline_tag_regex})(>| .+?>)'
+    elif markup_format == 'markdown':
+        # strip out asterisks and underscores at the start and end of words
+        inline_tag_regex = '(?<=\s)[_*]{1,3}(?=\S)|(?<=\S)[_*]{1,3}(?=\s)'
     stored_tags = []
     offset = 0
-    inline_tag_regex = f'</?({inline_tag_regex})(>| .+?>)'
     def store_tag(match):
         nonlocal offset
         tag_text = match.group(0)
