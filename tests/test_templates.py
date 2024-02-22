@@ -1,7 +1,7 @@
 "tests for individual citation templates. not all of them are ready yet"
 
-#import requests
-#import time
+# import requests
+# import time
 
 from citeurl import Citator
 
@@ -32,7 +32,7 @@ TESTS = {
     },
     "U.S. Statutes at Large": {
         "cite": "120 Stat. 3754",
-        "URL": "https://www.govinfo.gov/content/pkg/STATUTE-120/pdf/STATUTE-120-Pg3754.pdf",
+        "URL": "https://www.govinfo.gov/content/pkg/STATUTE-120/html/STATUTE-120-Pg3754.htm",
         "shortform": None,
         "shortform_URL": None,
     },
@@ -248,9 +248,9 @@ TESTS = {
     },
     "Colorado Revised Statutes": { # needs yearly updates
         "cite": "Colo. Rev. Stat. § 8-2-113",
-        "URL": "https://leg.colorado.gov/sites/default/files/images/olls/crs2021-title-08.pdf#search=8-2-113.",
+        "URL": "https://colorado.public.law/statutes/crs_8-2-113",
         "shortform": "§ 8-2-112",
-        "shortform_URL": "https://leg.colorado.gov/sites/default/files/images/olls/crs2021-title-08.pdf#search=8-2-112."
+        "shortform_URL": "https://colorado.public.law/statutes/crs_8-2-112"
     },
     "Colorado Constitution": {
         "cite": "Colo. Const. Art. XIX, Sec. 2",
@@ -296,9 +296,9 @@ TESTS = {
     },
     "Florida Statutes": { # needs yearly updates
         "cite": "Fla. Stat. § 285.16",
-        "URL": "https://www.flsenate.gov/Laws/Statutes/2021/0285.16",
+        "URL": "https://www.flsenate.gov/Laws/Statutes/2023/0285.16",
         "shortform": "§ 285.20",
-        "shortform_URL": "https://www.flsenate.gov/Laws/Statutes/2021/0285.20"
+        "shortform_URL": "https://www.flsenate.gov/Laws/Statutes/2023/0285.20"
     },
     "Florida Constitution": {
         "cite": "Florida Constitution Article X, Section 2",
@@ -368,9 +368,9 @@ TESTS = {
     },
     "Indiana Code": { # needs yearly updates
         "cite": "Ind. Code § 9-22-3-2.5",
-        "URL": "https://iga.in.gov/legislative/laws/2021/ic/titles/09#09-22-3-2.5",
+        "URL": "https://iga.in.gov/legislative/laws/2023/ic/titles/09#09-22-3-2.5",
         "shortform": "§ 9-22-3-3",
-        "shortform_URL": "https://iga.in.gov/legislative/laws/2021/ic/titles/09#09-22-3-3"
+        "shortform_URL": "https://iga.in.gov/legislative/laws/2023/ic/titles/09#09-22-3-3"
     },
     "Indiana Constitution": {
         "cite": "Indiana Constitution Article XIII, Section 1",
@@ -420,9 +420,13 @@ def test_url_generation():
         
         print('OK')
 
-def do_not_test_urls_validity(): # disabled to avoid server load
+def DO_NOT_test_urls_validity(): # disabled to avoid server load
     "make sure CiteURL's URLs generally don't go to error pages"
     print('Checking whether test URLs still return valid response codes...')
+    
+    import requests
+    import time
+    
     for template_name, template in TESTS.items():
         print(f"{template['cite']} ... ", end='')
         if not template.get('URL'):
