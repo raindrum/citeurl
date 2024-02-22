@@ -22,10 +22,10 @@ U.S. Constitution:
   #  - ['^', *standalone_art_sec_cl]
   name builder:
     parts:
-      - 'U.S. Const.'
-      - ' Art. {article}'
-      - ', § {section}'
-      - ', cl. {clause}'
+      - 'Article {article}'
+      - ', Section {section}'
+      - ', Clause. {clause}'
+      - ' of the U.S. Constitution'
     edits:
       - token: article
         number style: roman
@@ -65,12 +65,17 @@ U.S. Constitution Amendments:
   idform patterns: *sec_cl_idforms
   name builder:
     parts:
-      - 'U.S. Const. Amdt. {amendment}'
-      - ' § {section}'
-      - ', cl. {clause}'
+      - 'Section {section}'
+      - ', Clause {clause} of '
+      - 'The {amendment} Amendment to the U.S. Constitution'
     edits:
+      - token: section
+        lookup: {'.+': ''}
+        output: has_section
       - token: amendment
-        number style: roman
+        number style: ordinal
+      - token: amendment
+        case: title
   URL builder:
     parts:
       - https://constitution.congress.gov/browse/
@@ -140,7 +145,7 @@ U.S. Statutes at Large:
   pattern: '{volume} Stat\.? {page}(,? {pincite})?'
   idform pattern: '[Ii]d\.,? at {pincite}'
   URL builder:
-    parts: ['https://www.govinfo.gov/content/pkg/STATUTE-{volume}/pdf/STATUTE-{volume}-Pg{page}.pdf']
+    parts: ['https://www.govinfo.gov/content/pkg/STATUTE-{volume}/html/STATUTE-{volume}-Pg{page}.htm']
   name builder:
     parts: ['{volume} Stat. {page}', ', {pincite}']
 

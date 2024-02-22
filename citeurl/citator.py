@@ -3,11 +3,9 @@ import re
 from copy import copy
 from pathlib import Path
 
-# third-party imports
 from yaml import safe_load, safe_dump
-# from appdirs import AppDirs        conditionally loaded later on
+# from appdirs import AppDirs        optional dependency, loaded later
 
-# internal imports
 from .tokens import TokenType, StringBuilder
 from .citation import Citation
 from .authority import Authority, list_authorities
@@ -517,6 +515,7 @@ class Citator:
         redundant_links: bool = True,
         id_breaks: re.Pattern = None,
         ignore_markup: bool = True,
+        markup_format = 'html',
     ) -> str:
         """
         Scan a text for citations, and return a text with each citation
@@ -524,17 +523,24 @@ class Citator:
         
         Arguments:
             text: the string to scan for citations.
-            attrs: various HTML link attributes to give to each link
-            add_title: whether to use citation.name for link titles
-            URL_optional: whether to insert a hyperlink even when the
-                citation does not have an associated URL
+            attrs: various HTML link attributes to give to each link.
+                Only relevant when markup_format is html
+            add_title: whether to use citation.name for link titles.
+                Only relevant when markup_format is html
+            URL_optional: whether to insert an <a> element even when the
+                citation does not have an associated URL. Only relevant
+                when markup_format is html; in markdown a link needs a
+                URL.
             redundant_links: whether to insert a hyperlink if it would
                 point to the same URL as the previous link
             id_breaks: wherever this regex appears, interrupt chains of
-                "Id."-type citations.
+                "Id."-style citations.
             ignore_markup: whether to preprocess and postprocess the
                 text so that CiteURL can detect citations even when
                 they contain inline markup, like "<i>Id.</i> at 32"
+            markup_format: Either 'html' or 'markdown'. Determines
+                what markup to ignore, and also what format to use
+                for inserted links.
         
         Returns:
             text, with an HTML `a` element for each citation. 
@@ -550,26 +556,30 @@ class Citator:
         
         last_URL = None
         for cite in self.list_cites(text, id_breaks = id_breaks):
-            attrs['href'] = cite.URL
-            if not cite.URL and not URL_optional:
-                continue
-            if not redundant_links and cite.URL == last_URL:
-                continue
-            if add_title:
-                attrs['title'] = cite.name
+            if markup_format == 'html':
+                attrs['href'] = cite.URL
+                if not cite.URL and not URL_optional:
+                    continue
+                if not redundant_links and cite.URL == last_URL:
+                    continue
+                if add_title:
+                    attrs['title'] = cite.name
+                
+                attr_str = ''.join([
+                    f' {k}="{v}"'
+                    for k, v in attrs.items() if v
+                ])
+                link = f'<a{attr_str}>{cite.text}</a>'
+            elif markup_format == 'markdown':
+                link = f'[{cite.text}]({cite.URL})'
+            else:
+                raise NotImplementedError()
             
-            attr_str = ''.join([
-                f' {k}="{v}"'
-                for k, v in attrs.items() if v
-            ])
-            link = f'<a{attr_str}>{cite.text}</a>'
-            
-            cite_offset = len(link) - len(cite.text)
-                    
+            cite_offset = len(link) - len(cite.text)   
             cite_offsets.append((
                 cite.span[0], # beginning of citation
-                cite_offset,
-                cite.text,
+                cite_offset,  # length the citation markup adds
+                cite.text,    # the text that was picked up as citation
             ))
             
             span = (
@@ -598,10 +608,13 @@ class Citator:
                         if tag_start >= cite_end:
                             running_offset += offset[1]
                             cite_offsets.pop(0)
-                        # otherwise, don't offset by the length of
-                        # the cite's closing </a> tag (length of 4)
                         else:
-                            temp_offset = offset[1] - 4
+                            # reduce offset by length of a closing tag,
+                            # either '</a>' for html or ')' for markdown
+                            if markup_format == 'html':
+                                temp_offset = offset[1] - 4
+                            elif markup_format == 'markdown':
+                                temp_offset = offset[1] - 1
                             break
                     else:
                         break
@@ -657,6 +670,7 @@ def insert_links(
     redundant_links: bool = True,
     id_breaks: re.Pattern = None,
     ignore_markup: bool = True,
+    markup_format: str = 'html',
     citator: Citator = None,
 ):
     """
@@ -671,6 +685,7 @@ def insert_links(
         redundant_links = redundant_links,
         id_breaks = id_breaks,
         ignore_markup = ignore_markup,
+        markup_format = markup_format,
     )
 
 ########################################################################
@@ -707,12 +722,14 @@ def _get_default_citator():
         from appdirs import AppDirs
         _appdirs = AppDirs('citeurl', 'raindrum')
         _user_config_dir = Path(_appdirs.user_config_dir)
-        user_templates = set([
+        if not _user_config_dir.exists():
+            _user_config_dir.mkdir(parents=True)
+        user_templates = [
             file for file in _user_config_dir.iterdir()
-            if file.suffix.lower() in ['.yaml', '.yml']
-        ])
+            if file.suffix.lower() in ['.yaml', '.yml', '.json']
+        ]
     except ImportError:
-        user_templates = {}
+        user_templates = []
     _DEFAULT_CITATOR = Citator(yaml_paths=user_templates)
     return _DEFAULT_CITATOR
 

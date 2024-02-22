@@ -156,6 +156,12 @@ TESTS = {
         "shortform": "Id. at § 178",
         "shortform_URL": "https://ballotpedia.org/Article_VIII,_Alabama_Constitution#Section_178"
     },
+    "Alabama Administrative Code": {
+        "cite": "Ala. Admin. Code r. 130-X-1-.06 - Freedom Of Information",
+        "URL": "https://www.law.cornell.edu/regulations/alabama/Ala-Admin-Code-r-130-X-1-.06",
+        "shortform": None,
+        "shortform_URL": None
+    },
     "Alaska Statutes": {
         "cite": "Alaska Stat. § 01.05.011",
         "URL": "http://www.akleg.gov/basis/statutes.asp#01.05.011",
@@ -167,6 +173,12 @@ TESTS = {
         "URL": "https://ballotpedia.org/Article_I,_Alaska_Constitution#Section_1",
         "shortform": "Id. § 3",
         "shortform_URL": "https://ballotpedia.org/Article_I,_Alaska_Constitution#Section_3"
+    },
+    "Alaska Administrative Code": {
+        "cite": "5 AAC 93.324",
+        "URL": "https://www.law.cornell.edu/regulations/alaska/5-AAC-93.324",
+        "shortform": None,
+        "shortform_URL": None
     },
     "American Samoa Code": {
         "cite": "Am. Samoa Code § 2.1002",
@@ -192,6 +204,12 @@ TESTS = {
         "shortform": "Article 15, § 2",
         "shortform_URL": "https://ballotpedia.org/Article_15,_Arkansas_Constitution#Section_2"
     },
+    "Arkansas Administrative Code": {
+        "cite": "005.19.02 Ark. Code R. § 004 - ADE 139",
+        "URL": "https://www.law.cornell.edu/regulations/arkansas/005-19-02-Ark-Code-R-SS-004",
+        "shortform": None,
+        "shortform_URL": None
+    },
     "Arizona Revised Statutes": {
         "cite": "Ariz. Rev. Stat. § 18-104",
         "URL": "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/18/00104.htm",
@@ -204,6 +222,12 @@ TESTS = {
         "shortform": "Art. XII § 2",
         "shortform_URL": "https://ballotpedia.org/Article_12,_Arizona_Constitution#Section_2"
     },
+    "Arizona Administrative Code": {
+        "cite": "Arizona Admin. Code R12-1-424",
+        "URL": "https://www.law.cornell.edu/regulations/arizona/Ariz-Admin-Code-SS-R12-1-424",
+        "shortform": None,
+        "shortform_URL": None
+    },
     "California Codes": {
         "cite": "California Public Resources Code § 21001.1",
         "URL": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PRC&sectionNum=21001.1",
@@ -215,6 +239,12 @@ TESTS = {
         "URL": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CONS&article=XI&sectionNum=SEC.%201.",
         "shortform": "§ 1",
         "shortform_URL": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CONS&article=XI&sectionNum=SEC.%201."
+    },
+    "California Code of Regulations": {
+        "cite": "CCR Tit. 4, § 1687",
+        "URL": "https://www.law.cornell.edu/regulations/california/4-CCR-1687",
+        "shortform": None,
+        "shortform_URL": None
     },
     "Colorado Revised Statutes": { # needs yearly updates
         "cite": "Colo. Rev. Stat. § 8-2-113",
@@ -275,6 +305,12 @@ TESTS = {
         "URL": "https://www.flsenate.gov/Laws/Constitution#A10S02",
         "shortform": "Id. at Section 6",
         "shortform_URL": "https://www.flsenate.gov/Laws/Constitution#A10S06"
+    },
+    "Florida Administrative Code": {
+        "cite": "FL Admin. Code Rule 12B-6.0021",
+        "URL": "https://www.law.cornell.edu/regulations/florida/Fla-Admin-Code-Ann-R-12B-6.0021",
+        "shortform": None,
+        "shortform_URL": None
     },
     "Georgia Code": {
         "cite": "Ga. Code Ann. § 21-2-417",
@@ -341,7 +377,13 @@ TESTS = {
         "URL": "https://ballotpedia.org/Article_13,_Indiana_Constitution#Section_1",
         "shortform": "Art. 4, § 2",
         "shortform_URL": "https://ballotpedia.org/Article_4,_Indiana_Constitution#Section_2"
-    }
+    },
+    "Texas Administrative Code": {
+        "cite": "22 Tex. Admin. Code § 72.10",
+        "URL": "https://www.law.cornell.edu/regulations/texas/22-Tex-Admin-Code-SS-72-10",
+        "shortform": None,
+        "shortform_URL": None
+    },
 }
 
 def test_url_generation():
@@ -394,3 +436,4 @@ def do_not_test_urls_validity(): # disabled to avoid server load
         print(f'RETURNED {response.status_code} RESPONSE')
         assert response.status_code != 404
         time.sleep(0.5)
+

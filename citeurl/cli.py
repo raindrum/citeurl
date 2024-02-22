@@ -35,26 +35,26 @@ def main():
     shared_args_grp = shared_args.add_argument_group(title='citator options')
     shared_args_grp.add_argument(
         '-t', '--template-file',
-        metavar='FILE',
-        action='append',
-        default=SUPPRESS,
-        help=(
+        metavar = 'FILE',
+        action = 'append',
+        default = SUPPRESS,
+        help = (
             'path to a YAML file with extra citation templates for CiteURL '
-            + 'to use. See https://raindrum.github.io/citeurl/template-yamls '
-            + 'for help writing templates. The -t option can be used '
-            + 'multiple times to load multiple files.'
+            'to use. See https://raindrum.github.io/citeurl/template-yamls '
+            'for help writing templates. The -t option can be used '
+            'multiple times to load multiple files.'
         )
     )
     shared_args_grp.add_argument(
         '-n', '--no-default-templates',
-        action='store_true',
-        help="prevent loading CiteURL's default templates",
+        action = 'store_true',
+        help = "prevent loading CiteURL's default templates",
     )
     
     subparsers = parser.add_subparsers(
-        dest='command',
-        title='commands',
-        required=False
+        dest = 'command',
+        title = 'commands',
+        required = False,
     )
     
     ####################################################################
@@ -63,68 +63,76 @@ def main():
     
     process_parser = subparsers.add_parser(
         'process',
-        aliases=['p'],
-        parents=[shared_args],
-        help='detect all citations in a block of text',
+        aliases = ['p'],
+        parents = [shared_args],
+        help = 'detect all citations in a block of text',
     )
     process_parser.add_argument(
         '-i',
         '--input',
-        metavar='FILE',
-        help='path to a file from which to read input text',
+        metavar = 'FILE',
+        help = 'path to a file from which to read input text',
     )
     process_parser.add_argument(
         'text',
-        help=(
+        help = (
             'a string containing legal citations. Can be omitted if -i is '
-            + 'specified, or if text is piped from stdin'
+            'specified, or if text is piped from stdin'
         ),
-        nargs='*',
-        default=(None if stdin.isatty() else [''.join(stdin.read()[0:-1])])
+        nargs = '*',
+        default = (None if stdin.isatty() else [''.join(stdin.read()[0:-1])])
     )
     process_parser.add_argument(
         '-r', '--no-redundant-links',
-        action='store_true',
-        help=(
+        action = 'store_true',
+        help = (
             "Don't add a hyperlink if it would point to the same URL as the "
             "last hyperlink."
         )
     )
     process_parser.add_argument(
         '-c', '--css-class',
-        metavar='CLASS',
-        default='citation',
-        help=(
+        metavar = 'CLASS',
+        default = 'citation',
+        help = (
             'the class each inserted <a> element will have. '
-            + 'Defaults to "citation"'
-        )
+            'Defaults to "citation". Ignored in markdown mode.'
+        ),
     )
     output = process_parser.add_mutually_exclusive_group(required=False)
     
     output.add_argument(
         '-o', '--output',
-        metavar='FILE',
-        help='write hyperlinked text to a file instead of stdout',
+        metavar = 'FILE',
+        help = 'write hyperlinked text to a file instead of stdout',
+    )
+    output.add_argument(
+        '-m', '--markdown',
+        action = 'store_true',
+        help = (
+            'parse the input text as markdown rather than HTML. Omit to '
+            'infer it from the input filename (.md or .MD)'
+        )
     )
     output.add_argument(
         '-b', '--browse',
-        action='store_true',
-        help=(
+        action = 'store_true',
+        help = (
             'make a temporary HTML file with the hyperlinked text, '
-            + 'and open it in a browser.'
+            'and open it in a browser.'
         )
     )
     output.add_argument(
         '-a', '--authorities',
-        metavar='NUMBER',
-        action='store',
-        nargs='?',
-        const=-1,
-        type=int,
-        help=(
+        metavar = 'NUMBER',
+        action = 'store',
+        nargs = '?',
+        const = -1,
+        type = int,
+        help = (
             'return list of all the authorities cited in the text, '
-            + 'with information about each one. If a number is given, '
-            + 'return only the X authorities with the most citations.'
+            'with information about each one. If a number is given, '
+            'return only the X authorities with the most citations.'
         )
     )
     
@@ -134,30 +142,30 @@ def main():
     
     lookup_parser = subparsers.add_parser(
         'lookup',
-        aliases=['l'],
-        parents=[shared_args],
-        help='look up the URL or other information for a single citation',
+        aliases = ['l'],
+        parents = [shared_args],
+        help = 'look up the URL or other information for a single citation',
     )
     lookup_parser.add_argument(
         'text',
-        help=(
+        help = (
             'a string containing legal citations. Can be omitted if text is '
-            + ' piped from stdin'
+            ' piped from stdin'
         ),
-        nargs='*',
-        default=(None if stdin.isatty() else [''.join(stdin.read()[0:-1])])
+        nargs = '*',
+        default = (None if stdin.isatty() else [''.join(stdin.read()[0:-1])])
     )
     lookup_parser.add_argument(
         '-b', '--browse',
-        action='store_true',
-        help='open the resulting URL, if any, in a browser'
+        action = 'store_true',
+        help = 'open the resulting URL, if any, in a browser'
     )
     lookup_parser.add_argument(
         '-s', '--strict',
-        action='store_true',
-        help=(
+        action = 'store_true',
+        help = (
             'match templates the same way the "process" command does: '
-            + "use case-sensitive regex, and ignore templates' broadRegexes"
+            "use case-sensitive regex, and ignore templates' broadRegexes"
         )
     )
     
@@ -167,21 +175,21 @@ def main():
     
     server_parser = subparsers.add_parser(
         'host',
-        aliases=['h'],
-        parents=[shared_args],
-        help='host a citation lookup server via HTTP',
+        aliases = ['h'],
+        parents = [shared_args],
+        help = 'host a citation lookup server via HTTP',
     )
     server_parser.add_argument(
         '-s', '--serve',
-        action='store_true',
-        help="make the server available to your local network"
+        action = 'store_true',
+        help = "make the server available to your local network"
     )
     server_parser.add_argument(
         '-p', '--port',
-        action='store',
-        default=53037,
-        type=int,
-        help=('the port to use for hosting. Defaults to 53037')
+        action = 'store',
+        default = 53037,
+        type = int,
+        help = ('the port to use for hosting. Defaults to 53037')
     )
     
     ####################################################################
@@ -190,28 +198,28 @@ def main():
     
     makejs_parser = subparsers.add_parser(
         'makejs',
-        aliases=['m'],
-        parents=[shared_args],
-        help='export an instance of CiteURL as JavaScript',
+        aliases = ['m'],
+        parents = [shared_args],
+        help = 'export an instance of CiteURL as JavaScript',
     )
     
     makejs_parser.add_argument(
         '-e', '--entire-page',
-        action='store_true',
-        help='generate a full HTML page instead of just JavaScript',
+        action = 'store_true',
+        help = 'generate a full HTML page instead of just JavaScript',
     )
     makejs_parser.add_argument(
         '-s', '--sources-table',
-        action='store_true',
-        help=(
+        action = 'store_true',
+        help = (
             'include a table listing all the supported sources of law. '
-            + 'Implies --entire-page.'
+            'Implies --entire-page.'
         )
     )
     makejs_parser.add_argument(
         '-o', '--output',
-        metavar='FILE',
-        help='write output to a file instead of stdout',
+        metavar = 'FILE',
+        help = 'write output to a file instead of stdout',
     )
     
     ####################################################################
@@ -283,11 +291,23 @@ def main():
             print('\n\n'.join(outputs))
         
         else:
+            # determine output format
+            if args.markdown or (
+                args.input and
+                args.input.lower().endswith('.md')
+            ):
+                markup_format = 'markdown'
+            else:
+                markup_format = 'html'
+            if args.browse: # this one needs HTML format
+                markup_format = 'html'
+            
             out_text = insert_links(
                 text = text,
                 citator = citator,
                 attrs = {'class': args.css_class},
                 redundant_links = not args.no_redundant_links,
+                markup_format = markup_format
             )
         
             if args.output: #write processed text to file
@@ -297,6 +317,7 @@ def main():
             elif args.browse: # write processed text to tempfile; open it
                 from tempfile import NamedTemporaryFile
                 from time import sleep
+                
                 with NamedTemporaryFile('r+', suffix='.html') as f:
                     f.write(out_text)
                     webbrowser.open('file://' + f.name)

@@ -56,16 +56,6 @@ parser">{given_text}</textarea>
 {output}
 """
 
-INFO_PAGE = """
-<h1>How it Works</h1>
-<p>This app is powered by
-<a href="https://raindrum.github.io/citeurl">CiteURL</a>,
-an open-source tool that recognizes legal citations and generates links to publicly-available sites
-where you can read the cited documents.</p>
-<p>CiteURL is not a search engine; it does not return a list of
-search results. Instead it reads bits of info from the </p>
-"""
-
 # Errors
 
 ERROR_400 = """

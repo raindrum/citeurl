@@ -8,8 +8,15 @@
       
       
       
+      
+        <link rel="prev" href="../frontends/">
+      
+      
+        <link rel="next" href="../template-yamls/">
+      
+      
       <link rel="icon" href="../assets/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.15">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.10">
     
     
       
@@ -17,17 +24,17 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.c382b1dc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e359304.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.cc9b2e1e.min.css">
-        
-          
-          
-          <meta name="theme-color" content="#2094f3">
-        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
       
+      
+
+
     
+    
+      
     
     
       
@@ -41,10 +48,11 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
+    
     
     
   </head>
@@ -57,7 +65,6 @@
     
     <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="pink">
   
-    
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -74,16 +81,16 @@
       
     </div>
     
-      <div data-md-component="outdated" hidden>
-        <aside class="md-banner md-banner--warning">
-          
-        </aside>
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
       </div>
     
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href=".." title="CiteURL" class="md-header__button md-logo" aria-label="CiteURL" data-md-component="logo">
       
@@ -91,6 +98,7 @@
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
+      
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
@@ -110,9 +118,13 @@
       </div>
     </div>
     
+      
+    
+    
     
     
       <label class="md-header__button md-icon" for="__search">
+        
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
       </label>
       <div class="md-search" data-md-component="search" role="dialog">
@@ -121,12 +133,15 @@
     <form class="md-search__form" name="search">
       <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
+        
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
         
-        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
         </button>
       </nav>
@@ -138,7 +153,7 @@
           <div class="md-search-result__meta">
             Initializing search
           </div>
-          <ol class="md-search-result__list"></ol>
+          <ol class="md-search-result__list" role="presentation"></ol>
         </div>
       </div>
     </div>
@@ -150,7 +165,7 @@
         <a href="https://github.com/raindrum/citeurl" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub
@@ -180,6 +195,7 @@
                     
 
 
+
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href=".." title="CiteURL" class="md-nav__button md-logo" aria-label="CiteURL" data-md-component="logo">
@@ -194,7 +210,7 @@
       <a href="https://github.com/raindrum/citeurl" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
   </div>
   <div class="md-source__repository">
     GitHub
@@ -206,14 +222,19 @@
     
       
       
-      
-
+  
   
   
   
     <li class="md-nav__item">
       <a href=".." class="md-nav__link">
-        Getting Started
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
       </a>
     </li>
   
@@ -221,14 +242,19 @@
     
       
       
-      
-
+  
   
   
   
     <li class="md-nav__item">
       <a href="../frontends/" class="md-nav__link">
-        CiteURL Frontends
+        
+  
+  <span class="md-ellipsis">
+    CiteURL Frontends
+  </span>
+  
+
       </a>
     </li>
   
@@ -236,28 +262,39 @@
     
       
       
-      
-
   
   
     
   
   
+  
     <li class="md-nav__item md-nav__item--active">
       
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
         
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Library Reference
+          
+  
+  <span class="md-ellipsis">
+    Library Reference
+  </span>
+  
+
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Library Reference
+        
+  
+  <span class="md-ellipsis">
+    Library Reference
+  </span>
+  
+
       </a>
       
         
@@ -277,274 +314,387 @@
       
         <li class="md-nav__item">
   <a href="#citator" class="md-nav__link">
-    Citator
-  </a>
-  
-    <nav class="md-nav" aria-label="Citator">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Citator.__init__" class="md-nav__link">
-    __init__()
+    <span class="md-ellipsis">
+      Citator
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Citator.cite" class="md-nav__link">
-    cite()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Citator
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Citator.from_yaml" class="md-nav__link">
-    from_yaml()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Citator.insert_links" class="md-nav__link">
-    insert_links()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.cite" class="md-nav__link">
+    <span class="md-ellipsis">
+      cite
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Citator.list_authorities" class="md-nav__link">
-    list_authorities()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.from_yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      from_yaml
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Citator.list_cites" class="md-nav__link">
-    list_cites()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.insert_links" class="md-nav__link">
+    <span class="md-ellipsis">
+      insert_links
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Citator.load_yaml" class="md-nav__link">
-    load_yaml()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.list_authorities" class="md-nav__link">
+    <span class="md-ellipsis">
+      list_authorities
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Citator.to_yaml" class="md-nav__link">
-    to_yaml()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.list_cites" class="md-nav__link">
+    <span class="md-ellipsis">
+      list_cites
+    </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.load_yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      load_yaml
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.to_yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_yaml
+    </span>
+  </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#citation" class="md-nav__link">
-    Citation
-  </a>
-  
-    <nav class="md-nav" aria-label="Citation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citation.Citation.__contains__" class="md-nav__link">
-    __contains__()
+    <span class="md-ellipsis">
+      Citation
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citation.Citation.__eq__" class="md-nav__link">
-    __eq__()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Citation
+    </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citation.__contains__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __contains__
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citation.__eq__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __eq__
+    </span>
+  </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#template" class="md-nav__link">
-    Template
-  </a>
-  
-    <nav class="md-nav" aria-label="Template">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Template.__init__" class="md-nav__link">
-    __init__()
+    <span class="md-ellipsis">
+      Template
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Template.cite" class="md-nav__link">
-    cite()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template" class="md-nav__link">
+    <span class="md-ellipsis">
+      Template
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Template.from_dict" class="md-nav__link">
-    from_dict()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Template.list_longform_cites" class="md-nav__link">
-    list_longform_cites()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.cite" class="md-nav__link">
+    <span class="md-ellipsis">
+      cite
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Template.to_dict" class="md-nav__link">
-    to_dict()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.from_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      from_dict
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Template.to_yaml" class="md-nav__link">
-    to_yaml()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.list_longform_cites" class="md-nav__link">
+    <span class="md-ellipsis">
+      list_longform_cites
+    </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.to_yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_yaml
+    </span>
+  </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#tokentype" class="md-nav__link">
-    TokenType
-  </a>
-  
-    <nav class="md-nav" aria-label="TokenType">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.tokens.TokenType.from_dict" class="md-nav__link">
-    from_dict()
+    <span class="md-ellipsis">
+      TokenType
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.tokens.TokenType.to_dict" class="md-nav__link">
-    to_dict()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.TokenType" class="md-nav__link">
+    <span class="md-ellipsis">
+      TokenType
+    </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.TokenType.from_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      from_dict
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.TokenType.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#tokenoperation" class="md-nav__link">
-    TokenOperation
-  </a>
-  
-    <nav class="md-nav" aria-label="TokenOperation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.tokens.TokenOperation.__init__" class="md-nav__link">
-    __init__()
+    <span class="md-ellipsis">
+      TokenOperation
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.tokens.TokenOperation.from_dict" class="md-nav__link">
-    from_dict()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.TokenOperation" class="md-nav__link">
+    <span class="md-ellipsis">
+      TokenOperation
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.tokens.TokenOperation.modify_dict" class="md-nav__link">
-    modify_dict()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.TokenOperation.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.tokens.TokenOperation.to_dict" class="md-nav__link">
-    to_dict()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.TokenOperation.from_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      from_dict
+    </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.TokenOperation.modify_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      modify_dict
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.TokenOperation.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#stringbuilder" class="md-nav__link">
-    StringBuilder
-  </a>
-  
-    <nav class="md-nav" aria-label="StringBuilder">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.tokens.StringBuilder.from_dict" class="md-nav__link">
-    from_dict()
+    <span class="md-ellipsis">
+      StringBuilder
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.tokens.StringBuilder.to_dict" class="md-nav__link">
-    to_dict()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.StringBuilder" class="md-nav__link">
+    <span class="md-ellipsis">
+      StringBuilder
+    </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.StringBuilder.from_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      from_dict
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.StringBuilder.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#insert_links" class="md-nav__link">
-    insert_links()
+    <span class="md-ellipsis">
+      insert_links()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.insert_links" class="md-nav__link">
+    <span class="md-ellipsis">
+      insert_links
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#cite" class="md-nav__link">
-    cite()
+    <span class="md-ellipsis">
+      cite()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.cite" class="md-nav__link">
+    <span class="md-ellipsis">
+      cite
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#list_cites" class="md-nav__link">
-    list_cites()
+    <span class="md-ellipsis">
+      list_cites()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.list_cites" class="md-nav__link">
+    <span class="md-ellipsis">
+      list_cites
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#default_citator" class="md-nav__link">
-    DEFAULT_CITATOR
+    <span class="md-ellipsis">
+      DEFAULT_CITATOR
+    </span>
   </a>
   
 </li>
@@ -559,14 +709,19 @@
     
       
       
-      
-
+  
   
   
   
     <li class="md-nav__item">
       <a href="../template-yamls/" class="md-nav__link">
-        Writing Your Own Templates
+        
+  
+  <span class="md-ellipsis">
+    Writing Your Own Templates
+  </span>
+  
+
       </a>
     </li>
   
@@ -600,274 +755,387 @@
       
         <li class="md-nav__item">
   <a href="#citator" class="md-nav__link">
-    Citator
-  </a>
-  
-    <nav class="md-nav" aria-label="Citator">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Citator.__init__" class="md-nav__link">
-    __init__()
+    <span class="md-ellipsis">
+      Citator
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Citator.cite" class="md-nav__link">
-    cite()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Citator
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Citator.from_yaml" class="md-nav__link">
-    from_yaml()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Citator.insert_links" class="md-nav__link">
-    insert_links()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.cite" class="md-nav__link">
+    <span class="md-ellipsis">
+      cite
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Citator.list_authorities" class="md-nav__link">
-    list_authorities()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.from_yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      from_yaml
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Citator.list_cites" class="md-nav__link">
-    list_cites()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.insert_links" class="md-nav__link">
+    <span class="md-ellipsis">
+      insert_links
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Citator.load_yaml" class="md-nav__link">
-    load_yaml()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.list_authorities" class="md-nav__link">
+    <span class="md-ellipsis">
+      list_authorities
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Citator.to_yaml" class="md-nav__link">
-    to_yaml()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.list_cites" class="md-nav__link">
+    <span class="md-ellipsis">
+      list_cites
+    </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.load_yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      load_yaml
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citator.to_yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_yaml
+    </span>
+  </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#citation" class="md-nav__link">
-    Citation
-  </a>
-  
-    <nav class="md-nav" aria-label="Citation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citation.Citation.__contains__" class="md-nav__link">
-    __contains__()
+    <span class="md-ellipsis">
+      Citation
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citation.Citation.__eq__" class="md-nav__link">
-    __eq__()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Citation
+    </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citation.__contains__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __contains__
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Citation.__eq__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __eq__
+    </span>
+  </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#template" class="md-nav__link">
-    Template
-  </a>
-  
-    <nav class="md-nav" aria-label="Template">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Template.__init__" class="md-nav__link">
-    __init__()
+    <span class="md-ellipsis">
+      Template
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Template.cite" class="md-nav__link">
-    cite()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template" class="md-nav__link">
+    <span class="md-ellipsis">
+      Template
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Template.from_dict" class="md-nav__link">
-    from_dict()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Template.list_longform_cites" class="md-nav__link">
-    list_longform_cites()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.cite" class="md-nav__link">
+    <span class="md-ellipsis">
+      cite
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Template.to_dict" class="md-nav__link">
-    to_dict()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.from_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      from_dict
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.citator.Template.to_yaml" class="md-nav__link">
-    to_yaml()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.list_longform_cites" class="md-nav__link">
+    <span class="md-ellipsis">
+      list_longform_cites
+    </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.Template.to_yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_yaml
+    </span>
+  </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#tokentype" class="md-nav__link">
-    TokenType
-  </a>
-  
-    <nav class="md-nav" aria-label="TokenType">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.tokens.TokenType.from_dict" class="md-nav__link">
-    from_dict()
+    <span class="md-ellipsis">
+      TokenType
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.tokens.TokenType.to_dict" class="md-nav__link">
-    to_dict()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.TokenType" class="md-nav__link">
+    <span class="md-ellipsis">
+      TokenType
+    </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.TokenType.from_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      from_dict
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.TokenType.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#tokenoperation" class="md-nav__link">
-    TokenOperation
-  </a>
-  
-    <nav class="md-nav" aria-label="TokenOperation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.tokens.TokenOperation.__init__" class="md-nav__link">
-    __init__()
+    <span class="md-ellipsis">
+      TokenOperation
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.tokens.TokenOperation.from_dict" class="md-nav__link">
-    from_dict()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.TokenOperation" class="md-nav__link">
+    <span class="md-ellipsis">
+      TokenOperation
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.tokens.TokenOperation.modify_dict" class="md-nav__link">
-    modify_dict()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.TokenOperation.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      __init__
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.tokens.TokenOperation.to_dict" class="md-nav__link">
-    to_dict()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.TokenOperation.from_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      from_dict
+    </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.TokenOperation.modify_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      modify_dict
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.TokenOperation.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#stringbuilder" class="md-nav__link">
-    StringBuilder
-  </a>
-  
-    <nav class="md-nav" aria-label="StringBuilder">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.tokens.StringBuilder.from_dict" class="md-nav__link">
-    from_dict()
+    <span class="md-ellipsis">
+      StringBuilder
+    </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#citeurl.tokens.StringBuilder.to_dict" class="md-nav__link">
-    to_dict()
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.StringBuilder" class="md-nav__link">
+    <span class="md-ellipsis">
+      StringBuilder
+    </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.StringBuilder.from_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      from_dict
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.StringBuilder.to_dict" class="md-nav__link">
+    <span class="md-ellipsis">
+      to_dict
+    </span>
+  </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#insert_links" class="md-nav__link">
-    insert_links()
+    <span class="md-ellipsis">
+      insert_links()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.insert_links" class="md-nav__link">
+    <span class="md-ellipsis">
+      insert_links
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#cite" class="md-nav__link">
-    cite()
+    <span class="md-ellipsis">
+      cite()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.cite" class="md-nav__link">
+    <span class="md-ellipsis">
+      cite
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#list_cites" class="md-nav__link">
-    list_cites()
+    <span class="md-ellipsis">
+      list_cites()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citeurl.list_cites" class="md-nav__link">
+    <span class="md-ellipsis">
+      list_cites
+    </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#default_citator" class="md-nav__link">
-    DEFAULT_CITATOR
+    <span class="md-ellipsis">
+      DEFAULT_CITATOR
+    </span>
   </a>
   
 </li>
@@ -880,14 +1148,14 @@
               </div>
             
           
-          <div class="md-content" data-md-component="content">
-            <article class="md-content__inner md-typeset">
-              
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
                 
-  <a href="https://github.com/raindrum/citeurl/edit/main/docs_source/library.md" title="Edit this page" class="md-content__button md-icon">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
-  </a>
+                  
 
+  
+  
 
 
 <h1 id="library-reference">Library Reference</h1>
@@ -929,14 +1197,18 @@
 <h2 id="citator">Citator</h2>
 
 
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
-    <div class="doc doc-contents first">
 
+<a id="citeurl.Citator"></a>
+  <div class="doc doc-contents first">
 
+  
       <p>A collection of citation templates, and the tools to match text
 against them en masse.</p>
+
+
 
   <p><strong>Attributes:</strong></p>
   <table>
@@ -949,19 +1221,24 @@ against them en masse.</p>
     </thead>
     <tbody>
         <tr>
-          <td><code>templates</code></td>
+          <td><code><span title="citeurl.Citator.templates">templates</span></code></td>
           <td>
           </td>
-          <td><p>a dictionary of citation templates that this citator
-will try to match against</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>a dictionary of citation templates that this citator
+will try to match against</p>
+            </div>
+          </td>
         </tr>
     </tbody>
   </table>
 
-
-          <details class="quote">
-            <summary>Source code in <code>citeurl/citator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">324</span>
+            <details class="quote">
+              <summary>Source code in <code>citeurl/citator.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
 <span class="normal">325</span>
 <span class="normal">326</span>
 <span class="normal">327</span>
@@ -1263,7 +1540,20 @@ will try to match against</p></td>
 <span class="normal">623</span>
 <span class="normal">624</span>
 <span class="normal">625</span>
-<span class="normal">626</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Citator</span><span class="p">:</span>
+<span class="normal">626</span>
+<span class="normal">627</span>
+<span class="normal">628</span>
+<span class="normal">629</span>
+<span class="normal">630</span>
+<span class="normal">631</span>
+<span class="normal">632</span>
+<span class="normal">633</span>
+<span class="normal">634</span>
+<span class="normal">635</span>
+<span class="normal">636</span>
+<span class="normal">637</span>
+<span class="normal">638</span>
+<span class="normal">639</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Citator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A collection of citation templates, and the tools to match text</span>
 <span class="sd">    against them en masse.</span>
@@ -1459,6 +1749,7 @@ will try to match against</p></td>
         <span class="n">redundant_links</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">id_breaks</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">ignore_markup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">markup_format</span> <span class="o">=</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Scan a text for citations, and return a text with each citation</span>
@@ -1466,17 +1757,24 @@ will try to match against</p></td>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            text: the string to scan for citations.</span>
-<span class="sd">            attrs: various HTML link attributes to give to each link</span>
-<span class="sd">            add_title: whether to use citation.name for link titles</span>
-<span class="sd">            URL_optional: whether to insert a hyperlink even when the</span>
-<span class="sd">                citation does not have an associated URL</span>
+<span class="sd">            attrs: various HTML link attributes to give to each link.</span>
+<span class="sd">                Only relevant when markup_format is html</span>
+<span class="sd">            add_title: whether to use citation.name for link titles.</span>
+<span class="sd">                Only relevant when markup_format is html</span>
+<span class="sd">            URL_optional: whether to insert an &lt;a&gt; element even when the</span>
+<span class="sd">                citation does not have an associated URL. Only relevant</span>
+<span class="sd">                when markup_format is html; in markdown a link needs a</span>
+<span class="sd">                URL.</span>
 <span class="sd">            redundant_links: whether to insert a hyperlink if it would</span>
 <span class="sd">                point to the same URL as the previous link</span>
 <span class="sd">            id_breaks: wherever this regex appears, interrupt chains of</span>
-<span class="sd">                &quot;Id.&quot;-type citations.</span>
+<span class="sd">                &quot;Id.&quot;-style citations.</span>
 <span class="sd">            ignore_markup: whether to preprocess and postprocess the</span>
 <span class="sd">                text so that CiteURL can detect citations even when</span>
 <span class="sd">                they contain inline markup, like &quot;&lt;i&gt;Id.&lt;/i&gt; at 32&quot;</span>
+<span class="sd">            markup_format: Either &#39;html&#39; or &#39;markdown&#39;. Determines</span>
+<span class="sd">                what markup to ignore, and also what format to use</span>
+<span class="sd">                for inserted links.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            text, with an HTML `a` element for each citation. </span>
@@ -1492,26 +1790,30 @@ will try to match against</p></td>
 
         <span class="n">last_URL</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">cite</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_cites</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">id_breaks</span> <span class="o">=</span> <span class="n">id_breaks</span><span class="p">):</span>
-            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">URL_optional</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">redundant_links</span> <span class="ow">and</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span> <span class="o">==</span> <span class="n">last_URL</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="k">if</span> <span class="n">add_title</span><span class="p">:</span>
-                <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cite</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="n">markup_format</span> <span class="o">==</span> <span class="s1">&#39;html&#39;</span><span class="p">:</span>
+                <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">URL_optional</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">redundant_links</span> <span class="ow">and</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span> <span class="o">==</span> <span class="n">last_URL</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">add_title</span><span class="p">:</span>
+                    <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cite</span><span class="o">.</span><span class="n">name</span>
 
-            <span class="n">attr_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
-                <span class="sa">f</span><span class="s1">&#39; </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">=&quot;</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
-                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span>
-            <span class="p">])</span>
-            <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&lt;a</span><span class="si">{</span><span class="n">attr_str</span><span class="si">}</span><span class="s1">&gt;</span><span class="si">{</span><span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s1">&lt;/a&gt;&#39;</span>
+                <span class="n">attr_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+                    <span class="sa">f</span><span class="s1">&#39; </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">=&quot;</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span>
+                <span class="p">])</span>
+                <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&lt;a</span><span class="si">{</span><span class="n">attr_str</span><span class="si">}</span><span class="s1">&gt;</span><span class="si">{</span><span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s1">&lt;/a&gt;&#39;</span>
+            <span class="k">elif</span> <span class="n">markup_format</span> <span class="o">==</span> <span class="s1">&#39;markdown&#39;</span><span class="p">:</span>
+                <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;[</span><span class="si">{</span><span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s1">](</span><span class="si">{</span><span class="n">cite</span><span class="o">.</span><span class="n">URL</span><span class="si">}</span><span class="s1">)&#39;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
-            <span class="n">cite_offset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">link</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-
+            <span class="n">cite_offset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">link</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>   
             <span class="n">cite_offsets</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
                 <span class="n">cite</span><span class="o">.</span><span class="n">span</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="c1"># beginning of citation</span>
-                <span class="n">cite_offset</span><span class="p">,</span>
-                <span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+                <span class="n">cite_offset</span><span class="p">,</span>  <span class="c1"># length the citation markup adds</span>
+                <span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>    <span class="c1"># the text that was picked up as citation</span>
             <span class="p">))</span>
 
             <span class="n">span</span> <span class="o">=</span> <span class="p">(</span>
@@ -1540,10 +1842,13 @@ will try to match against</p></td>
                         <span class="k">if</span> <span class="n">tag_start</span> <span class="o">&gt;=</span> <span class="n">cite_end</span><span class="p">:</span>
                             <span class="n">running_offset</span> <span class="o">+=</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                             <span class="n">cite_offsets</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-                        <span class="c1"># otherwise, don&#39;t offset by the length of</span>
-                        <span class="c1"># the cite&#39;s closing &lt;/a&gt; tag (length of 4)</span>
                         <span class="k">else</span><span class="p">:</span>
-                            <span class="n">temp_offset</span> <span class="o">=</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">4</span>
+                            <span class="c1"># reduce offset by length of a closing tag,</span>
+                            <span class="c1"># either &#39;&lt;/a&gt;&#39; for html or &#39;)&#39; for markdown</span>
+                            <span class="k">if</span> <span class="n">markup_format</span> <span class="o">==</span> <span class="s1">&#39;html&#39;</span><span class="p">:</span>
+                                <span class="n">temp_offset</span> <span class="o">=</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">4</span>
+                            <span class="k">elif</span> <span class="n">markup_format</span> <span class="o">==</span> <span class="s1">&#39;markdown&#39;</span><span class="p">:</span>
+                                <span class="n">temp_offset</span> <span class="o">=</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
                             <span class="k">break</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">break</span>
@@ -1567,9 +1872,9 @@ will try to match against</p></td>
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_citator</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">templates</span> <span class="o">==</span> <span class="n">other_citator</span><span class="o">.</span><span class="n">templates</span>
 </code></pre></div></td></tr></table></div>
-          </details>
+            </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -1582,24 +1887,24 @@ will try to match against</p></td>
 
 
 
-
-  <div class="doc doc-object doc-function">
-
+<div class="doc doc-object doc-function">
 
 
-<h3 id="citeurl.citator.Citator.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">defaults</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;caselaw&#39;</span><span class="p">,</span> <span class="s1">&#39;general federal law&#39;</span><span class="p">,</span> <span class="s1">&#39;specific federal laws&#39;</span><span class="p">,</span> <span class="s1">&#39;state law&#39;</span><span class="p">,</span> <span class="s1">&#39;secondary sources&#39;</span><span class="p">],</span> <span class="n">yaml_paths</span><span class="o">=</span><span class="p">[],</span> <span class="n">templates</span><span class="o">=</span><span class="p">{})</span></code>
+
+<h2 id="citeurl.Citator.__init__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">defaults</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;caselaw&#39;</span><span class="p">,</span> <span class="s1">&#39;general federal law&#39;</span><span class="p">,</span> <span class="s1">&#39;specific federal laws&#39;</span><span class="p">,</span> <span class="s1">&#39;state law&#39;</span><span class="p">,</span> <span class="s1">&#39;secondary sources&#39;</span><span class="p">],</span> <span class="n">yaml_paths</span><span class="o">=</span><span class="p">[],</span> <span class="n">templates</span><span class="o">=</span><span class="p">{})</span></code>
+
+</h2>
 
 
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Create a citator from any combination of CiteURL's default
 template sets (by default, all of them), plus any custom
 templates you want, either by pointing to custom YAML files or
 making Template objects at runtime.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -1616,9 +1921,13 @@ making Template objects at runtime.</p>
           <td><code>defaults</code></td>
           <td>
           </td>
-          <td><p>names of files to load from the citeurl/templates
+          <td>
+            <div class="doc-md-description">
+              <p>names of files to load from the citeurl/templates
 folder. Each file contains one or more of CiteURL's
-built-in templates relevant to the given topic.</p></td>
+built-in templates relevant to the given topic.</p>
+            </div>
+          </td>
           <td>
                 <code>[&#39;caselaw&#39;, &#39;general federal law&#39;, &#39;specific federal laws&#39;, &#39;state law&#39;, &#39;secondary sources&#39;]</code>
           </td>
@@ -1628,9 +1937,13 @@ built-in templates relevant to the given topic.</p></td>
           <td>
                 <code>list[str]</code>
           </td>
-          <td><p>paths to custom YAML files to load templates
+          <td>
+            <div class="doc-md-description">
+              <p>paths to custom YAML files to load templates
 from. These are loaded after the defaults, so they can
-inherit and/or overwrite them. If </p></td>
+inherit and/or overwrite them. If </p>
+            </div>
+          </td>
           <td>
                 <code>[]</code>
           </td>
@@ -1638,11 +1951,15 @@ inherit and/or overwrite them. If </p></td>
         <tr>
           <td><code>templates</code></td>
           <td>
-                <code>dict[str, <span title="citeurl.citator.Template">Template</span>]</code>
+                <code>dict[str, <a class="autorefs autorefs-internal" title="citeurl.citator.Template" href="#citeurl.Template">Template</a>]</code>
           </td>
-          <td><p>optional list of Template objects to load
+          <td>
+            <div class="doc-md-description">
+              <p>optional list of Template objects to load
 directly. These are loaded last, after the defaults and
-any yaml_paths.</p></td>
+any yaml_paths.</p>
+            </div>
+          </td>
           <td>
                 <code>{}</code>
           </td>
@@ -1650,9 +1967,11 @@ any yaml_paths.</p></td>
     </tbody>
   </table>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">334</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
 <span class="normal">335</span>
 <span class="normal">336</span>
 <span class="normal">337</span>
@@ -1688,9 +2007,7 @@ any yaml_paths.</p></td>
 <span class="normal">367</span>
 <span class="normal">368</span>
 <span class="normal">369</span>
-<span class="normal">370</span>
-<span class="normal">371</span>
-<span class="normal">372</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">370</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">defaults</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s1">&#39;caselaw&#39;</span><span class="p">,</span>
@@ -1730,37 +2047,35 @@ any yaml_paths.</p></td>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">templates</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
+
+
+<div class="doc doc-object doc-function">
 
 
 
+<h2 id="citeurl.Citator.cite" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">cite</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="citeurl.citator.Citator.cite" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">cite</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+</h2>
 
 
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Check the given text against each of the citator's templates and
 return the first citation detected, or None.</p>
 <p>If broad is true, matching is case-insensitive and each
 template's broad regexes are used in addition to its normal
 regexes.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">399</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
 <span class="normal">400</span>
 <span class="normal">401</span>
 <span class="normal">402</span>
@@ -1772,9 +2087,7 @@ regexes.</p>
 <span class="normal">408</span>
 <span class="normal">409</span>
 <span class="normal">410</span>
-<span class="normal">411</span>
-<span class="normal">412</span>
-<span class="normal">413</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Citation</span><span class="p">:</span>
+<span class="normal">411</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Citation</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check the given text against each of the citator&#39;s templates and</span>
 <span class="sd">    return the first citation detected, or None.</span>
@@ -1790,43 +2103,42 @@ regexes.</p>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
-<h3 id="citeurl.citator.Citator.from_yaml" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">from_yaml</span><span class="p">(</span><span class="n">yaml</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
+<h2 id="citeurl.Citator.from_yaml" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">from_yaml</span><span class="p">(</span><span class="n">yaml</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h3>
+</h2>
 
 
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Create a citator from scratch (i.e. without the default
 templates) by loading templates from the specified YAML string.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">374</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
 <span class="normal">375</span>
 <span class="normal">376</span>
 <span class="normal">377</span>
 <span class="normal">378</span>
 <span class="normal">379</span>
-<span class="normal">380</span>
-<span class="normal">381</span>
-<span class="normal">382</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">380</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_yaml</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a citator from scratch (i.e. without the default</span>
@@ -1836,28 +2148,28 @@ templates) by loading templates from the specified YAML string.</p>
     <span class="n">citator</span><span class="o">.</span><span class="n">load_yaml</span><span class="p">(</span><span class="n">yaml</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">citator</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
-<h3 id="citeurl.citator.Citator.insert_links" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">insert_links</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;citation&#39;</span><span class="p">},</span> <span class="n">add_title</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">URL_optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redundant_links</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">id_breaks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore_markup</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+<h2 id="citeurl.Citator.insert_links" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">insert_links</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;citation&#39;</span><span class="p">},</span> <span class="n">add_title</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">URL_optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redundant_links</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">id_breaks</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore_markup</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">markup_format</span><span class="o">=</span><span class="s1">&#39;html&#39;</span><span class="p">)</span></code>
+
+</h2>
 
 
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Scan a text for citations, and return a text with each citation
 converted to a hyperlink.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -1875,7 +2187,11 @@ converted to a hyperlink.</p>
           <td>
                 <code>str</code>
           </td>
-          <td><p>the string to scan for citations.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>the string to scan for citations.</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -1885,7 +2201,12 @@ converted to a hyperlink.</p>
           <td>
                 <code>dict</code>
           </td>
-          <td><p>various HTML link attributes to give to each link</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>various HTML link attributes to give to each link.
+Only relevant when markup_format is html</p>
+            </div>
+          </td>
           <td>
                 <code>{&#39;class&#39;: &#39;citation&#39;}</code>
           </td>
@@ -1895,7 +2216,12 @@ converted to a hyperlink.</p>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>whether to use citation.name for link titles</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>whether to use citation.name for link titles.
+Only relevant when markup_format is html</p>
+            </div>
+          </td>
           <td>
                 <code>True</code>
           </td>
@@ -1905,8 +2231,14 @@ converted to a hyperlink.</p>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>whether to insert a hyperlink even when the
-citation does not have an associated URL</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>whether to insert an <a> element even when the
+citation does not have an associated URL. Only relevant
+when markup_format is html; in markdown a link needs a
+URL.</p>
+            </div>
+          </td>
           <td>
                 <code>False</code>
           </td>
@@ -1916,8 +2248,12 @@ citation does not have an associated URL</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>whether to insert a hyperlink if it would
-point to the same URL as the previous link</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>whether to insert a hyperlink if it would
+point to the same URL as the previous link</p>
+            </div>
+          </td>
           <td>
                 <code>True</code>
           </td>
@@ -1925,10 +2261,14 @@ point to the same URL as the previous link</p></td>
         <tr>
           <td><code>id_breaks</code></td>
           <td>
-                <code>re.<span title="re.Pattern">Pattern</span></code>
+                <code><span title="re.Pattern">Pattern</span></code>
           </td>
-          <td><p>wherever this regex appears, interrupt chains of
-"Id."-type citations.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>wherever this regex appears, interrupt chains of
+"Id."-style citations.</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
@@ -1938,15 +2278,36 @@ point to the same URL as the previous link</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>whether to preprocess and postprocess the
+          <td>
+            <div class="doc-md-description">
+              <p>whether to preprocess and postprocess the
 text so that CiteURL can detect citations even when
-they contain inline markup, like "<i>Id.</i> at 32"</p></td>
+they contain inline markup, like "<i>Id.</i> at 32"</p>
+            </div>
+          </td>
           <td>
                 <code>True</code>
           </td>
         </tr>
+        <tr>
+          <td><code>markup_format</code></td>
+          <td>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Either 'html' or 'markdown'. Determines
+what markup to ignore, and also what format to use
+for inserted links.</p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;html&#39;</code>
+          </td>
+        </tr>
     </tbody>
   </table>
+
+
 
   <p><strong>Returns:</strong></p>
   <table>
@@ -1961,14 +2322,20 @@ they contain inline markup, like "<i>Id.</i> at 32"</p></td>
           <td>
                 <code>str</code>
           </td>
-          <td><p>text, with an HTML <code>a</code> element for each citation.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>text, with an HTML <code>a</code> element for each citation.</p>
+            </div>
+          </td>
         </tr>
     </tbody>
   </table>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">511</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">509</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
 <span class="normal">512</span>
 <span class="normal">513</span>
 <span class="normal">514</span>
@@ -2071,7 +2438,20 @@ they contain inline markup, like "<i>Id.</i> at 32"</p></td>
 <span class="normal">611</span>
 <span class="normal">612</span>
 <span class="normal">613</span>
-<span class="normal">614</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">insert_links</span><span class="p">(</span>
+<span class="normal">614</span>
+<span class="normal">615</span>
+<span class="normal">616</span>
+<span class="normal">617</span>
+<span class="normal">618</span>
+<span class="normal">619</span>
+<span class="normal">620</span>
+<span class="normal">621</span>
+<span class="normal">622</span>
+<span class="normal">623</span>
+<span class="normal">624</span>
+<span class="normal">625</span>
+<span class="normal">626</span>
+<span class="normal">627</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">insert_links</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">attrs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;citation&#39;</span><span class="p">},</span>
@@ -2080,6 +2460,7 @@ they contain inline markup, like "<i>Id.</i> at 32"</p></td>
     <span class="n">redundant_links</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">id_breaks</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">ignore_markup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">markup_format</span> <span class="o">=</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Scan a text for citations, and return a text with each citation</span>
@@ -2087,17 +2468,24 @@ they contain inline markup, like "<i>Id.</i> at 32"</p></td>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">        text: the string to scan for citations.</span>
-<span class="sd">        attrs: various HTML link attributes to give to each link</span>
-<span class="sd">        add_title: whether to use citation.name for link titles</span>
-<span class="sd">        URL_optional: whether to insert a hyperlink even when the</span>
-<span class="sd">            citation does not have an associated URL</span>
+<span class="sd">        attrs: various HTML link attributes to give to each link.</span>
+<span class="sd">            Only relevant when markup_format is html</span>
+<span class="sd">        add_title: whether to use citation.name for link titles.</span>
+<span class="sd">            Only relevant when markup_format is html</span>
+<span class="sd">        URL_optional: whether to insert an &lt;a&gt; element even when the</span>
+<span class="sd">            citation does not have an associated URL. Only relevant</span>
+<span class="sd">            when markup_format is html; in markdown a link needs a</span>
+<span class="sd">            URL.</span>
 <span class="sd">        redundant_links: whether to insert a hyperlink if it would</span>
 <span class="sd">            point to the same URL as the previous link</span>
 <span class="sd">        id_breaks: wherever this regex appears, interrupt chains of</span>
-<span class="sd">            &quot;Id.&quot;-type citations.</span>
+<span class="sd">            &quot;Id.&quot;-style citations.</span>
 <span class="sd">        ignore_markup: whether to preprocess and postprocess the</span>
 <span class="sd">            text so that CiteURL can detect citations even when</span>
 <span class="sd">            they contain inline markup, like &quot;&lt;i&gt;Id.&lt;/i&gt; at 32&quot;</span>
+<span class="sd">        markup_format: Either &#39;html&#39; or &#39;markdown&#39;. Determines</span>
+<span class="sd">            what markup to ignore, and also what format to use</span>
+<span class="sd">            for inserted links.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        text, with an HTML `a` element for each citation. </span>
@@ -2113,26 +2501,30 @@ they contain inline markup, like "<i>Id.</i> at 32"</p></td>
 
     <span class="n">last_URL</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">cite</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_cites</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">id_breaks</span> <span class="o">=</span> <span class="n">id_breaks</span><span class="p">):</span>
-        <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">URL_optional</span><span class="p">:</span>
-            <span class="k">continue</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">redundant_links</span> <span class="ow">and</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span> <span class="o">==</span> <span class="n">last_URL</span><span class="p">:</span>
-            <span class="k">continue</span>
-        <span class="k">if</span> <span class="n">add_title</span><span class="p">:</span>
-            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cite</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">if</span> <span class="n">markup_format</span> <span class="o">==</span> <span class="s1">&#39;html&#39;</span><span class="p">:</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">URL_optional</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">redundant_links</span> <span class="ow">and</span> <span class="n">cite</span><span class="o">.</span><span class="n">URL</span> <span class="o">==</span> <span class="n">last_URL</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">add_title</span><span class="p">:</span>
+                <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cite</span><span class="o">.</span><span class="n">name</span>
 
-        <span class="n">attr_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
-            <span class="sa">f</span><span class="s1">&#39; </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">=&quot;</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
-            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span>
-        <span class="p">])</span>
-        <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&lt;a</span><span class="si">{</span><span class="n">attr_str</span><span class="si">}</span><span class="s1">&gt;</span><span class="si">{</span><span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s1">&lt;/a&gt;&#39;</span>
+            <span class="n">attr_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+                <span class="sa">f</span><span class="s1">&#39; </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">=&quot;</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span>
+            <span class="p">])</span>
+            <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&lt;a</span><span class="si">{</span><span class="n">attr_str</span><span class="si">}</span><span class="s1">&gt;</span><span class="si">{</span><span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s1">&lt;/a&gt;&#39;</span>
+        <span class="k">elif</span> <span class="n">markup_format</span> <span class="o">==</span> <span class="s1">&#39;markdown&#39;</span><span class="p">:</span>
+            <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;[</span><span class="si">{</span><span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s1">](</span><span class="si">{</span><span class="n">cite</span><span class="o">.</span><span class="n">URL</span><span class="si">}</span><span class="s1">)&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
-        <span class="n">cite_offset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">link</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-
+        <span class="n">cite_offset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">link</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>   
         <span class="n">cite_offsets</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
             <span class="n">cite</span><span class="o">.</span><span class="n">span</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="c1"># beginning of citation</span>
-            <span class="n">cite_offset</span><span class="p">,</span>
-            <span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+            <span class="n">cite_offset</span><span class="p">,</span>  <span class="c1"># length the citation markup adds</span>
+            <span class="n">cite</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>    <span class="c1"># the text that was picked up as citation</span>
         <span class="p">))</span>
 
         <span class="n">span</span> <span class="o">=</span> <span class="p">(</span>
@@ -2161,10 +2553,13 @@ they contain inline markup, like "<i>Id.</i> at 32"</p></td>
                     <span class="k">if</span> <span class="n">tag_start</span> <span class="o">&gt;=</span> <span class="n">cite_end</span><span class="p">:</span>
                         <span class="n">running_offset</span> <span class="o">+=</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                         <span class="n">cite_offsets</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-                    <span class="c1"># otherwise, don&#39;t offset by the length of</span>
-                    <span class="c1"># the cite&#39;s closing &lt;/a&gt; tag (length of 4)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">temp_offset</span> <span class="o">=</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">4</span>
+                        <span class="c1"># reduce offset by length of a closing tag,</span>
+                        <span class="c1"># either &#39;&lt;/a&gt;&#39; for html or &#39;)&#39; for markdown</span>
+                        <span class="k">if</span> <span class="n">markup_format</span> <span class="o">==</span> <span class="s1">&#39;html&#39;</span><span class="p">:</span>
+                            <span class="n">temp_offset</span> <span class="o">=</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">4</span>
+                        <span class="k">elif</span> <span class="n">markup_format</span> <span class="o">==</span> <span class="s1">&#39;markdown&#39;</span><span class="p">:</span>
+                            <span class="n">temp_offset</span> <span class="o">=</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
                         <span class="k">break</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">break</span>
@@ -2176,29 +2571,29 @@ they contain inline markup, like "<i>Id.</i> at 32"</p></td>
 
     <span class="k">return</span> <span class="n">text</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
-<h3 id="citeurl.citator.Citator.list_authorities" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">list_authorities</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">ignored_tokens</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subsection&#39;</span><span class="p">,</span> <span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="s1">&#39;pincite&#39;</span><span class="p">,</span> <span class="s1">&#39;paragraph&#39;</span><span class="p">],</span> <span class="n">known_authorities</span><span class="o">=</span><span class="p">[],</span> <span class="n">sort_by_cites</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">id_breaks</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<h2 id="citeurl.Citator.list_authorities" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">list_authorities</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">ignored_tokens</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;subsection&#39;</span><span class="p">,</span> <span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="s1">&#39;pincite&#39;</span><span class="p">,</span> <span class="s1">&#39;paragraph&#39;</span><span class="p">],</span> <span class="n">known_authorities</span><span class="o">=</span><span class="p">[],</span> <span class="n">sort_by_cites</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">id_breaks</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h2>
 
 
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Find each distinct authority mentioned in the given text, and 
 return Authority objects whose <code>citations</code> attribute lists the
 references to each.</p>
+
+
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -2216,7 +2611,11 @@ references to each.</p>
           <td>
                 <code>str</code>
           </td>
-          <td><p>The string to be scanned for citations</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>The string to be scanned for citations</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -2225,10 +2624,14 @@ references to each.</p>
           <td><code>ignored_tokens</code></td>
           <td>
           </td>
-          <td><p>the names of tokens whose values are
+          <td>
+            <div class="doc-md-description">
+              <p>the names of tokens whose values are
 irrelevant to whether the citation matches an authority,
 because they  just designate portions within a single
-authority</p></td>
+authority</p>
+            </div>
+          </td>
           <td>
                 <code>[&#39;subsection&#39;, &#39;clause&#39;, &#39;pincite&#39;, &#39;paragraph&#39;]</code>
           </td>
@@ -2238,8 +2641,12 @@ authority</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>Whether to sort the resulting list of
-authorities by the number of citations to each one</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to sort the resulting list of
+authorities by the number of citations to each one</p>
+            </div>
+          </td>
           <td>
                 <code>True</code>
           </td>
@@ -2247,9 +2654,11 @@ authorities by the number of citations to each one</p></td>
     </tbody>
   </table>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">481</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
 <span class="normal">482</span>
 <span class="normal">483</span>
 <span class="normal">484</span>
@@ -2275,9 +2684,7 @@ authorities by the number of citations to each one</p></td>
 <span class="normal">504</span>
 <span class="normal">505</span>
 <span class="normal">506</span>
-<span class="normal">507</span>
-<span class="normal">508</span>
-<span class="normal">509</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list_authorities</span><span class="p">(</span>
+<span class="normal">507</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list_authorities</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">ignored_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;subsection&#39;</span><span class="p">,</span> <span class="s1">&#39;clause&#39;</span><span class="p">,</span> <span class="s1">&#39;pincite&#39;</span><span class="p">,</span> <span class="s1">&#39;paragraph&#39;</span><span class="p">],</span>
@@ -2307,26 +2714,24 @@ authorities by the number of citations to each one</p></td>
         <span class="n">sort_by_cites</span> <span class="o">=</span> <span class="n">sort_by_cites</span><span class="p">,</span>
     <span class="p">)</span>        
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
-<h3 id="citeurl.citator.Citator.list_cites" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">list_cites</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">id_breaks</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<h2 id="citeurl.Citator.list_cites" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">list_cites</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">id_breaks</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h2>
 
 
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Find all citations in the given text, whether longform,
 shortform, or idform. They will be listed in order of
 appearance. If any two citations overlap, the shorter one will
@@ -2336,9 +2741,11 @@ of id-form citations. This is helpful for handling unrecognized
 citations that would otherwise cause CiteURL's notion of "id."
 to get out of sync with what the text is talking about.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">415</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
 <span class="normal">416</span>
 <span class="normal">417</span>
 <span class="normal">418</span>
@@ -2400,9 +2807,7 @@ to get out of sync with what the text is talking about.</p>
 <span class="normal">474</span>
 <span class="normal">475</span>
 <span class="normal">476</span>
-<span class="normal">477</span>
-<span class="normal">478</span>
-<span class="normal">479</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list_cites</span><span class="p">(</span>
+<span class="normal">477</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list_cites</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">id_breaks</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2468,40 +2873,38 @@ to get out of sync with what the text is talking about.</p>
     <span class="n">_sort_and_remove_overlaps</span><span class="p">(</span><span class="n">citations</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">citations</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
-<h3 id="citeurl.citator.Citator.load_yaml" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">load_yaml</span><span class="p">(</span><span class="n">yaml</span><span class="p">)</span></code>
+<h2 id="citeurl.Citator.load_yaml" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">load_yaml</span><span class="p">(</span><span class="n">yaml</span><span class="p">)</span></code>
+
+</h2>
 
 
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Load templates from the given YAML, overwriting any existing
 templates with the same name.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">389</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
 <span class="normal">390</span>
 <span class="normal">391</span>
 <span class="normal">392</span>
 <span class="normal">393</span>
 <span class="normal">394</span>
-<span class="normal">395</span>
-<span class="normal">396</span>
-<span class="normal">397</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="normal">395</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">load_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load templates from the given YAML, overwriting any existing</span>
 <span class="sd">    templates with the same name.</span>
@@ -2511,63 +2914,62 @@ templates with the same name.</p>
             <span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">inheritables</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">templates</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
-<h3 id="citeurl.citator.Citator.to_yaml" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">to_yaml</span><span class="p">()</span></code>
+<h2 id="citeurl.Citator.to_yaml" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">to_yaml</span><span class="p">()</span></code>
+
+</h2>
 
 
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Save this citator to a YAML string to load later</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">384</span>
-<span class="normal">385</span>
-<span class="normal">386</span>
-<span class="normal">387</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="s2">&quot;Save this citator to a YAML string to load later&quot;</span>
     <span class="n">yamls</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">to_yaml</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
     <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">yamls</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
 
   </div>
 
 
+</div><h2 id="citation">Citation</h2>
+
+
+<div class="doc doc-object doc-class">
 
 
 
-  </div>
+<a id="citeurl.Citation"></a>
+  <div class="doc doc-contents first">
 
-    </div>
-
-  </div>
-
-<h2 id="citation">Citation</h2>
-
-
-  <div class="doc doc-object doc-class">
-
-
-    <div class="doc doc-contents first">
-
-
+  
       <p>A legal reference found in text.</p>
+
+
 
   <p><strong>Attributes:</strong></p>
   <table>
@@ -2580,87 +2982,126 @@ templates with the same name.</p>
     </thead>
     <tbody>
         <tr>
-          <td><code>tokens</code></td>
+          <td><code><span title="citeurl.Citation.tokens">tokens</span></code></td>
           <td>
           </td>
-          <td><p>dictionary of the values that define this citation, such
+          <td>
+            <div class="doc-md-description">
+              <p>dictionary of the values that define this citation, such
 as its volume and page number, or its title, section, and
-subsection, etc</p></td>
+subsection, etc</p>
+            </div>
+          </td>
         </tr>
         <tr>
-          <td><code>URL</code></td>
+          <td><code><span title="citeurl.Citation.URL">URL</span></code></td>
           <td>
                 <code>str</code>
           </td>
-          <td><p>the location, if any, where this citation can be found
-online, defined by the template's URL_builder</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>the location, if any, where this citation can be found
+online, defined by the template's URL_builder</p>
+            </div>
+          </td>
         </tr>
         <tr>
-          <td><code>name</code></td>
+          <td><code><span title="citeurl.Citation.name">name</span></code></td>
           <td>
                 <code>str</code>
           </td>
-          <td><p>a uniform, human-readable representation of this citation,
-written by the template's name_builder</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>a uniform, human-readable representation of this citation,
+written by the template's name_builder</p>
+            </div>
+          </td>
         </tr>
         <tr>
-          <td><code>text</code></td>
+          <td><code><span title="citeurl.Citation.text">text</span></code></td>
           <td>
           </td>
-          <td><p>the actual text of this citation as found in the source
-text</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>the actual text of this citation as found in the source
+text</p>
+            </div>
+          </td>
         </tr>
         <tr>
-          <td><code>source_text</code></td>
+          <td><code><span title="citeurl.Citation.source_text">source_text</span></code></td>
           <td>
           </td>
-          <td><p>the full text that this citation was found in</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>the full text that this citation was found in</p>
+            </div>
+          </td>
         </tr>
         <tr>
-          <td><code>template</code></td>
+          <td><code><span title="citeurl.Citation.template">template</span></code></td>
           <td>
           </td>
-          <td><p>the template whose regexes found this citation or its
-parent</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>the template whose regexes found this citation or its
+parent</p>
+            </div>
+          </td>
         </tr>
         <tr>
-          <td><code>parent</code></td>
+          <td><code><span title="citeurl.Citation.parent">parent</span></code></td>
           <td>
           </td>
-          <td><p>the earlier citation, if any, that this citation is a
-shortform or idform child of</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>the earlier citation, if any, that this citation is a
+shortform or idform child of</p>
+            </div>
+          </td>
         </tr>
         <tr>
-          <td><code>raw_tokens</code></td>
+          <td><code><span title="citeurl.Citation.raw_tokens">raw_tokens</span></code></td>
           <td>
           </td>
-          <td><p>dictionary of tokens as captured in the original
+          <td>
+            <div class="doc-md-description">
+              <p>dictionary of tokens as captured in the original
 regex match, before normalization. Note that for child
 citations, raw_tokens will include any raw_tokens inferred
-from the parent citation.</p></td>
+from the parent citation.</p>
+            </div>
+          </td>
         </tr>
         <tr>
-          <td><code>idform_regexes</code></td>
+          <td><code><span title="citeurl.Citation.idform_regexes">idform_regexes</span></code></td>
           <td>
           </td>
-          <td><p>list of regex pattern objects to find child
+          <td>
+            <div class="doc-md-description">
+              <p>list of regex pattern objects to find child
 citations later in the text, valid until the next different
-citation appears.</p></td>
+citation appears.</p>
+            </div>
+          </td>
         </tr>
         <tr>
-          <td><code>shortform_regexes</code></td>
+          <td><code><span title="citeurl.Citation.shortform_regexes">shortform_regexes</span></code></td>
           <td>
           </td>
-          <td><p>list of regex pattern objects to find
-child citations anywhere in the subsequent text</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>list of regex pattern objects to find
+child citations anywhere in the subsequent text</p>
+            </div>
+          </td>
         </tr>
     </tbody>
   </table>
 
-
-          <details class="quote">
-            <summary>Source code in <code>citeurl/citation.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 10</span>
+            <details class="quote">
+              <summary>Source code in <code>citeurl/citation.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 10</span>
 <span class="normal"> 11</span>
 <span class="normal"> 12</span>
 <span class="normal"> 13</span>
@@ -3122,9 +3563,9 @@ child citations anywhere in the subsequent text</p></td>
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
+            </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -3137,37 +3578,27 @@ child citations anywhere in the subsequent text</p></td>
 
 
 
+<div class="doc doc-object doc-function">
 
 
 
+<h2 id="citeurl.Citation.__contains__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__contains__</span><span class="p">(</span><span class="n">other_cite</span><span class="p">)</span></code>
+
+</h2>
 
 
-
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="citeurl.citation.Citation.__contains__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__contains__</span><span class="p">(</span><span class="n">other_cite</span><span class="p">)</span></code>
-
-
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Returns True if both citations are from templates with the same
 name, and the only difference between their tokens is that the
 other one has a more specific (i.e. higher-indexed) token than
 any of this one's. Severable tokens are considered a match if
 the other token's value <em>starts with</em> this one's.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citation.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">203</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citation.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">203</span>
 <span class="normal">204</span>
 <span class="normal">205</span>
 <span class="normal">206</span>
@@ -3217,32 +3648,30 @@ the other token's value <em>starts with</em> this one's.</p>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
-<h3 id="citeurl.citation.Citation.__eq__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__eq__</span><span class="p">(</span><span class="n">other_cite</span><span class="p">)</span></code>
+<h2 id="citeurl.Citation.__eq__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__eq__</span><span class="p">(</span><span class="n">other_cite</span><span class="p">)</span></code>
+
+</h2>
 
 
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Returns True if both citations are from templates with the same
 name, and they have the exact same token values.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citation.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">229</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citation.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">229</span>
 <span class="normal">230</span>
 <span class="normal">231</span>
 <span class="normal">232</span>
@@ -3260,45 +3689,37 @@ name, and they have the exact same token values.</p>
         <span class="ow">and</span> <span class="n">other_cite</span><span class="o">.</span><span class="n">tokens</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokens</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
-
-
-
-
-
-
-
-
-
+</div>
 
 
 
   </div>
 
-    </div>
-
   </div>
 
-<h2 id="template">Template</h2>
+
+</div><h2 id="template">Template</h2>
 
 
-  <div class="doc doc-object doc-class">
+<div class="doc doc-object doc-class">
 
 
-    <div class="doc doc-contents first">
 
+<a id="citeurl.Template"></a>
+  <div class="doc doc-contents first">
 
+  
       <p>A pattern to recognize a single kind of citation and extract
 information from it.</p>
 
-
-          <details class="quote">
-            <summary>Source code in <code>citeurl/citator.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 18</span>
+            <details class="quote">
+              <summary>Source code in <code>citeurl/citator.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
 <span class="normal"> 19</span>
 <span class="normal"> 20</span>
 <span class="normal"> 21</span>
@@ -3598,9 +4019,7 @@ information from it.</p>
 <span class="normal">315</span>
 <span class="normal">316</span>
 <span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span>
-<span class="normal">320</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Template</span><span class="p">:</span>
+<span class="normal">318</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Template</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A pattern to recognize a single kind of citation and extract</span>
 <span class="sd">    information from it.</span>
@@ -3904,9 +4323,9 @@ information from it.</p>
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_template</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="nb">repr</span><span class="p">(</span><span class="n">other_template</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
+            </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -3919,24 +4338,19 @@ information from it.</p>
 
 
 
+<div class="doc doc-object doc-function">
 
 
 
+<h2 id="citeurl.Template.__init__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">tokens</span><span class="o">=</span><span class="p">{},</span> <span class="n">meta</span><span class="o">=</span><span class="p">{},</span> <span class="n">patterns</span><span class="o">=</span><span class="p">[],</span> <span class="n">broad_patterns</span><span class="o">=</span><span class="p">[],</span> <span class="n">shortform_patterns</span><span class="o">=</span><span class="p">[],</span> <span class="n">idform_patterns</span><span class="o">=</span><span class="p">[],</span> <span class="n">name_builder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">URL_builder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inherit_template</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h2>
 
 
+  <div class="doc doc-contents ">
+  
 
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="citeurl.citator.Template.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">tokens</span><span class="o">=</span><span class="p">{},</span> <span class="n">meta</span><span class="o">=</span><span class="p">{},</span> <span class="n">patterns</span><span class="o">=</span><span class="p">[],</span> <span class="n">broad_patterns</span><span class="o">=</span><span class="p">[],</span> <span class="n">shortform_patterns</span><span class="o">=</span><span class="p">[],</span> <span class="n">idform_patterns</span><span class="o">=</span><span class="p">[],</span> <span class="n">name_builder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">URL_builder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">inherit_template</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-
-
-</h3>
-
-
-    <div class="doc doc-contents ">
 
 
   <p><strong>Parameters:</strong></p>
@@ -3955,7 +4369,11 @@ information from it.</p>
           <td>
                 <code>str</code>
           </td>
-          <td><p>the name of this template</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>the name of this template</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -3963,14 +4381,18 @@ information from it.</p>
         <tr>
           <td><code>tokens</code></td>
           <td>
-                <code>dict[str, <span title="citeurl.tokens.TokenType">TokenType</span>]</code>
+                <code>dict[str, <a class="autorefs autorefs-internal" title="citeurl.tokens.TokenType" href="#citeurl.TokenType">TokenType</a>]</code>
           </td>
-          <td><p>The full dictionary of TokenTypes that citations from
+          <td>
+            <div class="doc-md-description">
+              <p>The full dictionary of TokenTypes that citations from
 this template can contain. These must be listed in order
 from least-specific to most. For instance, the U.S.
 Constitution's template puts 'article' before 'section'
 before 'clause', because articles contain sections, and
-sections contain clauses.</p></td>
+sections contain clauses.</p>
+            </div>
+          </td>
           <td>
                 <code>{}</code>
           </td>
@@ -3980,7 +4402,9 @@ sections contain clauses.</p></td>
           <td>
                 <code>list[str]</code>
           </td>
-          <td><p>Patterns are essentially regexes to recognize
+          <td>
+            <div class="doc-md-description">
+              <p>Patterns are essentially regexes to recognize
 recognize long-form citations to this template. However,
 wherever a token would appear in the regex, it should be
 replaced by the name of the token, enclosed in curly
@@ -3988,7 +4412,9 @@ braces.</p>
 <p>Patterns are matched in the order that they are listed,
 so if there is a pattern that can only find a subset of
 tokens, it should be listed after the more-complete
-pattern so that the better match won't be precluded.</p></td>
+pattern so that the better match won't be precluded.</p>
+            </div>
+          </td>
           <td>
                 <code>[]</code>
           </td>
@@ -3998,11 +4424,15 @@ pattern so that the better match won't be precluded.</p></td>
           <td>
                 <code>list[str]</code>
           </td>
-          <td><p>Same as <code>patterns</code>, except that they will
+          <td>
+            <div class="doc-md-description">
+              <p>Same as <code>patterns</code>, except that they will
 only be used in contexts like search engines, where
 convenience is more important than avoiding false
 positive matches. When used, they will be used in
-addition to the normal patterns.</p></td>
+addition to the normal patterns.</p>
+            </div>
+          </td>
           <td>
                 <code>[]</code>
           </td>
@@ -4012,13 +4442,17 @@ addition to the normal patterns.</p></td>
           <td>
                 <code>list[str]</code>
           </td>
-          <td><p>Same as <code>patterns</code>, but these will only
+          <td>
+            <div class="doc-md-description">
+              <p>Same as <code>patterns</code>, but these will only
 go into effect after a longform citation has been
 recognized. If a shortform pattern includes "same
 TOKEN_NAME" in curly braces, e.g. "{same volume}", the
 bracketed portion will be replaced with the exact text
 of the corresponding <code>raw_token</code> from the long-form
-citation.</p></td>
+citation.</p>
+            </div>
+          </td>
           <td>
                 <code>[]</code>
           </td>
@@ -4028,9 +4462,13 @@ citation.</p></td>
           <td>
                 <code>list[str]</code>
           </td>
-          <td><p>Same as <code>shortform_patterns</code>, except that
+          <td>
+            <div class="doc-md-description">
+              <p>Same as <code>shortform_patterns</code>, except that
 they will only be used to scan text until the next
-different citation occurs.</p></td>
+different citation occurs.</p>
+            </div>
+          </td>
           <td>
                 <code>[]</code>
           </td>
@@ -4038,10 +4476,14 @@ different citation occurs.</p></td>
         <tr>
           <td><code>URL_builder</code></td>
           <td>
-                <code><span title="citeurl.tokens.StringBuilder">StringBuilder</span></code>
+                <code><a class="autorefs autorefs-internal" title="citeurl.tokens.StringBuilder" href="#citeurl.StringBuilder">StringBuilder</a></code>
           </td>
-          <td><p><code>StringBuilder</code> to construct URLs for found
-citations</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p><code>StringBuilder</code> to construct URLs for found
+citations</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
@@ -4049,10 +4491,14 @@ citations</p></td>
         <tr>
           <td><code>name_builder</code></td>
           <td>
-                <code><span title="citeurl.tokens.StringBuilder">StringBuilder</span></code>
+                <code><a class="autorefs autorefs-internal" title="citeurl.tokens.StringBuilder" href="#citeurl.StringBuilder">StringBuilder</a></code>
           </td>
-          <td><p><code>StringBuilder</code> to construct canonical names
-of found citations</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p><code>StringBuilder</code> to construct canonical names
+of found citations</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
@@ -4062,10 +4508,14 @@ of found citations</p></td>
           <td>
                 <code>dict[str, str]</code>
           </td>
-          <td><p>Optional metadata relating to this template. Patterns
+          <td>
+            <div class="doc-md-description">
+              <p>Optional metadata relating to this template. Patterns
 and StringBuilders can access metadata fields as if they
 were tokens, though fields can be overridden by tokens
-with the same name.</p></td>
+with the same name.</p>
+            </div>
+          </td>
           <td>
                 <code>{}</code>
           </td>
@@ -4074,8 +4524,12 @@ with the same name.</p></td>
           <td><code>inherit_template</code></td>
           <td>
           </td>
-          <td><p>another <code>Template</code> whose values this one
-should copy unless expressly overwritten.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>another <code>Template</code> whose values this one
+should copy unless expressly overwritten.</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
@@ -4083,9 +4537,11 @@ should copy unless expressly overwritten.</p></td>
     </tbody>
   </table>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 23</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
 <span class="normal"> 24</span>
 <span class="normal"> 25</span>
 <span class="normal"> 26</span>
@@ -4221,9 +4677,7 @@ should copy unless expressly overwritten.</p></td>
 <span class="normal">156</span>
 <span class="normal">157</span>
 <span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">159</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">tokens</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">TokenType</span><span class="p">]</span> <span class="o">=</span> <span class="p">{},</span>
@@ -4363,35 +4817,33 @@ should copy unless expressly overwritten.</p></td>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">idform_patterns</span>
     <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
+
+
+<div class="doc doc-object doc-function">
 
 
 
+<h2 id="citeurl.Template.cite" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">cite</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span></code>
 
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="citeurl.citator.Template.cite" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">cite</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span></code>
+</h2>
 
 
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Return the first citation that matches this template. If 'broad'
 is True, case-insensitive matching and broad regex patterns will
 be used. If no matches are found, return None.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">254</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
 <span class="normal">255</span>
 <span class="normal">256</span>
 <span class="normal">257</span>
@@ -4403,9 +4855,7 @@ be used. If no matches are found, return None.</p>
 <span class="normal">263</span>
 <span class="normal">264</span>
 <span class="normal">265</span>
-<span class="normal">266</span>
-<span class="normal">267</span>
-<span class="normal">268</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">span</span><span class="p">:</span> <span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span> <span class="o">-&gt;</span> <span class="n">Citation</span><span class="p">:</span>
+<span class="normal">266</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">span</span><span class="p">:</span> <span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span> <span class="o">-&gt;</span> <span class="n">Citation</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return the first citation that matches this template. If &#39;broad&#39;</span>
 <span class="sd">    is True, case-insensitive matching and broad regex patterns will</span>
@@ -4421,35 +4871,36 @@ be used. If no matches are found, return None.</p>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
-<h3 id="citeurl.citator.Template.from_dict" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">inheritables</span><span class="o">=</span><span class="p">{})</span></code>
-
-  <span class="doc doc-properties">
+<h2 id="citeurl.Template.from_dict" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">inheritables</span><span class="o">=</span><span class="p">{})</span></code>
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h3>
+</h2>
 
 
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Return a template from a dictionary of values, like a dictionary
 created by parsing a template from YAML format.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">163</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
 <span class="normal">164</span>
 <span class="normal">165</span>
 <span class="normal">166</span>
@@ -4504,9 +4955,7 @@ created by parsing a template from YAML format.</p>
 <span class="normal">215</span>
 <span class="normal">216</span>
 <span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="normal">218</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
 <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">inheritables</span><span class="p">:</span> <span class="nb">dict</span><span class="o">=</span><span class="p">{}):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return a template from a dictionary of values, like a dictionary</span>
@@ -4565,32 +5014,32 @@ created by parsing a template from YAML format.</p>
     <span class="p">}</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">values</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
-<h3 id="citeurl.citator.Template.list_longform_cites" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">list_longform_cites</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span></code>
+<h2 id="citeurl.Template.list_longform_cites" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">list_longform_cites</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span></code>
+
+</h2>
 
 
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>Get a list of all long-form citations to this template found in
 the given text.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">270</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
 <span class="normal">271</span>
 <span class="normal">272</span>
 <span class="normal">273</span>
@@ -4600,9 +5049,7 @@ the given text.</p>
 <span class="normal">277</span>
 <span class="normal">278</span>
 <span class="normal">279</span>
-<span class="normal">280</span>
-<span class="normal">281</span>
-<span class="normal">282</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list_longform_cites</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">span</span><span class="p">:</span> <span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,)):</span>
+<span class="normal">280</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list_longform_cites</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">span</span><span class="p">:</span> <span class="nb">tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,)):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get a list of all long-form citations to this template found in</span>
 <span class="sd">    the given text.</span>
@@ -4616,31 +5063,31 @@ the given text.</p>
             <span class="k">continue</span>
     <span class="k">return</span> <span class="n">cites</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
-<h3 id="citeurl.citator.Template.to_dict" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
+<h2 id="citeurl.Template.to_dict" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
+
+</h2>
 
 
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>save this Template to a dictionary of values</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">222</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
 <span class="normal">223</span>
 <span class="normal">224</span>
 <span class="normal">225</span>
@@ -4660,9 +5107,7 @@ the given text.</p>
 <span class="normal">239</span>
 <span class="normal">240</span>
 <span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="normal">242</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="s2">&quot;save this Template to a dictionary of values&quot;</span>
     <span class="n">output</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
@@ -4686,37 +5131,35 @@ the given text.</p>
 
     <span class="k">return</span> <span class="n">spaced_output</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
-<h3 id="citeurl.citator.Template.to_yaml" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">to_yaml</span><span class="p">()</span></code>
+<h2 id="citeurl.Template.to_yaml" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">to_yaml</span><span class="p">()</span></code>
+
+</h2>
 
 
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>save this Template to a YAML string</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">246</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
 <span class="normal">247</span>
 <span class="normal">248</span>
 <span class="normal">249</span>
-<span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">250</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="s2">&quot;save this Template to a YAML string&quot;</span>
     <span class="k">return</span> <span class="n">safe_dump</span><span class="p">(</span>
         <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()},</span>
@@ -4724,32 +5167,33 @@ the given text.</p>
         <span class="n">allow_unicode</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
 
   </div>
 
 
+</div><h2 id="tokentype">TokenType</h2>
+
+
+<div class="doc doc-object doc-class">
 
 
 
-  </div>
+<a id="citeurl.TokenType"></a>
+  <div class="doc doc-contents first">
 
-    </div>
-
-  </div>
-
-<h2 id="tokentype">TokenType</h2>
-
-
-  <div class="doc doc-object doc-class">
-
-
-    <div class="doc doc-contents first">
-
-
+  
       <p>These objects represent categories of tokens that might be found in
 a citation.</p>
+
+
 
   <p><strong>Attributes:</strong></p>
   <table>
@@ -4762,46 +5206,61 @@ a citation.</p>
     </thead>
     <tbody>
         <tr>
-          <td><code>regex</code></td>
+          <td><code><span title="citeurl.TokenType.regex">regex</span></code></td>
           <td>
           </td>
-          <td><p>A regular expression that matches the actual text of the
+          <td>
+            <div class="doc-md-description">
+              <p>A regular expression that matches the actual text of the
 token as found in any document, like the "42" in "42 USC §
 1983" or the "Fourteenth" in "The Fourteenth Amendment".
 This regex will automatically be enclosed in a named capture
 group and inserted into any of the template's match patterns
-wherever the token's name appears in curly braces.</p></td>
+wherever the token's name appears in curly braces.</p>
+            </div>
+          </td>
         </tr>
         <tr>
-          <td><code>edits</code></td>
+          <td><code><span title="citeurl.TokenType.edits">edits</span></code></td>
           <td>
           </td>
-          <td><p>Steps to normalize the token as captured in the regex
-into a value that is consistent across multiple styles.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Steps to normalize the token as captured in the regex
+into a value that is consistent across multiple styles.</p>
+            </div>
+          </td>
         </tr>
         <tr>
-          <td><code>default</code></td>
+          <td><code><span title="citeurl.TokenType.default">default</span></code></td>
           <td>
           </td>
-          <td><p>Set the token to this value if it is not found in the
-citation.</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>Set the token to this value if it is not found in the
+citation.</p>
+            </div>
+          </td>
         </tr>
         <tr>
-          <td><code>severable</code></td>
+          <td><code><span title="citeurl.TokenType.severable">severable</span></code></td>
           <td>
           </td>
-          <td><p>If two citations only differ based on this token,
+          <td>
+            <div class="doc-md-description">
+              <p>If two citations only differ based on this token,
 and only because one of the tokens extends longer than the
 other, e.g. "(b)(2)" and "(b)(2)(A)", then <code>severable</code> means
-that the former citation is thought to encompass the latter.</p></td>
+that the former citation is thought to encompass the latter.</p>
+            </div>
+          </td>
         </tr>
     </tbody>
   </table>
 
-
-          <details class="quote">
-            <summary>Source code in <code>citeurl/tokens.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">223</span>
+            <details class="quote">
+              <summary>Source code in <code>citeurl/tokens.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">223</span>
 <span class="normal">224</span>
 <span class="normal">225</span>
 <span class="normal">226</span>
@@ -4959,9 +5418,9 @@ that the former citation is thought to encompass the latter.</p></td>
             <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
+            </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -4974,32 +5433,27 @@ that the former citation is thought to encompass the latter.</p></td>
 
 
 
+<div class="doc doc-object doc-function">
 
 
 
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="citeurl.tokens.TokenType.from_dict" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
+<h2 id="citeurl.TokenType.from_dict" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h3>
+</h2>
 
 
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>load a TokenType from a dictionary of values</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/tokens.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">256</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/tokens.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">256</span>
 <span class="normal">257</span>
 <span class="normal">258</span>
 <span class="normal">259</span>
@@ -5023,32 +5477,29 @@ that the former citation is thought to encompass the latter.</p></td>
         <span class="n">severable</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;severable&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
+
+
+<div class="doc doc-object doc-function">
 
 
 
-  <div class="doc doc-object doc-function">
+<h2 id="citeurl.TokenType.to_dict" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
+
+</h2>
 
 
-
-<h3 id="citeurl.tokens.TokenType.to_dict" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
-
-
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>save this TokenType to a dictionary for storage in YAML format</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/tokens.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">269</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/tokens.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">269</span>
 <span class="normal">270</span>
 <span class="normal">271</span>
 <span class="normal">272</span>
@@ -5072,36 +5523,34 @@ that the former citation is thought to encompass the latter.</p></td>
         <span class="n">output</span><span class="p">[</span><span class="s1">&#39;severable&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">return</span> <span class="n">output</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
 
   </div>
 
 
+</div><h2 id="tokenoperation">TokenOperation</h2>
+
+
+<div class="doc doc-object doc-class">
 
 
 
-  </div>
+<a id="citeurl.TokenOperation"></a>
+  <div class="doc doc-contents first">
 
-    </div>
-
-  </div>
-
-<h2 id="tokenoperation">TokenOperation</h2>
-
-
-  <div class="doc doc-object doc-class">
-
-
-    <div class="doc doc-contents first">
-
-
+  
       <p>A function to perform a predefined string manipulation</p>
 
-
-          <details class="quote">
-            <summary>Source code in <code>citeurl/tokens.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  6</span>
+            <details class="quote">
+              <summary>Source code in <code>citeurl/tokens.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  6</span>
 <span class="normal">  7</span>
 <span class="normal">  8</span>
 <span class="normal">  9</span>
@@ -5531,9 +5980,9 @@ that the former citation is thought to encompass the latter.</p></td>
             <span class="k">return</span> <span class="n">output</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">output</span>
 </code></pre></div></td></tr></table></div>
-          </details>
+            </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -5546,23 +5995,19 @@ that the former citation is thought to encompass the latter.</p></td>
 
 
 
+<div class="doc doc-object doc-function">
 
 
 
+<h2 id="citeurl.TokenOperation.__init__" class="doc doc-heading">
+          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h2>
 
 
-  <div class="doc doc-object doc-function">
+  <div class="doc doc-contents ">
+  
 
-
-
-<h3 id="citeurl.tokens.TokenOperation.__init__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">mandatory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-
-
-</h3>
-
-
-    <div class="doc doc-contents ">
 
 
   <p><strong>Parameters:</strong></p>
@@ -5581,7 +6026,9 @@ that the former citation is thought to encompass the latter.</p></td>
           <td>
                 <code>str</code>
           </td>
-          <td><p>The kind of string manipulation that this operation
+          <td>
+            <div class="doc-md-description">
+              <p>The kind of string manipulation that this operation
 will perform, using the given data. There are a few
 different options:</p>
 <p>'sub': Regex substitution to perform on the text. Needs
@@ -5620,7 +6067,9 @@ different options:</p>
 
 Note that number formatting only works for positive
 whole numbers that do not exceed 40.
-</code></pre></div></td>
+</code></pre></div>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -5629,8 +6078,12 @@ whole numbers that do not exceed 40.
           <td><code>data</code></td>
           <td>
           </td>
-          <td><p>any data that a given action needs specified, as
-described above</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>any data that a given action needs specified, as
+described above</p>
+            </div>
+          </td>
           <td>
               <em>required</em>
           </td>
@@ -5640,8 +6093,12 @@ described above</p></td>
           <td>
                 <code>bool</code>
           </td>
-          <td><p>whether a failed lookup or format action should
-invalidate the entire citation</p></td>
+          <td>
+            <div class="doc-md-description">
+              <p>whether a failed lookup or format action should
+invalidate the entire citation</p>
+            </div>
+          </td>
           <td>
                 <code>True</code>
           </td>
@@ -5651,9 +6108,13 @@ invalidate the entire citation</p></td>
           <td>
                 <code>str</code>
           </td>
-          <td><p>Necessary for operations in StringBuilders. This
+          <td>
+            <div class="doc-md-description">
+              <p>Necessary for operations in StringBuilders. This
 value lets you provide the name of input token to use,
-allowing you to then use the modify_dict() method.</p></td>
+allowing you to then use the modify_dict() method.</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
@@ -5663,9 +6124,13 @@ allowing you to then use the modify_dict() method.</p></td>
           <td>
                 <code>str</code>
           </td>
-          <td><p>If this value is set, modify_dict() will save the
+          <td>
+            <div class="doc-md-description">
+              <p>If this value is set, modify_dict() will save the
 operation's output to the dictionary key with this name
-instead of modifying the input token in place.</p></td>
+instead of modifying the input token in place.</p>
+            </div>
+          </td>
           <td>
                 <code>None</code>
           </td>
@@ -5673,9 +6138,9 @@ instead of modifying the input token in place.</p></td>
     </tbody>
   </table>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/tokens.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  8</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/tokens.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  8</span>
 <span class="normal">  9</span>
 <span class="normal"> 10</span>
 <span class="normal"> 11</span>
@@ -5875,39 +6340,33 @@ instead of modifying the input token in place.</p></td>
     <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">token</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">output</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
+
+
+<div class="doc doc-object doc-function">
 
 
 
-
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="citeurl.tokens.TokenOperation.from_dict" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
+<h2 id="citeurl.TokenOperation.from_dict" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h3>
+</h2>
 
 
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>load a TokenOperation from a dictionary of values</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/tokens.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/tokens.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span>
@@ -5935,32 +6394,30 @@ instead of modifying the input token in place.</p></td>
     <span class="n">output</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;output&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">action_data</span><span class="p">,</span> <span class="n">mandatory</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
-<h3 id="citeurl.tokens.TokenOperation.modify_dict" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">modify_dict</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span></code>
+<h2 id="citeurl.TokenOperation.modify_dict" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">modify_dict</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span></code>
+
+</h2>
 
 
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>apply this operation to a dictionary of tokens,
 editing them as appropriate</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/tokens.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">138</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/tokens.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">138</span>
 <span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span>
@@ -5982,31 +6439,29 @@ editing them as appropriate</p>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">tokens</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">])</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
-<h3 id="citeurl.tokens.TokenOperation.to_dict" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
+<h2 id="citeurl.TokenOperation.to_dict" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
+
+</h2>
 
 
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>save this TokenOperation to a dictionary of values</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/tokens.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">124</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/tokens.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">124</span>
 <span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
@@ -6032,33 +6487,34 @@ editing them as appropriate</p>
 
     <span class="k">return</span> <span class="n">spaced_output</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
 
   </div>
 
 
+</div><h2 id="stringbuilder">StringBuilder</h2>
+
+
+<div class="doc doc-object doc-class">
 
 
 
-  </div>
+<a id="citeurl.StringBuilder"></a>
+  <div class="doc doc-contents first">
 
-    </div>
-
-  </div>
-
-<h2 id="stringbuilder">StringBuilder</h2>
-
-
-  <div class="doc doc-object doc-class">
-
-
-    <div class="doc doc-contents first">
-
-
+  
       <p>A function to take a dictionary of values and use it to construct a
 piece of text from them. This is used for citation templates' name
 builders and URL builders. </p>
+
+
 
   <p><strong>Attributes:</strong></p>
   <table>
@@ -6071,40 +6527,51 @@ builders and URL builders. </p>
     </thead>
     <tbody>
         <tr>
-          <td><code>parts</code></td>
+          <td><code><span title="citeurl.StringBuilder.parts">parts</span></code></td>
           <td>
           </td>
-          <td><p>A list of strings that will be concatenated to create the
+          <td>
+            <div class="doc-md-description">
+              <p>A list of strings that will be concatenated to create the
 string. Parts may contain bracketed references to citations'
 token values as well as templates' metadata. If a part
 references a token whose value is not set, the part will be
-omitted from the created string.</p></td>
+omitted from the created string.</p>
+            </div>
+          </td>
         </tr>
         <tr>
-          <td><code>edits</code></td>
+          <td><code><span title="citeurl.StringBuilder.edits">edits</span></code></td>
           <td>
           </td>
-          <td><p>A list of TokenOperations that will be performed on the
+          <td>
+            <div class="doc-md-description">
+              <p>A list of TokenOperations that will be performed on the
 provided tokens before the string is constructed. If the
 edits have <code>output</code> values, it is possible for them to
 define entirely new tokens for the sole purpose of building
-the string.</p></td>
+the string.</p>
+            </div>
+          </td>
         </tr>
         <tr>
-          <td><code>defaults</code></td>
+          <td><code><span title="citeurl.StringBuilder.defaults">defaults</span></code></td>
           <td>
           </td>
-          <td><p>A dictionary of default token values to use when not
+          <td>
+            <div class="doc-md-description">
+              <p>A dictionary of default token values to use when not
 overwritten by the citation. Generally these are provided by
-the template's meta attribute.</p></td>
+the template's meta attribute.</p>
+            </div>
+          </td>
         </tr>
     </tbody>
   </table>
 
-
-          <details class="quote">
-            <summary>Source code in <code>citeurl/tokens.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">304</span>
+            <details class="quote">
+              <summary>Source code in <code>citeurl/tokens.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">304</span>
 <span class="normal">305</span>
 <span class="normal">306</span>
 <span class="normal">307</span>
@@ -6274,9 +6741,9 @@ the template's meta attribute.</p></td>
             <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
         <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
+            </details>
 
-
+  
 
   <div class="doc doc-children">
 
@@ -6289,31 +6756,27 @@ the template's meta attribute.</p></td>
 
 
 
+<div class="doc doc-object doc-function">
 
 
 
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h3 id="citeurl.tokens.StringBuilder.from_dict" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
-
-  <span class="doc doc-properties">
+<h2 id="citeurl.StringBuilder.from_dict" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">from_dict</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
   </span>
 
-</h3>
+</h2>
 
 
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>load StringBuilder from dictionary of values</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/tokens.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">335</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/tokens.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">335</span>
 <span class="normal">336</span>
 <span class="normal">337</span>
 <span class="normal">338</span>
@@ -6333,31 +6796,29 @@ the template's meta attribute.</p></td>
     <span class="n">defaults</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;defaults&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
     <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">parts</span><span class="p">,</span> <span class="n">edits</span><span class="p">,</span> <span class="n">defaults</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
+</div>
 
 
-  <div class="doc doc-object doc-function">
+<div class="doc doc-object doc-function">
 
 
 
-<h3 id="citeurl.tokens.StringBuilder.to_dict" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
+<h2 id="citeurl.StringBuilder.to_dict" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">to_dict</span><span class="p">()</span></code>
+
+</h2>
 
 
-</h3>
-
-
-    <div class="doc doc-contents ">
-
+  <div class="doc doc-contents ">
+  
       <p>save StringBuilder to a dictionary of values</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/tokens.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">346</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/tokens.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">346</span>
 <span class="normal">347</span>
 <span class="normal">348</span>
 <span class="normal">349</span>
@@ -6369,48 +6830,36 @@ the template's meta attribute.</p></td>
         <span class="n">output</span><span class="p">[</span><span class="s1">&#39;edits&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">op</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edits</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">output</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
 
   </div>
 
 
+</div><h2 id="insert_links">insert_links()</h2>
 
 
 
-  </div>
-
-    </div>
-
-  </div>
-
-<h2 id="insert_links">insert_links()</h2>
+<div class="doc doc-object doc-function">
 
 
-  <div class="doc doc-object doc-function">
 
 
-    <div class="doc doc-contents first">
-
+<a id="citeurl.insert_links"></a>
+  <div class="doc doc-contents first">
+  
       <p>Convenience function to hyperlink all citations in a text. For more
 info, see Citator.insert_links().</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">652</span>
-<span class="normal">653</span>
-<span class="normal">654</span>
-<span class="normal">655</span>
-<span class="normal">656</span>
-<span class="normal">657</span>
-<span class="normal">658</span>
-<span class="normal">659</span>
-<span class="normal">660</span>
-<span class="normal">661</span>
-<span class="normal">662</span>
-<span class="normal">663</span>
-<span class="normal">664</span>
-<span class="normal">665</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">665</span>
 <span class="normal">666</span>
 <span class="normal">667</span>
 <span class="normal">668</span>
@@ -6419,7 +6868,22 @@ info, see Citator.insert_links().</p>
 <span class="normal">671</span>
 <span class="normal">672</span>
 <span class="normal">673</span>
-<span class="normal">674</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">insert_links</span><span class="p">(</span>
+<span class="normal">674</span>
+<span class="normal">675</span>
+<span class="normal">676</span>
+<span class="normal">677</span>
+<span class="normal">678</span>
+<span class="normal">679</span>
+<span class="normal">680</span>
+<span class="normal">681</span>
+<span class="normal">682</span>
+<span class="normal">683</span>
+<span class="normal">684</span>
+<span class="normal">685</span>
+<span class="normal">686</span>
+<span class="normal">687</span>
+<span class="normal">688</span>
+<span class="normal">689</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">insert_links</span><span class="p">(</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">attrs</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;class&#39;</span><span class="p">:</span> <span class="s1">&#39;citation&#39;</span><span class="p">},</span>
     <span class="n">add_title</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -6427,6 +6891,7 @@ info, see Citator.insert_links().</p>
     <span class="n">redundant_links</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">id_breaks</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">ignore_markup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">markup_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;html&#39;</span><span class="p">,</span>
     <span class="n">citator</span><span class="p">:</span> <span class="n">Citator</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -6441,37 +6906,40 @@ info, see Citator.insert_links().</p>
         <span class="n">redundant_links</span> <span class="o">=</span> <span class="n">redundant_links</span><span class="p">,</span>
         <span class="n">id_breaks</span> <span class="o">=</span> <span class="n">id_breaks</span><span class="p">,</span>
         <span class="n">ignore_markup</span> <span class="o">=</span> <span class="n">ignore_markup</span><span class="p">,</span>
+        <span class="n">markup_format</span> <span class="o">=</span> <span class="n">markup_format</span><span class="p">,</span>
     <span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
-<h2 id="cite">cite()</h2>
+</div><h2 id="cite">cite()</h2>
 
 
-  <div class="doc doc-object doc-function">
+
+<div class="doc doc-object doc-function">
 
 
-    <div class="doc doc-contents first">
 
+
+<a id="citeurl.cite"></a>
+  <div class="doc doc-contents first">
+  
       <p>Convenience function to find a single citation in text, or None. See
 Citator.cite() for more info.</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">632</span>
-<span class="normal">633</span>
-<span class="normal">634</span>
-<span class="normal">635</span>
-<span class="normal">636</span>
-<span class="normal">637</span>
-<span class="normal">638</span>
-<span class="normal">639</span>
-<span class="normal">640</span>
-<span class="normal">641</span>
-<span class="normal">642</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cite</span><span class="p">(</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">645</span>
+<span class="normal">646</span>
+<span class="normal">647</span>
+<span class="normal">648</span>
+<span class="normal">649</span>
+<span class="normal">650</span>
+<span class="normal">651</span>
+<span class="normal">652</span>
+<span class="normal">653</span>
+<span class="normal">654</span>
+<span class="normal">655</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cite</span><span class="p">(</span>
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">broad</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">citator</span><span class="p">:</span> <span class="n">Citator</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -6483,31 +6951,33 @@ Citator.cite() for more info.</p>
     <span class="n">citator</span> <span class="o">=</span> <span class="n">citator</span> <span class="ow">or</span> <span class="n">_get_default_citator</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">citator</span><span class="o">.</span><span class="n">cite</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">broad</span><span class="o">=</span><span class="n">broad</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
-<h2 id="list_cites">list_cites()</h2>
+</div><h2 id="list_cites">list_cites()</h2>
 
 
-  <div class="doc doc-object doc-function">
+
+<div class="doc doc-object doc-function">
 
 
-    <div class="doc doc-contents first">
 
+
+<a id="citeurl.list_cites"></a>
+  <div class="doc doc-contents first">
+  
       <p>Convenience function to list all citations in a text. For more info,
 see Citator.list_cites().</p>
 
-        <details class="quote">
-          <summary>Source code in <code>citeurl/citator.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">644</span>
-<span class="normal">645</span>
-<span class="normal">646</span>
-<span class="normal">647</span>
-<span class="normal">648</span>
-<span class="normal">649</span>
-<span class="normal">650</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list_cites</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citator</span><span class="p">:</span> <span class="n">Citator</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">id_breaks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+          <details class="quote">
+            <summary>Source code in <code>citeurl/citator.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">657</span>
+<span class="normal">658</span>
+<span class="normal">659</span>
+<span class="normal">660</span>
+<span class="normal">661</span>
+<span class="normal">662</span>
+<span class="normal">663</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">list_cites</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">citator</span><span class="p">:</span> <span class="n">Citator</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">id_breaks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convenience function to list all citations in a text. For more info,</span>
 <span class="sd">    see Citator.list_cites().</span>
@@ -6515,60 +6985,37 @@ see Citator.list_cites().</p>
     <span class="n">citator</span> <span class="o">=</span> <span class="n">citator</span> <span class="ow">or</span> <span class="n">_get_default_citator</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">citator</span><span class="o">.</span><span class="n">list_cites</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">id_breaks</span><span class="o">=</span><span class="n">id_breaks</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-        </details>
-    </div>
-
+          </details>
   </div>
 
-<h2 id="default_citator">DEFAULT_CITATOR</h2>
+</div><h2 id="default_citator">DEFAULT_CITATOR</h2>
 <p>The <a href="#insert_links">insert_links</a>, <a href="#cite">cite</a>, and <a href="#list_cites">list_cites</a> functions all make use of a built-in <a href="#Citator">citator</a> that is not defined by the library user. By default, this is the citator that is returned when you run <code>Citator()</code>. However, it is possible to add additional templates to this default citator, by installing the wonderful <a href="https://pypi.org/project/appdirs">AppDirs</a> library and placing the templates in one of the following directories:</p>
 <p>Linux: <code>~/.config/citeurl</code></p>
 <p>Mac: <code>~/Library/Preferences/citeurl</code></p>
 <p>Windows 7+: <code>C:\Users\&lt;username&gt;\AppData\Local\raindrum\citeurl</code></p>
 
-              
-            </article>
-          </div>
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
         </div>
         
       </main>
       
         <footer class="md-footer">
-  
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
-      
-        
-        <a href="../frontends/" class="md-footer__link md-footer__link--prev" aria-label="Previous: CiteURL Frontends" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              CiteURL Frontends
-            </div>
-          </div>
-        </a>
-      
-      
-        
-        <a href="../template-yamls/" class="md-footer__link md-footer__link--next" aria-label="Next: Writing Your Own Templates" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Writing Your Own Templates
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -6590,10 +7037,12 @@ see Citator.list_cites().</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": "11.2.1"}</script>
     
     
-      <script src="../assets/javascripts/bundle.a6c66575.min.js"></script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "11.3.0"}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.8fd75fb4.min.js"></script>
       
     
   </body>
