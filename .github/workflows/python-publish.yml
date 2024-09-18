@@ -11,11 +11,15 @@ name: Upload Python Package
 on: push
 
 jobs:
-  deploy:
-
-    runs-on: ubuntu-latest
-
-    steps:
+  pypi-publish:
+  name: upload release to PyPI
+  runs-on: ubuntu-latest
+  environment:
+    name: pypi
+    url: https://pypi.org/p/citeurl
+  permissions:
+    id-token: write
+  steps:
     - uses: actions/checkout@v2
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -27,9 +31,26 @@ jobs:
         pip install build
     - name: Build package
       run: python -m build
-    - name: Publish package
-      uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }}
+    - name: publish package distributions
+      uses: pypa/gh-action-pypi-publish@release/v1
+
+#  deploy:
+#    runs-on: ubuntu-latest
+#    steps:
+#    - uses: actions/checkout@v2
+#    - name: Set up Python
+#      uses: actions/setup-python@v2
+#      with:
+#        python-version: '3.x'
+#    - name: Install dependencies
+#      run: |
+#        python -m pip install --upgrade pip
+#        pip install build
+#    - name: Build package
+#      run: python -m build
+#    - name: Publish package
+#      uses: pypa/gh-action-pypi-#publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+#      with:
+#        user: __token__
+#        password: ${{ secrets.PYPI_API_TOKEN }}
 
