@@ -5,7 +5,7 @@ from re import sub
 from html import escape
 
 # internal imports
-from .resources import format_page, sources_table, SOURCES_INTRO
+from .resources import format_page, sources_table
 from .. import Citator, insert_links
 
 # third-party imports
@@ -20,31 +20,44 @@ _APP = Flask(__name__, static_url_path='')
 ########################################################################
 
 INDEX_PAGE = """
-<h1>{name}</h1><title>{name}</title>
 <div class="narrow">
-<p>Type a legal citation into the box below, and I'll try to send you
-directly to the case or law that it references:</p>
+<p>Paste a <a href="citations">legal citation</a> here, and you can
+go somewhere else on the Web to read what it refereneces:</p>
 <form class="searchbar" method="get">
   <input type="search" required name="s" placeholder="Enter citation..."
   maxlength=400 label="citation search bar"><button type="submit">Go</button>
 </form>
-<p>This web app supports citations to <a href="sources">various sources</a>
-of law. You can also use it to <a href="parser">detect citations</a> in a
-longer text, like a court opinion.</p>
 </div>
 """
 
-SOURCES_PAGE = """
-<h1>Sources of Law</h1><title>Sources of Law</title>
-{intro}
+CITATIONS_PAGE = """
+<h1>Citations</h1><title>Citations</title>
+<div class="left">
+<p>This web app is powered by
+<a href="https://raindrum.github.io/citeurl">CiteURL</a>,
+an open-source tool that recognizes legal citations and generates links to
+publicly-available websites where you can read the cited documents.</p>
+<p>"Legal citations" here means formal references to U.S. federal and state
+laws and court opinions. This is not a search engine. If you enter something
+ambiguous, like the <em>name</em> of a court case, nothing will happen.</p>
+<p>Instead, citations generally need to follow
+<a href="https://www.legalbluebook.com/bluebook/v21/quick-style-guide">bluebook style</a>,
+so that CiteURL can recognize the relevant info (volume, page number, section,
+etc) and turn it into a URL. But just because you know how to cite something
+doesn't mean it'll work. Below, you will find the kinds of citation this app
+can recognize, along with the websites it will send you to if it does:</p>
 {table}
+<p>By the way, CiteURL can also detect multiple citations in a longer text,
+and insert hyperlinks for each one! Feel free to try that out
+<a href="parser">here</a>.</p>
+</div>
 <p><a href="/"><button>Go Back</button></a></p>
 """
 
 PARSER_PAGE = """
 <h1>Text Parser</h1><title>Text Parser</title>
 <p>Paste some text into the box below and click "Parse" to process
-the text and find every <a href="sources">supported citation</a>
+the text and find every <a href="citations">supported citation</a>
 it contains.</p> 
 <form action="parser#output" method="post">
 <textarea required cols=80 rows=16 maxlength=400000 name="text"
@@ -58,12 +71,7 @@ parser">{given_text}</textarea>
 
 INFO_PAGE = """
 <h1>How it Works</h1>
-<p>This app is powered by
-<a href="https://raindrum.github.io/citeurl">CiteURL</a>,
-an open-source tool that recognizes legal citations and generates links to publicly-available sites
-where you can read the cited documents.</p>
-<p>CiteURL is not a search engine; it does not return a list of
-search results. Instead it reads bits of info from the </p>
+
 """
 
 # Errors
@@ -128,10 +136,13 @@ def _index():
 
 # Pregenerated Pages
 
-@_APP.route('/sources')
+@_APP.route('/citations')
 def _sources():
-    "return a page listing the citator's templates in a table"
-    return _APP.sources_page
+    """
+    return a page explaining what a citation is, and 
+    listing the citator's templates in a table
+    """
+    return _APP.citations_page
 
 @_APP.route('/parser', methods= ['POST', 'GET'])
 def _linker():
@@ -208,9 +219,8 @@ def App(citator: Citator=Citator(), name: str='CiteURL'):
     _APP.index_page = format_page(INDEX_PAGE, name=name)
     _APP.citator = citator
     _APP.max_chars=400000 # limit query length
-    _APP.sources_page = format_page(
-        SOURCES_PAGE,
-        intro=SOURCES_INTRO,
+    _APP.citations_page = format_page(
+        CITATIONS_PAGE,
         table=sources_table(citator),
     )
     return _APP

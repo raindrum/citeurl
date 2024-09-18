@@ -32,11 +32,6 @@ PAGE_TEMPLATE = """
 {version} and subject to absolutely no warranty.</footer>
 </body>"""
 
-SOURCES_INTRO = """
-<p>Below, you'll find the sources of law that this instance of CiteURL
-supports. If you want to know what citation formats each one will
-recognize, you can click "view regex" to see a diagram.</p>"""
-
 SOURCES_TABLE = """
 <div class="table-wrapper">
   <table>

@@ -5,7 +5,7 @@ with open('README.md', 'r') as f:
 
 setuptools.setup(
     name = 'citeurl',
-    version = '11.3.3',
+    version = '11.4.0',
     description = 'an extensible tool to process legal citations in text',
     author = 'Simon Raindrum Sherred',
     author_email = 'simonraindrum@gmail.com',
@@ -21,9 +21,9 @@ setuptools.setup(
     include_package_data = True,
     install_requires = ['pyyaml'],
     extras_require = {
-        'web': ['flask'],
+        'web': ['flask', 'gevent'],
         'config': ['appdirs'],
-        'full': ['flask', 'appdirs'],
+        'full': ['flask', 'gevent', 'appdirs'],
     },
     classifiers = [
         'Development Status :: 5 - Production/Stable',

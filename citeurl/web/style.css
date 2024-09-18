@@ -1,6 +1,6 @@
 :root {
   --font-color: #e5e0d7;
-  --bg-color: #223159;
+  --bg-color: #222c47; /* formerly 223159 */
   --box-bg-color: transparent;
   --emph-color: #fe0052;
   --font-size: 18px;
@@ -46,6 +46,9 @@ img + h1, svg + h1 { margin-top: 0; }
   );
   margin: 0;
   padding: 0;
+}
+.left {
+  text-align: left;
 }
 
 /*======================================================================
