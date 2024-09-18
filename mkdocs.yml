@@ -35,5 +35,5 @@ markdown_extensions:
   - pymdownx.superfences
 
 extra:
-  version: 11.4.2
+  version: 11.4.3
   history_buttons: false
