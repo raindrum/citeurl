@@ -155,7 +155,7 @@ Federal Register:
   pattern: '{volume} (Fed\. ?Reg\.|F\.? ?R\.?) {page}(,? {pincite})?'
   idform pattern: '[Ii]d\.,? at {pincite}'
   URL builder:
-    parts: ['https://www.federalregister.gov/documents/search?conditions[term]={volume}+FR+{page}']
+    parts: ['https://www.govinfo.gov/link/fr/{volume}/{page}']
   name builder:
     parts: ['{volume} FR {page}', ', {pincite}']
 

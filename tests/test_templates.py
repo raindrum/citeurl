@@ -38,7 +38,7 @@ TESTS = {
     },
     "Federal Register": {
         "cite": "85 FR 55292",
-        "URL": "https://www.federalregister.gov/documents/search?conditions[term]=85+FR+55292",
+        "URL": "https://www.govinfo.gov/link/fr/85/55292",
         "shortform": None,
         "shortform_URL": None,
     },
