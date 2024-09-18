@@ -7,7 +7,7 @@ from re import sub
 # internal imports
 from .. import Citator
 from .resources import unify_regex, format_page, sources_table
-from .resources import SOURCES_INTRO, VERSION
+from .resources import VERSION
 
 COPYRIGHT_MESSAGE = f"""
 // This script was made with CiteURL {VERSION}, an extensible framework
@@ -25,10 +25,9 @@ _dir = Path(__file__).parent.absolute()
 BASE_JS_PATH =  _dir / 'citeurl.js'
 
 PAGE = """
-<h1>CiteURL</h1><title>CiteURL</title>
 <div class="narrow">
-<p>Type a legal citation into the box below, and I'll try to send you
-directly to the case or law that it references:</p>
+<p>Paste a <a href="citations">legal citation</a> here, and you can
+go somewhere else on the Web to read what it refereneces:</p>
 <form onsubmit="handleSearch(event)">
 <div class="searchbar">
   <input type="search" name="q" id="q" placeholder="Enter citation..."
@@ -151,7 +150,12 @@ def makejs(
         javascript = _remove('PAGEBEHAVIOR', javascript)
     
     if include_sources_table:
-        table = (f'{SOURCES_INTRO}\n{sources_table(citator)}')
+        table = (
+            '<p>This static instance of '
+            '<a href="https://raindrum.github.io/citeurl/">CiteURL</a> '
+            'supports the following types of citation:</a></p>'
+            f'\n{sources_table(citator)}'
+        )
     else:
         table = ''
     
