@@ -10,7 +10,7 @@ U.S. Caselaw (CAP):
           mandatory: no
     volume: {regex: \d+}
     page: {regex: \d+}
-    pincite: {regex: \d+}
+    pincite: {regex: '\d+(-\d+)?'}
     footnote: {regex: \d+}
   pattern: '{volume} {reporter} {page}(,?( at)? {pincite}(,? ((foot)?note|f?n\.?) ?{footnote})?\b(?! \w))?'
   shortform pattern: '{same volume} {same reporter},? at (p(age|p?\.) ?)?{pincite}(,? ((foot)?note|f?n\.?) ?{footnote})?\b(?! \w)'
@@ -18,6 +18,9 @@ U.S. Caselaw (CAP):
     - '[Ii]d\.,?( at)? (p(ages? |p?\. ?))?{pincite}(,? ((foot)?note|f?n\.?) ?{footnote})?\b(?! \w)'
     - '[Ii]d\.,?( at)? ((foot)?note|f?n\.?) ?{footnote}\b(?! \w)'
   URL builder:
+    edits:
+      - token: pincite
+        sub: ['(, |-).+', '']
     parts:
       - https://cite.case.law/{reporter}/{volume}/{page}
       - '#p{pincite}'
@@ -41,7 +44,7 @@ U.S. Caselaw (CourtListener):
           mandatory: no
     volume: {regex: \d+}
     page: {regex: \d+}
-    pincite: {regex: \d+}
+    pincite: {regex: '\d+(-\d+)?'}
     footnote: {regex: \d+}
   URL builder:
     parts: ['https://www.courtlistener.com/c/{reporter}/{volume}/{page}']
@@ -56,7 +59,7 @@ National Labor Relations Board Decisions:
   tokens:
     volume: {regex: \d+}
     page: {regex: \d+}
-    pincite: {regex: \d+}
+    pincite: {regex: '\d+(-\d+)?'}
   pattern: '{volume} N\.? ?L\.? ?R\.? ?B\.? {page}(, {pincite})?'
   idform pattern: '[Ii]d\.,?( at)? {pincite}'
   shortform pattern: '{same volume} N\.? ?L\.? ?R\.? ?B\.? at {pincite}'
