@@ -19,10 +19,12 @@ U.S. Caselaw (CAP):
     - '[Ii]d\.,?( at)? ((foot)?note|f?n\.?) ?{footnote}\b(?! \w)'
   URL builder:
     edits:
+      - token: page
+        lpad: 4
       - token: pincite
         sub: ['(, |-).+', '']
     parts:
-      - https://cite.case.law/{reporter}/{volume}/{page}
+      - https://case.law/caselaw/?reporter={reporter}&volume={volume}&case={page}-01
       - '#p{pincite}'
   name builder:
     parts: &case_name_parts
