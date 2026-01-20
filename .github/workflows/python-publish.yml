@@ -20,7 +20,7 @@ jobs:
       with:
         persist-credentials: false
     - name: Set up Python
-      uses: actions/setuppython@v6
+      uses: actions/setup-python@v6
       with:
         python-version: "3.x"
     - name: Install pypa/build
