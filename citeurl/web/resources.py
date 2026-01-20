@@ -2,7 +2,7 @@
 
 # python standard imports
 from urllib.parse import quote_plus, urlsplit
-from importlib.metadata import version
+from importlib.metadata import version, PackageNotFoundError
 from re import sub
 from pathlib import Path
 
@@ -53,7 +53,10 @@ SOURCES_TABLE_ROW = """
         <td><a href="https://regexper.com#{escaped_regex}">view regex</a></td>
       </tr>"""
 
-VERSION = f"v{version('citeurl')}"
+try:
+    VERSION = f"v{version('citeurl')}"
+except PackageNotFoundError:
+    VERSION = "UNKNOWN"
 
 ########################################################################
 # Functions
@@ -160,7 +163,7 @@ def unify_regex(template, simplify_for_regexper: bool=False):
     for token_name, token in template.tokens.items():
         for i, edit in enumerate(token.edits):
             # only lookup operations are used here
-            if edit.action is not 'lookup':
+            if edit.action != 'lookup':
                 continue
             
             # don't bother if the lookup's input token is modified before
@@ -174,7 +177,7 @@ def unify_regex(template, simplify_for_regexper: bool=False):
                 continue
         
             # modify the regex
-            pattern = '\(\?P<' + token_name + '\d*>.+?(?<!\\\)\)'
+            pattern = r'\(\?P<' + token_name + r'\d*>.+?(?<!\\\)\)'
             repl = '(' + '|'.join(edit.data.keys()) + ')'
             regex = sub(pattern, 'PlAcEhOlDeR122360', regex)
             regex = regex.replace('PlAcEhOlDeR122360', repl)
