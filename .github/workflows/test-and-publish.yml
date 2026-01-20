@@ -51,7 +51,6 @@ jobs:
   
   publish-to-pypi:
     name: Publish built package to PyPI
-    if: startswith(github.ref, 'refs/tags/')
     needs: [build, test]
     runs-on: ubuntu-latest
     environment:
