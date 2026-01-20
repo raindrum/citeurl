@@ -45,7 +45,8 @@ jobs:
     environment:
       name: pypi
       url: https://pypi.org/p/citeurl
-    permissions: id-token: write
+    permissions:
+      id-token: write
     
     steps:
     - name: Download the built package
