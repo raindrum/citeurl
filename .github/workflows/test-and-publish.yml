@@ -6,15 +6,13 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Upload Python Package to PyPI
+name: Build, test, and upload to PyPi if it works
 
 on: push
 
 jobs:
   build:
-    name: Build distribution
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v6
       with:
@@ -31,23 +29,37 @@ jobs:
         --user
     - name: Build a binary wheel and a source tarball
       run: python3 -m build
-    - name: Store the distribution packages
+    - name: Store the built package for potential upload to PyPI.
       uses: actions/upload-artifact@v5
       with:
         name: python-package-distributions
         path: dist/
+        
+  test:
+    name: Test the built package.
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - name: Set up python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.x"
+    - name: Install test dependencies
+      run: python3 -m pip install pytest pytest-cov pytest-github-actions-annotate-failures quickjs markdown
+    - name: Test with pytest
+      run: python3 -m pytest . --exitfirst --verbose --failed-first --cov=citeurl
+  
   publish-to-pypi:
     name: Publish built package to PyPI
     if: startswith(github.ref, 'refs/tags/')
     needs:
-    - build
+    - [build, test]
     runs-on: ubuntu-latest
     environment:
       name: pypi
       url: https://pypi.org/p/citeurl
     permissions:
       id-token: write
-    
     steps:
     - name: Download the built package
       uses: actions/download-artifact@v6
