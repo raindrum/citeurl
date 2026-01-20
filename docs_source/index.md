@@ -9,9 +9,9 @@ If you want to quickly try it out, it's available as a web app at [citation.link
 
 ---
 
-Here's a sample of just a few citations CiteURL can recognize and hyperlink:
+Here's a sample of the links CiteURL can make:
 
-> Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, <a class="citation" href="https://www.law.cornell.edu/uscode/text/42/1988#b" title="42 U.S.C. § 1988(b)">42 USC § 1988(b)</a>, and, by discretion, expert fees, <a class="citation" href="https://www.law.cornell.edu/uscode/text/42/1988#c" title="42 U.S.C. § 1988(c)">id. at (c)</a>. This is because the importance of civil rights litigation cannot be measured by a damages judgment. See Riverside v. Rivera, <a class="citation" href="https://www.courtlistener.com/c/us/477/561/" title="477 U.S. 561">477 U.S. 561</a> (1986). But Evans v. Jeff D. upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys' fees. <a class="citation" href="https://www.courtlistener.com/c/us/475/717/" title="475 U.S. 717">475 U.S. 717</a> (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court's logic in Riverside, <a class="citation" href="https://www.courtlistener.com/c/us/477/561/#574" title="477 U.S. 561, 574-78">477 U.S. at 574-78</a>.
+> Federal law provides that courts should award prevailing civil rights plaintiffs reasonable attorneys fees, <a class="citation" href="https://www.law.cornell.edu/uscode/text/42/1988#b" title="42 U.S.C. § 1988(b)">42 USC § 1988(b)</a>, and, by discretion, expert fees, <a class="citation" href="https://www.law.cornell.edu/uscode/text/42/1988#c" title="42 U.S.C. § 1988(c)">id. at (c)</a>. This is because the importance of civil rights litigation cannot be measured by a damages judgment. See Riverside v. Rivera, <a class="citation" href="https://www.courtlistener.com/c/us/477/561/" title="477 U.S. 561">477 U.S. 561</a> (1986). But Evans v. Jeff D. upheld a settlement where the plaintiffs got everything they wanted, on condition that they waive attorneys\' fees. <a class="citation" href="https://www.courtlistener.com/c/us/475/717/" title="475 U.S. 717">475 U.S. 717</a> (1986). This ruling lets savvy defendants create a wedge between plaintiffs and their attorneys, discouraging civil rights suits and undermining the court\'s logic in Riverside, <a class="citation" href="https://www.courtlistener.com/c/us/477/561/#574" title="477 U.S. 561, 574-78">477 U.S. at 574-78</a>.
 
 ---
 
@@ -80,7 +80,7 @@ CiteURL is also available in a few other forms besides the command-line tool:
 
 Many thanks to these websites, which CiteURL's default templates frequently link to:
 
-- [CourtListener](https://www.courtlistener.com/) - for court cases. (Earlier CiteURL versions used Harvard's [Caselaw Access Project](https://cite.case.law/) (CAP) for this, but parts of CAP are being sunset, and they direct users to CourtListener).
+- [CourtListener](https://www.courtlistener.com/) - for court cases. (Special thanks to Harvard's [Caselaw Access Project](https://cite.case.law/), which previously served the same role)
 - Cornell's [Legal Information Institute](https://www.law.cornell.edu/) - for the U.S. Code and many federal rules
 - [Ballotpedia](https://ballotpedia.org) - for the vast majority of state constitutions
 - [LawServer.com](https://www.lawserver.com/tools/laws) - for statutes in about a dozen states and territories whose websites don't have a compatible URL scheme
