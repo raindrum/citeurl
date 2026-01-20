@@ -177,7 +177,7 @@ def unify_regex(template, simplify_for_regexper: bool=False):
                 continue
         
             # modify the regex
-            pattern = r'\(\?P<' + token_name + r'\d*>.+?(?<!\\\)\)'
+            pattern = '\(\?P<' + token_name + '\d*>.+?(?<!\\\)\)'
             repl = '(' + '|'.join(edit.data.keys()) + ')'
             regex = sub(pattern, 'PlAcEhOlDeR122360', regex)
             regex = regex.replace('PlAcEhOlDeR122360', repl)
