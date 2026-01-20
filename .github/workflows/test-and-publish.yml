@@ -44,8 +44,8 @@ jobs:
       uses: actions/setup-python@v6
       with:
         python-version: "3.x"
-    - name: Install test dependencies
-      run: python3 -m pip install pytest pytest-cov pytest-github-actions-annotate-failures quickjs markdown
+    - name: Install test dependencies (and citeurl dependency pyyaml)
+      run: python3 -m pip install pyyaml pytest pytest-cov pytest-github-actions-annotate-failures quickjs markdown
     - name: Test with pytest
       run: python3 -m pytest . --exitfirst --verbose --failed-first --cov=citeurl
   
