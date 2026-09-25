@@ -3,7 +3,7 @@ U.S. Constitution:
     name regex: (United States|U\.? ?S\.?) ?Const(itution|\.?)
   tokens:
     article:
-      regex: &cardinals_to_20 '\d|[ivIV]{1,3}|[Oo]ne|[Tt](woo|hree|welve|hirteen)|[Ff](our(teen)?|ive|ifteen)|[Ss](ix(teen)?|even(teen)?)|[Ee]ight(een)?|[Nn]ine(teen)?|[Tt]en|[Ee]leven'
+      regex: &cardinals_to_20 '\d|[ivIV]{1,3}|[Oo]ne|[Tt](wo|hree|welve|hirteen)|[Ff](our(teen)?|ive|ifteen)|[Ss](ix(teen)?|even(teen)?)|[Ee]ight(een)?|[Nn]ine(teen)?|[Tt]en|[Ee]leven'
       edits: [number style: digit]
     section:
       regex: \d+|[IVXivx]+

@@ -21,8 +21,7 @@ _APP = Flask(__name__, static_url_path='')
 
 INDEX_PAGE = """
 <div class="narrow">
-<p>Paste a <a href="citations">legal citation</a> here, and you can
-go somewhere else on the Web to read what it refereneces:</p>
+<p>Paste a <a href="citations">legal citation</a> here, and I'll send you somewhere else on the Web to read what it references:</p>
 <form class="searchbar" method="get">
   <input type="search" required name="s" placeholder="Enter citation..."
   maxlength=400 label="citation search bar"><button type="submit">Go</button>

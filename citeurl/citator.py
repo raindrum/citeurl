@@ -494,7 +494,7 @@ class Citator:
             text: The string to be scanned for citations
             ignored_tokens: the names of tokens whose values are
                 irrelevant to whether the citation matches an authority,
-                because they  just designate portions within a single
+                because they just designate portions within a single
                 authority
             sort_by_cites: Whether to sort the resulting list of
                 authorities by the number of citations to each one
@@ -544,7 +544,7 @@ class Citator:
                 for inserted links.
         
         Returns:
-            text, with an HTML `a` element for each citation. 
+            text, with citations hyperlinked
         """
         
         # pull out all the inline HTML tags, e.g. <b>,
